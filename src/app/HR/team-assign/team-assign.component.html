@@ -1,0 +1,141 @@
+
+<app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
+<div class="row">
+    <div class="col-md-12">
+        <button class="btn btn-secondary  float-right m-1 ml-1 mr-1" title="Save">Save</button>
+    </div>
+
+    <div class="col-md-12">
+        <div class="row card">
+            <div class="col-md-5">
+                <label>Project :</label>
+                <div class="floating-input ">
+                    <input type="text" class="form-control" placeholder="Project" readonly>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <label>Customer :</label>
+                <div class="floating-input  list-btn">
+                    <select class="form-control selectpicker show-tick" id="Location"  data-live-search="true" title="Select">
+                        <option ></option>                     
+                    </select>
+                    <button type="button" class="close" onclick="resetDropdown('Location')"  aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <label>Team Lead :</label>
+                <div class="floating-input  list-btn">
+                    <select class="form-control selectpicker show-tick" id="team_lead"  data-live-search="true" title="Select">
+                        <option ></option>                     
+                    </select>
+                    <button type="button" class="close" onclick="resetDropdown('team_lead')"  aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <label>Technical Lead :</label>
+                <div class="floating-input  list-btn">
+                    <select class="form-control selectpicker show-tick" id="technical_lead"  data-live-search="true" title="Select">
+                        <option ></option>                     
+                    </select>
+                    <button type="button" class="close" onclick="resetDropdown('technical_lead')"  aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 mt-2">
+        <div class="row card"> 
+            <div class="col-md-6">
+                <label>Team Member :</label>
+                <span> +3</span>
+                <button class="btn btn-info ml-2" title=""  data-toggle="modal" data-target="#showList"><i class="fa fa-plus" aria-hidden="true"></i></button>
+            </div>
+
+            <div class="col-md-12 mt-3">
+                <div class="activity">
+                    <div class="activity-box"> 
+                        <ul class="activity-list">
+                            <li>
+                                <div class="activity-user">
+                                    <a><img class="avatar" alt="User Image" src="../assets/images/users/avatar.jpg">
+                                        
+                                    </a>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="timeline-content">
+                                        <span class="name font-weight-bold mr-2">1173-Priyanka Malgunkar</span>S/W Developer 
+                                        <a><i class="fa fa-trash-o text-danger" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="activity-user">
+                                    <a><img class="avatar" alt="User Image" src="../assets/images/users/avatar.jpg">
+                                        
+                                    </a>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="timeline-content">
+                                        <span class="name font-weight-bold mr-2">1173-Priyanka Malgunkar</span>Web Designer
+                                        <a><i class="fa fa-trash-o text-danger"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="showList" #showList tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Select Team Member</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="col-md-12">
+                <div class="float-right w-50 mb-2">
+                    <input type="text" placeholder="Search" class="form-control">
+                </div>
+                <div class="tableFixHead">
+                    <table class="table-theam-1 row_bgcolor_2">
+                        <thead>
+                            <tr>
+                                <th class="w-20 ">Select</th>
+                                <th class="w-50 ">Team Member</th>
+                                <th class="w-20 ">Designation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input type="checkbox">
+                                </td>
+                                <td class="w-50">xyz xxxxxxx</td>
+                                <td>S/W Developer</td>
+                            </tr>
+                        </tbody>
+                    </table> 
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary">Save </button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

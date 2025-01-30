@@ -1,0 +1,316 @@
+<app-spinner [startSpinner]="spinner" *ngIf="spinner"></app-spinner>
+<form [formGroup]="form">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="d-flex justify-content-between">
+        <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
+      </div>
+    </div>
+    <div class="col-md-12 mb-2 mt-2">
+      <div class="row card">
+        <div class="col-md-8 mr-5">
+          <label>Employee :</label>
+          <div
+            class="floating-input list-btn"
+            [ngClass]="{
+              'invalid-control':
+                isSubmited && form.controls['EMP_NO'].errors?.required
+            }"
+          >
+            <select
+              class="form-control selectpicker show-tick dd_display"
+              id="employee"
+              formControlName="EMP_NO"
+              title="Select"
+              disabled
+            >
+              <option
+                *ngFor="let opt of employee_list; let i = index"
+                [selected]="opt.EMP_CODE == form.controls['EMP_NO'].value"
+                [value]="opt.EMP_CODE"
+              >
+                {{ opt.EMP_CODE }} - {{ opt.USER_NAME }}
+              </option>
+            </select>
+            <!-- <button type="button" class="close" (click)="form.controls['EMP_NO'].reset()" onclick="resetDropdown('employee')"  aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button> -->
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label>Fyear :</label>
+          <div
+            class="floating-input list-btn"
+            [ngClass]="{
+              'invalid-control':
+                isSubmited && form.controls['PYEAR'].errors?.required
+            }"
+          >
+            <select
+              class="form-control selectpicker show-tick"
+              formControlName="PYEAR"
+              data-live-search="true"
+              (change)="filterMonth()"
+              id="year"
+              title="Select"
+            >
+              <option
+                *ngFor="let opt of fyear_list; let i = index"
+                [selected]="opt.FYEAR == form.controls['PYEAR'].value"
+                [value]="opt.FYEAR"
+              >
+                {{ opt.FYEAR_DESC }}
+              </option>
+            </select>
+            <button
+              type="button"
+              class="close"
+              (click)="form.controls['PYEAR'].reset()"
+              onclick="resetDropdown('year')"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label>Period :</label>
+          <div
+            class="floating-input list-btn"
+            [ngClass]="{
+              'invalid-control':
+                isSubmited && form.controls['PERIOD_NO'].errors?.required
+            }"
+          >
+            <select
+              class="form-control selectpicker show-tick"
+              formControlName="PERIOD_NO"
+              data-live-search="true"
+              id="month"
+              title="Select"
+            >
+              <option
+                *ngFor="let opt of _month_list; let i = index"
+                [selected]="opt.PERIOD_NO == form.controls['PERIOD_NO'].value"
+                [value]="opt.PERIOD_NO"
+              >
+                {{ opt.PERIOD_DESC }}
+              </option>
+            </select>
+            <button
+              type="button"
+              class="close"
+              (click)="form.controls['PERIOD_NO'].reset()"
+              onclick="resetDropdown('month')"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <button
+            class="btn btn-secondary mt-4"
+            (click)="showTable()"
+            title="Show"
+          >
+            Show
+          </button>
+        </div>
+        <div class="col-md-4">
+          <label>Paid Days :</label>
+          <div class="floating-input">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Paid Days"
+              formControlName="PAID_DAYS"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label>Unpaid Days :</label>
+          <div class="floating-input">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Unpaid Days"
+              formControlName="UNPAID_DAYS"
+            />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label>Leave :</label>
+          <div class="floating-input">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Leave"
+              formControlName="LEAVE"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 mb-2">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-inline float-right">
+            <strong>Total Payable :</strong>
+            <div class="floating-input ml-2">
+              <input
+                type="text"
+                class="form-control cost"
+                disabled
+                costInput
+                formControlName="TOTALPAYABLE"
+                placeholder="Total Payable "
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 pr-0 padd_right mb-1">
+      <div class="row card">
+        <div class="form-inline col-md-12">
+          <h6 class="mb-0 col-md-6 p-0">Earnings Details</h6>
+          <hr class="m-0 mb-2" />
+        </div>
+        <div class="col-md-12">
+          <div class="tableFixHead">
+            <table class="table-theam-1 row_bgcolor_1">
+              <thead>
+                <tr>
+                  <th class="w-15">Earnings</th>
+                  <th class="w-20">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let data of Earningdetail; let i = index">
+                  <tr>
+                    <td>{{ data.DESCRIPTION }}</td>
+                    <td class="cost">{{ data.AMOUNT }}</td>
+                  </tr>
+                </ng-container>
+                <tr>
+                  <td class="bg-white">
+                    <strong class="float-right">Total :</strong>
+                  </td>
+                  <td class="total_grid w-1 bg-white pr-0">
+                    <div class="floating-input">
+                      <input
+                        type="text"
+                        class="form-control cost"
+                        disabled
+                        costInput
+                        formControlName="TOTAL_E"
+                        placeholder="Amount"
+                      />
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 pr-0 padd_right mb-1">
+      <div class="row card">
+        <div class="form-inline col-md-12">
+          <h6 class="mb-0 col-md-6 p-0">Deductions Details</h6>
+          <hr class="m-0 mb-2" />
+        </div>
+
+        <div class="col-md-12">
+          <div class="tableFixHead">
+            <table class="table-theam-1 row_bgcolor_1">
+              <thead>
+                <tr>
+                  <th class="w-15">Deductions</th>
+                  <th class="w-20">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container
+                  *ngFor="let data of Deductiondetail; let i = index"
+                >
+                  <tr>
+                    <td>{{ data.DESCRIPTION }}</td>
+                    <td class="cost">{{ data.AMOUNT }}</td>
+                  </tr>
+                </ng-container>
+                <tr>
+                  <td class="bg-white">
+                    <strong class="float-right">Total :</strong>
+                  </td>
+                  <td class="total_grid w-1 bg-white pr-0">
+                    <div class="floating-input">
+                      <input
+                        type="text"
+                        class="form-control cost"
+                        disabled
+                        costInput
+                        formControlName="TOTAL_D"
+                        placeholder="Amount"
+                      />
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+      <div class="row card">
+        <div class="form-inline col-md-12">
+          <h6 class="mb-0 col-md-6 p-0">Contribution Details</h6>
+          <hr class="m-0 mb-2" />
+        </div>
+        <div class="col-md-12">
+          <div class="tableFixHead">
+            <table class="table-theam-1 row_bgcolor_1">
+              <thead>
+                <tr>
+                  <th class="w-15">Company Contribution</th>
+                  <th class="w-20">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container
+                  *ngFor="let data of Contributiondetail; let i = index"
+                >
+                  <tr>
+                    <td>{{ data.DESCRIPTION }}</td>
+                    <td class="cost">{{ data.AMOUNT }}</td>
+                  </tr>
+                </ng-container>
+                <tr>
+                  <td class="bg-white">
+                    <strong class="float-right">Total :</strong>
+                  </td>
+                  <td class="total_grid w-1 bg-white pr-0">
+                    <div class="floating-input">
+                      <input
+                        type="text"
+                        class="form-control cost"
+                        disabled
+                        costInput
+                        formControlName="TOTAL_C"
+                        placeholder="Amount"
+                      />
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

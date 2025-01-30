@@ -1,0 +1,24 @@
+.w-action {
+    width: 100px;
+}
+.card{
+    margin: 0 !important;
+    flex-direction: inherit !important;
+    }
+
+.list-group li{
+    height: 32px;
+}
+table td i,
+ul li .att-doc-label-add i{
+    font-size: medium;
+}
+
+.v_400scroll{
+    overflow-y: auto !important;
+    max-height: 350px;
+}
+.textDisabled{
+    pointer-events: none;
+    background-color: #e9ecef;
+}

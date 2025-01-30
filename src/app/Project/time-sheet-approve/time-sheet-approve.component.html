@@ -1,0 +1,135 @@
+<app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
+<form>
+    <div class="row">
+        <div class="page-content">
+            <div class="col-md-12 mt-2">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Employee :</label>
+                        <div class="floating-input mb-2 list-btn">
+                            <select class="form-control selectpicker show-tick" id="emp" [(ngModel)]="EMP_CODE" (change)="GetPendingAttendanceList()" data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}">
+                                <option *ngFor="let opt of employee_list; let i=index" 
+                                [selected]="opt.EMP_CODE == EMP_CODE"
+                                 [value]="opt.EMP_CODE" >{{ opt.EMP_CODE }} - {{ opt.USER_NAME }}</option>                     
+                            </select>
+                            <button type="button" class="close" onclick="resetDropdown('emp')" (click)="EMP_CODE='';f_clearForm()" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <h6 class="mb-0 col-md-6 p-0">Time-Sheet Details</h6>
+                        <hr class="m-0 mb-2">
+                        <div class="tableFixHead mt-2">
+                            <table class="table-theam-1 row_bgcolor_1">
+                                <thead>
+                                    <tr>
+                                        <th class="width-10">Date</th>
+                                        <th class="width-30">Pending Approval</th>
+                                        <th class="width-10">Time in</th>
+                                        <th class="width-10">Time Out</th>
+                                        <th class="width-view">View</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let data of pending_attendance_list; let i=index;">
+                                        <td class="width-10 pb-0">{{ data.ATTN_DATE }}
+                                        </td>
+                                        <td class="width-30 pb-0"></td>
+                                        <td class="width-10 pb-0">{{ data.TIME_IN }}</td>
+                                        <td class="width-10 pb-0">{{ data.TIME_OUT }}</td>
+                                        <td class="width-view pb-0">
+                                            <button type="button" class="btn p-0" (click)="f_openDetail(data,i)">
+                                                <i class="fa fa-eye" aria-hidden="true" ></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true" id="timesheetpopup" #timesheetpopup>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Time-Sheet Employee Data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <div class="tableFixHead mt-2">
+                    <table class="table-theam-1 row_bgcolor_3">
+                        <thead>
+                            <tr>
+                                <th class="w-20">Project</th>
+                                <th class="w-20">Task</th>
+                                <th class="w-20">Type</th>
+                                <th class="w-20">Client Ref.</th>
+                                <th class="w-10">Hours</th>
+                                <th class="w-10">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let data of pending_timesheet_list; let i=index;">
+                                <tr>
+                                    <td class="w-20">{{ data.PROJ_NAME }}</td>
+                                    <td class="w-20">{{ data.TASK_DESC }}</td>
+                                    <td class="w-20">{{ data.TASKTYPE }}</td>
+                                    <td class="w-20">{{ data.CLIENTREFERENCE }}</td>
+                                    <td class="w-10">{{ data.HOURS }}</td>
+                                    <td class="w-10" [ngClass]="{'unclickable-1':data.ISREJ == 1}">
+                                        <i class="fas fa-user-check text-success mr-3 " (click)="f_Approve( data,i)" data-toggle="modal" data-target="#approvewarning" title="Approve"></i>
+                                        <i class="fa fa-user-times text-danger" aria-hidden="true" title="Reject" (click)="data.ISREJ = 1"></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" *ngIf="data.REMARKS != ''">{{ data.REMARKS }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5" *ngIf="data.ISREJ == 1">
+                                        <input type="text" [(ngModel)]="data.REJECT_REASON" class="form-control" placeholder="Rejection Remarks" [ngModelOptions]="{standalone: true}">
+                                    </td>
+                                    <td colspan="1" *ngIf="data.ISREJ == 1">
+                                        <i class="fa fa-save text-success mr-3" (click)="approveRejectTimesheet(data,i,'R')" data-toggle="tooltip" data-placement="left" title="Save"></i>
+                                        <i class="fa fa-times-circle-o text-danger" data-toggle="tooltip" (click)="data.ISREJ = 0" data-placement="left" title="Cancel" aria-hidden="true"></i>
+
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" #approvewarning id="approvewarning" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content mt-5">
+            <div class="modal-header header-background py-1">
+                <h5 class="modal-title" id="exampleModalLabel">CFTRACK</h5>
+            </div>
+            <div class="modal-body">
+                <label>Do you want to approve?</label>
+            </div>
+            <div class="modal-footer py-0">
+                <button type="button" (click)="approveRejectTimesheet(_appr_data,_appr_data.index,'A')" data-dismiss="modal" class="btn btn-primary py-1">Yes</button>
+                <button type="button" (click)="_appr_data=null" class="btn btn-danger py-1" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+
+.card {
+    margin: 0 !important;
+    flex-direction: inherit !important;
+}
+
+.btn-info{
+    border-radius: 50%;
+    padding: 2px 5px;
+    font-size: 13px;
+}
+
+.activity .activity-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+.activity-list::before {
+    background: #ddd;
+    bottom: 0;
+    content: "";
+    left: 23px;
+    position: absolute;
+    top: 8px;
+    width: 2px;
+}
+.activity-list > li {
+    background-color: #fff;
+    margin-bottom: 10px;
+    padding: 10px;
+    position: relative;
+    border: 1px solid #dcdcdc;
+    box-shadow: 0 1px 1px 0 rgb(0 0 0 / 20%);
+}
+.activity .activity-list li::before {
+    background: #ddd;
+    bottom: 0;
+    content: "";
+    left: 22px;
+    position: absolute;
+    top: 40px;
+    width: 2px;
+}
+.activity .activity-list > li .activity-user {
+    height: 32px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 7px;
+    left: 8px;
+    width: 32px;
+}
+.activity-user .avatar {
+    height: 32px;
+    line-height: 32px;
+    margin: 0;
+    width: 32px;
+}
+.activity .activity-list > li .activity-content {
+    background-color: #fff;
+    margin: 0 0 0 40px;
+    padding: 0;
+    position: relative;
+}
+.activity-list > li .activity-content .timeline-content a {
+    float: right;
+    font-size: large;
+}

@@ -1,0 +1,34 @@
+table .w-10 {
+    width: 130px;
+}
+
+table .width-10 {
+    width: 110px;
+}
+
+table .width-20 {
+    width: 150px;
+}
+
+svg.invoice_svg {
+    width: 42px !important;
+    height: 42px !important;
+    cursor: pointer;
+}
+
+table .time {
+    width: 10%;
+}
+
+table .width-5 {
+    width: 25px;
+}
+
+table .table-check {
+    margin-top: -11px;
+}
+.card{
+    margin: 0 !important;
+    flex-direction: inherit !important;
+    }
+    

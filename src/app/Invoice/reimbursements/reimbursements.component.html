@@ -1,0 +1,690 @@
+<app-spinner [startSpinner]="spinner" *ngIf="spinner"></app-spinner>
+<div class="row">
+  <div class="col-md-12">
+    <div class="d-flex justify-content-between">
+      <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
+      <div>
+        <button
+          class="btn btn-secondary"
+          (click)="addNew()"
+          title="Add New"
+          *ngIf="isViewReimbursement"
+        >
+          Add New
+        </button>
+        <button
+          class="btn btn-secondary mr-1"
+          (click)="ReimbursementList('ALL')"
+          title="List"
+          *ngIf="!isViewReimbursement"
+        >
+          List
+        </button>
+        <button
+          class="btn btn-secondary mr-1"
+          (click)="SaveReimbursement(0)"
+          title="{{ IsUpdate }}"
+          *ngIf="!isViewReimbursement && !isView"
+        >
+          {{ IsUpdate }}
+        </button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!isViewReimbursement">
+    <div class="mt-2">
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="row card">
+          <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
+            <label>Doc Type :<span class="text-danger">*</span></label>
+            <div class="floating-input list-btn">
+              <select
+                class="form-control"
+                id="doc_type"
+                [(ngModel)]="DOCTYPE_CODE"
+                data-live-search="true"
+                title="Select"
+                (change)="FilterExpHead(DOCTYPE_CODE)"
+                [disabled]="isView"
+              >
+                <option
+                  *ngFor="let opt of doc_type_list; let i = index"
+                  [selected]="opt.DOCTYPE_CODE == this.DOCTYPE_CODE"
+                  [value]="opt.DOCTYPE_CODE"
+                >
+                  {{ opt.DOCTYPE_DESC }}
+                </option>
+              </select>
+              <!-- <button type="button" class="close" onclick="resetDropdown('doc_type')"  aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button> -->
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
+            <label>Voucher No. :</label>
+            <div class="floating-input">
+              <input
+                type="text"
+                maxlength="20"
+                [(ngModel)]="VOUCHER_NO"
+                class="form-control"
+                placeholder="Voucher No"
+                disabled
+              />
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
+            <label>Voucher Date :</label>
+            <div class="floating-input">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="REIMBURSEMENT_DATE"
+                [disabled]="isView"
+              />
+              <div class="date-input">
+                <mat-form-field fxFlex="100" appearance="fill">
+                  <mat-datepicker-toggle
+                    matPrefix
+                    [for]="picker"
+                    id="cal"
+                    #cal
+                  ></mat-datepicker-toggle>
+                  <input
+                    class="form-control"
+                    (dateChange)="ChangeDate()"
+                    [value]="REIMBURSEMENT_DATE"
+                    matInput
+                    [(ngModel)]="REIMBURSEMENT_DATE"
+                    [ngModelOptions]="{ standalone: true }"
+                    [matDatepicker]="picker"
+                    [min]="min_date"
+                    [max]="maxdate"
+                    [disabled]="isView"
+                    readonly
+                  />
+                  <mat-datepicker #picker id="picker"></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
+            <label>Employee :<span class="text-danger">*</span></label>
+            <div class="floating-input list-btn">
+              <!-- [disabled]="this.USER_ID !== 2" -->
+              <select
+                class="form-control"
+                [(ngModel)]="EMP_CODE"
+                data-live-search="true"
+                #employee
+                id="employee"
+                title="Select"
+             
+                [disabled]="isView"
+              >
+                <option
+                  *ngFor="let opt of employee_list; let i = index"
+                  [selected]="opt.EMP_CODE == this.EMP_CODE"
+                  [value]="opt.EMP_CODE"
+                >
+                  {{ opt.EMP_CODE }} - {{ opt.USER_NAME }}
+                </option>
+              </select>
+              <!-- <button type="button" class="close"  onclick="resetDropdown('employee')"  aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>  -->
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
+            <label>Project :<span class="text-danger">*</span></label>
+            <div class="floating-input">
+              <select
+                class="form-control dd_ellipsis"
+                [(ngModel)]="PROJ_CODE"
+                id="PROJ_CODE"
+                data-container="body"
+                [ngModelOptions]="{ standalone: true }"
+                data-live-search="true"
+                placeholder="Select"
+                [disabled]="isView"
+              >
+                <option value="" disabled></option>
+                <option
+                  *ngFor="let opt of project_list; let i = index"
+                  [selected]="opt.PROJ_CODE == this.PROJ_CODE"
+                  [value]="opt.PROJ_CODE"
+                  title="{{ opt.PROJ_NAME }}"
+                >
+                 {{ opt.PROJ_NAME }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
+            <label>Bill No. :</label>
+            <div class="floating-input">
+              <input
+                type="text"
+                maxlength="20"
+                [(ngModel)]="BILL_NO"
+                class="form-control"
+                placeholder="Bill No"
+                [disabled]="isView"
+              />
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
+            <label>Bill Date :</label>
+            <div class="floating-input">
+              <input type="text" class="form-control" [(ngModel)]="BILL_DATE"  [disabled]="isView"/>
+              <app-date-picker
+                class="date-input"
+                [(ngModel)]="BILL_DATE"
+                id="bill_date"
+                #doj
+                class="date-input"
+                [maxdate]=""
+                [mindate]=""
+               
+                [ngModelOptions]="{ standalone: true }"
+              ></app-date-picker>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
+            <label>Currency :<span class="text-danger">*</span></label>
+            <div class="floating-input list-btn">
+              <select
+                class="form-control"
+                id="Currency"
+                (change)="GetSelectCurrency(this.CURRENCY_CODE)"
+                [(ngModel)]="CURRENCY_CODE"
+                data-live-search="true"
+                title="Select"
+                [disabled]="isView"
+              >
+                <option
+                  *ngFor="let opt of currency_list; let i = index"
+                  [selected]="opt.CURRENCY_CODE == this.CURRENCY_CODE"
+                  [value]="opt.CURRENCY_CODE"
+                >
+                  {{ opt.CURRENCY_NAME }}
+                </option>
+              </select>
+              <!-- <button type="button" class="close" onclick="resetDropdown('Currency')"  aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button> -->
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
+            <label>Exchange Rate :<span class="text-danger">*</span></label>
+            <div class="floating-input">
+              <input
+                maxlength="3"
+                [(ngModel)]="EXCHANGE_RATE"
+                (change)="CalculateFinalAmount()"
+                class="form-control cost"
+                placeholder="Exchange Rate"
+                [readonly]="isExchangeRate"
+                [disabled]="isView"
+              />
+            </div>
+          </div>
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <label>Remarks :<span class="text-danger">*</span></label>
+            <div class="floating-input">
+              <textarea
+                name=""
+                id=""
+                maxlength="200"
+                rows="1"
+                [(ngModel)]="REMARKS"
+                class="form-control"
+                placeholder="Remarks"
+                [disabled]="isView"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-2 d-flex">
+      <div
+        class="col-xl-6 col-lg-12 col-md-12 col-sm-12 pr-0 padd_right d-flex"
+      >
+        <div class="row card">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <div class="form-inline">
+              <h6 class="mb-0 col-xl-6 col-lg-12 col-md-12 col-sm-12 p-0">
+                Exp Details
+              </h6>
+              <div
+                class="row-add col-xl-6 col-lg-12 col-md-12 col-sm-12 text-right p-0"
+              >
+                <button
+                  type="button"
+                  class="btn text-primary pb-0"
+                  (click)="f_addRow()"
+                >
+                  <i class="fas fa-plus-circle mr-2"></i>Add
+                </button>
+              </div>
+              <hr class="m-0 mb-2" />
+            </div>
+            <div class="tableFixHead">
+              <table class="table-theam-1 row_bgcolor_2">
+                <thead>
+                  <tr>
+                    <th class="w-2">Exp.Head</th>
+                    <th class="w-3">Qty</th>
+                    <th class="w-4">Req. Amount</th>
+                    <th class="w-4">Approved Amount</th>
+                    <th
+                      class="w-1"
+                      *ngIf="this.reimbursement_detail.length > 1"
+                    ></th>
+                    <!-- <th class="w-3">Base</th>
+                                        <th class="w-2">Project Code</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container
+                    *ngFor="let data of reimbursement_detail; let i = index"
+                  >
+                    <tr *ngIf="data.ACTIVE != 0" class="mb-2">
+                      <td class="">
+                        <!-- w-2 -->
+                        <div class="floating-input">
+                          <select
+                            class="form-control dd_ellipsis"
+                            [(ngModel)]="data.EXPENSE_HEAD"
+                            (change)="ChangeExpenseHead()"
+                            id="exp_{{ i }}"
+                            data-container="body"
+                            [ngModelOptions]="{ standalone: true }"
+                            data-live-search="true"
+                            title="Select"
+                            [disabled]="isView"
+                          >
+                            <option value="" disabled></option>
+                            <option
+                              *ngFor="let opt of exphead_list; let i = index"
+                              [selected]="opt.EXPENSE_HEAD == data.EXPENSE_HEAD"
+                              [value]="opt.EXPENSE_HEAD"
+                              title="{{ opt.EXPENSE_NAME }}"
+                            >
+                              {{ opt.EXPENSE_NAME }}
+                            </option>
+                          </select>
+                        </div>
+                      </td>
+                      <td class="w-3">
+                        <div class="floating-input">
+                          <input
+                            type="text"
+                            class="form-control cost"
+                            [(ngModel)]="data.QTY"
+                            placeholder="Qty"
+                            (change)="CalculateFinalAmount()"
+                            [ngModelOptions]="{ standalone: true }"
+                            [disabled]="isView"
+                          />
+                        </div>
+                      </td>
+                      <td class="w-4">
+                        <div class="floating-input">
+                          <input
+                            type="text"
+                            class="form-control cost"
+                            [(ngModel)]="data.PRICE"
+                            costInput
+                            placeholder="Price"
+                            (change)="CalculateFinalAmount()"
+                            [ngModelOptions]="{ standalone: true }"
+                            [disabled]="isView"
+                          />
+                        </div>
+                      </td>
+                      <td>
+                        <div class="floating-input">
+                          <input
+                            type="text"
+                            class="form-control cost"
+                            [(ngModel)]="data.APPROVED_AMOUNT"
+                            costInput
+                            placeholder="0"
+                            [ngModelOptions]="{ standalone: true }"
+                            [disabled]="!isViewReimbursement || isView"
+                          />
+                        </div>
+                      </td>
+                      <td
+                        class="w-1"
+                        *ngIf="this.reimbursement_detail.length > 1"
+                      >
+                      
+                        <button
+                          type="button"
+                          class="close"
+                          (click)="RemoveReimbursementIndex(i)"
+                          aria-label="Close"
+                        >
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </td>
+                      <!-- <td class="w-4 pb-0">
+                                                <div class="floating-input">
+                                                    <input type="text"  class="form-control cost" [(ngModel)]="data.REIMBURSEMENT_AMOUNT" disabled  costInput placeholder="Base"  [ngModelOptions]="{standalone: true}">
+                                                </div>
+                                            </td>  
+                                            <td class="w-2 pb-0" >
+                                                <div class="floating-input">
+                                                    <select class="form-control  dd_ellipsis" [(ngModel)]="data.PROJ_CODE" id="p_{{i}}" data-container="body" [ngModelOptions]="{standalone: true}" data-live-search="true"
+                                                                title="Select">
+                                                            <option value="" disabled></option>
+                                                            <option *ngFor="let opt of project_list; let i=index" 
+                                                            [selected]="opt.PROJ_CODE == data.PROJ_CODE"
+                                                            [value]="opt.PROJ_CODE" title="{{ opt.PROJ_NAME }}" >{{ opt.PROJ_NAME }}</option>  
+                                                    </select> 
+                                                </div> 
+                                            </td> -->
+                    </tr>
+                    <tr *ngIf="data.ACTIVE != 0" class="">
+                      <td colspan="6" class="w-4">
+                        <div class="floating-input">
+                          <textarea
+                            name=""
+                            id=""
+                            rows="2"
+                            class="form-control"
+                            placeholder="Description"
+                            [(ngModel)]="data.REMARKS"
+                            [ngModelOptions]="{ standalone: true }"
+                            [disabled]="isView"
+                          ></textarea>
+                        </div>
+                      </td>
+                      <!-- <td
+                        class=""
+                        *ngIf="this.reimbursement_detail.length > 1"
+                      ></td> -->
+                      <!-- <td colspan="3"  class="">
+                                                <table>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="floating-input form-inline">
+                                                                <label class="ml-2 font-weight-bold">SGST :</label>
+                                                                <div class="d-flex">
+                                                                    <input type="text" id="sgst_val_{{i}}"  class="form-control ml-1 mr-1 cost" (change)="CalculateFinalAmount()" placeholder="SGST Value" disabled costInput [(ngModel)]="data.SGST_AMOUNT"  [ngModelOptions]="{standalone: true}">
+                                                                    <label class="ml-1">{{ data.SGST_RATE}}%</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="floating-input form-inline">
+                                                                <label class="ml-2 font-weight-bold">CGST :</label>
+                                                                    <div class="d-flex">
+                                                                    <input type="text" id="cgst_val_{{i}}"  class="form-control ml-1 mr-1 cost" (change)="CalculateFinalAmount()" placeholder="CGST Value" disabled costInput [(ngModel)]="data.CGST_AMOUNT"  [ngModelOptions]="{standalone: true}">
+                                                                    <label class="ml-1">{{ data.CGST_RATE}}%</label>
+                                                                    </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="floating-input form-inline ">
+                                                                <label class="ml-2  font-weight-bold">IGST :</label>
+                                                                <div class="d-flex">
+                                                                <input type="text" id="igst_val_{{i}}"  class="form-control ml-1 mr-1 cost" (change)="CalculateFinalAmount()" placeholder="IGST Value" disabled costInput [(ngModel)]="data.IGST_AMOUNT"  [ngModelOptions]="{standalone: true}">
+                                                                <label class="ml-1">{{ data.IGST_RATE}}%</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td> -->
+                    </tr>
+                  </ng-container>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td  class=""></td>
+                    <td class=""></td>
+                    <td   class="">
+                      <!-- <div class="d-flex"> --> 
+                       <label for="Total_Req_Amount">Total Req. Amount:</label> 
+                        <div class="floating-input">
+                          <input
+                            type="text"
+                            [(ngModel)]="TOTAL_BILL"
+                            class="form-control cost"
+                            disabled
+                            costInput
+                            name="Total_Req_Amount"
+                            placeholder="Total Req. Amount"
+                          />
+                        </div>
+                      <!-- </div> -->
+                    </td>
+                    <!-- <td colspan="4" class="d-flex justify-content-end"> <label>Total:</label></td> -->
+                    <td  class="">
+                      <!-- <div class="d-flex"> --> 
+                       <label for="Total_Amount">Total App. Amount:</label> 
+                        <div class="floating-input" name>
+                          <!-- [(ngModel)]="TOTAL_BILL" -->
+                          <input
+                            type="text"
+                            [(ngModel)]="Total_App_Amount"
+                            class="form-control cost"
+                            disabled
+                            costInput
+                            name="Total_Amount"
+                            placeholder="Total App. Amount"
+                          />
+                        </div>
+                      <!-- </div> -->
+                    </td>
+                    <td
+                      class=""
+                      *ngIf="this.reimbursement_detail.length > 1"
+                    ></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+        <div class="row card">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <h6 class="mb-0 col-xl-12 col-lg-12 col-md-12 col-sm-12 p-0">
+              Document Upload<span class="text-danger">*</span>
+            </h6>
+            <hr class="m-0 mb-2" />
+            <ul class="list-group">
+              <li
+                class="list-group-item d-flex justify-content-between att-doc py-1"
+              >
+                <input
+                  type="file"
+                  #fileInput
+                  id="fileInput"
+                  (change)="selectDocument($event)"
+                  accept=".png,.jpg,.pdf"
+                  class="doc-input"
+                />
+                <label class="att-doc-label" title="Documents">
+                  Documents
+                </label>
+                <span class="">
+                  <label
+                    for="fileInput"
+                    class="att-doc-label-add"
+                    title="Add Document"
+                  >
+                    <i class="fa fa-paperclip"></i> Attach
+                  </label>
+                </span>
+              </li>
+              <ng-container
+                *ngFor="let file of uploadedDocument; let i = index"
+              >
+                <li
+                  class="list-group-item d-flex justify-content-between py-2"
+                  *ngIf="file.ACTIVE != 0"
+                >
+                  <label class="doc-label" (click)="f_downloadDocument(file)">
+                    <i class="fa fa-paperclip mr-2"></i>
+                    {{ file.DOCUMENT_FILENAME }}
+                  </label>
+                  <span class="del-red">
+                    <i
+                      class="fas fa-trash-alt"
+                      id="f_{{ i }}"
+                      (click)="removeDoc(i)"
+                      title="Delete Document"
+                    ></i>
+                  </span>
+                </li>
+              </ng-container>
+
+              <li
+                class="list-group-item text-center py-1 disabled"
+                *ngIf="this.uploadedDocument.length == 0"
+              >
+                <h6 class="m-0">No Documents</h6>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="col-md-12 mt-2">
+            <div class="row card">
+                <div class="col-md-2">
+                    <label>Base Amount :</label>
+                    <div class="floating-input ">
+                        <input type="text"  maxlength="10" [(ngModel)]="REIMBURSEMENT_AMT" class="form-control cost" disabled costInput placeholder="Base Amount">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>CGST :</label>
+                    <div class="floating-input " >
+                        <input type="text"  maxlength="10" [(ngModel)]="CGST_AMT" class="form-control cost" disabled costInput placeholder="CGST">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>SGST :</label>
+                    <div class="floating-input " >
+                        <input type="text"  maxlength="10" [(ngModel)]="SGST_AMT" class="form-control cost" disabled costInput placeholder="SGST">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>IGST :</label>
+                    <div class="floating-input " >
+                        <input type="text"  maxlength="10" [(ngModel)]="IGST_AMT" class="form-control cost" disabled costInput placeholder="IGST">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>Round Off :</label>
+                    <div class="floating-input " >
+                        <input type="text"  maxlength="5" [(ngModel)]="ROUNDOFF" class="form-control cost" (change)="CalculateFinalAmount()" costInput placeholder="Round Off">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>Total Amount :</label>
+                    <div class="floating-input ">
+                        <input type="text"  maxlength="10" [(ngModel)]="TOTAL_BILL" class="form-control cost" disabled costInput placeholder="Total Amount">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>TDS Applicable :</label>
+                    <div class="floating-input ">
+                        g<input type="text"  [(ngModel)]="TDS_APPLICABLE" disabled costInput class="form-control cost" placeholder="TDS Applicable">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>Tax Code :</label>
+                    <div class="floating-input  list-btn" >
+                        <select class="form-control   " id="tax_code" 
+                        [(ngModel)]="TDS_CODE" (change)="ChangeTDS()" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of tds_code_list; let i=index" 
+                            [selected]="opt.TDS_CODE == this.TDS_CODE"
+                             [value]="opt.TDS_CODE" >{{ opt.TDS_NAME }}</option>                      
+                        </select>
+                        <button type="button" class="close" (click)="this.TDS_CODE.reset();"  onclick="resetDropdown('tax_code')"  aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>TDS% :</label>
+                    <div class="floating-input " >
+                        <input type="text"  maxlength="5" [(ngModel)]="TDS_RATE" disabled class="form-control cost" placeholder="TDS%">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>TDS Amount :</label>
+                    <div class="floating-input " >
+                        <input type="text"  maxlength="10" [(ngModel)]="TDS_AMT" disabled class="form-control cost" placeholder="TDS Amount">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>Pay Amount :</label>
+                    <div class="floating-input " >
+                        <input type="text"  maxlength="10" [(ngModel)]="BASE_BILL" disabled class="form-control cost" placeholder="Pay Amount">
+                    </div>
+                </div>
+            </div>
+        </div> -->
+  </div>
+  <div class="page-content mt-1" *ngIf="isViewReimbursement">
+    <div class="col-md-12">
+      <div class="tableFixHead">
+        <table class="table-theam-1 row_bgcolor_1">
+          <thead>
+            <tr>
+              <th>Reimbursement No.</th>
+              <th>Username</th>
+              <th>Reimbursement Date</th>
+              <th>Req. Amt</th>
+              <th>Approved Amt</th>
+              <th>Remark</th>
+              <th>Status</th>
+              <!-- <th>Remarks</th> -->
+              <th class="w-110">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of all_expense_detail; let i = index">
+              <td>{{ data.REIMBURSEMENT_NO }}</td>
+              <td>{{data.FULL_NAME}}</td>
+              <td>{{ data.REIMBURSEMENT_DATE }}</td>
+              <td>{{ data.TOTAL_AMOUNT}}</td>
+              <td>{{data.TOTAL_APPROVED_AMOUNT}}</td>
+              <td>{{data.REJECT_REMARKS}}</td>
+              <td>{{data.Status}}</td>
+              <!-- <td>{{ data.REMARKS }}</td> -->
+              <td class="w-110">
+                <a>
+                  <!-- <i class="fa fa-print mr-2" (click)="Print(data);" title="Print"></i> -->
+                  <i
+                    class="fa fa-edit"
+                    *ngIf="data.Status=='Pending'"
+                    (click)="editReimbursement(data)"
+                    title="Edit"
+                  ></i>
+                  <i
+                  class="fa fa-eye"
+                  *ngIf="data.Status=='Approved' || data.Status=='Reject'"
+                  (click)="viewReimbursement(data)"
+                  title="Edit"
+                ></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

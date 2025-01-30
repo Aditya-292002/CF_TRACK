@@ -1,0 +1,96 @@
+
+<div class="row">
+  <div class="col-md-12 mb-2">
+    <div class="d-flex justify-content-between">
+      <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
+      <button class="btn btn-secondary" (click)="saveData()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-12">
+  <div class="row">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div class="col-md-5">
+            <div>
+              <h6 class="text-truncate text_header px-2">Welcome {{Username}}! 🎉</h6>
+            </div>
+            <div>
+              <span class="text_subheader  px-2"
+                >Select Role.If it does not exist.</span
+              >
+            </div>  
+            <div class="px-2 mt-2">
+              <label>User Role:</label>
+              <div class="floating-input list-btn">
+                <select
+                  class="form-control selectpicker show-tick"
+                  [(ngModel)]="ROLE_ID"
+                  data-live-search="true"
+                  (change)="getUserRoleList()"
+                >
+                  <option
+                    *ngFor="let opt of user_role_list; let i = index"
+                    [selected]="opt.ROLE_ID == this.ROLE_ID"
+                    [value]="opt.ROLE_ID"
+                  >
+                    {{ opt.ROLE_NAME }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <img
+              src="../../../assets/images/girl-illustration.png"
+              alt=""
+              style="width: 190px"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-2">
+  <div class=" card">
+    <p-treeTable [value]="ROLE_RIGHTS_LIST" [scrollable]="true" scrollHeight="300px" >
+        <ng-template pTemplate="header">
+            <tr>
+              <th>Modules</th> 
+              <th class="width-1">View </th>
+              <th class="width-1">Add </th>
+              <th class="width-1">Update</th>
+              <th class="width-1">Delete</th>                                                                                
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+            <tr [ttRow]="rowNode">
+                    <td>
+                    <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                    <span >{{ rowData.FUNCTION_NAME }}</span>
+                    </td>
+                    <!-- <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td> -->
+                    <td class="width-1" > 
+                        <p-checkbox class=""  [(ngModel)]="rowData.VIEW_RIGHTS" (ngModelChange)="GetViewRights(rowData.FUNCTION_CODE)" [binary]="true" inputId="view" ></p-checkbox>    
+                      </td>
+                      <td class="width-1">
+                        <p-checkbox class="" *ngIf="rowData.FORM_NAME == '' " [(ngModel)]="rowData.ADD_RIGHTS" (ngModelChange)="GetCreateRights(rowData.FUNCTION_CODE)" [binary]="true" inputId="add" ></p-checkbox>
+                      </td>
+                      <td class="width-1">
+                        <p-checkbox class="" *ngIf="rowData.FORM_NAME == '' " [(ngModel)]="rowData.UPDATE_RIGHTS" (ngModelChange)="GetEditRights(rowData.FUNCTION_CODE)" [binary]="true" inputId="edit"></p-checkbox>
+                      </td>
+                      <td class="width-1">
+                        <p-checkbox class="" *ngIf="rowData.FORM_NAME == '' " [(ngModel)]="rowData.DELETE_RIGHTS" (ngModelChange)="GetCancelRights(rowData.FUNCTION_CODE)" [binary]="true" inputId="cancel" ></p-checkbox>
+                      </td>
+            </tr>
+        </ng-template>
+      </p-treeTable>  
+  </div>
+</div>

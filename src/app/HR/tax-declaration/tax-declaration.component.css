@@ -1,0 +1,18 @@
+.card {
+  margin: 0 !important;
+  flex-direction: inherit !important;
+  height: 100%;
+}
+
+hr {
+  border-top: 1px solid rgb(46 81 120 / 68%);
+}
+
+/* .show-tick{
+  height: auto;
+}
+ */
+ .list-btn,.form-control{
+  height: 33px;
+  font-size: 0.9rem;
+ }

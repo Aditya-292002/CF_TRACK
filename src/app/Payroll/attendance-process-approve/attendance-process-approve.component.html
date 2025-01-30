@@ -1,0 +1,184 @@
+<app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
+
+<form [formGroup]="form">
+    <div class="row">
+        <!-- <div class="col-md-12">
+            <button class="btn btn-secondary  float-right m-1" title="Save" (click)="onSaveAttendance()">Save</button>
+    
+        </div> -->
+        <div class="col-md-12">
+            <div class="row card">
+                <div class="col-md-7">
+                    <label>Company<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['COMPANY_CODE'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="Company"  (change)="filterLocations();"
+                        formControlName="COMPANY_CODE"  data-live-search="true" title="Select">
+                            <option *ngFor="let opt of company_list; let i=index" 
+                            [selected]="opt.COMPANY_CODE == form.controls['COMPANY_CODE'].value"
+                             [value]="opt.COMPANY_CODE" >{{ opt.COMPANY_NAME }}</option>                    
+                        </select>
+                        <button type="button" class="close" (click)="form.controls['COMPANY_CODE'].reset()" onclick="resetDropdown('Company')"  aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <label>Location<span class="validator">*</span>  :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LOCATION_CODE'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" formControlName="LOCATION_CODE" data-live-search="true" id="location" #company title="Select">
+                            <option *ngFor="let opt of _location_list; let i=index" 
+                            [selected]="opt.LOCATION_CODE == form.controls['LOCATION_CODE'].value"
+                             [value]="opt.LOCATION_CODE" >{{ opt.LOCATION_NAME }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('location')" (click)="form.controls['LOCATION_CODE'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>Year<span class="validator">*</span>:</label>
+                    <div class="floating-input list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['PYEAR'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" formControlName="PYEAR"  data-live-search="true"
+                        (change)="filterMonth()"   id="year"  title="Select">
+                            <option *ngFor="let opt of fyear_list; let i=index" 
+                        [selected]="opt.FYEAR  == form.controls['PYEAR'].value"
+                         [value]="opt.FYEAR " >{{ opt.FYEAR_DESC}}</option>                    
+                        </select>
+                        <button type="button" class="close" (click)="form.controls['PYEAR'].reset()" onclick="resetDropdown('year')"  aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+               
+                <div class="col-md-2">
+                    <label>Month<span class="validator">*</span> :</label>
+                    <div class="floating-input list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['PERIOD_NO'].errors?.required}">
+                        <select class="form-control selectpicker show-tick"  formControlName="PERIOD_NO"   data-live-search="true"
+                        (change)="filterCalDays()" id="month"  title="Select">
+                            <option *ngFor="let opt of _month_list; let i=index" 
+                        [selected]="opt.PERIOD_NO == form.controls['PERIOD_NO'].value"
+                         [value]="opt.PERIOD_NO" >{{ opt.PERIOD_DESC }}</option>                    
+                        </select>
+                        <button type="button" class="close" (click)="form.controls['PERIOD_NO'].reset()" onclick="resetDropdown('month')"  aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button> 
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Total Calendar Days :</label>
+                    <div class="floating-input ">
+                        <input type="text" class="form-control" placeholder="Total Days" formControlName="CALANDER_DAYS"  > 
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-secondary mt-4" (click)="onProcessChange()">Process</button>
+                </div>
+                
+            </div>
+        </div>
+    
+        
+        <div class="col-md-12 mt-2">
+            <div class="row card">
+                <div class="col-md-12">
+                    <div class="form-inline">
+                        <h6 class="mb-0 col-md-6 p-0">Employee Month Details</h6>
+                        <hr class="m-0 mb-2">
+                    </div>
+                    <div class="tableFixHead">
+                        <table class="table-theam-1 row_bgcolor_1">
+                            <thead>
+                                <tr>
+                                    <th class="w-50">Employee.</th>
+                                    <th class="w-2">Present</th>
+                                    <th class="w-2">Absent</th>
+                                    <th class="w-2">Holidays</th>
+                                    <th class="w-2">WeekOff</th>
+                                    <th class="w-2">Leave</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let data of attendance_proccess_detail; let i=index;">
+                                    <tr>
+                                        <td class="w-50"><a (click)="employeeSelect(data.EMP_NO,data.FULL_NAME)" data-toggle="modal" data-target="#attnModal">{{ data.EMP_NO }} - {{ data.FULL_NAME }}</a></td>
+                                        <td class="w-2">{{ data.P }}</td>
+                                        <td class="w-2">{{ data.A }}</td>
+                                        <td class="w-2">{{ data.H }}</td>
+                                        <td class="w-2">{{ data.W }}</td>
+                                        <td class="w-2">{{ data.L }}</td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12 pl-0 mt-2">
+                        <!-- <button class="btn btn-secondary mr-3">Confirm</button> -->
+                        <button class="btn btn-secondary mr-3"  (click)="onSaveAttendance()">Approve</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+  <div class="modal" tabindex="-1" id="attnModal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document" style="max-width: 1250px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Attendance Of {{emp_name}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="tableFixHead">
+                <table class="table-theam-1 row_bgcolor_1 table_width">
+                    <thead>
+                        <tr>
+                            <th class="w-2">Date</th>
+                            <th class="w-2">Shift</th>
+                            <th class="w-2">Time In</th>
+                            <th class="w-2">Time Out</th>
+                            <th class="w-2">Sys In</th>
+                            <th class="w-2">Sys Out</th>
+                            <th class="w-2">Attn Hours</th>
+                            <th class="w-2">Ts Hours</th>
+                            <th class="w-2">Status</th>
+                            <!-- <th class="w-2">Present</th>
+                            <th class="w-2">Absent</th>
+                            <th class="w-2">Holidays</th>
+                            <th class="w-2">WeekOff</th>
+                            <th class="w-2">Leave</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let data of attendance_n_ts_detail; let i=index;">
+                            <tr>
+                                <td class="w-2">{{ data.DATE }}</td>
+                                <td class="w-2">{{ data.SHIFT }}</td>
+                                <td class="w-2">{{ data.TIME_IN }}</td>
+                                <td class="w-2">{{ data.TIME_OUT }}</td>
+                                <td class="w-2">{{ data.SYSTIME_IN }}</td>
+                                <td class="w-2">{{ data.SYSTIME_OUT }}</td>
+                                <td class="w-2">{{ data.ATTN_HOURS }}</td>
+                                <td class="w-2">{{ data.TSHOURS }}</td>
+                                <td class="w-2">{{ data.ATTN_STATUS }}</td>
+                                <!-- <td class="w-2">{{ data.P }}</td>
+                                <td class="w-2">{{ data.A }}</td>
+                                <td class="w-2">{{ data.H }}</td>
+                                <td class="w-2">{{ data.W }}</td>
+                                <td class="w-2">{{ data.L }}</td> -->
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>

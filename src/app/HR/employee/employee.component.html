@@ -1,0 +1,1369 @@
+<app-spinner [startSpinner]="spinner" *ngIf="spinner"></app-spinner>
+<form [formGroup]="form">
+  <div class="row">
+    <!--  -->
+    <div class="col-md-12 mb-1" >
+      <div class="d-flex flex-wrap justify-content-between">
+        <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
+        <div class="d-flex  col-md-8 justify-content-end">
+          <div class="col-md-8">
+            <div class="floating-input list-btn">
+              <select
+                class="form-control selectpicker show-tick mr-2"
+                (change)="f_searchUserData()"
+                [(ngModel)]="search_user"
+                data-live-search="true"
+                id="search"
+                #search
+                title="Search Employee"
+                [ngModelOptions]="{ standalone: true }"
+              >
+                <option
+                  *ngFor="let opt of all_employee_list; let i = index"
+                  [selected]="opt.USERID == search_user"
+                  [value]="opt.USERID"
+                >
+                  {{ opt.EMP_CODE }} - {{ opt.USER_NAME }}
+                </option>
+              </select>
+              <button
+                type="button"
+                class="close"
+                onclick="resetDropdown('search')"
+                (click)="search_user = ''; f_searchUserData()"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+          <button
+            class="btn btn-secondary mr-2"
+            *ngIf="isNewAdd"
+            (click)="f_addNew(0)"
+            title="Cancel"
+          >
+            Cancel
+          </button>
+          <button
+            class="btn btn-secondary mr-2"
+            *ngIf="!isNewAdd"
+            (click)="f_addNew(1)"
+            title="Add New"
+          >
+            Add
+          </button>
+          <button
+            class="btn btn-secondary mr-2"
+            (click)="f_saveFormData('INSERT')"
+            *ngIf="isNewAdd"
+            title="Save"
+          >
+            Save
+          </button>
+          <button
+            class="btn btn-secondary mr-2"
+            (click)="f_saveFormData('UPDATE')"
+            *ngIf="!isNewAdd && UPDATE_RIGHTS"
+            title="Save"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 mt-1">
+      <div class="form-tabs" id="form-tab">
+        <ul class="nav nav-tabs" role="tablist">
+          <li
+            role="presentation"
+            class="nav-item no-branding"
+            (click)="onbgcolorchange(0)"
+            [ngClass]="{ 'nav-active': bg_color == 0 }"
+          >
+            <a
+              href="#personal"
+              aria-controls="personal"
+              class="nav-link"
+              role="tab"
+              data-toggle="tab"
+            >
+              Personal Information</a
+            >
+          </li>
+          <li
+            role="presentation"
+            class="nav-item no-branding"
+            (click)="onbgcolorchange(1)"
+            [ngClass]="{ 'nav-active': bg_color == 1 }"
+          >
+            <a
+              href="#job"
+              aria-controls="job"
+              class="nav-link"
+              role="tab"
+              data-toggle="tab"
+            >
+              Company Information</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tab-content">
+      <div class="tab-pane mt-2 col-md-12" id="job" aria-labelledby="job">
+        <div class="row card" [ngClass]="{ norights: NO_RIGHTS }">
+          <div class="col-md-4">
+            <label>Company :</label>
+            <div
+              class="floating-input mb-1 list-btn"
+              [ngClass]="{
+                'invalid-control':
+                  isSubmited && form.controls['COMPANY_CODE'].errors?.required
+              }"
+            >
+              <select
+                class="form-control selectpicker show-tick"
+                data-live-search="true"
+                id="company"
+                formControlName="COMPANY_CODE"
+                #company
+                title="Select"
+              >
+                <option
+                  *ngFor="let opt of company_list; let i = index"
+                  [selected]="
+                    opt.COMPANY_CODE == form.controls['COMPANY_CODE'].value
+                  "
+                  [value]="opt.COMPANY_CODE"
+                >
+                  {{ opt.COMPANY_NAME }}
+                </option>
+              </select>
+              <button
+                type="button"
+                class="close"
+                onclick="resetDropdown('company')"
+                (click)="form.controls['COMPANY_CODE'].reset()"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label>Location :</label>
+            <div
+              class="floating-input mb-1 list-btn"
+              [ngClass]="{
+                'invalid-control':
+                  isSubmited && form.controls['LOCATION_CODE'].errors?.required
+              }"
+            >
+              <select
+                class="form-control selectpicker show-tick"
+                data-live-search="true"
+                id="loc_code"
+                formControlName="LOCATION_CODE"
+                #loc_code
+                title="Select"
+              >
+                <option
+                  *ngFor="let opt of location_list; let i = index"
+                  [selected]="
+                    opt.LOCATION_CODE == form.controls['LOCATION_CODE'].value
+                  "
+                  [value]="opt.LOCATION_CODE"
+                >
+                  {{ opt.LOCATION_NAME }}
+                </option>
+              </select>
+              <button
+                type="button"
+                class="close"
+                onclick="resetDropdown('loc_code')"
+                (click)="form.controls['LOCATION_CODE'].reset()"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label>Vendor :</label>
+            <div
+              class="floating-input mb-1 list-btn"
+              [ngClass]="{
+                'invalid-control':
+                  isSubmited && form.controls['VENDOR_NO'].errors?.required
+              }"
+            >
+              <select
+                class="form-control selectpicker show-tick"
+                formControlName="VENDOR_NO"
+                data-live-search="true"
+                id="vendor"
+                title="Select"
+              >
+                <option
+                  *ngFor="let opt of vendor_list; let i = index"
+                  [selected]="opt.VENDOR_NO == form.controls['VENDOR_NO'].value"
+                  [value]="opt.VENDOR_NO"
+                >
+                  {{ opt.VENDOR_NAME }}
+                </option>
+              </select>
+              <button
+                type="button"
+                class="close"
+                onclick="resetDropdown('vendor')"
+                (click)="form.controls['VENDOR_NO'].reset()"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!--  -->
+        <div class="row">
+          <div class="col-md-8 pr-0 mt-2">
+            <div class="row card">
+              <div class="col-md-6">
+                <label>Division :</label>
+                <div
+                  class="floating-input mb-1 list-btn"
+                  [ngClass]="{
+                    'invalid-control':
+                      isSubmited &&
+                      form.controls['DIVISION_CODE'].errors?.required
+                  }"
+                >
+                  <select
+                    class="form-control selectpicker show-tick"
+                    data-live-search="true"
+                    id="div_code"
+                    formControlName="DIVISION_CODE"
+                    #div_code
+                    title="Select"
+                  >
+                    <option
+                      *ngFor="let opt of division_list; let i = index"
+                      [selected]="
+                        opt.DIVISION_CODE ==
+                        form.controls['DIVISION_CODE'].value
+                      "
+                      [value]="opt.DIVISION_CODE"
+                    >
+                      {{ opt.DIVISION_NAME }}
+                    </option>
+                  </select>
+                  <button
+                    type="button"
+                    class="close"
+                    onclick="resetDropdown('div_code')"
+                    (click)="form.controls['DIVISION_CODE'].reset()"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label>Department :</label>
+                <div
+                  class="floating-input mb-1 list-btn"
+                  [ngClass]="{
+                    'invalid-control':
+                      isSubmited && form.controls['DEPT_CODE'].errors?.required
+                  }"
+                >
+                  <select
+                    class="form-control selectpicker show-tick"
+                    formControlName="DEPT_CODE"
+                    data-live-search="true"
+                    id="empDept"
+                    title="Select"
+                  >
+                    <option
+                      *ngFor="let opt of dept_list; let i = index"
+                      [selected]="
+                        opt.DEPT_CODE == form.controls['DEPT_CODE'].value
+                      "
+                      [value]="opt.DEPT_CODE"
+                    >
+                      {{ opt.DEPT_NAME }}
+                    </option>
+                  </select>
+                  <button
+                    type="button"
+                    class="close"
+                    onclick="resetDropdown('empDept')"
+                    (click)="form.controls['DEPT_CODE'].reset()"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label>Reporting To :</label>
+                <div
+                  class="floating-input mb-1 list-btn"
+                  [ngClass]="{
+                    'invalid-control':
+                      isSubmited &&
+                      form.controls['REPORTING_TO'].errors?.required
+                  }"
+                >
+                  <select
+                    class="form-control selectpicker show-tick"
+                    id="reportTo"
+                    formControlName="REPORTING_TO"
+                    data-live-search="true"
+                    title="Select"
+                  >
+                    <option
+                      *ngFor="let opt of reporting_to_list; let i = index"
+                      [selected]="
+                        opt.USERID == form.controls['REPORTING_TO'].value
+                      "
+                      [value]="opt.USERID"
+                    >
+                      {{ opt.USER_NAME }}
+                    </option>
+                  </select>
+                  <button
+                    type="button"
+                    class="close"
+                    onclick="resetDropdown('reportTo')"
+                    (click)="form.controls['REPORTING_TO'].reset()"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label>Date Of Joining<span class="validator">*</span> :</label>
+                <div
+                  class="floating-input mb-1"
+                  [ngClass]="{
+                    'invalid-control':
+                      isSubmited && form.controls['DOJ'].errors?.required
+                  }"
+                >
+                  <input
+                    type="text"
+                    [(ngModel)]="DOJ"
+                    formControlName="DOJ"
+                    class="form-control"
+                    placeholder="dd-mm-yyyy"
+                    readonly
+                  />
+                  <app-date-picker
+                    [(ngModel)]="DOJ"
+                    id="doj"
+                    #doj
+                    class="date-input"
+                    [maxdate]=""
+                    [mindate]=""
+                    [isDisable]="false"
+                    [ngModelOptions]="{ standalone: true }"
+                  ></app-date-picker>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label>Designation<span class="validator">*</span> :</label>
+                <div
+                  class="floating-input mb-1"
+                  [ngClass]="{
+                    'invalid-control':
+                      isSubmited &&
+                      form.controls['DESIGNATION'].errors?.required
+                  }"
+                >
+                  <input
+                    type="text"
+                    formControlName="DESIGNATION"
+                    maxlength="50"
+                    placeholder="Designation"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label>WEF Date :</label>
+                <div
+                  class="floating-input mb-1"
+                  [ngClass]="{
+                    'invalid-control':
+                      isSubmited &&
+                      form.controls['DESIGNATION_WEF'].errors?.required
+                  }"
+                >
+                  <input
+                    type="text"
+                    [(ngModel)]="DESIGNATION_WEF"
+                    formControlName="DESIGNATION_WEF"
+                    class="form-control"
+                    placeholder="dd-mm-yyyy"
+                    readonly
+                  />
+                  <app-date-picker
+                    [(ngModel)]="DESIGNATION_WEF"
+                    id="wef"
+                    class="date-input"
+                    [maxdate]=""
+                    [isDisable]="false"
+                    [ngModelOptions]="{ standalone: true }"
+                  ></app-date-picker>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label>Bank Account No. :</label>
+                <div
+                  class="floating-input mb-1"
+                  [ngClass]="{
+                    'invalid-control':
+                      isSubmited && form.controls['BANK_ACCNO'].errors?.required
+                  }"
+                >
+                  <input
+                    type="text"
+                    formControlName="BANK_ACCNO"
+                    maxlength="50"
+                    OnlyNumber="true"
+                    placeholder="Bank Acc No."
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label>IFSC :</label>
+                <div
+                  class="floating-input mb-1"
+                  [ngClass]="{
+                    'invalid-control':
+                      isSubmited && form.controls['BANK_IFSC'].errors?.required
+                  }"
+                >
+                  <input
+                    type="text"
+                    formControlName="BANK_IFSC"
+                    maxlength="20"
+                    InputType="AlphaNum"
+                    Uppercase
+                    placeholder="IFSC"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--  -->
+          <div class="col-md-4 mt-2">
+            <div class="row card">
+              <div class="col-md-12">
+                <label>Status :</label>
+                <div
+                  class="floating-input mb-1 list-btn"
+                  [ngClass]="{
+                    'invalid-control':
+                      isSubmited && form.controls['EMP_STATUS'].errors?.required
+                  }"
+                >
+                  <select
+                    class="form-control selectpicker show-tick"
+                    (change)="statusChange()"
+                    data-live-search="true"
+                    id="empStatus"
+                    formControlName="EMP_STATUS"
+                    #empStatus
+                    title="Select"
+                  >
+                    <option
+                      *ngFor="let opt of empstatus_list; let i = index"
+                      [selected]="
+                        opt.EMP_STATUS == form.controls['EMP_STATUS'].value
+                      "
+                      [value]="opt.EMP_STATUS"
+                    >
+                      {{ opt.EMP_STATUS_DESC }}
+                    </option>
+                  </select>
+                  <button
+                    type="button"
+                    class="close"
+                    onclick="resetDropdown('empStatus')"
+                    (click)="form.controls['EMP_STATUS'].reset()"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <label>Resign Date :</label>
+                <div
+                  class="floating-input mb-1"
+                  [ngClass]="{
+                    'invalid-control':
+                      isSubmited && form.controls['DOR'].errors?.required
+                  }"
+                >
+                  <input
+                    type="text"
+                    [(ngModel)]="DOR"
+                    formControlName="DOR"
+                    class="form-control"
+                    placeholder="dd-mm-yyyy"
+                    readonly
+                  />
+                  <app-date-picker
+                    [(ngModel)]="DOR"
+                    id="dor"
+                    class="date-input"
+                    [maxdate]=""
+                    [isDisable]="isDOR"
+                    [ngModelOptions]="{ standalone: true }"
+                  ></app-date-picker>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <label>DOS :</label>
+                <div
+                  class="floating-input mb-1"
+                  [ngClass]="{
+                    'invalid-control':
+                      isSubmited && form.controls['DOS'].errors?.required
+                  }"
+                >
+                  <input
+                    type="text"
+                    [(ngModel)]="DOS"
+                    formControlName="DOS"
+                    class="form-control"
+                    placeholder="dd-mm-yyyy"
+                    readonly
+                  />
+                  <app-date-picker
+                    [(ngModel)]="DOS"
+                    id="dos"
+                    class="date-input"
+                    [maxdate]=""
+                    [isDisable]="isDOS"
+                    [ngModelOptions]="{ standalone: true }"
+                  ></app-date-picker>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <label>Expiry Date :</label>
+                <div
+                  class="floating-input mb-1"
+                  [ngClass]="{
+                    'invalid-control':
+                      isSubmited &&
+                      form.controls['EXPIRY_DATE'].errors?.required
+                  }"
+                >
+                  <input
+                    type="text"
+                    [(ngModel)]="EXP_DATE"
+                    formControlName="EXPIRY_DATE"
+                    class="form-control"
+                    placeholder="dd-mm-yyyy"
+                    readonly
+                  />
+                  <app-date-picker
+                    [(ngModel)]="EXP_DATE"
+                    id="exp"
+                    class="date-input"
+                    [maxdate]=""
+                    [isDisable]="isExpDisable"
+                    [ngModelOptions]="{ standalone: true }"
+                  ></app-date-picker>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--  -->
+          <div class="col-md-12 mt-2">
+            <div class="row card px-3">
+              <h6 class="mb-0 col-md-6 p-0">Statutory Details</h6>
+              <hr class="m-0 mb-2" />
+              <div class="tableFixHead">
+                <table class="table-theam-1 row_bgcolor_1">
+                  <thead>
+                    <tr>
+                      <th class="w-20">Statutory Head</th>
+                      <th class="w-20">Details</th>
+                      <th class="date-input-col">Valid Date</th>
+                    </tr>
+                  </thead>
+                  <tbody [ngClass]="{ norights: NO_RIGHTS }">
+                    <tr *ngFor="let data of emp_number_detail; let i = index">
+                      <td>{{ data.EMPDOCTYPE_CODE }}</td>
+                      <td>
+                        <input
+                          type="email"
+                          [(ngModel)]="data.REF_NO"
+                          class="form-control"
+                          [ngModelOptions]="{ standalone: true }"
+                        />
+                      </td>
+                      <td class="date-input-col">
+                        <input
+                          type="text"
+                          [(ngModel)]="data.EXPIRY_DATE"
+                          id="dt_{{ i }}"
+                          class="form-control"
+                          placeholder="dd-mm-yyyy"
+                          readonly
+                          [ngModelOptions]="{ standalone: true }"
+                        />
+                        <app-date-picker
+                          class="date-input"
+                          [(ngModel)]="data.EXPIRY_DATE"
+                          id="dt_{{ i }}"
+                          [maxdate]=""
+                          [isDisable]="false"
+                          [ngModelOptions]="{ standalone: true }"
+                        ></app-date-picker>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="tab-pane col-md-12 active mt-2"
+        id="personal"
+        aria-labelledby="personal"
+      >
+        <div class="row card" [ngClass]="{ norights: NO_RIGHTS }">
+          <div class="col-md-4">
+            <label>Employee No.<span class="validator">*</span> :</label>
+            <div
+              class="floating-input mb-1"
+              [ngClass]="{
+                'invalid-control':
+                  isSubmited && form.controls['EMP_NO'].errors?.required
+              }"
+            >
+              <input
+                type="text"
+                formControlName="EMP_NO"
+                (focusout)="f_Check_EmpNo_Email('EMPNO')"
+                #emp_no
+                id="emp_no"
+                OnlyNumber="true"
+                maxlength="10"
+                class="form-control"
+                placeholder="Employee No."
+              />
+            </div>
+          </div>
+          <div class="col-md-7">
+            <label>Type<span class="validator">*</span> :</label>
+            <div class="form-inline mt-1">
+              <div class="form-group radios mr-3">
+                <input
+                  id="trainee"
+                  type="radio"
+                  formControlName="EMPLOYMENT_TYPE"
+                  value="T"
+                  name="EMPLOYMENT_TYPE"
+                  (click)="onChangeType($event.target.value)"
+                  class="mr-2"
+                />
+                <label for="trainee"
+                  ><span class="span-txt">Trainee </span></label
+                >
+              </div>
+              <div class="form-group radios mr-3">
+                <input
+                  id="probation"
+                  type="radio"
+                  formControlName="EMPLOYMENT_TYPE"
+                  value="P"
+                  name="EMPLOYMENT_TYPE"
+                  (click)="onChangeType($event.target.value)"
+                  class="mr-2"
+                />
+                <label for="probation"
+                  ><span class="span-txt">Probation </span></label
+                >
+              </div>
+              <div class="form-group radios mr-3">
+                <input
+                  id="confirmed"
+                  type="radio"
+                  formControlName="EMPLOYMENT_TYPE"
+                  value="C"
+                  name="EMPLOYMENT_TYPE"
+                  (click)="onChangeType($event.target.value)"
+                  class="mr-2"
+                />
+                <label for="confirmed"
+                  ><span class="span-txt">Confirmed </span></label
+                >
+              </div>
+              <div class="form-group radios">
+                <input
+                  id="contract"
+                  type="radio"
+                  formControlName="EMPLOYMENT_TYPE"
+                  value="N"
+                  name="EMPLOYMENT_TYPE"
+                  (click)="onChangeType($event.target.value)"
+                  class="mr-2"
+                />
+                <label for="contract"
+                  ><span class="span-txt">On Contract </span></label
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-12">
+                <label>Name<span class="validator">*</span> :</label>
+                <div
+                  class="floating-input"
+                  [ngClass]="{
+                    'invalid-control':
+                      isSubmited && form.controls['FIRST_NAME'].errors?.required
+                  }"
+                >
+                  <input
+                    type="text"
+                    formControlName="FIRST_NAME"
+                    maxlength="50"
+                    InputType="AlphaSpace"
+                    class="form-control"
+                    placeholder="First Name"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div
+                  class="floating-input mt-3"
+                  [ngClass]="{
+                    'invalid-control':
+                      isSubmited &&
+                      form.controls['MIDDLE_NAME'].errors?.required
+                  }"
+                >
+                  <input
+                    type="text"
+                    formControlName="MIDDLE_NAME"
+                    maxlength="50"
+                    InputType="AlphaSpace"
+                    class="form-control"
+                    placeholder="Middle Name"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div
+                  class="floating-input mt-3 mb-1"
+                  [ngClass]="{
+                    'invalid-control':
+                      isSubmited && form.controls['LAST_NAME'].errors?.required
+                  }"
+                >
+                  <input
+                    type="text"
+                    formControlName="LAST_NAME"
+                    maxlength="50"
+                    InputType="AlphaSpace"
+                    class="form-control"
+                    placeholder="Last Name"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-sm-4 col-md-12">
+                <label for="">Profile Image :</label><br />
+                <!-- <div class="user-pic">
+                                    <div class="upload-overlay">
+                                        <input type="file" class="overlay-file-input" (change)="selectProfile($event)" id="proInput" #proInput aria-describedby="proInput">
+                                        <label class="" for="proInput">
+                                            <i class="fa fa-pen"></i>
+                                        </label>
+                                    </div>
+                                    <img class="img-responsive img-rounded" *ngIf="profile_img == ''" src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg" alt="User picture">
+                                    <img class="img-responsive img-rounded" *ngIf="profile_img != ''" src="data:image/jpeg;base64,{{profile_img}}" alt="User picture">
+                                </div> -->
+                <button
+                  type="button"
+                  class="btn img_popover"
+                  data-container="body"
+                  data-toggle="popover"
+                  data-trigger="hover"
+                  data-placement="right"
+                  data-content="The image file should be in JPG/JPEG/PNG format only.Allowed Photo Size – 3.5 cm x 4.5 cm (140 px * 170 px).Size of file should be maximum 100 KB"
+                  data-template='<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body img-popover"></div></div>'
+                >
+                  <div class="user-pic">
+                    <img
+                      class="img-responsive img-rounded"
+                      *ngIf="!(profile_img != '')"
+                      src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg"
+                      alt="User picture"
+                    />
+                    <img
+                      class="img-responsive img-rounded"
+                      *ngIf="profile_img != ''"
+                      src="data:image/jpeg;base64,{{ profile_img }}"
+                      alt="User picture"
+                    />
+                  </div>
+                  <div class="fileupload btn">
+                    <span class="btn-text"><i class="fas fa-camera"></i></span>
+                    <input
+                      type="file"
+                      class="overlay-file-input w-75"
+                      (change)="selectProfile($event)"
+                      id="proInput"
+                      #proInput
+                      aria-describedby="proInput"
+                    />
+                  </div>
+                </button>
+              </div>
+              <!-- <div class="col" *ngIf="!NO_RIGHTS">
+                                
+                                <div class="alert alert-primary px-2 mt-4" role="alert">
+                                    <small>
+                                    <ul class="pl-4 m-0">
+                                        <li>The image file should be in JPG/JPEG/PNG format only</li>
+                                        <li>Allowed Photo Size – 3.5 cm x 4.5 cm (140 px * 170 px)</li>
+                                        <li>Size of file should be maximum 100 KB</li>
+                                    </ul>
+                                </small>
+                                </div>
+                            </div> -->
+            </div>
+          </div>
+        </div>
+        <div class="row card mt-2" [ngClass]="{ norights: NO_RIGHTS }">
+          <div class="col-md-4">
+            <label>Gender :</label>
+            <div class="form-inline">
+              <div class="form-group radios mr-3">
+                <input
+                  id="male"
+                  type="radio"
+                  formControlName="EMP_SEX"
+                  value="M"
+                  name="EMP_SEX"
+                  class="mr-2"
+                />
+                <label for="male"><span class="span-txt">Male </span></label>
+              </div>
+              <div class="form-group radios">
+                <input
+                  id="female"
+                  type="radio"
+                  formControlName="EMP_SEX"
+                  value="F"
+                  name="EMP_SEX"
+                  class="mr-2"
+                />
+                <label for="female"
+                  ><span class="span-txt">Female </span></label
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label>DOB<span class="validator">*</span> :</label>
+            <div
+              class="floating-input mb-1"
+              [ngClass]="{
+                'invalid-control':
+                  isSubmited && form.controls['DOB'].errors?.required
+              }"
+            >
+              <input
+                type="text"
+                [(ngModel)]="DOB"
+                formControlName="DOB"
+                #dob
+                class="form-control"
+                placeholder="dd-mm-yyyy"
+                readonly
+              />
+              <app-date-picker
+                [(ngModel)]="DOB"
+                id="dob"
+                #dob
+                class="date-input"
+                [maxdate]="max_dob"
+                [isDisable]="false"
+                [ngModelOptions]="{ standalone: true }"
+              ></app-date-picker>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label>Marital Status<span class="validator">*</span> :</label>
+            <div
+              class="floating-input mb-1 list-btn"
+              [ngClass]="{
+                'invalid-control':
+                  isSubmited && form.controls['EMP_MARITAL'].errors?.required
+              }"
+            >
+              <select
+                class="form-control selectpicker show-tick"
+                data-live-search="true"
+                id="marital_status"
+                formControlName="EMP_MARITAL"
+                #marital_status
+                title="Select"
+              >
+                <option
+                  *ngFor="let opt of marital_list; let i = index"
+                  [selected]="
+                    opt.MARITAL_CODE == form.controls['EMP_MARITAL'].value
+                  "
+                  [value]="opt.MARITAL_CODE"
+                >
+                  {{ opt.MARITAL_STATUS }}
+                </option>
+              </select>
+              <button
+                type="button"
+                class="close"
+                onclick="resetDropdown('marital_status')"
+                (click)="form.controls['EMP_MARITAL'].reset()"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label>Father Name :</label>
+            <div
+              class="floating-input mb-1"
+              [ngClass]="{
+                'invalid-control':
+                  isSubmited && form.controls['EMP_FATHER'].errors?.required
+              }"
+            >
+              <input
+                type="text"
+                formControlName="EMP_FATHER"
+                maxlength="100"
+                InputType="AlphaSpace"
+                placeholder="Father Name"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label>Mother Name :</label>
+            <div
+              class="floating-input mb-1"
+              [ngClass]="{
+                'invalid-control':
+                  isSubmited && form.controls['EMP_MOTHER'].errors?.required
+              }"
+            >
+              <input
+                type="text"
+                formControlName="EMP_MOTHER"
+                maxlength="100"
+                InputType="AlphaSpace"
+                placeholder="Mother Name"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <label>Spouse Name :</label>
+            <div
+              class="floating-input mb-1"
+              [ngClass]="{
+                'invalid-control':
+                  isSubmited && form.controls['EMP_SPOUSE'].errors?.required
+              }"
+            >
+              <input
+                type="text"
+                formControlName="EMP_SPOUSE"
+                maxlength="100"
+                InputType="AlphaSpace"
+                placeholder="Spouse Name"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label>Religion :</label>
+            <div
+              class="floating-input mb-1"
+              [ngClass]="{
+                'invalid-control':
+                  isSubmited && form.controls['RELIGION'].errors?.required
+              }"
+            >
+              <input
+                type="text"
+                maxlength="50"
+                formControlName="RELIGION"
+                InputType="AlphaSpace"
+                class="form-control"
+                placeholder="Religion"
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label>Caste :</label>
+            <div
+              class="floating-input mb-1"
+              [ngClass]="{
+                'invalid-control':
+                  isSubmited && form.controls['CASTE'].errors?.required
+              }"
+            >
+              <input
+                type="text"
+                maxlength="50"
+                formControlName="CASTE"
+                InputType="AlphaSpace"
+                class="form-control"
+                placeholder="Caste"
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label>Nationality :</label>
+            <div
+              class="floating-input mb-1"
+              [ngClass]="{
+                'invalid-control':
+                  isSubmited && form.controls['NATIONALITY'].errors?.required
+              }"
+            >
+              <input
+                type="text"
+                maxlength="50"
+                formControlName="NATIONALITY"
+                InputType="AlphaSpace"
+                class="form-control"
+                placeholder="Nationality"
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label>Blood Group :</label>
+            <div
+              class="floating-input mb-1 list-btn"
+              [ngClass]="{
+                'invalid-control':
+                  isSubmited && form.controls['BLOOD_GROUP'].errors?.required
+              }"
+            >
+              <select
+                class="form-control selectpicker show-tick"
+                data-live-search="true"
+                id="blod_group"
+                formControlName="BLOOD_GROUP"
+                #blod_group
+                title="Select"
+              >
+                <option
+                  *ngFor="let opt of bloodgroup_list; let i = index"
+                  [selected]="
+                    opt.BLOOD_GROUP == form.controls['BLOOD_GROUP'].value
+                  "
+                  [value]="opt.BLOOD_GROUP"
+                >
+                  {{ opt.BLOOD_GROUP }}
+                </option>
+              </select>
+              <button
+                type="button"
+                class="close"
+                onclick="resetDropdown('blod_group')"
+                (click)="form.controls['BLOOD_GROUP'].reset()"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label>Emergency Contact Person :</label>
+            <div
+              class="floating-input mb-1"
+              [ngClass]="{
+                'invalid-control':
+                  isSubmited &&
+                  form.controls['EMP_EMERGENCYCALL'].errors?.required
+              }"
+            >
+              <input
+                type="text"
+                maxlength="50"
+                formControlName="EMP_EMERGENCYCALL"
+                InputType="AlphaSpace"
+                placeholder="Emergency Contact"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label>Contact Person No :</label>
+            <div
+              class="floating-input mb-1"
+              [ngClass]="{
+                'invalid-control':
+                  isSubmited &&
+                  form.controls['EMP_EMERGENCYNO'].errors?.required
+              }"
+            >
+              <input
+                type="text"
+                maxlength="50"
+                formControlName="EMP_EMERGENCYNO"
+                OnlyNumber="true"
+                placeholder="Contact Person"
+                class="form-control"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8 pr-0 mt-2">
+            <div class="row card pb-4">
+              <div class="col-md-12">
+                <label>Current Address :</label>
+                <div
+                  class="floating-input mb-1"
+                  [ngClass]="{
+                    'invalid-control':
+                      isSubmited &&
+                      form.controls['EMP_ADDRESS1'].errors?.required
+                  }"
+                >
+                  <textarea
+                    name=""
+                    formControlName="EMP_ADDRESS1"
+                    InputType="Address"
+                    placeholder="Current Address"
+                    cols="10"
+                    rows="3"
+                    class="form-control"
+                  ></textarea>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <label>Permanent Address :</label>
+                <div
+                  class="floating-input mb-1"
+                  [ngClass]="{
+                    'invalid-control':
+                      isSubmited &&
+                      form.controls['EMP_ADDRESS2'].errors?.required
+                  }"
+                >
+                  <textarea
+                    name=""
+                    formControlName="EMP_ADDRESS2"
+                    InputType="Address"
+                    placeholder="Permanent Address"
+                    cols="10"
+                    rows="3"
+                    class="form-control"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mt-2">
+            <div class="row card">
+              <div class="col-md-12">
+                <label>Mobile Official :</label>
+                <div
+                  class="floating-input mb-1"
+                  [ngClass]="{
+                    'invalid-control':
+                      isSubmited && form.controls['EMP_MOB'].errors?.required
+                  }"
+                >
+                  <input
+                    type="text"
+                    formControlName="EMP_MOB"
+                    placeholder="Mobile Official"
+                    class="form-control"
+                    maxlength="50"
+                    minlength="10"
+                    OnlyNumber="true"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12">
+                <label>Email Official<span class="validator">*</span> :</label>
+                <div
+                  class="floating-input mb-1"
+                  [ngClass]="{
+                    'invalid-control':
+                      isSubmited && form.controls['EMP_EMAIL'].errors?.required
+                  }"
+                >
+                  <input
+                    type="email"
+                    formControlName="EMP_EMAIL"
+                    placeholder="Email Official"
+                    maxlength="50"
+                    #off_email
+                    id="off_email"
+                    (focusout)="validateEmail(1)"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12">
+                <label>Mobile Personal :</label>
+                <div
+                  class="floating-input mb-1"
+                  [ngClass]="{
+                    'invalid-control':
+                      isSubmited && form.controls['EMP_PMOB'].errors?.required
+                  }"
+                >
+                  <input
+                    type="text"
+                    formControlName="EMP_PMOB"
+                    placeholder="Mobile Personal"
+                    class="form-control"
+                    maxlength="50"
+                    minlength="10"
+                    OnlyNumber="true"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12">
+                <label>Email Personal :</label>
+                <div
+                  class="floating-input mb-1"
+                  [ngClass]="{
+                    'invalid-control':
+                      isSubmited && form.controls['EMP_PEMAIL'].errors?.required
+                  }"
+                >
+                  <input
+                    type="email"
+                    formControlName="EMP_PEMAIL"
+                    placeholder="Email Personal"
+                    maxlength="50"
+                    #per_email
+                    id="per_email"
+                    (focusout)="validateEmail(2)"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--  -->
+        <div class="row card mt-2">
+          <div class="col-md-8">
+            <h6 class="mb-0 col-md-6 p-0">Document Upload</h6>
+            <hr class="m-0 mb-2" />
+            <!-- <div class="col-md-8" *ngIf="!NO_RIGHTS">
+                            <div class="row">
+                                <label for="">Upload Document :</label>
+                                <div class="input-group">
+                                    <div class="custom-file mr-2">
+                                        <input type="file" class="custom-file-input" #fileInput id="fileInput" (change)="selectDocument($event)" aria-describedby="fileInput">
+                                        <label class="custom-file-label" for="fileInput" *ngIf="SelectedFileName == ''">Choose file</label>
+                                        <label class="custom-file-label" for="fileInput" *ngIf="SelectedFileName != ''">{{SelectedFileName}}</label>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-secondary" (click)="uploadDoc()" type="button" id="myInput">Upload</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+
+            <ul class="list-group">
+              <li
+                class="list-group-item d-flex justify-content-between att-doc py-1"
+              >
+                <input
+                  type="file"
+                  #fileInput
+                  id="fileInput"
+                  (change)="selectDocument($event)"
+                  class="doc-input"
+                />
+                <label class="att-doc-label" title="Documents">
+                  Documents
+                </label>
+
+                <span class="" *ngIf="!NO_RIGHTS">
+                  <label
+                    for="fileInput"
+                    class="att-doc-label-add"
+                    title="Add Document"
+                  >
+                    <i class="fa fa-paperclip"></i> Attach
+                  </label>
+                </span>
+              </li>
+              <ng-container
+                *ngFor="let file of uploadedDocument; let i = index"
+              >
+                <li
+                  class="list-group-item d-flex justify-content-between py-2"
+                  *ngIf="file.ACTIVE != 0"
+                >
+                  <label class="doc-label" (click)="f_downloadDocument(file)">
+                    <i class="fa fa-paperclip mr-2"></i>
+                    {{ file.DOCUMENT_FILENAME }}
+                  </label>
+
+                  <span class="del-red">
+                    <i
+                      class="fas fa-trash-alt"
+                      id="f_{{ i }}"
+                      (click)="removeDoc(i)"
+                      title="Delete Document"
+                    ></i>
+                  </span>
+                </li>
+              </ng-container>
+
+              <li
+                class="list-group-item text-center py-1 disabled"
+                *ngIf="NoDocs == 0"
+              >
+                <h6 class="m-0">No Documents</h6>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

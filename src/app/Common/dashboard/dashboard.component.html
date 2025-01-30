@@ -1,0 +1,408 @@
+<div class="">
+  <div class="card p-0 mb-3">
+    <div class="card-body p-4">
+      <div class="d-flex">
+        <div class="w-50 d-flex justify-content-start gap-3">
+          <div>
+            <span class="avatar avatar-xl flex-shrink-0">
+              <img
+                src="../../../assets/images/users/avatar.jpg"
+                class="rounded-circle"
+                alt="img"
+              />
+            </span>
+          </div>
+          <div>
+            <div class="ml-3">
+              <h3 class="mb-2 text_header">Welcome Back, Priyanka</h3>
+              <p class="text_subheader">
+                You have
+                <span class="text-primary text-decoration-underline">21</span>
+                Pending Approvals &amp;
+                <span class="text-primary text-decoration-underline">14</span>
+                Leave Requests
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="w-50">
+          <div class="d-flex justify-content-end gap-3">
+            <button type="button" class="btn btn-primary mt-3 mr-3 loginBtnDanger">
+              + Add Customer
+            </button>
+            <button type="button" class="btn btn-primary mt-3 loginBtn">
+              + Add project
+            </button>
+          </div> 
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-sm-12 col-md-3">
+      <div class="card p-0">
+        <div class="card-body text-center p-2">
+          <span class="avatar rounded-circle bg-primary mb-3">
+            <i class="pi pi-calendar-clock fs-16"></i>
+          </span>
+          <h6 class="fs-13 text_subheader mb-1">Attendance Overview</h6>
+          <h3 class="mb-3 text_header">120/154</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-3">
+      <div class="card p-0">
+        <div class="card-body text-center p-2">
+          <span class="avatar rounded-circle bg-purple mb-3">
+            <i class="pi pi-users fs-16"></i>
+          </span>
+          <h6 class="fs-13 text_subheader mb-1">Total No of Clients</h6>
+          <h3 class="mb-3 text_header">45/50</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-3">
+      <div class="card p-0">
+        <div class="card-body text-center p-2">
+          <span class="avatar rounded-circle bg-info mb-3">
+            <i class="pi pi-list fs-16"></i>
+          </span>
+          <h6 class="fs-13 text_subheader mb-1">Total No of Project's</h6>
+          <h3 class="mb-3 text_header">130/154</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-3">
+      <div class="card p-0">
+        <div class="card-body text-center p-2">
+          <span class="avatar rounded-circle bg-dark mb-3">
+            <i class="pi pi-user fs-16"></i>
+          </span>
+          <h6 class="fs-13 text_subheader mb-1">Total No of Employee's</h6>
+          <h3 class="mb-3 text_header">40/45</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-sm-12 col-md-4">
+      <div class="card p-0 h-100">
+        <div class="card-body p-2">
+          <div id="chart">
+            <apx-chart
+              [series]="chartOptions.series"
+              [chart]="chartOptions.chart"
+              [dataLabels]="chartOptions.dataLabels"
+              [plotOptions]="chartOptions.plotOptions"
+              [yaxis]="chartOptions.yaxis"
+              [legend]="chartOptions.legend"
+              [fill]="chartOptions.fill"
+              [stroke]="chartOptions.stroke"
+              [tooltip]="chartOptions.tooltip"
+              [xaxis]="chartOptions.xaxis"
+            ></apx-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      <div class="">
+        <div class="form-tabs" id="form-tab">
+          <ul class="nav nav-tabs" role="tablist">
+            <li
+              role="presentation"
+              class="nav-item no-branding"
+              (click)="onbgcolorchange(0)"
+              [ngClass]="{ 'nav-active': bg_color == 0 }"
+            >
+              <a
+                href="#year"
+                aria-controls="year"
+                class="nav-link"
+                role="tab"
+                data-toggle="tab"
+              >
+                Current Year</a
+              >
+            </li>
+            <li
+              role="presentation"
+              class="nav-item no-branding"
+              (click)="onbgcolorchange(1)"
+              [ngClass]="{ 'nav-active': bg_color == 1 }"
+            >
+              <a
+                href="#month"
+                aria-controls="month"
+                class="nav-link"
+                role="tab"
+                data-toggle="tab"
+              >
+                Current Month</a
+              > 
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="tab-content">
+        <div class="tab-pane" id="month" aria-labelledby="month"></div>
+
+        <div class="tab-pane active" id="year" aria-labelledby="year">
+          <div class="card p-0 h-100">
+            <div class="card-body p-2">
+              <p-table
+                #datatable
+                [value]="CURRENT_YEAR"
+                [scrollable]="true"
+                scrollHeight="300px"
+              >
+                <ng-template pTemplate="header" let-headerdata>
+                  <tr>
+                    <th>Current Year</th>
+                    <th colspan="3">Sales</th>
+                    <th colspan="3">Collections</th>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <th>Plan</th>
+                    <th>Actuals</th>
+                    <th>Achieve %</th>
+                    <th>Plan</th>
+                    <th>Actuals</th>
+                    <th>Achieve %</th>
+                  </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-data>
+                  <tr>
+                    <td>{{ data.CURRENT_YEAR }}</td>
+                    <td>{{ data.SALES_PLAN }}</td>
+                    <td>{{ data.SALES_ACTUALS }}</td>
+                    <td>{{ data.SALES_ACHIVE }}</td>
+                    <td>{{ data.COLLECTION_PLAN }}</td>
+                    <td>{{ data.COLLECTION_ACTUALS }}</td>
+                    <td>{{ data.COLLECTION_ACHIVE }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-sm-12 col-md-6">
+      <div class="">
+        <div class="form-tabs" id="form-tab">
+          <ul class="nav nav-tabs" role="tablist">
+            <li
+              role="presentation"
+              class="nav-item no-branding"
+              (click)="onbgcolorchange(0)"
+              [ngClass]="{ 'nav-active': bg_color == 0 }"
+            >
+              <a
+                href="#Vendor"
+                aria-controls="Vendor"
+                class="nav-link"
+                role="tab"
+                data-toggle="tab"
+              >
+                Vendor</a
+              >
+            </li>
+            <li
+              role="presentation"
+              class="nav-item no-branding"
+              (click)="onbgcolorchange(1)"
+              [ngClass]="{ 'nav-active': bg_color == 1 }"
+            >
+              <a
+                href="#Customer"
+                aria-controls="Customer"
+                class="nav-link"
+                role="tab"
+                data-toggle="tab"
+              >
+                Customer</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="tab-content">
+        <div class="tab-pane" id="Customer" aria-labelledby="Customer">
+          <div class="card p-0 h-100">
+            <div class="card-body p-2">
+              <p-table #datatable [value]="CURRENT_CUSTOMER">
+                <ng-template pTemplate="header" let-headerdata>
+                  
+                  <tr>
+                    <th>Customer</th>
+                    <th>Bill Date</th>
+                    <th>Due Date</th>
+                    <th>Amount</th>
+                  </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-data>
+                  <tr>
+                    <td>{{ data.VENDOR_NAME }}</td>
+                    <td>{{ data.BILL_DATE }}</td>
+                    <td>{{ data.DUE_DATE }}</td>
+                    <td>{{ data.AMOUNT }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane active " id="Vendor" aria-labelledby="Vendor">
+          <div class="card p-0 h-100">
+            <div class="card-body p-2">
+              <p-table #datatable [value]="CURRENT_VENDOR">
+                <ng-template pTemplate="header" let-headerdata>
+                  
+                  <tr>
+                    <th>Vendor</th>
+                    <th>Bill Date</th>
+                    <th>Due Date</th>
+                    <th>Amount</th>
+                  </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-data>
+                  <tr>
+                    <td>{{ data.VENDOR_NAME }}</td>
+                    <td>{{ data.BILL_DATE }}</td>
+                    <td>{{ data.DUE_DATE }}</td>
+                    <td>{{ data.AMOUNT }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </div> 
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+      <div class="card p-0 h-100">
+        <div class="card-body">
+          <h6 class="text-truncate text_header">Bank Details</h6>
+          <p-table #datatable [value]="BANK_LIST" [scrollable]="true" class="scrollcontainer">
+            <ng-template pTemplate="header"   let-headerdata>
+              <tr>
+                <th class="width-2">Name</th>
+                <th class="width-3">Available Balance</th> 
+              </tr> 
+            </ng-template> 
+ 
+            <ng-template pTemplate="body" let-data>
+              <tr>
+                <td class="width-2 text-primary">{{data.BANK_NAME}}</td>
+                <td class="width-3">{{data.BANK_BAL}}</td>  
+              </tr>
+            </ng-template>
+          </p-table>
+          <!-- <div id="chart1">
+            <apx-chart
+            [series]="chartOptions1.series"
+            [chart]="chartOptions1.chart"
+            [xaxis]="chartOptions1.xaxis"
+            [stroke]="chartOptions1.stroke"
+            [tooltip]="chartOptions1.tooltip"
+            [dataLabels]="chartOptions1.dataLabels"
+          ></apx-chart>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="text-truncate text_header">Projects</h6>
+          <p-table #datatable [value]="PROJECT_LIST" [scrollable]="true" class="scrollcontainer">
+            <ng-template pTemplate="header"   let-headerdata>
+              <tr>
+                <th class="width-1">Id</th>
+                <th class="width-2">Name</th> 
+                <th class="width-1">Hours</th>
+                <th class="width-1">Cost</th> 
+                <th class="width-1">Deadline</th> 
+                <th class="width-1">Priority</th>
+              </tr> 
+            </ng-template> 
+ 
+            <ng-template pTemplate="body" let-data>
+              <tr>
+                <td class="width-1 text-primary">{{ data.PROJ_CODE }}</td>
+                <td class="width-2">{{ data.PROJ_NAME }}</td>  
+                <td class="width-1">
+                    <p class="text_subheader">
+                      <span class="text-primary text-decoration-underline">{{ data.HOURS }}</span>/255 Hrs</p>
+              
+                </td>  
+                <td class="width-1">{{ data.COST }}</td>
+                <td class="width-1">{{ data.DEADLINE }}</td>
+                <td class="width-1" >
+                <p class="mb-0" [ngClass]="[ (data.PRIORITY == 'High') ? 'text-danger' : 
+                (data.PRIORITY == 'Medium') ? 'text-warning': (data.PRIORITY == 'Low') ? 'text-info' :'' ]"> {{ data.PRIORITY }}</p>
+               </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="text-truncate text_header">Employee</h6>
+          <p-table #datatable [value]="EMPLOYEE_LIST" [scrollable]="true" scrollHeight="400px">
+            <ng-template pTemplate="header"   let-headerdata>
+              
+              <tr>
+                <th>Name</th>
+                <th class="width-3">Department</th>
+              </tr>
+            </ng-template> 
+
+            <ng-template pTemplate="body" let-data>
+              <tr>
+                <td>
+                  <div class="w-full d-flex justify-content-start gap-3">
+                    <div>
+                      <span class="avatar avatar-lg flex-shrink-0">
+                        <img
+                          src="../../../assets/images/users/avatar.jpg"
+                          class="rounded-circle"
+                          alt="img"
+                        />
+                      </span>
+                    </div>
+                    <div>
+                      <div class="ml-3">
+                        <h6 class="text_header1">{{ data.EMP_NAME }}</h6>
+                        <p class="text_subheader">
+                          {{ data.EMP_EMAIL }}
+                        </p>
+                      </div> 
+                    </div>
+                  </div>
+                </td>
+                <td class="width-3">
+                  <span class="badge badge-xs mt-2"
+                  [ngClass]="[ (data.DEPT_CODE == '1') ? 'badge-secondary-transparent' : 
+                (data.DEPT_CODE == '2') ? 'badge-danger-transparent': (data.DEPT_CODE == '3') ? 'badge-pink-transparent' :'badge-purple-transparent' ]">{{ data.EMP_DEPT }}</span></td> 
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

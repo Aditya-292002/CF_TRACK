@@ -1,0 +1,920 @@
+<app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
+<form [formGroup]="form">
+  <div class="">
+    <div class="d-flex justify-content-between">
+      <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
+      <div class="d-flex">
+        <div class="floating-input mr-1">
+          <button
+            class="btn btn-secondary"
+            *ngIf="!isViewInvoice"
+            (click)="viewInvoiceList()"
+            title="view Leave Details"
+          >
+            <i class="far fa-eye mr-1"></i>View Invoice
+          </button>
+        </div>
+        <div class="floating-input m1-1">
+          <button
+            class="btn btn-secondary"
+            *ngIf="!isViewInvoice && !UpdateDisable"
+            (click)="SaveInvoice()"
+            title="Save"
+          >
+            Save
+          </button>
+        </div>
+        <div class="floating-input">
+          <button
+            class="btn btn-secondary"
+            *ngIf="UpdateDisable"
+            (click)="UpdateEditInvoice()"
+            title="Update"
+          >
+            Update
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt-2" *ngIf="!isViewInvoice">
+    <div class="row card">
+      <!-- <div class="col-md-4">
+                        <label>Company :</label>
+                        <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['COMPANY_CODE'].errors?.required}">
+                            <select class="form-control selectpicker show-tick" formControlName="COMPANY_CODE" (change)="filterLocations();" data-live-search="true" id="company" #company title="Select">
+                                <option *ngFor="let opt of company_list; let i=index" 
+                                [selected]="opt.COMPANY_CODE == form.controls['COMPANY_CODE'].value"
+                                 [value]="opt.COMPANY_CODE" [disabled]="IsInvoiedteailDisable" >{{ opt.COMPANY_NAME }}</option>
+                            </select>
+                            <button type="button" class="close" onclick="resetDropdown('company')" (click)="form.controls['COMPANY_CODE'].value" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Location<span class="validator">*</span> :</label>
+                        <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LOCATION_CODE'].errors?.required}">
+                            <select class="form-control selectpicker show-tick" formControlName="LOCATION_CODE" (change)="SelectState();" data-live-search="true" id="location" #company title="Select">
+                                <option *ngFor="let opt of _location_list; let i=index" 
+                                [selected]="opt.LOCATION_CODE == form.controls['LOCATION_CODE'].value"
+                                 [value]="opt.LOCATION_CODE" [disabled]="IsInvoiedteailDisable">{{ opt.LOCATION_NAME }}</option>
+                            </select>
+                            <button type="button" class="close" onclick="resetDropdown('location')" (click)="form.controls['LOCATION_CODE'].reset()" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label>State :</label>
+                        <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LOCATION_STATE'].errors?.required}">
+                            <select class="form-control selectpicker show-tick" formControlName="LOCATION_STATE" data-live-search="true" disabled id="state" #state title="Select">
+                                <option *ngFor="let opt of state_list; let i=index" 
+                                [selected]="opt.STATE_CODE == form.controls['LOCATION_STATE'].value"
+                                 [value]="opt.STATE_CODE" [disabled]="IsInvoiedteailDisable" >{{ opt.STATE_NAME }}</option>
+                            </select>
+                            <button type="button" class="close" onclick="resetDropdown('state')" (click)="form.controls['LOCATION_STATE'].reset()" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div> -->
+      <div class="col-md-4">
+        <label>Request No :</label>
+        <div class="floating-input list-btn">
+          <select
+            class="form-control selectpicker show-tick"
+            formControlName="REQ_ID"
+            data-live-search="true"
+            id="inv"
+            #inv
+            (change)="GetSalesOrderReleaseDetail()"
+            title="Search"
+          >
+            <option
+              *ngFor="let opt of invoice_list; let i = index"
+              [selected]="opt.REQ_ID == form.controls['REQ_ID'].value"
+              [value]="opt.REQ_ID"
+              [disabled]="IsInvoiedteailDisable"
+            >
+              {{ opt.REQ_NO }} - {{opt.CUST_NAME}}
+            </option>
+          </select>
+          <button
+            type="button"
+            class="close"
+            onclick="resetDropdown('inv')"
+            (click)="form.controls['REQ_ID'].reset()"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <label>Invoice Type :<span class="validator">*</span> </label>
+        <div
+          class="floating-input list-btn"
+          [ngClass]="{
+            'invalid-control':
+              isSubmited && form.controls['DOCTYPE_CODE'].errors?.required
+          }"
+        >
+          <select
+            class="form-control selectpicker show-tick"
+            formControlName="DOCTYPE_CODE"
+            data-live-search="true"
+            id="invoice_type"
+            title="Select"
+          >
+            <option
+              *ngFor="let opt of invoice_type_list; let i = index"
+              [selected]="
+                opt.DOCTYPE_CODE == form.controls['DOCTYPE_CODE'].value
+              "
+              [value]="opt.DOCTYPE_CODE"
+              [disabled]="IsInvoiedteailDisable"
+            >
+              {{ opt.DOCTYPE_DESC }}
+            </option>
+          </select>
+          <button
+            type="button"
+            class="close"
+            onclick="resetDropdown('invoice_type')"
+            (click)="form.controls['DOCTYPE_CODE'].reset()"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <label>Invoice No :</label>
+        <div class="floating-input">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="BILLING_NO"
+            maxlength="20"
+            OnlyNumber="true"
+            placeholder="Invoice No."
+            [disabled]="IsInvoiedteailDisable"
+            disabled
+          />
+        </div>
+      </div>
+      <div class="col-md-4">
+        <label>Financial Year :<span class="validator">*</span> </label>
+        <div
+          class="floating-input list-btn"
+          [ngClass]="{
+            'invalid-control':
+              isSubmited && form.controls['FYEAR'].errors?.required
+          }"
+        >
+          <select
+            class="form-control selectpicker show-tick"
+            disabled
+            formControlName="FYEAR"
+            data-live-search="true"
+            id="fyear"
+            title="Select"
+          >
+            <option
+              *ngFor="let opt of fyear_list; let i = index"
+              [selected]="opt.FYEAR == form.controls['FYEAR'].value"
+              [value]="opt.FYEAR"
+              [disabled]="IsInvoiedteailDisable"
+            >
+              {{ opt.FYEAR_DESC }}
+            </option>
+          </select>
+          <!-- <button type="button" class="close" onclick="resetDropdown('fyear')"  (click)="form.controls['FYEAR'].reset()" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button> -->
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <label>Invoice Date :</label>
+
+        <div
+          class="floating-input"
+          [ngClass]="{
+            'invalid-control':
+              isSubmited && form.controls['BILLING_DATE'].errors?.required
+          }"
+        >
+          <input
+            type="text"
+            formControlName="BILLING_DATE"
+            [(ngModel)]="BILLING_DATE"
+            [value]="BILLING_DATE"
+            class="form-control"
+            placeholder="DD-MMM-YYYY"
+            [disabled]="IsInvoiedteailDisable"
+            readonly
+          />
+
+          <div class="date-input">
+            <mat-form-field fxFlex="100" appearance="fill">
+              <mat-datepicker-toggle
+                matPrefix
+                [for]="picker"
+                id="cal"
+                #cal
+              ></mat-datepicker-toggle>
+              <input
+                class="form-control"
+                (dateChange)="ChangeBillDate()"
+                [value]="_DATE"
+                matInput
+                [(ngModel)]="_DATE"
+                [ngModelOptions]="{ standalone: true }"
+                [matDatepicker]="picker"
+                [min]="min_date"
+                [max]="maxdate"
+                [disabled]="false"
+                readonly
+              />
+
+              <mat-datepicker
+                #picker
+                id="picker"
+                [disabled]="IsInvoiedteailDisable"
+              ></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <!--<input type="text" class="form-control" formControlName="BILLING_DATE" [(ngModel)]="BILLING_DATE"  [value]="DATE"  readonly>
+                                <app-date-picker [(ngModel)]="BILLING_DATE" id="reqdate" #reqdate class="date-input" [maxdate]="" [mindate]="min_date"  [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>-->
+        </div>
+      </div>
+      <div class="col-md-4">
+        <label>Due Date :</label>
+        <div
+          class="floating-input"
+          [ngClass]="{
+            'invalid-control':
+              isSubmited && form.controls['DUE_DATE'].errors?.required
+          }"
+        >
+          <input
+            type="text"
+            class="form-control"
+            formControlName="DUE_DATE"
+            [(ngModel)]="DUE_DATE"
+            disabled
+            readonly
+          />
+          <app-date-picker
+            [(ngModel)]="DUE_DATE"
+            id="reqdate"
+            #reqdate
+            class="date-input"
+            [maxdate]=""
+            [mindate]="min_date"
+            [isDisable]="true"
+            [ngModelOptions]="{ standalone: true }"
+            [disabled]="IsInvoiedteailDisable"
+          ></app-date-picker>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt-2" *ngIf="!isViewInvoice">
+    <div class="row card">
+      <div class="col-md-8">
+        <label>Customer :<span class="validator">*</span> </label>
+        <div
+          class="floating-input list-btn"
+          [ngClass]="{
+            'invalid-control':
+              isSubmited && form.controls['CUST_CODE'].errors?.required
+          }"
+        >
+          <select
+            class="form-control selectpicker show-tick"
+            formControlName="CUST_CODE"
+            (change)="filterProject()"
+            id="customer"
+            data-live-search="true"
+            title="Select"
+          >
+            <option
+              *ngFor="let opt of customer_list; let i = index"
+              [selected]="opt.CUST_CODE == form.controls['CUST_CODE'].value"
+              [value]="opt.CUST_CODE"
+              [disabled]="IsInvoiedteailDisable"
+            >
+              {{ opt.CUST_NAME }}
+            </option>
+          </select>
+          <button
+            type="button"
+            class="close"
+            onclick="resetDropdown('customer')"
+            (click)="form.controls['CUST_CODE'].reset()"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <label>State :</label>
+        <div
+          class="floating-input list-btn"
+          [ngClass]="{
+            'invalid-control':
+              isSubmited && form.controls['STATE_CODE'].errors?.required
+          }"
+        >
+          <select
+            class="form-control selectpicker show-tick"
+            formControlName="STATE_CODE"
+            disabled
+            data-live-search="true"
+            id="state2"
+            #state2
+            title="Select"
+          >
+            <option
+              *ngFor="let opt of state_list; let i = index"
+              [selected]="opt.STATE_CODE == form.controls['STATE_CODE'].value"
+              [value]="opt.STATE_CODE"
+              [disabled]="IsInvoiedteailDisable"
+            >
+              {{ opt.STATE_NAME }}
+            </option>
+          </select>
+          <button
+            type="button"
+            class="close"
+            onclick="resetDropdown('state2')"
+            (click)="form.controls['STATE_CODE'].reset()"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label>Project :<span class="validator">*</span> </label>
+        <div
+          class="floating-input list-btn"
+          [ngClass]="{
+            'invalid-control':
+              isSubmited && form.controls['PROJ_CODE'].errors?.required
+          }"
+        >
+          <select
+            class="form-control selectpicker show-tick"
+            formControlName="PROJ_CODE"
+            id="project"
+            data-live-search="true"
+            title="Select"
+          >
+            <option
+              *ngFor="let opt of _project_list; let i = index"
+              [selected]="opt.PROJ_CODE == form.controls['PROJ_CODE'].value"
+              [value]="opt.PROJ_CODE"
+              [disabled]="IsInvoiedteailDisable"
+            >
+              {{ opt.PROJ_NAME }}
+            </option>
+          </select>
+          <button
+            type="button"
+            class="close"
+            onclick="resetDropdown('project')"
+            (click)="form.controls['PROJ_CODE'].reset()"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label>Template :</label>
+        <div class="floating-input list-btn">
+          <select
+            class="form-control selectpicker show-tick"
+            formControlName="TEMPLATE_CODE"
+            id="template"
+            data-live-search="true"
+            title="Select"
+          >
+            <option
+              *ngFor="let opt of templete_list; let i = index"
+              [selected]="
+                opt.TEMPLATE_CODE == form.controls['TEMPLATE_CODE'].value
+              "
+              [value]="opt.TEMPLATE_CODE"
+              [disabled]="IsInvoiedteailDisable"
+            >
+              {{ opt.TEMPLATE_DESC }}
+            </option>
+          </select>
+          <button
+            type="button"
+            class="close"
+            onclick="resetDropdown('template')"
+            (click)="form.controls['TEMPLATE_CODE'].reset()"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label>PO No :</label>
+        <div class="floating-input">
+          <input
+            type="text"
+            class="form-control"
+            maxlength="50"
+            formControlName="PO_NO"
+            placeholder="PO No."
+          />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label>PO Date :</label>
+        <div
+          class="floating-input"
+          [ngClass]="{
+            'invalid-control':
+              isSubmited && form.controls['PO_DATE'].errors?.required
+          }"
+        >
+          <input
+            type="text"
+            class="form-control"
+            formControlName="PO_DATE"
+            [(ngModel)]="PO_DATE"
+            readonly
+          />
+          <app-date-picker
+            [(ngModel)]="PO_DATE"
+            id="reqdate"
+            #reqdate
+            class="date-input"
+            [maxdate]=""
+            [isDisable]="false"
+            [ngModelOptions]="{ standalone: true }"
+          ></app-date-picker>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label>Kind Attention :</label>
+        <div class="floating-input">
+          <input
+            type="text"
+            class="form-control"
+            maxlength="50"
+            formControlName="KIND_ATTN"
+            placeholder="Kind Attention"
+          />
+        </div>
+      </div>
+      <div class="col-md-3">
+        <label>Currency :<span class="validator">*</span> </label>
+        <div
+          class="floating-input list-btn"
+          [ngClass]="{
+            'invalid-control':
+              isSubmited && form.controls['CURRENCY_CODE'].errors?.required
+          }"
+        >
+          <select
+            class="form-control selectpicker show-tick"
+            id="currency"
+            formControlName="CURRENCY_CODE"
+            data-live-search="true"
+            title="Select"
+          >
+            <option
+              *ngFor="let opt of currency_list; let i = index"
+              [selected]="
+                opt.CURRENCY_CODE == form.controls['CURRENCY_CODE'].value
+              "
+              [value]="opt.CURRENCY_CODE"
+              [disabled]="IsInvoiedteailDisable"
+            >
+              {{ opt.CURRENCY_NAME }}
+            </option>
+          </select>
+          <button
+            type="button"
+            class="close"
+            onclick="resetDropdown('currency')"
+            (click)="form.controls['CURRENCY_CODE'].reset()"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <label>Exch.Rate :</label>
+        <div class="floating-input">
+          <input
+            type="text"
+            id="EXCHANGE_RATE"
+            class="form-control cost"
+            maxlenght="10"
+            formControlName="EXCHANGE_RATE"
+            OnlyNumber="true"
+            maxlength="7"
+            placeholder="Exchange Rate"
+            [disabled]="IsInvoiedteailDisable"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt-2" *ngIf="!isViewInvoice">
+    <div class="row card">
+      <div class="form-inline col-md-12">
+        <h6 class="mb-0 col-md-6 p-0">Invoice Details</h6>
+        <div class="row-add col-md-6 text-right">
+          <button
+            type="button"
+            (click)="f_addRow()"
+            class="btn text-primary pb-0"
+          >
+            <i class="fas fa-plus-circle mr-2"></i>Add
+          </button>
+        </div>
+        <hr class="m-0 mb-2" />
+      </div>
+      <div class="col-md-12">
+        <div class="tableFixHead">
+          <table class="table-theam-1 row_bgcolor_3">
+            <thead>
+              <tr>
+                <th class="w-10">Sr.No</th>
+                <th class="w-50">Service</th>
+                <th class="w-25">Value</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let data of _invoice_detail; let i = index">
+              <tr>
+                <td class="w-10 pb-0 pt-0">{{ i + 1 }}</td>
+                <td class="w-50 pb-0" colspan="1">
+                  <div class="floating-input">
+                    <select
+                      class="form-control selectpicker show-tick"
+                      [(ngModel)]="data.SERVICE_CODE"
+                      (change)="f_changeService(data.SERVICE_CODE, i)"
+                      id="p_{{ i }}"
+                      (change)="onChangeDetail()"
+                      data-container="body"
+                      data-size="5"
+                      [ngModelOptions]="{ standalone: true }"
+                      data-live-search="true"
+                      title="Select"
+                    >
+                      <option value="" disabled></option>
+                      <option
+                        *ngFor="let opt of service_list; let i = index"
+                        [selected]="opt.SERVICE_CODE == data.SERVICE_CODE"
+                        [value]="opt.SERVICE_CODE"
+                        [disabled]="IsInvoiedteailDisable"
+                      >
+                        {{ opt.SERVICE_NAME }}
+                      </option>
+                    </select>
+                  </div>
+                </td>
+                <td class="w-25 pb-0" colspan="1">
+                  <div class="floating-input">
+                    <input
+                      id="val_{{ i }}"
+                      type="text"
+                      class="form-control cost"
+                      disabled
+                      costInput
+                      [(ngModel)]="data.DOC_VALUE"
+                      (change)="CalculateFinalAmount()"
+                      placeholder="Doc Value"
+                      [ngModelOptions]="{ standalone: true }"
+                      autocomplete="off"
+                      [disabled]="IsInvoiedteailDisable"
+                    />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="pt-0"></td>
+                <td colspan="1" class="">
+                  <div class="floating-input">
+                    <!-- <input type="text" class="form-control" placeholder="Remarks">  -->
+                    <textarea
+                      name=""
+                      id=""
+                      rows="6"
+                      class="form-control"
+                      maxlength="500"
+                      [(ngModel)]="data.REMARKS"
+                      placeholder="Remarks"
+                      [ngModelOptions]="{ standalone: true }"
+                    ></textarea>
+                  </div>
+                </td>
+                <td colspan="1" class="pb-0">
+                  <div class="floating-input">
+                    <div class="form-inline">
+                      <label class="ml-2 font-weight-bold">SGST :</label>
+                      <input
+                        type="text"
+                        class="form-control w-16 ml-1 mr-1 cost"
+                        maxlength="10"
+                        [(ngModel)]="data.SGST_VALUE"
+                        disabled
+                        costInput
+                        placeholder="SGST Value"
+                        [ngModelOptions]="{ standalone: true }"
+                      />
+                      <label class="ml-1">{{ data.SGST_RATE }}%</label>
+                    </div>
+                    <div class="form-inline mt-1 mb-1">
+                      <label class="ml-2 font-weight-bold">CGST :</label>
+                      <input
+                        type="text"
+                        class="form-control w-16 ml-1 mr-1 cost"
+                        maxlength="10"
+                        [(ngModel)]="data.CGST_VALUE"
+                        disabled
+                        costInput
+                        placeholder="CGST Value"
+                        [ngModelOptions]="{ standalone: true }"
+                      />
+                      <label class="ml-1">{{ data.CGST_RATE }}%</label>
+                    </div>
+                    <div class="form-inline">
+                      <label class="ml-2 mr-1 font-weight-bold">IGST :</label>
+                      <input
+                        type="text"
+                        class="form-control w-16 ml-1 mr-1 cost"
+                        maxlength="10"
+                        [(ngModel)]="data.IGST_VALUE"
+                        disabled
+                        costInput
+                        placeholder="IGST Value"
+                        [ngModelOptions]="{ standalone: true }"
+                      />
+                      <label class="ml-1">{{ data.IGST_RATE }}%</label>
+                    </div>
+                  </div>
+                  <div class="floating-input ml-2 form-inline">
+                    <label class="font-weight-bold mr-1">Total :</label>
+                    <input
+                      type="text"
+                      class="form-control w-50 mt-1 ml-1 cost"
+                      [(ngModel)]="data.TOT_VALUE"
+                      disabled
+                      costInput
+                      placeholder="Total"
+                      readonly
+                      [ngModelOptions]="{ standalone: true }"
+                      [disabled]="IsInvoiedteailDisable"
+                    />
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!--  -->
+      </div>
+      <div class="col-md-2">
+        <label>Bill Value :</label>
+        <div class="floating-input">
+          <!--<input type="text" class="form-control cost" [(ngModel)]="cost" costInput placeholder="Bill Value" [ngModelOptions]="{standalone: true}">-->
+          <input
+            type="text"
+            class="form-control cost"
+            maxlength="10"
+            formControlName="DOC_VALUE"
+            disabled
+            costInput
+            (change)="costInput()"
+            placeholder="Bill Value"
+          />
+        </div>
+      </div>
+      <div class="col-md-2">
+        <label>SGST :</label>
+        <div class="floating-input">
+          <input
+            type="text"
+            class="form-control cost"
+            maxlength="10"
+            formControlName="SGST_VALUE"
+            disabled
+            costInput
+            placeholder="SGST"
+          />
+        </div>
+      </div>
+      <div class="col-md-2">
+        <label>CGST :</label>
+        <div class="floating-input">
+          <input
+            type="text"
+            class="form-control cost"
+            maxlength="10"
+            formControlName="CGST_VALUE"
+            disabled
+            costInput
+            placeholder="CGST"
+          />
+        </div>
+      </div>
+      <div class="col-md-2">
+        <label>IGST :</label>
+        <div class="floating-input">
+          <input
+            type="text"
+            class="form-control cost"
+            maxlength="10"
+            formControlName="IGST_VALUE"
+            disabled
+            costInput
+            placeholder="IGST"
+          />
+        </div>
+      </div>
+      <div class="col-md-2">
+        <label>Round Off :</label>
+        <div class="floating-input">
+          <input
+            type="text"
+            class="form-control cost"
+            maxlength="5"
+            formControlName="ROUNDOFF_VALUE"
+            disabled
+            costInput
+            placeholder="Round Off"
+          />
+        </div>
+      </div>
+      <div class="col-md-3">
+        <label>Final Bill :</label>
+        <div class="floating-input">
+          <input
+            type="text"
+            class="form-control cost"
+            formControlName="BILL_VALUE"
+            maxlength="10"
+            disabled
+            costInput
+            placeholder="Final Bill"
+          />
+        </div>
+      </div>
+      <div class="col-md-3">
+        <label>Final Base :</label>
+        <div class="floating-input">
+          <input
+            type="text"
+            class="form-control cost"
+            formControlName="BASE_VALUE"
+            maxlength="10"
+            disabled
+            costInput
+            placeholder="Final Base"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="mt-2" *ngIf="isViewInvoice">
+  <div class="row card col-md-12">
+    <p-table
+      #datatable
+      [value]="all_invoice_list"
+      [scrollable]="true" 
+      scrollHeight="400px"  
+      [globalFilterFields]="[
+        'BILLING_NO',
+        'BILLING_DATE',
+        'PO_NO',
+        'PO_DATE',
+        'BILL_VALUE',
+        'BASE_VALUE',
+        'CUSTOMER_NAME'
+      ]"
+    >
+      <ng-template pTemplate="caption">
+        <div class="d-flex justify-content-end gap-2">
+          <div class="floating-input">
+            <!-- <i class="pi pi-search"></i> -->
+            <input
+              type="text"
+              pInputText
+              size="50"
+              class="form-control"
+              placeholder="Search"
+              (input)="datatable.filterGlobal($event.target.value, 'contains')"
+            />
+          </div>
+          <div class="ml-2">
+            <button
+              class="btn btn-secondary"
+              *ngIf="isViewInvoice && !UpdateDisable"
+              (click)="backToForm()"
+              title="Back"
+            >
+              <i class="fas fa-angle-left"></i>Back
+            </button>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header" let-flight>
+        <tr>
+          <th>Billing No</th>
+          <th>Billing Date</th>
+          <th>Customer Name</th>
+          <th>Project Name</th>
+          <!-- <th >PO No</th>
+                         <th >PO Date</th> -->
+          <th>Bill Value</th>
+          <th>Base Value</th>
+          <th>Action</th>
+        </tr>
+        <tr>
+          <!-- <th>
+                             <input pInputText type="text" (input)="datatable.filter($event.target.value, 'BILLING_NO', 'contains')" placeholder=" Bill No" class="p-column-filter">
+                         </th> -->
+          <!-- <th>
+                          <input pInputText type="text" (input)="datatable.filter($event.target.value, 'BILLING_DATE', 'contains')" placeholder=" Bill Date" class="p-column-filter">
+                      </th>
+                       
+                  <th>
+                      <input pInputText type="text" (input)="datatable.filter($event.target.value, 'CUSTOMER_NAME', 'contains')" placeholder=" Name" class="p-column-filter">
+               </th>
+                      <th>
+                          <input pInputText type="text" (input)="datatable.filter($event.target.value, 'PROJECT_NAME', 'contains')" placeholder=" Project Name" class="p-column-filter">
+                      </th> -->
+
+          <!-- <th>
+                          <input pInputText type="text" (input)="datatable.filter($event.target.value, 'PO_NO', 'contains')" placeholder=" PO No" class="p-column-filter">
+                         </th>
+                         <th>
+                          <input pInputText type="text" (input)="datatable.filter($event.target.value, 'PO_DATE', 'contains')" placeholder=" Bill Date" class="p-column-filter">
+                         </th> -->
+          <!-- <th>
+                          <input pInputText type="text" (input)="datatable.filter($event.target.value, 'BILL_VALUE', 'contains')" placeholder=" Bill Value" class="p-column-filter">
+                         </th>
+                         <th>
+                          <input pInputText type="text" (input)="datatable.filter($event.target.value, 'BASE_VALUE', 'contains')" placeholder=" Base Value" class="p-column-filter">
+                         </th> -->
+          <!-- <th>
+                          <input pInputText type="text" (input)="datatable.filter($event.target.value, '_ACTION', 'contains')" placeholder=" Action" class="p-column-filter">
+                      </th> -->
+
+          <!--
+                         <th>
+                             <p-dropdown [options]="val_data" (onChange)="datatable.filter($event.value, 'departDay', 'equals')" styleClass="p-column-filter" placeholder="Select Day" [showClear]="true">
+                                 <ng-template let-option pTemplate="item">
+                                     <span [class]="'customer-badge status-' + option.value">{{option.label}}</span>
+                                 </ng-template>
+                             </p-dropdown>
+                         </th>
+                         <th></th>
+                     </tr> -->
+        </tr></ng-template
+      >
+
+      <ng-template pTemplate="body" let-data>
+        <tr>
+          <td>{{ data.BILLING_NO }}</td>
+          <td>{{ data.BILLING_DATE }}</td>
+          <td>{{ data.CUSTOMER_NAME }}</td>
+          <td>{{ data.PROJECT_NAME }}</td>
+          <!-- <td >{{data.PO_NO}}</td> -->
+          <!-- <td >{{data.PO_DATE}}</td> -->
+          <td>{{ data.BILL_VALUE }}</td>
+          <td>{{ data.BASE_VALUE }}</td>
+          <!-- <td>{{data._ACTION}}</td> -->
+          <td class="">
+            <i
+              class="fa fa-print small mr-2"
+              (click)="PrintInvoice(data)"
+              title="Print"
+            ></i>
+            <i
+              class="fa fa-edit small"
+              (click)="editInvoice(data)"
+              title="Edit"
+            ></i>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

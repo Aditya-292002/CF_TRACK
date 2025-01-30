@@ -1,0 +1,289 @@
+<app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
+<form [formGroup]="form">
+    <div class="row">
+        <div class="col-md-12 " >
+            <button class="btn btn-secondary  float-right m-1 ml-1 mr-1" *ngIf="isUpdate" (click)="f_clearForm()" title="Cancel">Cancel</button>
+            <button class="btn btn-secondary float-right m-1 ml-1 mr-1" *ngIf="!isUpdate && ADD_RIGHTS" (click)="saveFormData('INSERT')" title="Save">Save</button>
+            <button class="btn btn-secondary float-right m-1 ml-1 mr-1" *ngIf="isUpdate && UPDATE_RIGHTS" (click)="saveFormData('UPDATE')" title="Save">Save</button>
+
+            <div class="col-md-4 float-right m-1">
+                <div class="floating-input list-btn">
+                    <select class="form-control selectpicker show-tick dd_size select-width" (change)="searchTask()" [(ngModel)]="search_task_id" data-live-search="true" id="search" #search title="Search Task" [ngModelOptions]="{standalone: true}">
+                        <option *ngFor="let opt of task_list; let i=index" [selected]="opt.TASKID == search_task_id"
+                            [value]="opt.TASKID">{{ opt.TASK_DESC }}</option>
+                    </select>
+                    <button type="button" class="close" onclick="resetDropdown('search')" (click)="search_task_id='';f_clearForm()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row card">
+                <div class="col-md-4">
+                    <label>Project<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['PROJ_CODE'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="project" formControlName="PROJ_CODE" (change)="setCompany();" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of project_list; let i=index" [selected]="opt.PROJ_CODE == form.controls['PROJ_CODE'].value"
+                                [value]="opt.PROJ_CODE">{{ opt.PROJ_NAME }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('project')" (click)="form.controls['PROJ_CODE'].reset();" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Company :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['COMPANY'].errors?.required}">
+                        <input type="text" formControlName="COMPANY" placeholder="Company" Uppercase class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Customer :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['CUSTOMER'].errors?.required}">
+                        <input type="text" formControlName="CUSTOMER" placeholder="Customer" Uppercase class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Task No. :<span class="validator">*</span> :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['TASK_NO'].errors?.required}">
+                        <input type="text" formControlName="TASK_NO" placeholder="Task No." OnlyNumber="true" maxlength="5" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Client Ref :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['CLIENT_REFNO'].errors?.required}">
+                        <input type="text" formControlName="CLIENT_REFNO" placeholder="Client Ref" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Task Type<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['TASK_TYPE'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="taskType" formControlName="TASK_TYPE" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of task_type_list; let i=index" [selected]="opt.TASKTYPE_CODE == form.controls['TASK_TYPE']"
+                                [value]="opt.TASKTYPE_CODE">{{ opt.TASKTYPE_DESC }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('taskType')" (click)="form.controls['TASK_TYPE'].reset();" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+        <div class="col-md-8 mt-2 pr-0">
+            <div class="row card pb-3">
+                <div class="col-md-12">
+                    <label>Task Description<span class="validator">*</span> :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['TASK_DESC'].errors?.required}">
+                        <input type="text" formControlName="TASK_DESC" InputType="AlphaNumSpace" placeholder="Task Description" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label>Detail Description :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['TASK_DETAILS'].errors?.required}">
+                        <textarea name="" formControlName="TASK_DETAILS" placeholder="Detail Description" id="" cols="30" rows="3" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label>BRM Point :</label>
+                    <div class="form-inline mt-1">
+                        <div class="form-group radios mr-3">
+                            <input id="yes" type="radio" class="mr-2" formControlName="BRM_POINT" checked value="1" name="BRM_POINT">
+                            <label for="yes"><span class="span-txt">Yes
+                                </span></label>
+                        </div>
+                        <div class="form-group radios ">
+                            <input id="no" type="radio" class="mr-2" formControlName="BRM_POINT" value="0" name="BRM_POINT">
+                            <label for="no"><span class="span-txt">No
+                                </span></label>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+        <!--  -->
+        <div class="col-md-4 mt-2">
+            <div class="row card">
+                <div class="col-md-12">
+                    <label>Est.Hours<span class="validator">*</span> :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['ESTIMATED_HOURS'].errors?.required}">
+                        <!-- (keyup)="f_setTimeFormat('ESTIMATED_HOURS',$event.keyCode)" (focusout)="f_setTimeFormat('ESTIMATED_HOURS',$event.keyCode,'all')" -->
+                        <input type="text" formControlName="ESTIMATED_HOURS" placeholder="HHHH:MM" TimeOnly="HHHH:MM" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label>Client Reporter :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['CLIENT_OWNER'].errors?.required}">
+                        <input type="text" formControlName="CLIENT_OWNER" InputType="AlphaSpace" class="form-control" placeholder="Client Reporter">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label>Business Owner :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['BUSINESS_OWNER'].errors?.required}">
+                        <select class="form-control selectpicker show-tick dd_size" id="businessOwner" formControlName="BUSINESS_OWNER" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of buisness_owner_list; let i=index" 
+                            [selected]="opt.EMP_CODE == form.controls['BUSINESS_OWNER'].value"
+                             [value]="opt.EMP_CODE" >{{ opt.USER_NAME }}</option>                     
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('businessOwner')" (click)="form.controls['BUSINESS_OWNER'].reset();" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label>Tech Owner :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['TECHNICAL_OWNER'].errors?.required}">
+                        <select class="form-control selectpicker show-tick dd_size" id="techOwner" formControlName="TECHNICAL_OWNER" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of technical_owner_list; let i=index" 
+                            [selected]="opt.EMP_CODE == form.controls['TECHNICAL_OWNER'].value"
+                             [value]="opt.EMP_CODE" >{{ opt.USER_NAME }}</option>                     
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('techOwner')" (click)="form.controls['TECHNICAL_OWNER'].reset();" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+        <div class="col-md-12 mt-2">
+            <div class="row card">
+                <div class="col-md-4">
+                    <label>Priority :</label>
+                    <div class="floating-input  list-btn"  [ngClass]="{'invalid-control':isSubmited && form.controls['PRIORITY'].errors?.required}">
+                        <select class="form-control selectpicker show-tick dd_size" id="Priority" formControlName="PRIORITY"   data-live-search="true" title="Select">
+                            <option value="N">Normal</option>
+                            <option value="H">High</option>
+                            <option value="S">SOS</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('Priority')" (click)="form.controls['PRIORITY'].reset();"  aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Planned Start Date  :</label>
+                    <div class="floating-input "  [ngClass]="{'invalid-control':isSubmited && form.controls['PLANNED_START_DATE'].errors?.required}">
+                        <input type="text"  class="form-control" formControlName="PLANNED_START_DATE"  [(ngModel)]="PLANNED_START_DATE">
+                        <app-date-picker  class="date-input" [isDisable]='false' [(ngModel)]="PLANNED_START_DATE" [maxdate]=""  [ngModelOptions]="{standalone: true}" ></app-date-picker>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Completion Date :</label>
+                    <div class="floating-input "  [ngClass]="{'invalid-control':isSubmited && form.controls['COMPLETION_DATE'].errors?.required}">
+                        <input type="text"  class="form-control" formControlName="COMPLETION_DATE"   [(ngModel)]="COMPLETION_DATE">
+                        <app-date-picker  class="date-input" [isDisable]='false'  [(ngModel)]="COMPLETION_DATE" [maxdate]=""  [ngModelOptions]="{standalone: true}" ></app-date-picker>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Chargeable <span class="validator">*</span> :</label>
+                    <div class="form-inline mt-1">
+                        <div class="form-group radios mr-3" >
+                            <input id="Yes" type="radio" class="mr-2" formControlName="CHARGEABLE"  value="1" (click)="onChangeType($event.target.value);"  >
+                            <label for="Yes"><span class="span-txt">Yes
+                                </span></label>
+                        </div>
+                        <div class="form-group radios ">
+                            <input id="No" type="radio" class="mr-2" formControlName="CHARGEABLE"   value="0" (click)="onChangeType($event.target.value);"    >
+                            <label for="No"><span class="span-txt">No
+                                </span></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" [ngClass]="{'invalid-control':isSubmited && form.controls['QUOTED_MANDAYS'].errors?.required}">
+                    <label>Quoted Mandays <span class="validator">*</span> :</label>
+                    <div class="floating-input " >
+                        <input type="text" placeholder="Quoted Mandays " class="form-control"
+                          formControlName="QUOTED_MANDAYS"  [ngClass]="{'textDisabled':textBoxDisabled == true }">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+        <div class="col-md-12 mt-2">
+            <div class="row card">
+                <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <div class="">
+                        <h6 class="mb-0 col-md-6 p-0">Task Details</h6>
+                        <hr class="m-0 mb-2">
+                    </div>
+                    <div class="tableFixHead v_400scroll">
+                        <table class="table-theam-1 row-bgcolor_1">
+                            <thead>
+                                <tr>
+                                    <th class="w-20">Employee</th>
+                                    <th class="w-action">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select class="form-control selectpicker show-tick" [(ngModel)]="selected_emp" (change)="addRow()" data-container="body" data-size="5" id="emp" #emp data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}">
+                                            <option *ngFor="let opt of emp_list; let i=index" [value]="opt | json">
+                                                {{ opt.EMP_CODE }} - {{ opt.USER_NAME }}</option>
+                                        </select>
+                                    </td>
+                                    <td class="w-action">
+                                        <!-- <span class="row-add">
+                                            <button type="button" class="btn text-primary p-0" (click)="addRow()">
+                                                <i class='fas fa-plus-circle mr-2'></i>Add
+                                            </button>
+                                        </span> -->
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let data of project_assign_emp_detail; let i=index;">
+                                    <td>
+                                        {{ data.EMP_NO }} - {{ data.FULL_NAME }}
+                                    </td>
+                                    <td class="row-add">
+                                        <button type="button" class="btn text-primary p-0" (click)="removeRow(i)">
+                                            <i class='fas fa-trash-alt text-danger mr-2'></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+                    <div class="">
+                        <h6 class="mb-0 col-md-6 p-0">Document Upload</h6>
+                        <hr class="m-0 mb-2">
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between att-doc py-1">
+                            <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input">
+                            <label class="att-doc-label" title="Documents">
+                                Documents
+                            </label>
+
+                            <span class="" *ngIf="!NO_RIGHTS">
+                                <label for="fileInput" class="att-doc-label-add" title="Add Document">
+                                    <i class="fa fa-paperclip"></i> Attach
+                                </label>
+                            </span>
+                        </li>
+                        <ng-container *ngFor="let file of uploadedDocument;let i=index;">
+                            <li class="list-group-item d-flex justify-content-between py-2" *ngIf="file.ACTIVE != 0">
+                                <label class="doc-label" (click)="f_downloadDocument(file)">
+                                    <i class="fa fa-paperclip mr-2"></i>
+                                    {{file.DOCUMENT_FILENAME}}
+                                </label>
+
+                                <span class="del-red">
+                                    <i class="fas fa-trash-alt" id=f_{{i}} (click)="removeDoc(i)" title="Delete Document"></i>
+                                </span>
+                            </li>
+                        </ng-container>
+
+                        <li class="list-group-item text-center py-1 disabled" *ngIf="NoDocs == 0">
+                            <h6 class="m-0"> No Documents</h6>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+</form>

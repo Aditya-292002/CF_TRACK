@@ -1,0 +1,211 @@
+<app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
+
+    <form [formGroup]="form">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="d-flex flex-wrap justify-content-between">
+                    <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
+                    <button class="btn btn-secondary" title="Save"
+                    (click)="empFixedSave()">Save</button>
+                    </div>
+               
+        
+            </div>
+
+            <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 mt-2 ">
+                <div class="row card">
+                    <div class="col-xl-9 col-lg-6 col-md-12 col-sm-12">                                                                                                                                                                                                                                                               
+                        <label>Company<span class="validator">*</span> :</label>
+                        <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['COMPANY_CODE'].errors?.required}">
+                            <select class="form-control selectpicker show-tick" id="Company" (change)="filterLocations();"
+                            formControlName="COMPANY_CODE"  data-live-search="true" title="Select">
+                                <option *ngFor="let opt of company_list; let i=index" 
+                                [selected]="opt.COMPANY_CODE == form.controls['COMPANY_CODE'].value"
+                                 [value]="opt.COMPANY_CODE" >{{ opt.COMPANY_NAME }}</option>                    
+                            </select>
+                            <button type="button" class="close" (click)="form.controls['COMPANY_CODE'].reset()" onclick="resetDropdown('Company')"  aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-xl-9 col-lg-6 col-md-12 col-sm-12">
+                        <label>Employee<span class="validator">*</span> :</label>
+                        <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['EMP_NO'].errors?.required}">
+                            <select class="form-control selectpicker show-tick dd_size" id="employee" (change)="employeeChange();"
+                            formControlName="EMP_NO"  data-live-search="true" title="Select">
+                               <option *ngFor="let opt of employee_list; let i=index" 
+                                [selected]="opt.EMP_CODE == form.controls['EMP_NO'].value"
+                                 [value]="opt.EMP_CODE" >{{ opt.EMP_CODE }} - {{ opt.USER_NAME }}</option>                     
+                            </select>
+                            <button type="button" class="close" (click)="form.controls['EMP_NO'].reset()" onclick="resetDropdown('employee')"  aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div> 
+                    </div>
+                   
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                        <label>WEF Date :</label>
+                        <div class="floating-input ">
+                            <input type="text" class="form-control" formControlName="DESIGNATION_WEF" [(ngModel)]="DESIGNATION_WEF">
+                            <app-date-picker [(ngModel)]="DESIGNATION_WEF" id="wefdate" class="date-input" [maxdate]="" [mindate]="" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
+                            <!-- <div class="date-input">
+                                <mat-form-field fxFlex="100" appearance="fill">
+                                    <mat-datepicker-toggle matPrefix [for]="picker" id='wefdate'></mat-datepicker-toggle>
+                                    <input class="form-control" [value]="DESIGNATION_WEF" matInput [(ngModel)]="DESIGNATION_WEF" [ngModelOptions]="{standalone: true}" [matDatepicker]="picker" [min]="min_date" [max]="" [disabled]="false" readonly />
+        
+                                    <mat-datepicker #picker id="picker"></mat-datepicker>
+                                </mat-form-field>
+                            </div> -->
+                        
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                        <label>Designation :</label>
+                        <div class="floating-input ">
+                            <input type="text" class="form-control" placeholder="Designation" formControlName="DESIGNATION">
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                        <label>Division :</label>
+                        <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['DIVISION_CODE'].errors?.required}">
+                            <select class="form-control selectpicker show-tick" id="division"
+                            formControlName="DIVISION_CODE"  data-live-search="true" title="Select">
+                               <option *ngFor="let opt of division_list; let i=index" 
+                                [selected]="opt.DIVISION_CODE == form.controls['DIVISION_CODE'].value"
+                                 [value]="opt.DIVISION_CODE" >{{ opt.DIVISION_NAME }}</option>                     
+                            </select>
+                            <button type="button" class="close" (click)="form.controls['DIVISION_CODE'].reset()" onclick="resetDropdown('division')"  aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                        <label>Department :</label>
+                        <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['DEPT_CODE'].errors?.required}">
+                            <select class="form-control selectpicker show-tick" id="department"
+                            formControlName="DEPT_CODE"   data-live-search="true" title="Select">
+                               <option *ngFor="let opt of dept_list; let i=index" 
+                                [selected]="opt.DEPT_CODE == form.controls['DEPT_CODE'].value"
+                                 [value]="opt.DEPT_CODE" >{{ opt.DEPT_NAME }}</option>                     
+                            </select>
+                            <button type="button" class="close" (click)="form.controls['DEPT_CODE'].reset()" onclick="resetDropdown('department')"  aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mt-2">
+                <div class="row card">
+                    <div class="col-xl-12 col-lg-4 col-md-12 col-sm-12">
+                        <label>Location<span class="validator">*</span> :</label>
+                        <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LOCATION_CODE'].errors?.required}">
+                            <select class="form-control selectpicker show-tick" id="location" 
+                            formControlName="LOCATION_CODE" data-live-search="true" title="Select">
+                               <option *ngFor="let opt of _location_list; let i=index" 
+                                [selected]="opt.LOCATION_CODE == form.controls['LOCATION_CODE'].value"
+                                 [value]="opt.LOCATION_CODE" >{{ opt.LOCATION_NAME }}</option>                     
+                            </select>
+                            <button type="button" class="close" (click)="form.controls['LOCATION_CODE'].reset()" onclick="resetDropdown('location')"  aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-xl-12 col-lg-4 col-md-12 col-sm-12">
+                        <label>Shift :</label>
+                        <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['SHIFT_CODE'].errors?.required}">
+                            <select class="form-control selectpicker show-tick" id="shift" 
+                            formControlName="SHIFT_CODE"  data-live-search="true" title="Select">
+                               <option *ngFor="let opt of shift_list; let i=index" 
+                                [selected]="opt.SHIFT_CODE == form.controls['SHIFT_CODE'].value"
+                                 [value]="opt.SHIFT_CODE" >{{ opt.SHIFT_NAME }}</option>                     
+                            </select>
+                            <button type="button" class="close" (click)="form.controls['SHIFT_CODE'].reset()" onclick="resetDropdown('shift')"  aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-xl-12 col-lg-4 col-md-12 col-sm-12">
+                        <label>Structure<span class="validator">*</span> :</label>
+                        <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['STRU_CODE'].errors?.required}">
+                            <select class="form-control selectpicker show-tick dd_size" id="structure"  (change)="struChange();"
+                            formControlName="STRU_CODE" data-live-search="true" title="Select">
+                               <option *ngFor="let opt of structure_list; let i=index" 
+                                [selected]="opt.STRU_CODE == form.controls['STRU_CODE'].value"
+                                 [value]="opt.STRU_CODE" >{{ opt.STRU_NAME }}</option>                     
+                            </select>
+                            <button type="button" class="close" (click)="form.controls['STRU_CODE'].reset()" onclick="resetDropdown('structure')"  aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-xl-12 col-lg-4 col-md-12 col-sm-12">
+                        <label>Timesheet Cost :</label>
+                        <div class="floating-input ">
+                            <input type="text" class="form-control cost" costInput placeholder="TS Cost" formControlName="TS_COST"> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 mt-2">
+                <div class="row card">
+                    <div class="col-md-12">
+                        <div class="form-inline">
+                            <h6 class="mb-0 col-md-6 p-0">Employee Fixed Details</h6>
+                            <hr class="m-0 mb-2">
+                        </div>
+                        <div class="tableFixHead">
+                            <table class="table-theam-1 row_bgcolor_1">
+                                <thead>
+                                    <tr>
+                                        <th class="">Step No.</th>
+                                        <th class="">Salay Head</th>
+                                        <th class="">Desc</th>
+                                        <th class="w-1">Monthly</th>
+                                        <th class="w-1">Annual</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let data of empfixdetail_list; let i=index;">
+                                        <tr >
+                                            <td>{{ data.STEP_NO }}</td>
+                                            <td>{{ data.SAL_HEAD }}</td>
+                                            <td>{{ data.HEAD_DESC }}</td>
+                                            <td>
+                                                 <div class="floating-input " >
+                                                    <input type="text" class="form-control cost" id="month_{{i}}" (change)="calculateTotal(i)"  [(ngModel)]="data.SAL_MONTH"  [ngModelOptions]="{standalone: true}"   costInput>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                 <div class="floating-input " >
+                                                    <input type="text" class="form-control cost" id="annual_{{i}}" (change)="calculateTotal(i)"  [(ngModel)]="data.SAL_ANNUAL"  [ngModelOptions]="{standalone: true}"  disabled costInput>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        
+                                    </ng-container>
+                                    <tr>
+                                        <td colspan="3" class=" bg-white">
+                                            <strong class="float-right">Total :</strong>
+                                        </td>
+                                        <td colspan="1" class="total_grid w-1 bg-white">
+                                            <div class="floating-input " >
+                                                <input type="text" class="form-control cost" formControlName="TOTAL_MONTH"    disabled costInput   placeholder="Monthly Total">
+                                            </div>
+                                        </td>
+                                        <td colspan="1" class="total_grid w-1 bg-white">
+                                            <div class="floating-input " >
+                                                <input type="text" class="form-control  cost" formControlName="TOTAL_ANNAUL"   disabled costInput placeholder="Annual Total">
+                                            </div>
+                                        </td>
+                                     </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>

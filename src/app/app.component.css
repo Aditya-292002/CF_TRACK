@@ -1,0 +1,11 @@
+svg#Capa_1{
+    width: 20px;
+    height: 20px;
+    fill: #788db4;
+    margin-right: 12px;
+}
+svg#Capa_1:hover{
+    color: #fff !important;
+     text-decoration: none !important;
+     fill: #fff !important;
+}

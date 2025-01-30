@@ -1,0 +1,121 @@
+<app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
+
+<form [formGroup]="form">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="d-flex flex-wrap justify-content-between">
+                <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
+                <button class="btn btn-secondary " title="Save" (click)="SaveEmployeeMonth()">Save</button>
+                </div>
+           
+        </div>
+        <div class="col-md-12 mt-2">
+            <div class="row card">
+                <div class="col-md-6">
+                    <label>Company<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['COMPANY_CODE'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="Company" 
+                        formControlName="COMPANY_CODE"  data-live-search="true" title="Select">
+                            <option *ngFor="let opt of company_list; let i=index" 
+                            [selected]="opt.COMPANY_CODE == form.controls['COMPANY_CODE'].value"
+                             [value]="opt.COMPANY_CODE" >{{ opt.COMPANY_NAME }}</option>                    
+                        </select>
+                        <button type="button" class="close" (click)="form.controls['COMPANY_CODE'].reset()" onclick="resetDropdown('Company')"  aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class=" col-sm-12 col-md-2">
+                    <label>Year<span class="validator">*</span> :</label>
+                        <div class="floating-input list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['PYEAR'].errors?.required}">
+                            <select class="form-control selectpicker show-tick" formControlName="PYEAR"  data-live-search="true"
+                            (change)="filterMonth()"   id="year"  title="Select">
+                                <option *ngFor="let opt of fyear_list; let i=index" 
+                            [selected]="opt.FYEAR  == form.controls['PYEAR'].value"
+                             [value]="opt.FYEAR " >{{ opt.FYEAR_DESC}}</option>                    
+                            </select>
+                            <button type="button" class="close" (click)="form.controls['PYEAR'].reset()" onclick="resetDropdown('year')"  aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        
+                </div>
+                
+                <div class=" col-sm-12 col-md-2">
+                    <label>Month<span class="validator">*</span> :</label>
+                        <div class="floating-input list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['PERIOD_NO'].errors?.required}">
+                            <select class="form-control selectpicker show-tick"  formControlName="PERIOD_NO" (change)="onMonthChange()"  data-live-search="true"
+                              id="month"  title="Select">
+                                <option *ngFor="let opt of _month_list; let i=index" 
+                            [selected]="opt.PERIOD_NO == form.controls['PERIOD_NO'].value"
+                             [value]="opt.PERIOD_NO" >{{ opt.PERIOD_DESC }}</option>                    
+                            </select>
+                            <button type="button" class="close" (click)="form.controls['PERIOD_NO'].reset()" onclick="resetDropdown('month')"  aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button> 
+                        </div>
+                           
+                </div>
+                <div class="col-md-6 ">
+                    <label>Salary Head<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['SAL_HEAD'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="salHead"  (change)="onSalaryHeadChange()"
+                        formControlName="SAL_HEAD"  data-live-search="true" title="Select">
+                            <option *ngFor="let opt of sal_head_list; let i=index" 
+                            [selected]="opt.SAL_HEAD == form.controls['SAL_HEAD'].value"
+                             [value]="opt.SAL_HEAD" >{{ opt.HEAD_DESC }}</option>                    
+                        </select>
+                        <button type="button" class="close" (click)="form.controls['SAL_HEAD'].reset()" onclick="resetDropdown('salHead')"  aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-secondary mt-4"><i class="fa fa-upload mr-1" aria-hidden="true"></i>Upload from Excel</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-12 mt-2">
+            <div class="row card">
+                <div class="col-md-12">
+                    <div class="form-inline col-md-12 p-0">
+                        <h6 class="mb-0 col-md-6 p-0">Employee Month Details</h6>
+                        <div class="col-md-6 text-right" >
+                            <label class="float-right" style="cursor: pointer;">
+                                <a  class="text-uppercase text-decoration-none" (click)="showDetail()">Show Detail</a>
+                            </label>
+                        </div>
+                        <hr class="m-0 mb-2">
+                    </div>
+                    <div class="tableFixHead">
+                        <table class="table-theam-1 row_bgcolor_1">
+                            <thead>
+                                <tr>
+                                    <th class="w-70">Employee.</th>
+                                    <th class="w-2">Amount</th>
+                                    <th class="w-2 text-right">CUM Amount</th>
+                                    <th class="w-2 text-right">PREV Month</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let data of empdetail; let i=index;">
+                                    <tr>
+                                        <td class="w-70">{{ data.EMP_NO }} - {{ data.EMP_NAME }}</td>
+                                        <td class="w-2">
+                                            <div class="floating-input ">
+                                                <input type="text" class="form-control cost" [(ngModel)]="data.AMOUNT"  [ngModelOptions]="{standalone: true}"   costInput >
+                                            </div>
+                                        </td>
+                                        <td class="w-2 cost">{{ data.CUMM_AMOUNT }}</td>
+                                        <td class="w-2 cost">{{ data.PREV_AMOUNT }}</td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,450 @@
+<app-spinner [startSpinner]="spinner" *ngIf="spinner"></app-spinner>
+<div class="row">
+  <div class="col-md-12">
+    <div class="d-flex justify-content-between">
+      <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
+      <div class="d-flex col-md-8 justify-content-end">
+        <button
+          class="btn btn-secondary mr-1"
+          *ngIf="!isViewJV"
+          (click)="viewJvList()"
+          title="View Leave Details"
+        >
+          List
+        </button>
+        <button
+          class="btn btn-secondary"
+          [hidden]="inboundClick"
+          *ngIf="isViewJV"
+          (click)="SAVE_JV()"
+          title="Save"
+        >
+          Save
+        </button>
+        <div class="col-md-8" *ngIf="isViewJV">
+          <!-- <label>GL No</label> -->
+          <div class="list-btn">
+            <select
+              class="form-control selectpicker show-tick"
+              [(ngModel)]="GET_GL_NO"
+              id="GET_GL_NO"
+              data-live-search="true"
+              title="Select"
+              (change)="GetJVList()"
+            >
+              <option
+                *ngFor="let opt of gl_list; let i = index"
+                [selected]="opt.GL_NO == this.GET_GL_NO"
+                [value]="opt.GL_NO"
+              >
+                {{ opt.GL_DESCRIPTION }}
+              </option>
+            </select>
+            <button
+              type="button"
+              class="close"
+              onclick="resetDropdown('GET_GL_NO')"
+              (click)="GetResetGlNo()"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+        <button
+          class="btn btn-secondary"
+          *ngIf="isViewJV"
+          (click)="backToForm()"
+          title="Back"
+        >
+          <i class="fas fa-angle-left mr-1"></i>Back
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 mt-2" *ngIf="!isViewJV">
+    <div class="row card">
+      <div class="col-md-3">
+        <label>Doc Type:<span class="text-danger">*</span></label>
+        <div class="floating-input list-btn">
+          <select
+            class="form-control selectpicker show-tick"
+            [(ngModel)]="DOCTYPE_CODE"
+            id="DOCTYPE"
+            data-live-search="true"
+            title="Select"
+          >
+            <option
+              *ngFor="let opt of doc_type_list; let i = index"
+              [selected]="opt.DOCTYPE_CODE == this.DOCTYPE_CODE"
+              [value]="opt.DOCTYPE_CODE"
+            >
+              {{ opt.DOCTYPE_DESC }}
+            </option>
+          </select>
+          <!-- <button type="button" class="close" onclick="resetDropdown('DOCTYPE')" (click)="this.DOCTYPE_CODE.reset()"  aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button> -->
+        </div>
+      </div>
+      <div class="col-md-3">
+        <label>Voucher No :</label>
+        <div class="floating-input">
+          <input
+            type="text"
+            class="form-control"
+            maxlength="20"
+            [(ngModel)]="JV_NO"
+            OnlyNumber="true"
+            disabled
+            placeholder="Voucher No"
+          />
+        </div>
+      </div>
+      <div class="col-md-2">
+        <label>Voucher Date :<span class="text-danger">*</span></label>
+        <div class="floating-input">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="JV_DATE"
+            readonly
+          />
+          <div class="date-input">
+            <mat-form-field fxFlex="100" appearance="fill">
+              <mat-datepicker-toggle
+                matPrefix
+                [for]="picker"
+                id="cal"
+                #cal
+              ></mat-datepicker-toggle>
+              <input
+                class="form-control"
+                (dateChange)="ChangeDate()"
+                [value]="JV_DATE"
+                matInput
+                [(ngModel)]="JV_DATE"
+                [ngModelOptions]="{ standalone: true }"
+                [matDatepicker]="picker"
+                [min]="min_date"
+                [max]="maxdate"
+                [disabled]="false"
+                readonly
+              />
+
+              <mat-datepicker #picker id="picker"></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <label>Currency :<span class="text-danger">*</span></label>
+        <div class="floating-input list-btn">
+          <select
+            class="form-control selectpicker show-tick"
+            [(ngModel)]="CURRENCY_CODE"
+            id="Currency"
+            data-live-search="true"
+            title="Select"
+            (change)="GetSelectCurrency(this.CURRENCY_CODE)"
+          >
+            <option
+              *ngFor="let opt of currency_list; let i = index"
+              [selected]="opt.CURRENCY_CODE == this.CURRENCY_CODE"
+              [value]="opt.CURRENCY_CODE"
+            >
+              {{ opt.CURRENCY_NAME }}
+            </option>
+          </select>
+          <!-- <button type="button" class="close" onclick="resetDropdown('Currency')" (click)="this.CURRENCY_CODE.reset()"  aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button> -->
+        </div>
+      </div>
+      <div class="col-md-2">
+        <label>Exchange Rate :</label>
+        <div class="floating-input">
+          <input
+            class="form-control cost"
+            maxlength="3"
+            [(ngModel)]="EXCHANGE_RATE"
+            placeholder="Exchange Rate"
+            [readonly]="isExchangeRate"
+          />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label>Remarks :</label>
+        <div class="floating-input">
+          <textarea
+            name=""
+            id=""
+            rows="1"
+            class="form-control"
+            maxlength="500"
+            [(ngModel)]="JV_REMARKS"
+            placeholder="Enter a remarks "
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 mt-2" *ngIf="!isViewJV">
+    <div class="row card">
+      <div class="col-md-12">
+        <div class="card1 d-flex align-items-center justify-content-between">
+          <div class="float-left">
+            <h6>Journal Voucher Details</h6>
+          </div>
+          <div>
+            <button
+              type="button"
+              id="addNewRow"
+              (click)="f_addRow()"
+              class="btn text-primary"
+            >
+              <i class="fas fa-plus-circle"></i>Add
+            </button>
+          </div>
+        </div>
+      </div>
+      <hr class="m-0 mb-2" />
+      <div class="col-md-12">
+        <div class="tableFixHead">
+          <table class="table-theam-1 row_bgcolor_2">
+            <thead>
+              <tr>
+                <th class="w-1">Sr.No</th>
+                <th class="w-2">GL</th>
+                <th class="w-2">Party</th>
+                <th class="w-2">Project</th>
+                <th class="w-2">Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let data of _JV_Detail; let index = index">
+                <tr>
+                  <td class="w-1 pb-0 pt-0">{{ index + 1 }}</td>
+                  <td class="w-2 pb-0">
+                    <div class="floating-input dd_width">
+                      <select
+                        class="form-control selectpicker show-tick"
+                        name="GL_NAME{{ index }}"
+                        [(ngModel)]="data.GL_NO"
+                        [ngModelOptions]="{ standalone: true }"
+                        data-size="5"
+                        (change)="ChangeGL(data.GL_NO, index)"
+                        data-live-search="true"
+                        id=""
+                        title="Select"
+                      >
+                        <option value="" disabled></option>
+                        <option
+                          *ngFor="let opt of gl_list; let i = index"
+                          [selected]="opt.GL_NO == data.GL_NO"
+                          [value]="opt.GL_NO"
+                        >
+                          {{ opt.GL_DESCRIPTION }}
+                        </option>
+                      </select>
+                      <!-- <button type="button" class="close" onclick="resetDropdown('data.GL_NO')" (click)="data.GL_NO.reset()"  aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button> -->
+                    </div>
+                  </td>
+                  <td class="w-2 pb-0">
+                    <div class="floating-input dd_width">
+                      <select
+                        class="form-control selectpicker show-tick"
+                        name="PARTY_NAME{{ index }}"
+                        [(ngModel)]="data.PARTY_CODE"
+                        [ngModelOptions]="{ standalone: true }"
+                        data-size="5"
+                        data-live-search="true"
+                        id=""
+                        title="Select"
+                      >
+                        <option
+                          *ngFor="let opt of data.PARTY; let i = index"
+                          [selected]="opt.PARTY_CODE == data.PARTY_CODE"
+                          [value]="opt.PARTY_CODE"
+                        >
+                          {{ opt.PARTY_CODE }} - {{ opt.PARTY_NAME }}
+                        </option>
+                      </select>
+                      <!-- <button type="button" class="close" onclick="resetDropdown('data.PARTY_CODE')" (click)="data.PARTY_CODE.reset()"  aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button> -->
+                    </div>
+                  </td>
+
+                  <td class="w-2 pb-0">
+                    <div class="floating-input dd_width">
+                      <select
+                        class="form-control selectpicker show-tick"
+                        
+                        [(ngModel)]="data.PROJ_CODE"
+                        [ngModelOptions]="{ standalone: true }"
+                        data-live-search="true"
+                        id="Project{{ index }}"
+                        title="Select"
+                      >
+                        <option
+                          *ngFor="let opt of project_list; let i = index"
+                          [selected]="opt.PROJ_CODE == data.PROJ_CODE"
+                          [value]="opt.PROJ_CODE"
+                        >
+                          {{ opt.PROJ_NAME }}
+                        </option>
+                      </select>
+                      <!-- <button type="button" class="close" onclick="resetDropdown('data.PROJ_CODE')" (click)="data.PROJ_CODE.reset()"  aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button> -->
+                    </div>
+                  </td>
+                  <td class="w-2 pb-0">
+                    <div class="floating-input dd_width">
+                      <select
+                        class="form-control selectpicker show-tick"
+                       
+                        [(ngModel)]="data.LOCATION_CODE"
+                        [ngModelOptions]="{ standalone: true }"
+                        data-live-search="true"
+                        name="Location{{ index }}"
+                        title="Select"
+                      >
+                        <option value="" disabled></option>
+                        <option
+                          *ngFor="let opt of location_list; let i = index"
+                          [selected]="opt.LOCATION_CODE == data.LOCATION_CODE"
+                          [value]="opt.LOCATION_CODE"
+                        >
+                          {{ opt.LOCATION_NAME }}
+                        </option>
+                      </select>
+                      <button
+                        type="button"
+                        class="close"
+                        *ngIf="this._JV_Detail.length > 1"
+                        (click)="RemoveJvIndex(index)"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="pt-0"></td>
+                  <td colspan="2" class=""></td>
+                  <td colspan="1">
+                    <div class="form-inline">
+                      <label>Debit </label>
+                      <div class="floating-input ml-3">
+                        <input
+                          type="text"
+                          class="form-control cost"
+                          [disabled]="data.disabled1"
+                          (change)="CalculateTotalAmount(index)"
+                          [(ngModel)]="data.DEBIT_AMT"
+                          [ngModelOptions]="{ standalone: true }"
+                          id="DEBIT_AMT{{ index }}"
+                          OnlyNumber="true"
+                          placeholder="Debit"
+                        />
+                      </div>
+                    </div>
+                  </td>
+                  <td colspan="1">
+                    <div class="form-inline">
+                      <label>Credit </label>
+                      <div class="floating-input ml-3">
+                        <input
+                          type="text"
+                          class="form-control cost"
+                          [disabled]="data.disabled2"
+                          (change)="CalculateTotalAmount(index)"
+                          [(ngModel)]="data.CREDIT_AMT"
+                          [ngModelOptions]="{ standalone: true }"
+                          id="CREDIT_AMT{{ index }}"
+                          OnlyNumber="true"
+                          placeholder="Credit"
+                        />
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+
+              <tr>
+                <td colspan="1" class=""></td>
+                <td colspan="1" class=""></td>
+                <td colspan="1" class=""></td>
+
+                <td colspan="1" class="total_grid">
+                  <div class="form-inline">
+                    <label>Total </label>
+                    <div class="floating-input ml-3">
+                      <input
+                        type="text"
+                        maxlength="10"
+                        class="form-control cost"
+                        [(ngModel)]="Debit_VALUE"
+                        disabled
+                        placeholder="Debit Total"
+                      />
+                    </div>
+                  </div>
+                </td>
+                <td colspan="1" class="total_grid">
+                  <div class="form-inline">
+                    <label>Total </label>
+                    <div class="floating-input ml-3">
+                      <input
+                        type="text"
+                        maxlength="10"
+                        class="form-control cost"
+                        [(ngModel)]="Credit_VALUE"
+                        disabled
+                        placeholder="Credit Total"
+                      />
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <br />
+  </div>
+  <div class="page-content mt-2" *ngIf="isViewJV">
+    <div class="col-md-12">
+      <div class="tableFixHead">
+        <table class="table-theam-1 row_bgcolor_1">
+          <thead>
+            <tr>
+              <th class="w-130">JV No</th>
+              <th class="w-130">JV Date</th>
+              <th class="w-130">Remarks</th>
+              <th class="w-110">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of all_jv_list; let i = index">
+              <td class="w-130">{{ data.JV_NO }}</td>
+              <td class="w-130">{{ data.JV_DATE }}</td>
+              <td class="w-130">{{ data.JV_REMARKS }}</td>
+              <td class="w-110">
+                <a>
+                  <i class="fa fa-edit" (click)="editJV(data)" title="Edit"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

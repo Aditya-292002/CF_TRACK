@@ -1,0 +1,735 @@
+<app-spinner [startSpinner]="spinner" *ngIf="spinner"></app-spinner>
+<form [formGroup]="form">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="d-flex justify-content-between">
+        <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
+        <div>
+          <button
+            class="btn btn-secondary mr-1"
+            (click)="SaveInvoiceRequest()"
+            title="Save"
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            class="btn py-1"
+            (click)="approveRoute()"
+            title="Invoice Request Approve"
+          >
+            <svg
+              version="1.1"
+              class="invoice_svg"
+              id="Layer_1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              x="0px"
+              y="0px"
+              viewBox="0 0 512 512"
+              style="enable-background: new 0 0 512 512"
+              xml:space="preserve"
+            >
+              <g>
+                <g>
+                  <path
+                    d="M354.338,34.205h-61.71c-3.354-9.93-12.752-17.102-23.8-17.102h-17.547C243.359,6.451,230.813,0,217.521,0
+				s-25.839,6.451-33.76,17.102h-17.547c-11.048,0-20.446,7.172-23.8,17.102H80.701c-18.566,0-33.67,15.105-33.67,33.67v359.148
+				c0,18.566,15.105,33.67,33.67,33.67h171.023c4.427,0,8.017-3.589,8.017-8.017c0-4.427-3.589-8.017-8.017-8.017H80.701
+				c-9.725,0-17.637-7.912-17.637-17.637V67.875c0-9.725,7.912-17.637,17.637-17.637h60.394v26.188c0,4.427,3.589,8.017,8.017,8.017
+				H285.93c4.427,0,8.017-3.589,8.017-8.017V50.238h60.391c9.725,0,17.637,7.912,17.637,17.637v230.881
+				c0,4.427,3.589,8.017,8.017,8.017c4.427,0,8.017-3.589,8.017-8.017V67.875C388.008,49.309,372.904,34.205,354.338,34.205z
+				M277.914,68.409H157.129V42.252c0-0.011,0.001-0.02,0.001-0.031c0-0.005-0.001-0.011-0.001-0.015
+				c0.009-5.004,4.08-9.071,9.085-9.071h21.846c2.854,0,5.493-1.517,6.929-3.985c4.781-8.213,13.204-13.117,22.532-13.117
+				s17.751,4.904,22.532,13.117c1.435,2.467,4.075,3.985,6.929,3.985h21.846c4.999,0,9.067,4.059,9.085,9.055
+				c0,0.011-0.001,0.02-0.001,0.031c0,0.021,0.003,0.041,0.003,0.062V68.409z"
+                  />
+                </g>
+              </g>
+              <g>
+                <g>
+                  <path
+                    d="M251.722,410.455H97.269V84.443h17.64c4.427,0,8.017-3.589,8.017-8.017s-3.589-8.017-8.017-8.017H89.253
+				c-4.427,0-8.017,3.589-8.017,8.017v342.046c0,4.427,3.589,8.017,8.017,8.017h162.47c4.427,0,8.017-3.589,8.017-8.017
+				C259.739,414.044,256.15,410.455,251.722,410.455z"
+                  />
+                </g>
+              </g>
+              <g>
+                <g>
+                  <path
+                    d="M345.787,68.409h-25.653c-4.427,0-8.017,3.589-8.017,8.017s3.589,8.017,8.017,8.017h17.637v214.311
+				c0,4.427,3.589,8.017,8.017,8.017s8.017-3.589,8.017-8.017V76.426C353.804,71.999,350.214,68.409,345.787,68.409z"
+                  />
+                </g>
+              </g>
+              <g>
+                <g>
+                  <path
+                    d="M371.44,324.944c-51.572,0-93.528,41.956-93.528,93.528S319.869,512,371.44,512s93.528-41.956,93.528-93.528
+				S423.012,324.944,371.44,324.944z M371.44,495.967c-42.731,0-77.495-34.764-77.495-77.495s34.764-77.495,77.495-77.495
+				s77.495,34.764,77.495,77.495S414.172,495.967,371.44,495.967z"
+                  />
+                </g>
+              </g>
+              <g>
+                <g>
+                  <path
+                    d="M217.607,34.205h-0.086c-4.427,0-7.974,3.589-7.974,8.017c0,4.427,3.631,8.017,8.059,8.017
+				c4.427,0,8.017-3.589,8.017-8.017C225.624,37.794,222.035,34.205,217.607,34.205z"
+                  />
+                </g>
+              </g>
+              <g>
+                <g>
+                  <path
+                    d="M419.865,387.15c-3.13-3.131-8.207-3.131-11.337,0l-54.19,54.19l-28.536-28.536c-3.131-3.131-8.207-3.131-11.337,0
+				c-3.131,3.131-3.131,8.207,0,11.337l34.205,34.205c1.565,1.565,3.617,2.348,5.668,2.348s4.103-0.782,5.668-2.348l59.858-59.858
+				C422.995,395.356,422.995,390.28,419.865,387.15z"
+                  />
+                </g>
+              </g>
+              <g>
+                <g>
+                  <path
+                    d="M182.781,177.309v-32.338c11.295,1.934,18.171,7.688,18.171,11.889c0,4.427,3.589,8.017,8.017,8.017
+				s8.017-3.589,8.017-8.017c0-14.171-14.492-25.621-34.205-28.092v-1.036c0-4.427-3.589-8.017-8.017-8.017s-8.017,3.589-8.017,8.017
+				v1.036c-19.713,2.47-34.205,13.92-34.205,28.092c0,20.074,18.829,27.788,34.205,32.461v32.338
+				c-11.295-1.934-18.171-7.688-18.171-11.889c0-4.427-3.589-8.017-8.017-8.017s-8.017,3.589-8.017,8.017
+				c0,14.171,14.492,25.621,34.205,28.092v1.036c0,4.427,3.589,8.017,8.017,8.017s8.017-3.589,8.017-8.017v-1.036
+				c19.713-2.47,34.205-13.92,34.205-28.092C216.985,189.697,198.157,181.982,182.781,177.309z M166.747,172.411
+				c-13.524-4.713-18.171-8.963-18.171-15.551c0-2.535,2.236-5.335,6.134-7.68c3.294-1.982,7.473-3.415,12.037-4.198V172.411z
+				M194.818,217.45c-3.294,1.982-7.473,3.415-12.037,4.198v-27.429c13.524,4.713,18.171,8.963,18.171,15.551
+				C200.952,212.306,198.716,215.105,194.818,217.45z"
+                  />
+                </g>
+              </g>
+              <g>
+                <g>
+                  <path
+                    d="M294.48,136.818h-42.756c-4.427,0-8.017,3.589-8.017,8.017s3.589,8.017,8.017,8.017h42.756
+				c4.427,0,8.017-3.589,8.017-8.017S298.908,136.818,294.48,136.818z"
+                  />
+                </g>
+              </g>
+              <g>
+                <g>
+                  <path
+                    d="M277.378,171.023h-25.653c-4.427,0-8.017,3.589-8.017,8.017s3.589,8.017,8.017,8.017h25.653
+				c4.427,0,8.017-3.589,8.017-8.017S281.805,171.023,277.378,171.023z"
+                  />
+                </g>
+              </g>
+              <g>
+                <g>
+                  <path
+                    d="M294.48,205.228h-42.756c-4.427,0-8.017,3.589-8.017,8.017s3.589,8.017,8.017,8.017h42.756
+				c4.427,0,8.017-3.589,8.017-8.017S298.908,205.228,294.48,205.228z"
+                  />
+                </g>
+              </g>
+              <g>
+                <g>
+                  <path
+                    d="M157.662,282.188H140.56c-4.427,0-8.017,3.589-8.017,8.017s3.589,8.017,8.017,8.017h17.102
+				c4.427,0,8.017-3.589,8.017-8.017S162.089,282.188,157.662,282.188z"
+                  />
+                </g>
+              </g>
+              <g>
+                <g>
+                  <path
+                    d="M157.662,350.597H140.56c-4.427,0-8.017,3.589-8.017,8.017s3.589,8.017,8.017,8.017h17.102
+				c4.427,0,8.017-3.589,8.017-8.017S162.089,350.597,157.662,350.597z"
+                  />
+                </g>
+              </g>
+              <g>
+                <g>
+                  <path
+                    d="M157.662,316.393H140.56c-4.427,0-8.017,3.589-8.017,8.017s3.589,8.017,8.017,8.017h17.102
+				c4.427,0,8.017-3.589,8.017-8.017S162.089,316.393,157.662,316.393z"
+                  />
+                </g>
+              </g>
+              <g>
+                <g>
+                  <path
+                    d="M294.48,282.188H191.866c-4.427,0-8.017,3.589-8.017,8.017s3.589,8.017,8.017,8.017H294.48
+				c4.427,0,8.017-3.589,8.017-8.017S298.908,282.188,294.48,282.188z"
+                  />
+                </g>
+              </g>
+              <g>
+                <g>
+                  <path
+                    d="M268.827,350.597h-76.96c-4.427,0-8.017,3.589-8.017,8.017s3.589,8.017,8.017,8.017h76.96
+				c4.427,0,8.017-3.589,8.017-8.017S273.254,350.597,268.827,350.597z"
+                  />
+                </g>
+              </g>
+              <g>
+                <g>
+                  <path
+                    d="M294.48,316.393H191.866c-4.427,0-8.017,3.589-8.017,8.017s3.589,8.017,8.017,8.017H294.48
+				c4.427,0,8.017-3.589,8.017-8.017S298.908,316.393,294.48,316.393z"
+                  />
+                </g>
+              </g>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <div class="row card">
+        <div class="col-md-4">
+          <label>Company<span class="validator">*</span> :</label>
+          <div
+            class="floating-input list-btn"
+            [ngClass]="{
+              'invalid-control':
+                isSubmited && form.controls['COMPANY_CODE'].errors?.required
+            }"
+          >
+            <select
+              class="form-control selectpicker show-tick"
+              formControlName="COMPANY_CODE"
+              (change)="filterLocations()"
+              data-live-search="true"
+              id="company"
+              #company
+              title="Select"
+            >
+              <option
+                *ngFor="let opt of company_list; let i = index"
+                [selected]="
+                  opt.COMPANY_CODE == form.controls['COMPANY_CODE'].value
+                "
+                [value]="opt.COMPANY_CODE"
+              >
+                {{ opt.COMPANY_NAME }}
+              </option>
+            </select>
+            <button
+              type="button"
+              class="close"
+              onclick="resetDropdown('company')"
+              (click)="form.controls['COMPANY_CODE'].reset()"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label>Location<span class="validator">*</span> :</label>
+          <div
+            class="floating-input list-btn"
+            [ngClass]="{
+              'invalid-control':
+                isSubmited && form.controls['LOCATION_CODE'].errors?.required
+            }"
+          >
+            <select
+              class="form-control selectpicker show-tick"
+              formControlName="LOCATION_CODE"
+              data-live-search="true"
+              id="location"
+              #company
+              title="Select"
+            >
+              <option
+                *ngFor="let opt of _location_list; let i = index"
+                [selected]="
+                  opt.LOCATION_CODE == form.controls['LOCATION_CODE'].value
+                "
+                [value]="opt.LOCATION_CODE"
+              >
+                {{ opt.LOCATION_NAME }}
+              </option>
+            </select>
+            <button
+              type="button"
+              class="close"
+              onclick="resetDropdown('location')"
+              (click)="form.controls['LOCATION_CODE'].reset()"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label>Invoice Type<span class="validator">*</span> :</label>
+          <div
+            class="floating-input list-btn"
+            [ngClass]="{
+              'invalid-control':
+                isSubmited && form.controls['DOCTYPE_CODE'].errors?.required
+            }"
+          >
+            <select
+              class="form-control selectpicker show-tick"
+              formControlName="DOCTYPE_CODE"
+              data-live-search="true"
+              id="invoice_type"
+              title="Select"
+            >
+              <option
+                *ngFor="let opt of invoice_type_list; let i = index"
+                [selected]="
+                  opt.DOCTYPE_CODE == form.controls['DOCTYPE_CODE'].value
+                "
+                [value]="opt.DOCTYPE_CODE"
+              >
+                {{ opt.DOCTYPE_DESC }}
+              </option>
+            </select>
+            <button
+              type="button"
+              class="close"
+              onclick="resetDropdown('invoice_type')"
+              (click)="form.controls['DOCTYPE_CODE'].reset()"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label>Financial Year<span class="validator">*</span> :</label>
+          <div
+            class="floating-input list-btn"
+            [ngClass]="{
+              'invalid-control':
+                isSubmited && form.controls['FYEAR'].errors?.required
+            }"
+          >
+            <select
+              class="form-control selectpicker show-tick"
+              disabled
+              formControlName="FYEAR"
+              data-live-search="true"
+              id="fyear"
+              title="Select"
+            >
+              <option
+                *ngFor="let opt of fyear_list; let i = index"
+                [selected]="opt.FYEAR == form.controls['FYEAR'].value"
+                [value]="opt.FYEAR"
+              >
+                {{ opt.FYEAR_DESC }}
+              </option>
+            </select>
+            <!-- <button type="button" class="close" onclick="resetDropdown('fyear')" (click)="form.controls['FYEAR'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button> -->
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label>Request No :</label>
+          <div
+            class="floating-input"
+            [ngClass]="{
+              'invalid-control':
+                isSubmited && form.controls['REQ_NO'].errors?.required
+            }"
+          >
+            <input
+              type="text"
+              class="form-control"
+              formControlName="REQ_NO"
+              disabled
+              placeholder="Request No."
+              OnlyNumber="true"
+            />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label>Request Date<span class="validator">*</span> :</label>
+          <div
+            class="floating-input"
+            [ngClass]="{
+              'invalid-control':
+                isSubmited && form.controls['REQ_DATE'].errors?.required
+            }"
+          >
+            <input
+              type="text"
+              class="form-control"
+              formControlName="REQ_DATE"
+              [(ngModel)]="REQ_DATE"
+              readonly
+            />
+            <app-date-picker
+              [(ngModel)]="REQ_DATE"
+              id="reqdate"
+              #reqdate
+              class="date-input"
+              [maxdate]=""
+              [mindate]="min_date"
+              [isDisable]="false"
+              [ngModelOptions]="{ standalone: true }"
+            ></app-date-picker>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label>Customer<span class="validator">*</span> :</label>
+          <div
+            class="floating-input list-btn"
+            [ngClass]="{
+              'invalid-control':
+                isSubmited && form.controls['CUST_CODE'].errors?.required
+            }"
+          >
+            <select
+              class="form-control selectpicker show-tick"
+              formControlName="CUST_CODE"
+              (change)="filterProjects()"
+              id="customer"
+              data-live-search="true"
+              title="Select"
+            >
+              <option
+                *ngFor="let opt of customer_list; let i = index"
+                [selected]="opt.CUST_CODE == form.controls['CUST_CODE'].value"
+                [value]="opt.CUST_CODE"
+              >
+                {{ opt.CUST_NAME }}
+              </option>
+            </select>
+            <button
+              type="button"
+              class="close"
+              onclick="resetDropdown('customer')"
+              (click)="form.controls['CUST_CODE'].reset()"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label>Project<span class="validator">*</span> :</label>
+          <div
+            class="floating-input list-btn"
+            [ngClass]="{
+              'invalid-control':
+                isSubmited && form.controls['PROJ_CODE'].errors?.required
+            }"
+          >
+            <select
+              class="form-control selectpicker show-tick"
+              formControlName="PROJ_CODE"
+              (change)="GetTaskList()"
+              id="project"
+              data-live-search="true"
+              title="Select"
+            >
+              <option
+                *ngFor="let opt of project_list; let i = index"
+                [selected]="opt.PROJ_CODE == form.controls['PROJ_CODE'].value"
+                [value]="opt.PROJ_CODE"
+              >
+                {{ opt.PROJ_NAME }}
+              </option>
+            </select>
+            <button
+              type="button"
+              class="close"
+              onclick="resetDropdown('project')"
+              (click)="form.controls['PROJ_CODE'].reset(); invoice_detail = []"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label>Invoice Value<span class="validator">*</span> :</label>
+          <div
+            class="floating-input"
+            [ngClass]="{
+              'invalid-control':
+                isSubmited && form.controls['INVOICE_VALUE'].errors?.required
+            }"
+          >
+            <input
+              type="text"
+              class="form-control"
+              formControlName="INVOICE_VALUE"
+              OnlyNumber="true"
+              maxlength="5"
+              placeholder="Invoice Value"
+            />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label>Currency<span class="validator">*</span> :</label>
+          <div
+            class="floating-input list-btn"
+            [ngClass]="{
+              'invalid-control':
+                isSubmited && form.controls['CURRENCY_CODE'].errors?.required
+            }"
+          >
+            <select
+              class="form-control selectpicker show-tick"
+              id="currency"
+              formControlName="CURRENCY_CODE"
+              data-live-search="true"
+              title="Select"
+            >
+              <option
+                *ngFor="let opt of currency_list; let i = index"
+                [selected]="
+                  opt.CURRENCY_CODE == form.controls['CURRENCY_CODE'].value
+                "
+                [value]="opt.CURRENCY_CODE"
+              >
+                {{ opt.CURRENCY_NAME }}
+              </option>
+            </select>
+            <button
+              type="button"
+              class="close"
+              onclick="resetDropdown('currency')"
+              (click)="form.controls['CURRENCY_CODE'].reset()"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <label>Heading<span class="validator">*</span> :</label>
+          <div
+            class="floating-input"
+            [ngClass]="{
+              'invalid-control':
+                isSubmited && form.controls['HEADING'].errors?.required
+            }"
+          >
+            <input
+              type="text"
+              class="form-control"
+              formControlName="HEADING"
+              maxlength="100"
+              placeholder="Heading"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  -->
+    <div class="col-md-12 mt-2">
+      <div class="row card">
+        <div class="form-inline col-md-12">
+          <h6 class="mb-0 col-md-6 p-0">Invoice Request Details</h6>
+          <div class="col-md-6 text-right" *ngIf="invoice_detail.length">
+            <label class="float-right">
+              <a
+                href
+                data-toggle="modal"
+                data-target="#alltasks"
+                class="text-uppercase text-decoration-none"
+                >Show Tasks</a
+              >
+            </label>
+          </div>
+          <hr class="m-0 mb-2" />
+        </div>
+        <div class="col-md-12">
+          <div class="tableFixHead">
+            <table class="table-theam-1 row_bgcolor_1">
+              <thead>
+                <tr>
+                  <!-- <th></th> -->
+                  <th class="w-20">Task</th>
+                  <th class="w-20">Detailed</th>
+                  <th class="w-20">Client Ref</th>
+                  <th class="w-10">Actual Hrs</th>
+                  <th class="">Invoice Hrs</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of _invoice_detail; let i = index">
+                  <!-- <td class="width-5">
+                                        <div class="floating-input">
+                                            <input type="checkbox" [(ngModel)]="data.ACTIVE" class="form-control" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td> -->
+                  <td class="w-20">
+                    {{ data.TASK_DESC }}
+                  </td>
+                  <td class="w-20">{{ data.TASK_DETAILS }}</td>
+                  <td class="w-20">{{ data.CLIENT_REFNO }}</td>
+                  <td class="w-10">{{ data.ACTUAL_HOURS_D }}</td>
+                  <td class="time">
+                    <div class="floating-input">
+                      <input
+                        type="text"
+                        [(ngModel)]="data.BILLED_HOURS_D"
+                        id="invoicehrs_{{ i }}"
+                        TimeOnly="HHHH:MM"
+                        [disabled]="!data.ACTIVE"
+                        class="px-1 form-control"
+                        placeholder="HHHH:MM"
+                        value=""
+                        autocomplete="off"
+                        [ngModelOptions]="{ standalone: true }"
+                      />
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!--  -->
+        <div class="col-md-3 mt-2">
+          <label>Cost :</label>
+          <div class="floating-input">
+            <input
+              type="text"
+              placeholder="Cost"
+              class="form-control"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3 mt-2">
+          <label>Old Bill Value :</label>
+          <div class="floating-input">
+            <input
+              type="text"
+              placeholder="Old Bill"
+              class="form-control"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3 mt-2">
+          <label>Margin :</label>
+          <div class="floating-input">
+            <input
+              type="text"
+              placeholder="Margin"
+              class="form-control"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="col-md-3 mt-2">
+          <label>Margin% :</label>
+          <div class="floating-input">
+            <input
+              type="text"
+              placeholder="Margin%"
+              class="form-control"
+              readonly
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  #alltasks
+  id="alltasks"
+  tabindex="-1"
+  role="dialog"
+  data-keyboard="false"
+  data-backdrop="static"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Tasks</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body py-2">
+        <div class="row">
+          <div class="col-md-4 ml-auto">
+            <div class="floating-input">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="task_search_val"
+                placeholder="Search"
+                [ngModelOptions]="{ standalone: true }"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="tableFixHead mt-2">
+          <table class="table-theam-1 row_bgcolor_3">
+            <thead>
+              <tr>
+                <th class="width-5 text-center"></th>
+                <th class="w-20">Task</th>
+                <th class="w-20">Details</th>
+                <th class="w-10">Client Ref.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container
+                *ngFor="
+                  let data of invoice_detail | filter : task_search_val;
+                  let i = index
+                "
+              >
+                <tr>
+                  <td class="width-5 text-center">
+                    <label>
+                      <input
+                        class="form-check-input ml-0 table-check"
+                        type="checkbox"
+                        id="c_{{ i }}"
+                        [(ngModel)]="data.ACTIVE"
+                        [ngModelOptions]="{ standalone: true }"
+                      />
+                    </label>
+                  </td>
+                  <td class="w-20">
+                    <label for="c_{{ i }}"> {{ data.TASK_DESC }} </label>
+                  </td>
+                  <td class="w-20">{{ data.TASK_DETAILS }}</td>
+                  <td class="w-20">{{ data.CLIENT_REFNO }}</td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          (click)="add_tasks()"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+        >
+          Add
+        </button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

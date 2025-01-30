@@ -1,0 +1,447 @@
+<app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
+<form [formGroup]="form">
+    <div class="row">
+        <div class="col-md-12">
+			<div class="d-flex justify-content-between">
+                <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
+                <div class="">
+                    <button class="btn btn-secondary mr-1" *ngIf="isViewLeave" (click)="viewLeaveList()"
+                        title="view list Details back" data-toggle="modal" data-target="#viewLeave">View leave</button>
+                    <button class="btn btn-secondary mr-1" *ngIf="!isViewLeave && !updateFlag" data-toggle="modal"
+                        data-target="#approve_leave" title="Approve">Approve</button>
+                        <button class="btn btn-secondary mr-1" *ngIf="!isViewLeave && updateFlag" (click)="UpdateLeaveData()">Update</button>
+                    <button class="btn btn-secondary mr-1" *ngIf="!isViewLeave && !updateFlag" data-toggle="modal"
+                        data-target="#decline_leave" title="Reject">Reject</button>
+                    <button class="btn btn-secondary mr-1" *ngIf="!isViewLeave" (click)="toggle()"
+                        title="view Leave Details">Back</button>
+                </div>
+            </div>
+      </div> 
+        <div class="col-md-12 mt-2" *ngIf="isViewLeave">
+            <div class="row card">
+                <div class="col-md-3 mt-2">
+                    <div class="floating-input list-btn">
+                        <select class="form-control selectpicker show-tick" formControlName="EMP_NO"
+                            (change)="onChange($event)" data-live-search="true" #emp id="emp{{i}}" title="Employee Name"
+                            enabled>
+                            <option *ngFor="let opt of EmpCommon_list; let i=index"
+                                [selected]="opt.EMP_NO == form.controls['EMP_NO'].value" [value]="opt.EMP_CODE">{{
+                                opt.EMP_CODE }} - {{ opt.USER_NAME }}</option>
+                        </select>
+                        <button type="button" class="close" (click)="resetDropdown('EMP_NO')"
+                            (click)="form.controls['EMP_NO'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 mt-2 pl-0">
+                    <div class="floating-input list-btn">
+                        <select class="form-control selectpicker show-tick" formControlName="LEAVE_TYPE" id="TYPE{{i}}"
+                            (change)="onChange($event)" data-live-search="true" title="LEAVE TYPE">
+                            <option *ngFor="let opt of LeaveType_list; let i = index"
+                                [selected]="opt.LEAVE_TYPE == form.controls['LEAVE_TYPE'].value"
+                                [value]="opt.LEAVE_TYPE">{{ opt.LEAVE_TYPE_DESC }}</option>
+                        </select>
+                        <button type="button" class="close" (click)="resetDropdown('LEAVE_TYPE')" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 mt-2 pl-0">
+                    <div class="floating-input">
+                        <input type="text" class="form-control" formControlName="FROM_DATE" [(ngModel)]="FROM_DATE"
+                            (change)="ChangeFDate()" placeholder="FROM DATE" readonly>
+                        <!-- <app-date-picker id="reqdate" [(ngModel)]="JV_DATE" #reqdate class="date-input" [ngModelOptions]="{standalone: true}"></app-date-picker> -->
+                        <div class="date-input">
+                            <mat-form-field fxFlex="100" appearance="fill">
+                                <mat-datepicker-toggle matPrefix [for]="picker2" id='cal2{{i}}'
+                                    #cal2></mat-datepicker-toggle>
+                                <input class="form-control" (dateChange)="ChangeFDate()" [value]="F_DATE" matInput
+                                    [(ngModel)]="F_DATE" [ngModelOptions]="{standalone: true}" [matDatepicker]="picker2"
+                                    [min]="min_date" [max]="maxdate" [disabled]="false" readonly />
+
+                                <mat-datepicker #picker2 id="picker2"></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-3 col-md-2 col-sm-2 mt-2 pl-0 padd-1">
+                    <div class="floating-input">
+                        <input type="text" class="form-control" formControlName="TO_DATE" [(ngModel)]="TO_DATE" enabled
+                            placeholder="TO DATE" readonly>
+                        <!-- <app-date-picker id="reqdate" [(ngModel)]="JV_DATE" #reqdate class="date-input" [ngModelOptions]="{standalone: true}"></app-date-picker> -->
+                        <div class="date-input" id="div_todate">
+                            <mat-form-field fxFlex="100" appearance="fill">
+                                <mat-datepicker-toggle matPrefix [for]="picker3" id="dt_cal3{{i}}"
+                                    #dt_cal3></mat-datepicker-toggle>
+                                <input class="form-control" (dateChange)="ChangeTDate()" [value]="T_DATE" id="cal3"
+                                    matInput [(ngModel)]="T_DATE" [ngModelOptions]="{standalone: true}"
+                                    [matDatepicker]="picker3" [min]="min_date" [max]="maxdate" [disabled]="false"
+                                    readonly />
+
+                                <mat-datepicker #picker3 id="picker3"></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-3 col-md-3 col-sm-3 mt-2 pl-0 padd-1">
+                    <div class="floating-input list-btn">
+                        <select class="form-control selectpicker show-tick" formControlName="STATUS" id="Status"
+                            #filterName (change)="onChange($event)" data-live-search="true" title="Status">
+                            <option value="M" selected> MANAGER APPROVED</option>
+                            <option value="P">PENDING FOR MA</option>
+                            <option value="A">HR APPROVED</option>
+                            <option value="R">REJECT</option>
+                            <option value="ALL">ALL</option>
+                        </select>
+                        <button type="button" class="close" (click)="resetDropdown('STATUS')" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class=" col-xl-1 col-lg-2 col-md-2 col-sm-2 pl-0 mt-2">
+                    <button class="btn btn-secondary" (click)="GetSearchLeaveList()" id="Search{{i}}"
+                        title="Search">Search</button>
+                </div>
+                <div class=" col-xl-1 col-lg-2 col-md-2 col-sm-2 mt-2">
+                    <button class="btn btn-secondary" (click)="clear()" id="Search{{i}}" title="Search">Clear</button>
+                    <!-- <i class="fas fa-times mr-3" (click)="clear()" title="Clear"></i> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="page-content mt-2" *ngIf="isViewLeave">
+            <div class="col-md-12">
+                <div class="tableFixHead ">
+                    <table class="table-theam-1 table_width row_bgcolor_1">
+                        <thead>
+                            <tr>
+                                <th class="w-20">Employee Name</th>
+                                <th class="w-20">Leave Type</th>
+                                <th class="w-130">From Date</th>
+                                <th class="w-130">To Date</th>
+                                <th class="w-130">No. of Days</th>
+                                <th class="w-130">Status</th>
+                                <th class="w-40">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of Employee_list;let i=index;">
+                                <td id="USER_NAME{{i}}">{{data.USER_NAME}}</td>
+                                <td id="LEAVE_TYPE{{i}}">{{data.LEAVE_TYPE}}</td>
+                                <td class="w-130" id="FROM_DATE{{i}}">{{data.FROM_DATE}}</td>
+                                <td class="w-130" id="TO_DATE{{i}}">{{data.TO_DATE}}</td>
+                                <td class="w-130" id="NO_OF_DAYS{{i}}">{{data.NO_OF_DAYS}}</td>
+                                <td class="w-130" id="Val{{i}}">{{data.STATUS}}</td>
+                                <td class="w-40">
+                                    <i class="fas fa-eye text-info mr-3"
+                                        *ngIf="data.STATUS == 'M' ||data.STATUS == 'Manager Approved'"
+                                        (click)="viewDetails(data) ; getHrLeaveData()"></i>
+
+                                    <i class="fas fa-edit text-info mr-3" *ngIf="data.STATUS === 'HR Approved'"
+                                        (click)="viewDetails(data); getHrLeaveData()"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="modal fade" id="approve_leave" #approve_leave tabindex="-1" role="dialog" aria-labelledby="approve_leave"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content sidebar">
+            <div class="modal-body row justify-content-center">
+                <div class="form-header text-center col-12">
+                    <h5>Leave Approve</h5>
+                    <p>Are you sure want to approve for this leave?</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#APPROVE"
+                    (click)="saveLeaveData()">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="decline_leave" #decline_leave tabindex="-1" role="dialog" aria-labelledby="approve_leave"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header text-center">
+                    <h5>Leave Reject</h5>
+                    <p style="text-align: left;margin-left: 15px;">Are you sure want to reject for this leave?</p>
+                </div>
+                <div class="col-md-12">
+                    <label> Reason :<span class="text-danger">*</span></label>
+                    <div class="floating-input mb-2">
+                        <textarea name="" id="" cols="2" class="form-control" placeholder="Reject Reason"
+                            [(ngModel)]="reject_reason"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" (click)="RejectLeave()" class="btn btn-secondary" data-target="#REJECT"
+                    data-dismiss="modal">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" #viewLeave id="viewLeave" tabindex="-1" role="dialog" data-keyboard="false"
+    data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document" style="max-width: 1200px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Today's Leave Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="col-md-12">
+                    <div class="tableFixHead mt-2 ">
+                        <table class="table-theam-1 row_bgcolor_1 ">
+                            <thead>
+                                <tr>
+                                    <th class="w-2">Employee Name</th>
+                                    <th class="w-1">Leave Type</th>
+                                    <th class="w-1">From Date</th>
+                                    <th class="w-1">To Date</th>
+                                    <th class="w-2">Reason</th>
+                                    <th class="w-1">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of today_Leave_List;let i=index;">
+                                    <td class="w-2" id="USER_NAME{{i}}">{{data.USER_NAME}}</td>
+                                    <td class="w-1" id="LEAVE_TYPE{{i}}">{{data.LEAVE_TYPE}}</td>
+                                    <td class="w-1" id="FROM_DATE{{i}}">{{data.FROM_DATE}}</td>
+                                    <td class="w-1" id="TO_DATE{{i}}">{{data.TO_DATE}}</td>
+                                    <td class="w-2" id="Reason{{i}}">
+                                        <div>
+                                            <i class="fas fa-registered mr-3" (click)="clickReason(data.REASON)"
+                                                data-target="#Reason" data-toggle="modal" title="{{data.REASON}}">
+                                                <span title="{{data.REASON}}"></span></i>
+                                        </div>
+                                    </td>
+                                    <td class="w-1" id="Val{{i}}">{{data.STATUS}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="reason" #reason tabindex="-1" role="dialog" aria-labelledby="reason" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ReasonforLeave">Reason for Leave</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <p>{{leaveReason}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" (click)="ApproveLeave()" class="btn btn-secondary" data-dismiss="modal" data-target="#APPROVE">Approve</button> -->
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="Reason" #Reason tabindex="-1" role="dialog" aria-labelledby="Reason" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ReasonforLeave">Reason for Leave</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+
+                            <p>{{LeaveReason}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" (click)="ApproveLeave()" class="btn btn-secondary" data-dismiss="modal" data-target="#APPROVE">Approve</button> -->
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row " *ngIf="!isViewLeave" [style]="!isViewLeave ? 'display: block' : 'display: none'">
+    <div id="viewForm">
+        <div class="mt-2 d-flex">
+            <div class="col-xl-9 col-lg-12 col-md-12 col-sm-12 pr-0 padd_right d-flex  ">
+                <div class="row card">
+                    <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+                        <label>Employee :<span class="text-danger">*</span></label>
+                        <div class="floating-input list-btn mb-2">
+                            <input type="text" class="form-control" [value]="USER_NAME" disabled>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+                        <label>Leave Code :<span class="text-danger">*</span></label>
+                        <div class="floating-input list-btn mb-2">
+                            <input type="text" class="form-control" [value]="LEAVE_CODE" disabled>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12">
+                        <label>Request Date :<span class="text-danger">*</span></label>
+                        <div class="floating-input mb-2">
+                            <input type="text" class="form-control" [value]="REQ_ON" disabled>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12">
+                        <label>Type :<span class="text-danger">*</span></label>
+
+                        <div class="floating-input mb-2">
+                            <input type="text" class="form-control" [value]="LEAVE_TYPE" disabled>
+                        </div>
+
+                    </div>
+                    <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12">
+                        <label>From :<span class="text-danger">*</span></label>
+                        <div class="floating-input mb-2">
+                            <input type="text" class="form-control" [value]="FROM_DATE1" disabled>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12">
+                        <label>To :<span class="text-danger">*</span></label>
+                        <div class="floating-input mb-2">
+                            <input type="text" class="form-control" [value]="TO_DATE1" disabled>
+                        </div>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        <label>Reason :<span class="text-danger">*</span></label>
+                        <div class="floating-input mb-2">
+                            <textarea rows="2" class="form-control" [value]="REASON1" disabled></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class=" col-xl-3 col-lg-12 col-md-12 col-sm-12  d-flex ">
+                <div class="row card">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        <label>HR Approved Leave :</label>
+                        <div class="floating-input mb-2">
+                            <input type="text" class="form-control" [value]="TOTAL_LEAVE_APPLIED" disabled
+                                placeholder="Total Leave Applied ">
+                        </div>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        <label>Leave Pending for PM Approval :</label>
+                        <div class="floating-input mb-2">
+                            <input type="text" class="form-control" [value]="LEAVE_PENDING_FOR_PM_APPROVAL" disabled
+                                placeholder="Leave Pending for PM App">
+                        </div>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        <label>Leave Pending for HR Approval:</label>
+                        <div class="floating-input mb-2">
+                            <input type="text" class="form-control" [value]="LEAVE_PENDING_FOR_HR_APPROVAL" disabled
+                                placeholder="Leave Pending for HR App">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="mt-2 d-flex">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 padd_right d-flex  ">
+                <div class="row card sidebar">
+                    <div class="tableFixHead  mx-4 ">
+                        <table class="table-theam-1 text-color table_width row_bgcolor_1 ">
+                            <thead>
+                                <tr>
+                                    <th class="w-20">Date</th>
+                                    <th class="w-20">Week Day</th>
+                                    <th class="w-20">Action</th>
+                                    <th class="w-10">Leave Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of HRApprovaldata;let i=index;">
+                                    <td id="REQ_DATE{{i}}">{{data.LEAVE_DATE | date: 'dd-MMM-yyyy' }}</td>
+                                    <td>
+                                        {{
+                                        data.WEEKDAY == 2 ? 'Monday' :
+                                        data.WEEKDAY == 3 ? 'Tuesday' :
+                                        data.WEEKDAY == 4 ? 'Wednesday' :
+                                        data.WEEKDAY == 5 ? 'Thursday' :
+                                        data.WEEKDAY == 6 ? 'Friday' :
+                                        data.WEEKDAY == 7 ? 'Saturday' :
+                                        data.WEEKDAY == 1 ? 'Sunday' :
+                                        ''
+                                        }}
+                                    </td>
+                                    <td>
+                                        <div class="floating-input list-btn">
+                                            <select class="form-control  show-tick" id="approveByHr"
+                                                [(ngModel)]="data.STATUS" #approveByHr title="ACTIVE">
+                                                <option *ngIf="!data.STATUS" value="" disabled selected>Select Leave Type</option>
+                                                    <option *ngFor = "let opt of LeaveTypelist; let i = index"
+                                                    [selected]="opt.LEAVE_CODE == data.LEAVE_CODE"
+                                                    [value]="opt.LEAVE_CODE" >{{ opt.LEAVE_DESC }}</option>                  
+                                                <!-- <option value="L" selected>Leave</option>
+                                                <option value="P"> Present</option>
+                                                <option value="A">Absent</option> -->
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <!-- {{ data.LEAVE_TYPE === 'H' ?  'HALF' : 'FULL' }} -->
+                                        <div class="floating-input list-btn">
+                                            <select class="form-control  show-tick" id="approveByHr"
+                                                [(ngModel)]="data.LEAVE_TYPE" #approveByHr title="LEAVE_TYPE">
+                                                <option value="F" selected>FULL</option>
+                                                <option value="H"> HALF</option>
+                                            </select>
+                                            <!--                                         
+                                                <button type="button" class="close" (click)="resetDropdown('STATUS')" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button> -->
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

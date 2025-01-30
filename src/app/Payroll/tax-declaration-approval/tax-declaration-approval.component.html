@@ -1,0 +1,319 @@
+
+<!-- <app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner> -->
+
+<div class="container-fluid mb-2 mt-2">
+
+  <div class="row">
+      <div class="col-md-12">
+          <div>
+          <button class="btn btn-secondary  float-right m-1 ml-1 mr-1" data-toggle="modal" data-target="#Savewarning" title="Save" >Save</button>
+          </div>
+          <div class="col-md-5 float-right m-1">
+              <div class="floating-input list-btn" *ngIf="!employeeNameShowHide">
+                  <select  class="form-control selectpicker show-tick"  (change)="f_searchUserData()" [(ngModel)]="search_user" data-live-search="true"
+                  id="search" #search  [ngModelOptions]="{standalone: true}">
+                      <option *ngFor="let opt of all_employee_list; let i=index"
+
+                      [value]="opt.USERID">{{ opt.EMP_CODE }} - {{ opt.USER_NAME }}</option>
+
+                  </select>
+                  <button type="button" class="close" onclick="resetDropdown('search')" (click)="search_user='';f_searchUserData()" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+
+              <div class="floating-input list-btn"   *ngIf="employeeNameShowHide">
+                  <input type="text" class="form-control" [(ngModel)]="EMPLOYEE_NAME" disabled>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div id="accordion1" class="accordion">
+      <div class="card-accrodion mb-0">
+          <div class="card-header" data-toggle="collapse" aria-expanded="true" href="#collapseOne">
+              <a class="card-title ">
+                  Tax Declaration
+              </a>
+          </div>
+          <div id="collapseOne" class="card collapse show p-0" data-parent="#accordion1">
+              <div class="card-body">
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="row">
+                              <div class="col-md-4">
+                                  <label class="text-center">Confirm Tax Regime : <span><i class="fa fa-info-circle mb-0  text-info-circle"
+                                      data-toggle="modal" data-target="#ConfirmTax" ></i></span> </label>
+                                  <div class=" list-btn">
+                                      <select class="form-control" [(ngModel)]="REGIME_CODE"
+                                       title="Select" [ngModelOptions]="{standalone:true}" (change)="onRegimeChange()">
+                                          <option class="text-black" *ngFor="let tax of Tax_Regime_List; let i=index"
+                                          [value]="tax.REGIME_CODE">{{tax.REGIME_DESC}}</option>
+                                      </select>
+                                  </div>
+                              </div>
+                              <div class="col-md-4">
+                                  <label>Previous Employer Taxable :</label>
+                                  <div class=" list-btn"  [ngClass]="{'required-field':isHighLightPrevEmployerTaxable === 'Yes'}">
+                                      <input type="text" class="form-control text-right"   costInput [(ngModel)]="EMPLOYER_TAXABLE" (change)="prevEmployerTaxChange()"
+                                 >
+
+                                  </div>
+                              </div>
+
+                              <div class="col-md-4">
+                                  <label>Previous Employer Tax Paid:</label>
+                                  <div class=" list-btn"  [ngClass]="{'required-field':isHighLightPrevEmployerTaxPaid === 'Yes'}">
+                                      <input type="text" class="form-control text-right"  costInput  [(ngModel)]="EMPLOYER_TAX_PAID" (change)="prevEmployerTaxChange()">
+
+                                  </div>
+                              </div>
+                               <div class="col-md-12" *ngIf="isConfiemTaxRegimeShowHide">
+                                  <div class="row">
+                                      <div class="col-md-4" >
+                                          <label>Number of School going Children :</label>
+                                          <div class=" list-btn">
+                                              <input type="text" class="form-control text-right"   [(ngModel)]="NUMBER_OF_CHILDREN" >
+
+                                          </div>
+                                      </div>
+                                      <div class="col-md-4" >
+                                          <label>Do you pay Rent :</label>
+                                          <div class=" list-btn">
+                                              <select class="form-control " [(ngModel)]="PAY_RENT"
+                                               title="Select" (change)="rentChange()"   >
+                                                  <option *ngFor="let rent of Rent_List; let i=index" [value]="rent.PAY_RENT">{{rent.RENT_DESC}}</option>
+                                              </select>
+
+                                          </div>
+                                      </div>
+                                      <div class="col-md-4" >
+                                          <label>Annual Rent Paid :</label>
+                                          <div class=" list-btn">
+                                              <input type="text" class="form-control text-right" costInput  [(ngModel)]="ANNUAL_RENT" [disabled]="isRentDisabled">
+                                          </div>
+                                      </div>
+                                  </div>
+                               </div>
+
+
+
+                              <div class="col-md-12 mt-2"  *ngIf="isConfiemTaxRegimeShowHide">
+                                  <fieldset class="field_set">
+                                      <legend>Do you have a Housing Loan :</legend>
+                                      <div class="col-md-4 mt-2 mb-2">
+                                          <div class=" list-btn">
+                                              <select class="form-control "
+                                               title="Select"  [(ngModel)]="HSG_LOAN" (change)="houseLoanClick()"  >
+                                                  <option *ngFor="let item of items_List; let i=index" [value]="item.HSG_LOAN">{{item.HSG_DESC}}</option>
+                                              </select>
+                                          </div>
+                                      </div>
+                                      <hr class="m-0 mb-2 mt-2">
+                                      <div class="row" >
+                                          <div class="col-md-12">
+                                              <div class="row">
+                                                  <div class="col-md-6">
+                                                      <div class="row mb-2">
+                                                          <div class="col-sm-6">
+                                                              <label>Loan Sanction Date</label>
+                                                          </div>
+                                                          <div class="col-sm-6">
+                                                              <div class="floating-input list-btn">
+                                                                  <input type="text" class="form-control" [(ngModel)]="LOAN_SANCTION_DATE" [min]="today" [disabled]="isLoanDisabled">
+                                                                  <div class="date-input" id="div_todate" >
+                                                                  <mat-form-field fxFlex="100" appearance="fill">
+                                                                      <mat-datepicker-toggle matPrefix [for]="picker1" id='cal1' #cal1></mat-datepicker-toggle>
+                                                                      <input class="form-control" (dateChange)="ChangeReceiptDate()" [value]="_DATE1" matInput [(ngModel)]="_DATE1" [ngModelOptions]="{standalone: true}"
+                                                                       [matDatepicker]="picker1"  [max]="today" [disabled]="false" readonly />
+
+                                                                      <mat-datepicker #picker1 id="picker1"></mat-datepicker>
+                                                                  </mat-form-field>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                      <div class="row mb-2">
+                                                          <div class="col-sm-6">
+                                                              <label>Loan Sanction Amount</label>
+                                                          </div>
+                                                          <div class="col-sm-6">
+                                                              <div class=" list-btn">
+                                                                  <input type="text" class="form-control text-right" costInput [(ngModel)]="LOAN_AMOUNT" [disabled]="isLoanDisabled"  >
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+
+                                              <div class="row">
+                                                  <div class="col-md-6">
+                                                      <div class="row mb-2">
+                                                          <div class="col-sm-6">
+                                                              <label>Value of Property as per Agreement</label>
+                                                          </div>
+                                                          <div class="col-sm-6">
+                                                              <div class=" list-btn">
+                                                                  <input type="text" class="form-control text-right" costInput [(ngModel)]="VALUE_AGREEMENT" [disabled]="isLoanDisabled" >
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                      <div class="row mb-2">
+                                                          <div class="col-sm-6">
+                                                              <label>Number of Houses owned</label>
+                                                          </div>
+                                                          <div class="col-sm-6">
+                                                              <div class=" list-btn">
+                                                                  <input type="text" class="form-control text-right"  [(ngModel)]="NUMBER_HOUSE_OWNED" [disabled]="isLoanDisabled " >
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+
+                                              <div class="row ">
+                                                  <div class="col-md-6">
+                                                      <div class="row mb-2">
+                                                          <div class="col-sm-6">
+                                                              <label>Housing Loan Interest Annual</label>
+                                                          </div>
+                                                          <div class="col-sm-6">
+                                                              <div class=" list-btn">
+                                                                  <input type="text" class="form-control text-right" costInput [(ngModel)]="LOAN_INTEREST_ANNUAL" [disabled]="isLoanDisabled" >
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </fieldset>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+          <!--  -->
+          <div class="card-header mt-2 " data-toggle="collapse" aria-expanded="true" data-parent="#accordion1"
+              href="#collapseTwo"  *ngIf="isConfiemTaxRegimeShowHide">
+              <a class="card-title">
+                  Section 80 C
+              </a>
+          </div>
+          <div id="collapseTwo" class="card show collapse " data-parent="#accordion1" *ngIf="isConfiemTaxRegimeShowHide">
+              <div class="card-body">
+                  <div class="row">
+                      <div class="col-md-12" >
+                          <div class="row">
+                              <div class="col-md-6" *ngFor="let data of Section_List; let i=index">
+                                  <div class="row mb-2">
+                                      <div class="col-sm-6">
+                                          <label>{{data.ITEM_DESC}}</label>
+                                      </div>
+                                      <div class="col-sm-6">
+                                          <div class=" list-btn">
+                                              <input type="text" class="form-control text-right" costInput  [(ngModel)]="data.AMOUNT" placeholder="0">
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+          <!--  -->
+          <div class="card-header mt-2" data-toggle="collapse" aria-expanded="true"  data-parent="#accordion1"
+                      href="#collapseThree"  *ngIf="isConfiemTaxRegimeShowHide">
+              <a class="card-title">
+                  Other Deductions
+              </a>
+          </div>
+          <div id="collapseThree" class="card show collapse " data-parent="#accordion1" *ngIf="isConfiemTaxRegimeShowHide">
+              <div class="card-body">
+                  <div class="row">
+                      <div class="col-md-12">
+                          <div class="row">
+                              <div class="col-md-6" *ngFor="let list of Other_List; let i = index">
+                                  <div class="row mb-2">
+                                      <div class="col-sm-6" >
+                                          <label>{{list.ITEM_DESC}}</label>
+                                      </div>
+                                      <div class="col-sm-6">
+                                          <div class=" list-btn">
+                                              <input type="text" class="form-control text-right" costInput  [(ngModel)]="list.AMOUNT" placeholder="0" >
+                                          </div>
+
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+      </div>
+  </div>
+ </div>
+ <div class="modal fade" #ConfirmTax id="ConfirmTax" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document" style="max-width: 500px;">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Details</h5>
+              <button type="button" class="close"  data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+           </div>
+           <div class="modal-body pt-0">
+
+             <p>Hello</p>
+
+             </div>
+       </div>
+  </div>
+</div>
+<div class="modal fade" #Savewarning id="Savewarning"  role="dialog"
+aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-sm" role="document">
+  <div class="modal-content mt-5">
+      <div class="modal-header ">
+          <h5 class="modal-title" id="exampleModalLabel">Save Tax Declaration Approval</h5>
+      </div>
+      <div class="modal-body">
+          <label>Are you sure, you want to Save a Tax Declaration Approval</label>
+      </div>
+      <div class="modal-footer py-0">
+          <button type="button" (click)="f_saveFormData(false)" class="btn btn-primary py-1"
+              data-dismiss="modal">Yes</button>
+          <button type="button" class="btn btn-danger py-1" data-dismiss="modal">No</button>
+      </div>
+  </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,189 @@
+<app-spinner [startSpinner]="spinner" *ngIf="spinner"></app-spinner>
+<form>
+  <div class="row">
+    <div class="col-md-12 mb-1" >
+      <div class="d-flex justify-content-between">
+        <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
+        <button
+          class="btn btn-secondary "
+          (click)="saveExtendTimeSheet()"
+          [disabled]="!isAllowSave"
+          title="Save"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="col-md-12 mt-2">
+        <div class="row">
+          <div class="col-md-4">
+            <label>Employee :</label>
+            <div class="floating-input list-btn">
+              <select
+                class="form-control selectpicker show-tick"
+                id="emp"
+                [(ngModel)]="EMP_CODE"
+                (change)="CheckAttendance()"
+                data-live-search="true"
+                title="Select"
+                [ngModelOptions]="{ standalone: true }"
+              >
+                <option
+                  *ngFor="let opt of employee_list; let i = index"
+                  [selected]="opt.EMP_CODE == EMP_CODE"
+                  [value]="opt.EMP_CODE"
+                >
+                  {{ opt.EMP_CODE }} - {{ opt.USER_NAME }}
+                </option>
+              </select>
+              <button
+                type="button"
+                class="close"
+                onclick="resetDropdown('emp')"
+                (click)="EMP_CODE = ''; f_clearForm()"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <label>Date :</label>
+            <div class="floating-input">
+              <input
+                type="text"
+                [(ngModel)]="DATE"
+                [value]="DATE"
+                class="form-control"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="dd-mm-yyyy"
+                readonly
+              />
+              <div class="date-input">
+                <mat-form-field fxFlex="100" appearance="fill">
+                  <mat-datepicker-toggle
+                    matPrefix
+                    [for]="picker"
+                    id="cal"
+                    #cal
+                  ></mat-datepicker-toggle>
+                  <input
+                    class="form-control"
+                    (dateChange)="parseDate()"
+                    [value]="_DATE"
+                    matInput
+                    [(ngModel)]="_DATE"
+                    [ngModelOptions]="{ standalone: true }"
+                    [matDatepicker]="picker"
+                    [max]="maxdate"
+                    [disabled]="false"
+                    readonly
+                  />
+                  <mat-datepicker #picker id="picker"></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label>Time IN :</label>
+            <div class="floating-input">
+              <input
+                type="text"
+                [(ngModel)]="TIME_IN"
+                placeholder="hh:mm"
+                disabled
+                class="form-control"
+                [ngModelOptions]="{ standalone: true }"
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label>Time OUT :</label>
+            <div class="floating-input">
+              <input
+                type="text"
+                [(ngModel)]="TIME_OUT"
+                placeholder="hh:mm"
+                disabled
+                class="form-control"
+                [ngModelOptions]="{ standalone: true }"
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label>Expired by :</label>
+            <div class="floating-input">
+              <input
+                type="text"
+                [(ngModel)]="ALLOW_TS"
+                disabled
+                class="form-control"
+                placeholder="dd-mm-yyyy"
+                [ngModelOptions]="{ standalone: true }"
+              />
+              <app-date-picker
+                [(ngModel)]="ALLOW_TS"
+                id="dor"
+                class="date-input"
+                [maxdate]=""
+                [isDisable]="true"
+                [ngModelOptions]="{ standalone: true }"
+              ></app-date-picker>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label>Extend by :</label>
+            <div class="floating-input">
+              <input
+                type="text"
+                [(ngModel)]="EXT_DATE"
+                disabled
+                class="form-control"
+                placeholder="dd-mm-yyyy"
+                [ngModelOptions]="{ standalone: true }"
+              />
+              <app-date-picker
+                [(ngModel)]="EXT_DATE"
+                id="dor"
+                class="date-input"
+                [maxdate]=""
+                [isDisable]="false"
+                [ngModelOptions]="{ standalone: true }"
+              ></app-date-picker>
+            </div>
+          </div>
+          <div class="col-md-12 mt-2" *ngIf="user_msg != ''">
+            <div
+              class="alert mb-0"
+              [ngClass]="{
+                'alert-primary': !isAttExt,
+                'alert-danger': isAttExt
+              }"
+              role="alert"
+            >
+              {{ user_msg }}
+            </div>
+          </div>
+          <div class="col-md-12">
+            <label
+              >Reason for HR to extend Time Sheet date<span class="validator"
+                >*</span
+              >
+              :</label
+            >
+            <div class="floating-input">
+              <input
+                type="text"
+                [(ngModel)]="REMARKS"
+                class="form-control"
+                [ngModelOptions]="{ standalone: true }"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
