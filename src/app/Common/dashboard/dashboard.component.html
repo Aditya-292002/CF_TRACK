@@ -6,15 +6,17 @@
           <div>
             <span class="avatar avatar-xl flex-shrink-0">
               <img
-                src="../../../assets/images/users/avatar.jpg"
-                class="rounded-circle"
-                alt="img"
-              />
+              src="data:image/png;base64,{{ profile_pic }}"
+              class="rounded-circle"
+              alt="img"
+            />
             </span>
           </div>
           <div>
             <div class="ml-3">
-              <h3 class="mb-2 text_header">Welcome Back, Priyanka</h3>
+          </div>
+          <div>
+              <h3 class="mb-2 text_header">Welcome Back, {{ login_user }}</h3>
               <p class="text_subheader">
                 You have
                 <span class="text-primary text-decoration-underline">21</span>

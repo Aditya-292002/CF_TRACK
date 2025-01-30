@@ -275,6 +275,7 @@ table .dropdown.bootstrap-select {
 table .form-control {
     height: calc(1em + .75rem + 1px) !important;
     padding: 2px .5rem !important;
+    font-size: 0.9rem !important;
 }
 
 table .bootstrap-select.form-control {

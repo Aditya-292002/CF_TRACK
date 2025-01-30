@@ -81,6 +81,8 @@ export class DashboardComponent implements OnInit {
     // {EMP_URL:"",EMP_NAME:"Shwetal Pathak",EMP_EMAIL:"shwetal.pathak@comflextech.com",EMP_DEPT:"Tester",DEPT_CODE:"4"}
   ]
   BANK_LIST:any = [{BANK_NAME:"KOTAK",BANK_BAL:"50,00,000"},{BANK_NAME:"ICICI",BANK_BAL:"75,00,000"}];
+  login_user: string = "";
+  profile_pic: string = "";
   public chartOptions: Partial<ChartOptions>;
   public chartOptions1: Partial<ChartOptions1>;
 
@@ -240,7 +242,9 @@ export class DashboardComponent implements OnInit {
    }
   CURRENT_DATE:any;
   ngOnInit() {
-    this.sharedService.formName="Dashboard"
+    this.sharedService.formName="Dashboard";
+    this.profile_pic = this.sharedService.profile_pic ; 
+    this.login_user =this.sharedService.loginUser[0].USER_NAME
   }
   
   ngAfterViewInit(){}
