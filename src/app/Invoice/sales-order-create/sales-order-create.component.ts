@@ -13,6 +13,7 @@ import { saveAs } from 'file-saver';
 import { v4 as uuidv4 } from 'uuid';
 import { element } from 'protractor';
 import { EMLINK } from 'constants';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 declare var $: any;
 @Component({

@@ -299,16 +299,22 @@
                                             </tr>
                                             <tr>
                                                 <td></td>
-                                                <td class=" " colspan="6">
-                                                        <div class="floating-input d-flex">
+                                                <td class=" " colspan="3">
+                                                        <div class="floating-input " >
                                                             <textarea name="" id="" rows="1" class="form-control"
                                                             [(ngModel)]="data.REMARKS" placeholder="Remarks"
                                                             [ngModelOptions]="{standalone: true}" disabled></textarea>
-                                                            <div class="ml-2 mt-1">
-                                                                <input class="" type="checkbox"
-                                                                 [(ngModel)]="data.IS_CLOSED"  [ngModelOptions]="{standalone: true}">
-                                                            </div> 
+                                                            
                                                         </div>
+                                                </td>
+                                                <td>
+                                                    <div class="mt-1 ml-2">
+                                                        <label>Close Milestone</label>
+                                                        <!-- <p-togglebutton [(ngModel)]="data.IS_CLOSED" onLabel="Locked" offLabel="Unlocked">
+                                                        </p-togglebutton> -->
+                                                        <input class="ml-2" type="checkbox" title="Close Milestone" 
+                                                         [(ngModel)]="data.IS_CLOSED"  [ngModelOptions]="{standalone: true}">
+                                                    </div> 
                                                 </td>
                                             </tr>
                                         </ng-container>

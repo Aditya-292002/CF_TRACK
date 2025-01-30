@@ -8,7 +8,7 @@ import { SharedServiceService } from 'src/app/services/shared-service.service';
 import { ValidationService } from 'src/app/services/validation.service';
 import { saveAs } from 'file-saver';
 import { PipeService } from 'src/app/services/pipe.service';
-
+import { v4 as uuidv4 } from 'uuid';
 @Component({
   selector: 'app-reimbursements',
   templateUrl: './reimbursements.component.html',
@@ -576,10 +576,13 @@ GetReimbursementDetail(REIMBURSEMENT_ID:any,val:any){
         reader.readAsDataURL(event.target.files[i]);
         reader.onload = () => {
           b64 = reader.result.toString().split(",")[1];
+        //  console.log(reader.result,'b64',b64,reader.readAsDataURL(event.target.files[i]));
+          
           extension = event.target.files[i].name.split(".");
           this.uploadingFiles.push(
             {
               DOCUMENT_FILENAME: event.target.files[i].name,
+              DOCUMENT_SYSFILENAME: uuidv4() + '.' + extension[extension.length - 1],
               DOC_SRNO: this.uploadedDocument.length + 1,
               DOCUMENT_TYPE:  '.' + extension[extension.length - 1],
               UPLOAD_BY: this.sharedService.loginUser[0].USER_NAME,
@@ -592,7 +595,7 @@ GetReimbursementDetail(REIMBURSEMENT_ID:any,val:any){
               this.toast.warning('This expense documnet added previously');
               return
             }else {
-              return true
+              return true;
             }
             })
           this.uploadDoc();
@@ -806,3 +809,5 @@ GetReimbursementDetail(REIMBURSEMENT_ID:any,val:any){
   }
 
 }
+
+

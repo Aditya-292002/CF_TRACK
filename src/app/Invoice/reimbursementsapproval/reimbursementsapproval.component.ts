@@ -212,7 +212,7 @@ export class ReimbursementsapprovalComponent implements OnInit {
     this.reimbursement_detail = [];
     this.reimbursement_header = [];
     this.http.PostRequest(this.apiUrl.GetReimbursementDetail, data).then(res => {
-      if (res.flag) {
+     // if (res.flag) {
         console.log('res headerlist',res.reimbursement_header);
       //  this.Total_App_Amount= this.reimbursement_header[0].REIMBURSEMENT_AMT
         this.reimbursement_detail = res.reimbursement_detail;
@@ -240,17 +240,18 @@ export class ReimbursementsapprovalComponent implements OnInit {
         this.CGST_AMT = this.reimbursement_header[0].CGST_AMT,
         this.IGST_AMT = this.reimbursement_header[0].IGST_AMT,
         this.ROUNDOFF = this.reimbursement_header[0].ROUNDOFF,
-        this.TOTAL_BILL =0;
+        this.TOTAL_BILL = this.pipeService.setCommaseprated((+this.reimbursement_header[0].TOTAL_BILL).toFixed(2));
         this.CANCEL_IND = this.reimbursement_header[0].CANCEL_IND
         this.PROJ_CODE=this.reimbursement_detail[0].PROJ_CODE
         this.spinner = false;
         this.reimbursement_detail.forEach((element:any) => {
+          element.APPROVED_AMOUNT=element.PRICE;
           element.PRICE=this.pipeService.setCommaseprated((+element.PRICE).toFixed(2));
           element.APPROVED_AMOUNT=this.pipeService.setCommaseprated((+element.APPROVED_AMOUNT).toFixed(2));
         });
-      } else {
+     // } else {
         this.spinner = false;
-      } 
+     // } 
     }, err => {
       this.spinner = false;
     });
@@ -389,10 +390,12 @@ export class ReimbursementsapprovalComponent implements OnInit {
       //     this.REIMBURSEMENT_AMT = this.TOTAL_BILL;
       //   });
      
-
       this.reimbursement_detail.forEach((element:any) => {
-        element.TOTAL_AMOUNT = element.APPROVED_AMOUNT*element.QTY
+        console.log('TOTAL_BILL',this.TOTAL_BILL);
+        element.APPROVED_AMOUNT=this.pipeService.removeCommaseprated(element.APPROVED_AMOUNT);
+        element.TOTAL_AMOUNT = element.APPROVED_AMOUNT*element.QTY;
         element.APPROVED_AMOUNT = element.TOTAL_AMOUNT/element.QTY;
+        element.APPROVED_AMOUNT=this.pipeService.setCommaseprated((+element.APPROVED_AMOUNT).toFixed(3));
         this.TOTAL_BILL += element.TOTAL_AMOUNT;
         this.REIMBURSEMENT_AMT = this.TOTAL_BILL;
       });
@@ -638,12 +641,14 @@ export class ReimbursementsapprovalComponent implements OnInit {
         return;
       }
       this.rejectModel=false
-     }else if(val == 0){
+    }else if(val == 0){
       var type = "APPROVE"
-      if(this.REJECT_REASON==""){
-      //  this.rejectModel=true;
-        this.toast.error('Enter Approve remark its mandatory');
-        return;
+      if(this.differenceOfreqAndApp){
+        if(this.REJECT_REASON==""){
+          //  this.rejectModel=true;
+            this.toast.error('Enter Approve remark its mandatory');
+            return;
+          }
       }
       //this.REJECT_REASON=""
      }
@@ -651,7 +656,7 @@ export class ReimbursementsapprovalComponent implements OnInit {
      this.reimbursement_detail_copy.forEach((element:any) => {
 
       element.PRICE=this.pipeService.removeCommaseprated((element.PRICE));
-      // element.APPROVED_AMOUNT=this.pipeService.removeCommaseprated((element.APPROVED_AMOUNT));
+     element.APPROVED_AMOUNT=this.pipeService.removeCommaseprated((element.APPROVED_AMOUNT));
     });
   
       let data = {
@@ -693,7 +698,7 @@ export class ReimbursementsapprovalComponent implements OnInit {
         IS_CANCLE: val,
         REIMBURSEMENT_DOCUMENT: this.uploadedDocument
      }
-     //console.log('this.reimbursement_detail',data);
+    console.log('this.reimbursement_detail',data);
      
     //console.log('data ->' , JSON.stringify(data))
  // return
@@ -775,6 +780,10 @@ export class ReimbursementsapprovalComponent implements OnInit {
     }
     saveValidation(){
       console.log('savevalidastion');
+      if(this.TOTAL_BILL>this.Total_Req_Amount ){
+        this.toast.error('Entered approved amount cant be greater than requested amount')
+        return
+    }
       
    if(!this.sharedService.isValid(this.EMP_CODE)){
         this.toast.error('Select a Employee')
@@ -822,10 +831,10 @@ export class ReimbursementsapprovalComponent implements OnInit {
        this.toast.error('Enter a Price is greater than zero.');
        return false;
      }
-     if (element.APPROVED_AMOUNT <= 0) {
-      this.toast.error('Enter a Approved Amount is greater than zero.');
-      return false;
-    }
+    //  if (element.APPROVED_AMOUNT <= 0) {
+    //   this.toast.error('Enter a Approved Amount is greater than zero.');
+    //   return false;
+    // }
      if (!this.sharedService.isValid(element.REMARKS)) {
        this.toast.error('Enter a Description');
        return false;

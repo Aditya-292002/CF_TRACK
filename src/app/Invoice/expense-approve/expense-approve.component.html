@@ -191,8 +191,8 @@
                         <div class="form-inline">
                             <h6 class="mb-0 col-md-6 p-0">Exp Details</h6>
                             <div class="row-add col-md-6 text-right p-0">
-                                <button type="button" class="btn text-primary pb-0" (click)="f_addRow();">
-                                    <i class='fas fa-plus-circle mr-2'></i>Add</button>
+                                <!-- <button type="button" class="btn text-primary pb-0" (click)="f_addRow();"> -->
+                                    <!-- <i class='fas fa-plus-circle mr-2'></i>Add</button> -->
                             </div>
                             <hr class="m-0 mb-2">
                         </div>
@@ -205,7 +205,7 @@
                                         <th class="w-2">Exp.Head</th>
                                         <th class="w-3">Qty</th>
                                         <th class="w-4">Price</th>
-                                        <th class="w-4">Base</th>
+                                        <th class="w-4">Base</th> 
                                         <th class="w-2">Project Code</th>
                                     </tr>
                                 </thead>
@@ -220,8 +220,7 @@
                                             <td class="w-1 pb-0 pt-0">{{i+1}}</td>
                                             <td class="w-2 pb-0" >
                                                 <div class="floating-input">
-                                                    <select class="form-control selectpicker show-tick dd_ellipsis" [(ngModel)]="data.EXPENSE_HEAD"  id="exp_{{i}}" data-container="body" 
-                                                      [ngModelOptions]="{standalone: true}" data-live-search="true"
+                                                    <select class="form-control selectpicker show-tick dd_ellipsis" [(ngModel)]="data.EXPENSE_HEAD" (change)="ChangeExpenseHead()" id="exp_{{i}}" data-container="body" [ngModelOptions]="{standalone: true}" data-live-search="true"
                                                                 title="Select">
                                                             <option value="" disabled></option>
                                                             <option *ngFor="let opt of exphead_list; let i=index" 
@@ -235,18 +234,18 @@
                                                     <input type="text"   class="form-control cost" [(ngModel)]="data.QTY"  placeholder="Qty"  (change)="CalculateFinalAmount()" [ngModelOptions]="{standalone: true}">
                                                 </div>
                                             </td>
-                                            <td class="w-4 pb-0">
+                                            <td class="w-3 pb-0">
                                                 <div class="floating-input">
                                                     <input type="text"   class="form-control cost" [(ngModel)]="data.PRICE"  costInput placeholder="Price"  (change)="CalculateFinalAmount()" [ngModelOptions]="{standalone: true}">
                                                 </div>
                                             </td>
-                                            <td class="w-4 pb-0">
+                                            <td class="w-3 pb-0">
                                                 <div class="floating-input">
                                                     <input type="text"  class="form-control cost" [(ngModel)]="data.EXPENSE_AMOUNT" disabled  costInput placeholder="Base"  [ngModelOptions]="{standalone: true}">
                                                 </div>
                                             </td>
-                                            <td class="w-2 pb-0" >
-                                                <div class="floating-input">
+                                            <td class="w-4 pb-0" >
+                                                <!-- <div class="floating-input">
                                                     <select class="form-control selectpicker show-tick dd_ellipsis" [(ngModel)]="data.PROJ_CODE" id="p_{{i}}" data-container="body" [ngModelOptions]="{standalone: true}" data-live-search="true"
                                                                 title="Select">
                                                             <option value="" disabled></option>
@@ -254,16 +253,38 @@
                                                             [selected]="opt.PROJ_CODE == data.PROJ_CODE"
                                                             [value]="opt.PROJ_CODE" title="{{ opt.PROJ_NAME }}" >{{ opt.PROJ_NAME }}</option>  
                                                     </select> 
-                                                </div>
-                                                <button
+                                                </div> -->
+
+                                                <div class="floating-input">
+                                                    <select
+                                                      class="form-control selectpicker show-tick dd_ellipsis"
+                                                      [(ngModel)]="data.PROJ_CODE"
+                                                      id="p_{{ i }}"
+                                                      data-container="body"
+                                                      [ngModelOptions]="{ standalone: true }"
+                                                      data-live-search="true"
+                                                      title="Select"
+                                                    >
+                                                      <option value="" disabled></option>
+                                                      <option
+                                                        *ngFor="let opt of project_list; let i = index"
+                                                        [selected]="opt.PROJ_CODE == data.PROJ_CODE"
+                                                        [value]="opt.PROJ_CODE"
+                                                        title="{{ opt.PROJ_NAME }}"
+                                                      >
+                                                        {{ opt.PROJ_NAME }}
+                                                      </option>
+                                                    </select>
+                                                  </div>
+                                                <!-- (click)="RemoveExpenseIndex(i)" -->
+                                                <!-- <button
                                                 type="button"
                                                 class="close"
                                                 *ngIf="this._expense_detail.length > 1"
-                                                (click)="RemoveExpenseIndex(i)"
                                                 aria-label="Close"
                                               >
                                                 <span aria-hidden="true">&times;</span>
-                                              </button>
+                                              </button> -->
                                             </td>
                                         </tr>
                                         <tr *ngIf="data.ACTIVE != 0">
@@ -399,7 +420,7 @@
                 </div>
                 <br>
             </div>
-            <div class="col-md-12 mt-2">
+            <!-- <div class="col-md-12 mt-2">
                 <div class="row card">
                     <div class="col-md-8">
                     <h6 class="mb-0 col-md-6 p-0">Document Upload</h6>
@@ -460,7 +481,7 @@
                     </ul>
                     </div>
                 </div>
-            </div> 
+            </div>  -->
         </div>
 
         <div class="page-content mt-1" *ngIf="!isViewExpense">
@@ -487,7 +508,7 @@
                                 <td>{{data.BILL_DATE}}</td>
                                 <td class="w-110">
                                     <a>
-                                        <i class="fa fa-edit" (click)="editExpence(data)" title="Edit"></i>
+                                        <i class="fa fa-edit" (click)="editExpence(data);" title="Edit"></i>
                                     </a>
                                 </td>
                             </tr>
