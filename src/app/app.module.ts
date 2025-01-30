@@ -108,6 +108,7 @@ import { UserRoleChangeComponent } from './Setting/user-role-change/user-role-ch
 import { SalesOrderReleaseComponent } from './Invoice/sales-order-release/sales-order-release.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { SalesOrderCreateComponent } from './Invoice/sales-order-create/sales-order-create.component';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 
 
@@ -251,7 +252,8 @@ export const MY_DATE_FORMATS = {
     TableModule,
     TreeTableModule,
     NgApexchartsModule,
-    CheckboxModule
+    CheckboxModule,
+    ToggleButtonModule
   ],
   providers: [
     AuthGuard,
