@@ -17,7 +17,7 @@
         <div class="floating-input m1-1">
           <button
             class="btn btn-secondary"
-            *ngIf="!isViewInvoice && !UpdateDisable"
+            *ngIf="ADD_RIGHTS && !isViewInvoice && !UpdateDisable"
             (click)="SaveInvoice()"
             title="Save"
           >
@@ -110,7 +110,7 @@
           </button>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-2">
         <label>Invoice Type :<span class="validator">*</span> </label>
         <div
           class="floating-input list-btn"
@@ -148,7 +148,7 @@
           </button>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-2">
         <label>Invoice No :</label>
         <div class="floating-input">
           <input
@@ -163,7 +163,7 @@
           />
         </div>
       </div>
-      <div class="col-md-4">
+      <!-- <div class="col-md-4">
         <label>Financial Year :<span class="validator">*</span> </label>
         <div
           class="floating-input list-btn"
@@ -189,13 +189,13 @@
               {{ opt.FYEAR_DESC }}
             </option>
           </select>
-          <!-- <button type="button" class="close" onclick="resetDropdown('fyear')"  (click)="form.controls['FYEAR'].reset()" aria-label="Close">
+          <button type="button" class="close" onclick="resetDropdown('fyear')"  (click)="form.controls['FYEAR'].reset()" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
-                            </button> -->
+                            </button>
         </div>
-      </div>
+      </div> -->
 
-      <div class="col-md-4">
+      <div class="col-md-2">
         <label>Invoice Date :</label>
 
         <div
@@ -249,7 +249,7 @@
                                 <app-date-picker [(ngModel)]="BILLING_DATE" id="reqdate" #reqdate class="date-input" [maxdate]="" [mindate]="min_date"  [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>-->
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-2">
         <label>Due Date :</label>
         <div
           class="floating-input"
@@ -283,7 +283,7 @@
   </div>
   <div class="mt-2" *ngIf="!isViewInvoice">
     <div class="row card">
-      <div class="col-md-8">
+      <div class="col-md-4">
         <label>Customer :<span class="validator">*</span> </label>
         <div
           class="floating-input list-btn"
@@ -320,7 +320,7 @@
           </button>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-2">
         <label>State :</label>
         <div
           class="floating-input list-btn"
@@ -358,7 +358,7 @@
           </button>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-4">
         <label>Project :<span class="validator">*</span> </label>
         <div
           class="floating-input list-btn"
@@ -394,7 +394,7 @@
           </button>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-2">
         <label>Template :</label>
         <div class="floating-input list-btn">
           <select
@@ -426,7 +426,7 @@
           </button>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-2">
         <label>PO No :</label>
         <div class="floating-input">
           <input
@@ -438,7 +438,7 @@
           />
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-2">
         <label>PO Date :</label>
         <div
           class="floating-input"
@@ -465,7 +465,19 @@
           ></app-date-picker>
         </div>
       </div>
-      <div class="col-md-6">
+      <!-- <div class="col-md-2">
+        <label>Raise Invoice On :</label>
+        <div class="floating-input ">
+            <input type="text" class="form-control"
+            formControlName="RAISE_INVOICE_ON" [(ngModel)]="RAISE_INVOICE_ON" readonly>
+        <app-date-picker id="request" #request
+            class="date-input" [(ngModel)]="RAISE_INVOICE_ON"
+            placeholder="" [mindate]="minDate" [maxdate]="raisedinvoiceonmaxDate"
+            [isDisable]='false'
+            [ngModelOptions]="{standalone: true}" ></app-date-picker>
+        </div>
+      </div> -->
+      <div class="col-md-4">
         <label>Kind Attention :</label>
         <div class="floating-input">
           <input
@@ -477,7 +489,7 @@
           />
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-2">
         <label>Currency :<span class="validator">*</span> </label>
         <div
           class="floating-input list-btn"
@@ -515,7 +527,7 @@
           </button>
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-2">
         <label>Exch.Rate :</label>
         <div class="floating-input">
           <input
@@ -554,14 +566,18 @@
             <thead>
               <tr>
                 <th class="w-10">Sr.No</th>
-                <th class="w-50">Service</th>
-                <th class="w-25">Value</th>
+                <th class="">Service</th>
+                <th class="width-1">Value</th>
+                <th class="width-1">SGST(%)</th>
+                <th class="width-1">CGST(%)</th>
+                <th class="width-1">IGST(%)</th>
+                <th class="width-1">Total</th>
               </tr>
             </thead>
             <tbody *ngFor="let data of _invoice_detail; let i = index">
               <tr>
-                <td class="w-10 pb-0 pt-0">{{ i + 1 }}</td>
-                <td class="w-50 pb-0" colspan="1">
+                <td class="w-10 ">{{ i + 1 }}</td>
+                <td class="">
                   <div class="floating-input">
                     <select
                       class="form-control selectpicker show-tick"
@@ -587,7 +603,7 @@
                     </select>
                   </div>
                 </td>
-                <td class="w-25 pb-0" colspan="1">
+                <td class="width-1">
                   <div class="floating-input">
                     <input
                       id="val_{{ i }}"
@@ -604,74 +620,77 @@
                     />
                   </div>
                 </td>
-              </tr>
-              <tr>
-                <td class="pt-0"></td>
-                <td colspan="1" class="">
-                  <div class="floating-input">
-                    <!-- <input type="text" class="form-control" placeholder="Remarks">  -->
-                    <textarea
-                      name=""
-                      id=""
-                      rows="6"
-                      class="form-control"
-                      maxlength="500"
-                      [(ngModel)]="data.REMARKS"
-                      placeholder="Remarks"
-                      [ngModelOptions]="{ standalone: true }"
-                    ></textarea>
-                  </div>
-                </td>
-                <td colspan="1" class="pb-0">
-                  <div class="floating-input">
-                    <div class="form-inline">
-                      <label class="ml-2 font-weight-bold">SGST :</label>
-                      <input
+
+                <td class="width-1">
+                  <div class="">
+                    <div class="d-flex">
+                      <!-- <label class="font-weight-bold">SGST :</label> -->
+                      <input type="text" class="form-control cost ml-1 mr-1" 
+                      [ngModel]="data.SGST_VALUE  | costFilter" placeholder="SGST Value"
+                      [ngModelOptions]="{standalone: true}"
+                      disabled>
+                      <!-- <input
                         type="text"
-                        class="form-control w-16 ml-1 mr-1 cost"
-                        maxlength="10"
-                        [(ngModel)]="data.SGST_VALUE"
+                        class="form-control ml-1 mr-1 cost"
+                        [(ngModel)]="data.SGST_VALUE | costFilter" 
                         disabled
-                        costInput
                         placeholder="SGST Value"
                         [ngModelOptions]="{ standalone: true }"
-                      />
-                      <label class="ml-1">{{ data.SGST_RATE }}%</label>
-                    </div>
-                    <div class="form-inline mt-1 mb-1">
-                      <label class="ml-2 font-weight-bold">CGST :</label>
-                      <input
-                        type="text"
-                        class="form-control w-16 ml-1 mr-1 cost"
-                        maxlength="10"
-                        [(ngModel)]="data.CGST_VALUE"
-                        disabled
-                        costInput
-                        placeholder="CGST Value"
-                        [ngModelOptions]="{ standalone: true }"
-                      />
-                      <label class="ml-1">{{ data.CGST_RATE }}%</label>
-                    </div>
-                    <div class="form-inline">
-                      <label class="ml-2 mr-1 font-weight-bold">IGST :</label>
-                      <input
-                        type="text"
-                        class="form-control w-16 ml-1 mr-1 cost"
-                        maxlength="10"
-                        [(ngModel)]="data.IGST_VALUE"
-                        disabled
-                        costInput
-                        placeholder="IGST Value"
-                        [ngModelOptions]="{ standalone: true }"
-                      />
-                      <label class="ml-1">{{ data.IGST_RATE }}%</label>
+                      /> -->
+                      <label class="">{{ data.SGST_RATE }}%</label>
                     </div>
                   </div>
-                  <div class="floating-input ml-2 form-inline">
-                    <label class="font-weight-bold mr-1">Total :</label>
-                    <input
+                </td>
+                <td class="width-1">
+                  <div class="d-flex">
+                    <!-- <label class="font-weight-bold">CGST :</label> -->
+                    <input type="text" class="form-control cost ml-1 mr-1" 
+                    [ngModel]="data.CGST_VALUE  | costFilter" placeholder="CGST Value"
+                    [ngModelOptions]="{standalone: true}"
+                    disabled>
+                    <!-- <input
                       type="text"
-                      class="form-control w-50 mt-1 ml-1 cost"
+                      class="form-control ml-1 mr-1 cost"
+                      maxlength="10"
+                      [(ngModel)]="data.CGST_VALUE"
+                      disabled
+                      costInput
+                      placeholder="CGST Value"
+                      [ngModelOptions]="{ standalone: true }"
+                    /> -->
+                    <label class="">{{ data.CGST_RATE }}%</label>
+                  </div>
+                </td>
+                <td class="width-1">
+                  <div class="d-flex">
+                    <!-- <label class="font-weight-bold">IGST :</label> -->
+                    <input type="text" class="form-control cost ml-1 mr-1" 
+                    [ngModel]="data.IGST_VALUE  | costFilter" placeholder="IGST Value"
+                    [ngModelOptions]="{standalone: true}"
+                    disabled>
+                    <!-- <input
+                      type="text"
+                      class="form-control ml-1 mr-1 cost"
+                      maxlength="10"
+                      [(ngModel)]="data.IGST_VALUE"
+                      disabled
+                      costInput
+                      placeholder="IGST Value"
+                      [ngModelOptions]="{ standalone: true }"
+                    /> -->
+                    <label class="">{{ data.IGST_RATE }}%</label>
+                  </div>
+                </td>
+                <td class="width-1">
+                  <div class="d-flex">
+                    <!-- <label class="font-weight-bold">Total :</label> -->
+                    <input type="text" class="form-control cost " 
+                    [ngModel]="data.TOT_VALUE  | costFilter" placeholder="Total"
+                    [ngModelOptions]="{standalone: true}"
+                    [disabled]="IsInvoiedteailDisable">
+                    <!-- <input
+                      type="text"
+                      class="form-control cost"
                       [(ngModel)]="data.TOT_VALUE"
                       disabled
                       costInput
@@ -679,9 +698,34 @@
                       readonly
                       [ngModelOptions]="{ standalone: true }"
                       [disabled]="IsInvoiedteailDisable"
-                    />
+                    /> -->
                   </div>
                 </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td  class="" colspan="6">
+                  <div class="floating-input d-flex">
+                    <textarea
+                      name=""
+                      id=""
+                      rows="1"
+                      class="form-control"
+                      maxlength="500"
+                      [(ngModel)]="data.REMARKS"
+                      placeholder="Remarks"
+                      [ngModelOptions]="{ standalone: true }"
+                    ></textarea>
+                    <span class="del-red ml-2" >
+                      <i 
+                          class="fas fa-trash-alt"
+                          (click)="removeData(data)" 
+                          title="Delete Invoice"
+                      ></i>
+                      </span>
+                  </div>
+                </td>
+              
               </tr>
             </tbody>
           </table>
