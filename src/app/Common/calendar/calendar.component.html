@@ -1,0 +1,94 @@
+<div class="calendar m-2">
+    <div class="cal-header">
+        <div class="d-flex justify-content-between mb-1 header">
+            <div>
+                <div class="py-2 btn btn-secondary mr-2" (click)="monthPrevious()" title="Previous">
+                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                </div>
+                <div class="py-2 btn btn-secondary" (click)="monthNext()" title="Next">
+                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="">
+                <label class="month-text">{{month}}</label>
+            </div>
+            <div>
+                <button class="py-2 btn btn-secondary " (click)="monthToday()" title="Today">
+                    Today
+                </button>
+            </div> 
+        </div>
+    </div>
+
+    <div class="cal-body">
+        <div class="weekday-header">
+            <div class="wh-grid bg-light"  >
+                <ng-container *ngFor="let wd of weekday_header; let i=index;">
+                    <div class="p-2 wh-text  text-white text-center">{{wd}}</div>
+                </ng-container>
+            </div>
+        </div> 
+        <div class="weekdays" [ngClass]="{'maxrow': isLargeGrid}">
+            <ng-container *ngFor="let day of Month_dates; let i=index;">
+            <!-- <div class="w-day text-center" [ngClass]="{'unclickable': day.Date == '',
+                'today': day.full_date == selected,
+                'unclickable weekend':day.weekday == week_end,
+                'leave':day.status == 'L',
+                'not-attendance':day.status == 'A',
+                'present':day.status == 'P',
+                'timesheet':day.status == 'T' }">
+                    <div class="w-date pt-1 px-1 pb-0" (click)="dayClick(day)">
+                        {{ day.Date }}
+                    </div>
+                    <div class="w-status " [attr.data-content]="day.holiday_text" data-toggle="popover" data-trigger="hover" data-placement="left">
+                        <p class="s-text mb-0">{{ day.holiday_text }}</p>
+                    </div>
+                </div>  -->
+
+                <div class="w-day text-center" [ngClass]="{'unclickable': day.Date == '',
+                    'today': day.full_date == selected,
+                    'unclickable weekend':day.weekday == week_end 
+                    }">
+                    <!-- <div class="w-date pt-1 px-1 pb-0" (click)="dayClick(day) #0a88f5bf"> -->
+                    <div class="w-date pt-1 px-1 pb-0 text-right"  (click)="dayClick(day)">
+                         <label class="mb-0"> {{ day.date }}</label>
+                         <div class="form-inline float-left" >
+                            <a href="#"[attr.data-content]="day.ts_desc" data-toggle="popover" data-trigger="hover"
+                            data-template='<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body img-popover"></div></div>'  data-placement="bottom">
+                                <i class="fas fa-clock text-small" style=" font-size: large;" *ngIf="day.status_text == 'Present'"
+                                ></i>
+                            </a>
+                          
+                           
+                        </div> 
+                    </div>
+                   
+                    <div class="w-status holiday_text " [attr.data-content]="day.holiday_text"
+                    data-template='<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body img-popover"></div></div>' data-toggle="popover" data-trigger="hover" data-placement="bottom">
+                        <p class="s-text mb-0">{{ day.holiday_text }}</p>
+                    </div>
+                    <div class="w-status week_off " [attr.data-content]="day.week_off"
+                    data-template='<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body img-popover"></div></div>' data-toggle="popover" data-trigger="hover" data-placement="bottom">
+                        <p class="s-text mb-0">{{ day.week_off }}</p>
+                    </div>
+                    <div class="w-status " [attr.data-content]="day.status_text"  data-toggle="popover"
+                    data-template='<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body img-popover"></div></div>' data-trigger="hover" data-placement="left"
+                      [ngClass]="{ 'leave':day.status_text == 'Leave', 
+                    'not-attendance':day.status_text == 'Absent',
+                    'present':day.status_text == 'Present',
+                    'half_day':day.status_text == 'Half Day',
+                    'timesheet':day.status_text == 'Timesheet' }"> 
+                        <p class="s-text mb-0">{{ day.status_text }}</p>  
+                    </div>
+
+                    <div class="w-status half_day form-inline" [attr.data-content]="
+                    day.birthdate"
+                    data-template='<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body img-popover"></div></div>' data-toggle="popover" data-trigger="hover" data-placement="left">
+                        <i class="fa fa-birthday-cake text-warning mr-2" *ngIf="day.icon == 'B'"  style=" font-size: medium;" aria-hidden="true"></i>
+                        <p class="s-text mb-0">{{ day.birthdate }}</p>
+                    </div> 
+                </div>
+            </ng-container>
+        </div> 
+    </div>
+</div>

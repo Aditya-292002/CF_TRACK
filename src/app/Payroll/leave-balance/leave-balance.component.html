@@ -1,0 +1,192 @@
+<app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
+<div class="row">
+    <div class="col-md-12">
+        <button class="btn btn-secondary  float-right m-1 ml-1 mr-1" title="Save" (click)="clear()">Clear</button>
+        <button class="btn btn-secondary  float-right m-1 ml-1 mr-1" title="Save">Save</button>
+       
+    </div>
+    <div class="col-md-12">
+        <div class="row card">
+            <!-- <div class="col-md-7">
+                <label>Company :</label>
+                <div class="floating-input  list-btn">
+                    <select class="form-control selectpicker show-tick" id="Company"  data-live-search="true" title="Select">
+                        <option ></option>                     
+                    </select>
+                    <button type="button" class="close" onclick="resetDropdown('Company')"  aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <label>Location :</label>
+                <div class="floating-input  list-btn">
+                    <select class="form-control selectpicker show-tick" id="Location"  data-live-search="true" title="Select">
+                        <option ></option>                     
+                    </select>
+                    <button type="button" class="close" onclick="resetDropdown('Location')"  aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div> -->
+            <div class="col-md-6">
+                <label>Employee :</label>
+                <!-- <input type="text" class="form-control" placeholder="Employee Name" [(ngModel)]="Employee_Name">  -->
+                <!-- <div class="floating-input list-btn mb-2" [ngClass]="{'invalid-control':isSubmited && form.controls['EMP_NO'].errors?.required}" >
+                    <select class="form-control selectpicker show-tick"  formControlName="EMP_NO"  data-live-search="true" #emp id="emp" 
+                    (change)="changeViewList()" title="Select" enabled>
+                        <option *ngFor="let opt of EmpCommon_list; let i=index" 
+                        [selected]="opt.EMP_CODE == form.controls['EMP_NO'].value"
+                        [value]="opt.EMP_CODE" >{{ opt.EMP_CODE }} - {{ opt.USER_NAME }}</option>                     
+                    </select>
+                    <button type="button" class="close" onclick="resetDropdown('emp')" (click)="form.controls['EMP_NO'].reset()"  aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button> -->
+                <div class="floating-input  list-btn">
+                    <select class="form-control selectpicker show-tick" formControlName="EMP_NO" id="CODE"  data-live-search="true" title="Select" disabled>
+                        <option *ngFor = "let opt of EmpCommon_list; let i = index"
+                        [selected]="opt.EMP_CODE == form.controls['EMP_NO'].value"
+                        [value]="opt.EMP_CODE">{{ opt.EMP_CODE }}-{{ opt.USER_NAME }}</option>                     
+                    </select>
+                    <button type="button" class="close"  (click)="resetDropdown('EMP_NO')" (click)="form.controls['EMP_NO'].reset()"  aria-label="Close">
+                        <span aria-hidden="true">&times;</span> 
+                    </button>
+                </div>
+            </div>
+            <!-- <div class="col-md-3">
+                <label>Payroll Year :</label>
+                <input type="text" class="form-control" placeholder="Payroll Year" [(ngModel)]="Payroll_Year">  
+                <div class="floating-input ">
+                    <input type="text" class="form-control">
+                    <app-date-picker class="date-input"></app-date-picker>
+                </div>
+            </div> -->
+            <div class="col-md-2">
+                <label>Payroll :</label>
+                <div class="floating-input">
+                    <input type="text" class="form-control" placeholder="Payroll Year" [(ngModel)]="Payroll_Year"> 
+                </div>
+            </div>
+ 
+            <div class="col-md-4">
+                <label>Leave Code :</label>
+                <!-- <input type="text" class="form-control" placeholder="Leaves Earned" [(ngModel)]="Leave_Code">  -->
+                <div class="floating-input list-btn mb-2">
+                    <select class="form-control selectpicker show-tick" formControlName="LEAVE_CODE" id="CODE"  data-live-search="true" title="Select">
+                        <option *ngFor = "let opt of Leave_list; let i = index"
+                        [selected]="opt.LEAVE_CODE == form.controls['LEAVE_CODE'].value"
+                        [value]="opt.LEAVE_CODE">{{ opt.LEAVE_NAME }}</option>                     
+                    </select>
+                    <button type="button" class="close" (click)="resetDropdown('LEAVE_CODE')" (click)="form.controls['LEAVE_CODE'].reset()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span> 
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label>Leaves Pending :</label>
+                <div class="floating-input ">
+                    <input type="text" class="form-control" placeholder="Leaves Pending" [(ngModel)]="Leaves_Pending"> 
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label>Leaves Used:</label>
+                <div class="floating-input ">
+                    <input type="text" class="form-control" placeholder="Leaves Used" [(ngModel)]="Leaves_Used"> 
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label>Leaves Earned:</label>
+                <div class="floating-input ">
+                    <input type="text" class="form-control" placeholder="Leaves Earned" [(ngModel)]="Leaves_Earned"> 
+                </div>
+            </div>
+            <!-- <div class="col-md-3">
+                <button class="btn btn-secondary mt-4" title="Update All">Update All</button>
+            </div> -->
+
+            <!-- <div class="col-md-3">
+                <button class="btn btn-secondary mt-4" title="All"> All</button>
+            </div> -->
+        </div>
+    </div>
+    <div class="col-md-12 mt-2">
+        <div class="row card">
+            <div class="col-md-12">
+                <div class="form-inline">
+                    <h6 class="mb-0 col-md-6 p-0">Leave Balance Details</h6>
+                    <hr class="m-0 mb-2">
+                </div>
+                <div class="tableFixHead">
+                    <table class="table-theam-1 row_bgcolor_1">
+                        <thead>
+                            <tr>
+                                <th class="w-2">Employee</th>
+                                <th class="w-1">PYEAR</th>
+                                <th class="w-3">DOJ</th>
+                                <th class="w-1">LEAVES PENDING</th>
+                                <th class="w-1">TOTAL LEAVES APPLIED</th>
+                                <th class="w-1">LEAVE EARNED</th>
+                                <th class="w-1">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of leaveDetailList;let i=index;">
+                                <td id="USER_NAME{{i}}">{{data.USER_NAME}}</td>
+                                <td id="LEAVE_TYPE{{i}}">{{data.PYEAR}}</td>
+                                <td></td>
+                                <td class="w-130" id="FROM_DATE{{i}}">{{data.LEAVES_PENDING}}</td>
+                                <td class="w-130" id="TO_DATE{{i}}">{{data.TOTAL_LEAVES_APPLIED}}</td>
+                                <td class="w-130" id="NO_OF_DAYS{{i}}">{{data.LEAVE_EARNED}}</td>
+                                <!-- <td class="w-10" id="Balance{{i}}">{{data.BALANCELEAVE}}
+                                </td> -->
+                                <!-- <td class="w-40" id="Reason{{i}}">
+                                    <div>
+                                     
+
+
+                                        <i class="fas fa-registered mr-3" (click)="clickLeave(data.REASON)"
+                                            data-toggle="modal" data-target="#reason" title="{{data.REASON}}">
+                                            <span title="{{data.REASON}}"></span></i>
+                                    </div>
+
+                                </td> -->
+                         
+                                <td class="w-40">
+                                    <!-- <i class="fas fa-eye text-info mr-3"></i> -->
+
+                                    <i class="fas fa-edit text-info mr-3" (click)="viewDetails(data)"></i>
+                                    <!-- <i class="fas fa-user-check text-success mr-3"
+                                        *ngIf=" data.STATUS == 'Manager Approval' || data.STATUS == 'M' "
+                                        (click)="clickApprove(i,data.NO_OF_DAYS)" data-toggle="modal" data-target="#approve_leave"
+                                        title="Approve"></i>
+                                    <i class="fas fa-user-times text-danger mr-3"
+                                        *ngIf=" data.STATUS == 'Manager Approval' || data.STATUS == 'M' "
+                                        (click)="clickReject(i)" data-toggle="modal" data-target="#decline_leave"
+                                        title="Reject"></i> -->
+                                    <!-- <i class="fas fa-user-check text-success mr-3" (click)="clickApprove(i)" data-toggle="modal" data-target="#approve_leave" title="Approve"></i>
+                                    <i class="fas fa-user-times text-danger mr-3" (click`)="clickReject(i)" data-toggle="modal" data-target="#decline_leave" title="Reject"></i> -->
+                                </td>
+
+                            </tr>
+                            <!-- <tr>
+                                <td>
+                                    <div class="floating-input">
+                                        <input type="checkbox" class="form-control"> 
+                                    </div>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <div class="floating-input ">
+                                        <input type="text" class="form-control" placeholder="Leaves" readonly> 
+                                    </div>
+                                </td>
+                                <td><a><i  class="fa fa-edit" title="Print"></i></a></td>
+                            </tr> -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+table .w-10{
+    width: 4%;
+}
+table .w-15{
+    width: 9%;
+}
+table .w-20{
+    width: 100px;
+}
+table .form-control.w-16{
+    width: 115px;
+}
+table .w-25{
+    width: 18% !important;
+}
+table textarea.form-control{
+    height: auto !important;
+}
+.small{
+    font-size: 100%;
+}
+
+/* .list-group li{
+    height: 32px;
+} */
+table td i,
+ul li .att-doc-label-add i{
+    font-size: medium;
+} 
+table .date-input {
+    margin-top: -48px;
+    display: inline-block; 
+    float: right; 
+    width: 24px;
+    height: 24px;
+    margin-bottom: 0;
+    position: inherit;
+    right: 0;
+}
+
+
+@media (max-width: 1024px) {
+    table .w-10{ 
+        width: 8%;
+    } 
+    table .w-25{
+        width: 30% !important;
+    }
+}
+.card { 
+    flex-direction: inherit !important;
+    margin: 0 !important;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+    padding: 4px 8px !important;
+}
+.p-datatable .p-datatable-thead > tr > th {
+    padding: 5px 8px !important;
+    color: #fff !important;
+    background: #424a5a !important;
+}
+.width-2{
+    width: 80px !important;
+}
+.width-20{
+    width: 228px !important;
+}
+.width-10{
+    width: 120px !important;
+}
+.width-1{
+    width: 53px !important;
+}

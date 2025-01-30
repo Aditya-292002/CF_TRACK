@@ -1,0 +1,140 @@
+<app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
+<form [formGroup]="form">
+    <!--  -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row card">
+                <div class="col-md-4">
+                    <label>Project<span class="validator">*</span> :</label>
+                    <div class="floating-input list-btn mb-1" [ngClass]="{'invalid-control':isSubmited && form.controls['PROJ_CODE'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" formControlName="PROJ_CODE" (change)="setCompany();" id="proj" #proj data-live-search="true" title="Select">
+                            <option *ngFor="let opt of project_list; let i=index" [selected]="opt.PROJ_CODE == ''"
+                                [value]="opt.PROJ_CODE">{{ opt.PROJ_NAME }}</option>
+                        </select>
+    
+                        <button type="button" class="close" onclick="resetDropdown('proj')" (click)="this.form.controls['PROJ_CODE'].reset();task_list=[];" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Company :</label>
+                    <div class="floating-input mb-1" [ngClass]="{'invalid-control':isSubmited && form.controls['COMPANY'].errors?.required}">
+                        <input type="text" formControlName="COMPANY" placeholder="Company" class="form-control text-uppercase">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Customer :</label>
+                    <div class="floating-input mb-1" [ngClass]="{'invalid-control':isSubmited && form.controls['CUSTOMER'].errors?.required}">
+                        <input type="text" formControlName="CUSTOMER" placeholder="Customer" class="form-control text-uppercase">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Staus :</label>
+                    <div class="floating-input  list-btn" >
+                        <select class="form-control selectpicker show-tick" formControlName="TASK_STATUS" 
+                        (change)="onShowTask();" id="Staus" #Staus data-live-search="true" title="Select">
+                            <option *ngFor="let opt of task_status_list; let i=index" [selected]="opt.TASK_STATUS == ''"
+                                [value]="opt.TASK_STATUS">{{ opt.TASK_STATUS_DESC }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('Staus')" (click)="this.form.controls['TASK_STATUS'].reset();" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Task Type :</label>
+                    <div class="floating-input  list-btn" >
+                        <select class="form-control selectpicker show-tick" formControlName="TASKTYPE_CODE" id="Task_type"
+                        (change)="onShowTask();"  #Task_type data-live-search="true" title="Select">
+                            <option *ngFor="let opt of task_type_list; let i=index" [selected]="opt.TASKTYPE_CODE == ''"
+                                [value]="opt.TASKTYPE_CODE">{{ opt.TASKTYPE_DESC }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('Task_type')" (click)="this.form.controls['TASKTYPE_CODE'].reset();" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+        <div class="col-md-12 mt-2">
+            <div class="row card">
+                <div class="col-md-12">
+                    <h6 class="mb-0 col-md-6 p-0">Task Status Details</h6>
+                    <hr class="m-0 mb-2">
+                    <div class="tableFixHead">
+                        <table class="table-theam-1 row_bgcolor_1">
+                            <thead>
+                                <tr>
+                                    <th class="w-10">Task No.</th>
+                                    <th class="w-30">Project.</th>
+                                    <th class="w-30">Task</th>
+                                    <th class="w-10">Priority</th>
+                                    <th class="w-10">Start Date</th>
+                                    <th class="w-20">Completion Date</th>
+                                    <th class="w-30">Business Owner</th>
+                                    <th class="w-20">Staus</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of task_list; let i=index;">
+                                    <td class="w-10">
+                                        <a (click)="f_OpenTask(data.TASKID)">
+                                            {{ data.TASK_NO }}
+    
+                                        </a>
+                                    </td>
+                                    <td class="w-30">
+                                        {{ data.PROJ_NAME }}
+                                    </td>
+                                    <td class="w-30">
+                                        {{ data.TASK_DESC }}
+                                    </td>
+                                    <td class="w-10">{{ data.PRIORITY }}
+                                    </td>
+                                    <td>{{ data.PLANNED_START_DATE }}</td>
+                                    <td class="w-20">{{ data.COMPLETION_DATE }}</td>
+                                    <td class="w-30"> {{ data.BUSINESS_OWNERNAME }}</td>
+                                    <td class="w-20">
+                                        <select class="form-control selectpicker show-tick" [(ngModel)]="data.TASK_STATUS" data-container="body" data-size="5" (change)="f_openWarning(i,data.TASKID,data.TASK_STATUS)" data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}">
+                                            <option value="" disabled></option>
+                                            <option *ngFor="let opt of task_status_list; let i=index" 
+                                            [selected]="opt.TASK_STATUS == data.TASK_STATUS" 
+                                            [value]="opt.TASK_STATUS">{{ opt.TASK_STATUS_DESC }}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="modal" tabindex="-1" id="warn_popup" #warn_popup role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- <div class="modal-header">
+                <h5 class="modal-title">Add Customer Details</h5> 
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div> -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label>Are you sure, you want to change status?</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="UpdateTaskStatus(_taskid,_status)">Yes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="GetTaskList();_taskid=null;_status=''">No</button>
+            </div>
+        </div>
+    </div>
+</div>

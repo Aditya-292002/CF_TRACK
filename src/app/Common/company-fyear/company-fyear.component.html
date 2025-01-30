@@ -1,0 +1,71 @@
+
+<app-spinner [startSpinner]="spinner" *ngIf="spinner"></app-spinner>
+
+<div class="parent">
+  <div class="child">
+    <div class="login-container" id="container">
+      <div class="divleft">
+        <div class="sidebar-footer">
+          <img src="../../../assets/images/TopLogo1.png" alt="" />
+        </div>
+        <div class="divImage"></div>
+      </div>
+      <div class="divRight bg-white">
+        <div class="divCenter">
+          <div class="">
+            <div class="w-100 d-flex justify-content-center mb-5">
+              <img
+                class="divLogo"
+                src="../../../assets/images/comflexlogo.png"
+                alt=""
+              />
+            </div>
+            <h6 class="text-truncate text_header px-2">Compay Details</h6>
+            <br />
+            <div class="px-2">
+              <form (ngSubmit)="onSubmitDetail()" [formGroup]="form" class="forms justify-content-center">
+                <div class="form-group">
+                    <label class="sr-only">Company</label>
+
+                    <select class="form-control selectpicker show-tick" data-live-search="true" id="companyid" formControlName="COMPANY_CODE" 
+                        #companyid title="Company">
+                        <option *ngFor="let opt of company_list; let i=index" 
+                        [selected]="opt.COMPANY_CODE == form.controls['COMPANY_CODE'].value"
+                        [ngValue]=opt.COMPANY_CODE >{{opt.COMPANY_CODE}} - {{ opt.COMPANY_NAME }}</option>
+                    </select>
+                      
+                   
+                </div>
+                <div class="form-group">
+                    <label class="sr-only">Location</label>
+                    <select class="form-control selectpicker show-tick" data-live-search="true" id="plantid" formControlName="LOCATION_CODE" #plantid 
+                    title="Location">
+                        <option *ngFor="let opt of location_list; let i=index" 
+                        [selected]="opt.LOCATION_CODE == form.controls['LOCATION_CODE'].value"
+                         [ngValue]="opt.LOCATION_CODE" >{{opt.LOCATION_CODE}} - {{ opt.LOCATION_NAME }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="sr-only">Financial Year</label>
+                    <select class="form-control selectpicker show-tick" data-live-search="true" id="fyear" formControlName="FYEAR" 
+                    #fyear title="Financial Year">
+                        <option *ngFor="let opt of fyear_list; let i=index" 
+                        [selected]="opt.FYEAR == form.controls['FYEAR'].value"
+                         [value]="opt.FYEAR" >{{ opt.FYEAR_DESC }}</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg loginBtn">Continue</button>
+                <a
+                class="forget-text float-right"
+                (click)="onDashboard()"
+                >Back to dashboard</a
+              >
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

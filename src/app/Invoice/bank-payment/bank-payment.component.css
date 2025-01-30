@@ -1,0 +1,68 @@
+.card {
+    margin: 0 !important;
+    flex-direction: inherit !important;
+}
+/* table .w-4{
+    width: 160px;
+}  
+@media (max-width: 1280px) {
+    table .w-4{
+        width: 100px;
+    }
+}   */
+
+.modal.table.input[type=checkbox]{
+    margin-top: -11px;
+}
+.modal.table .w-1{
+    width:128px;
+}
+/* .modal .tableFixHead{
+  overflow-x: auto;
+} 
+.modal table{
+    width: max-content;
+} */
+.modal table .table-check {
+    margin-top: -11px;
+}
+.modal table th {
+    position: relative;
+}
+/* table thead th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 22;
+  }   */ 
+    
+table .headcol{
+  position: sticky;
+  width: 5em;
+  left: 0;
+  top: auto;
+  border-top-width: 1px;
+  background: #fff;
+}
+table .w-1{
+    width: 160px;
+}  
+
+table .w-2{ 
+    width: 80px;
+}
+table .w-3{
+    width: 260px;
+} 
+
+@media (max-width: 1200px) {
+    .padd_right{
+        padding-right: 15px !important ;
+    }
+    .tableFixHead {
+        overflow-x: auto; 
+    }        
+     
+    table.table-theam-1.table_width {
+       width: max-content;
+    }
+}

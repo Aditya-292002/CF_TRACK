@@ -1,0 +1,238 @@
+<app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
+<form [formGroup] = "form">
+    <div class="row">
+        <div class="col-md-12">
+			<div class="d-flex justify-content-between">
+                <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
+                <button class="btn btn-secondary" [hidden]="inboundClick" (click)="CheckValidationForLeaveRequest()"
+			 title="Save">Save</button>
+            </div>
+			
+      </div> 
+		<div  id="viewForm">
+			<div class="mt-2 d-flex">
+				<div class="col-xl-9 col-lg-12 col-md-12 col-sm-12 pr-0 padd_right d-flex  ">
+					<div class="row card">
+						<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12" >
+							<label>Employee :<span class="text-danger">*</span></label>
+							<div class="floating-input list-btn mb-2" [ngClass]="{'invalid-control':isSubmited && form.controls['EMP_NO'].errors?.required}" >
+								<select class="form-control selectpicker show-tick"  formControlName="EMP_NO" 
+								 data-live-search="true" #emp id="emp" 
+								(change)="changeViewList()" title="Select" enabled>
+									<option *ngFor="let opt of EmpCommon_list; let i=index" 
+									[selected]="opt.EMP_CODE == form.controls['EMP_NO'].value"
+									[value]="opt.EMP_CODE" >{{ opt.EMP_CODE }} - {{ opt.USER_NAME }}</option>                     
+								</select>
+								<button type="button" class="close" onclick="resetDropdown('emp')" (click)="form.controls['EMP_NO'].reset()"  aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+						</div>
+						<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+							<label>Leave Code :<span class="text-danger">*</span></label>
+							<div class="floating-input mb-2 list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LEAVE_CODE'].errors?.required}" >
+								<select class="form-control selectpicker show-tick" formControlName="LEAVE_CODE" id="CODE"  data-live-search="true" title="Select">
+									<option *ngFor = "let opt of Leave_list; let i = index"
+									[selected]="opt.LEAVE_CODE == form.controls['LEAVE_CODE'].value"
+									[value]="opt.LEAVE_CODE">{{ opt.LEAVE_NAME }}</option>                     
+								</select>
+								<button type="button" class="close" onclick="resetDropdown('LEAVE_CODE')" (click)="form.controls['LEAVE_CODE'].reset()"   aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+						</div>
+						<div class="col-xl-3 col-lg-12 col-md-12 col-sm-12">
+							<label>Request Date :<span class="text-danger">*</span></label>
+							<div class="floating-input mb-2" [ngClass]="{'invalid-control':isSubmited && form.controls['REQUEST_DATE'].errors?.required}">
+								<input type="text" class="form-control" formControlName="REQUEST_DATE" [(ngModel)]="REQUEST_DATE" id="Request_Date" readonly> 
+							</div>
+						</div>
+						<div class="col-xl-3 col-lg-12 col-md-12 col-sm-12">
+							<label>Type :<span class="text-danger">*</span></label>
+							<div class="floating-input mb-2 list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LEAVE_TYPE'].errors?.required}">
+								<select class="form-control selectpicker show-tick" formControlName="LEAVE_TYPE" id="TYPE" data-live-search="true" title="Select" (change)="ChangeFDate()">
+									<option *ngFor = "let opt of LeaveType_list; let i = index"
+									[selected]="opt.LEAVE_TYPE == form.controls['LEAVE_TYPE'].value"
+									[value]="opt.LEAVE_TYPE">{{ opt.LEAVE_TYPE_DESC }}</option>                     
+								</select>
+								<button type="button" class="close" onclick="resetDropdown('LEAVE_TYPE')"  aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+						</div>
+						<div class="col-xl-3 col-lg-12 col-md-12 col-sm-12">
+							<label>From :<span class="text-danger">*</span></label>
+							<div class="floating-input mb-2" [ngClass]="{'invalid-control':isSubmited && form.controls['FROM_DATE'].errors?.required}">
+								<input type="text" class="form-control" placeholder="dd-mm-yyyy" formControlName="FROM_DATE" [(ngModel)]="FROM_DATE" (change)="ChangeFDate()" readonly>
+								<!-- <app-date-picker id="reqdate" [(ngModel)]="JV_DATE" #reqdate class="date-input" [ngModelOptions]="{standalone: true}"></app-date-picker> -->
+								<div class="date-input">
+									<mat-form-field fxFlex="100" appearance="fill">
+										<!-- <mat-icon matDatepickerToggleIcon (click)="clearDate($event)">clear</mat-icon> -->
+										<mat-datepicker-toggle matPrefix [for]="picker2"  id='cal2' #cal2></mat-datepicker-toggle>
+										<input class="form-control" placeholder="dd-mm-yyyy" (dateChange)="ChangeFDate()" [value]="F_DATE" matInput [(ngModel)]="F_DATE" [ngModelOptions]="{standalone: true}" [matDatepicker]="picker2" [min]="min_date" [max]="maxdate" [disabled]="false" readonly />
+							  			<mat-datepicker #picker2 id="picker2"></mat-datepicker>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-3 col-lg-12 col-md-12 col-sm-12">
+							<label>To :<span class="text-danger">*</span></label>
+							<div class="floating-input mb-2" [ngClass]="{'invalid-control':isSubmited && form.controls['TO_DATE'].errors?.required}">
+									<input type="text" class="form-control" placeholder="dd-mm-yyyy" formControlName="TO_DATE" [(ngModel)]="TO_DATE" enabled  readonly>
+									<!-- <app-date-picker id="reqdate" [(ngModel)]="JV_DATE" #reqdate class="date-input" [ngModelOptions]="{standalone: true}"></app-date-picker> -->
+									<div class="date-input" *ngIf="isHalfDay" id="div_todate" >
+										<mat-form-field fxFlex="100" appearance="fill"  >
+											<mat-datepicker-toggle matPrefix [for]="picker3" id="dt_cal3" #dt_cal3></mat-datepicker-toggle>
+											<input class="form-control" placeholder="dd-mm-yyyy" (dateChange)="ChangeTDate()" [value]="T_DATE" id="cal3" matInput [(ngModel)]="T_DATE" [ngModelOptions]="{standalone: true}" [matDatepicker]="picker3" [min]="min_date" [max]="maxdate" [disabled]="false" readonly />
+											<mat-datepicker #picker3 id="picker3"></mat-datepicker>
+										</mat-form-field>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+							<label>Reason :<span class="text-danger">*</span></label>
+							<div class="floating-input mb-2" [ngClass]="{'invalid-control':isSubmited && form.controls['REASON'].errors?.required}">
+								<textarea name="" id="Reason" rows="1" class="form-control" formControlName="REASON" placeholder="Enter a Reason"></textarea>
+							</div>
+						</div>
+					</div> 
+				</div>
+				<div class=" col-xl-3 col-lg-12 col-md-12 col-sm-12  d-flex ">
+						<div class="row card">
+							<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+								<label>HR Approved Leave :</label>
+								<div class="floating-input mb-2">
+									<input type="text" class="form-control text-right" formControlName="HR_APPROVED_LEAVE" OnlyNumber='true' disabled placeholder="HR Approved Leave ">
+								</div>
+							</div>
+							<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+								<label>Leave Pending for PM Approval :</label>
+								<div class="floating-input mb-2">
+									<input type="text" class="form-control text-right" formControlName="LEAVE_PENDING_FOR_PM_APPROVAL" OnlyNumber='true' disabled placeholder="Leave Pending for PM App">
+								</div>
+							</div>
+							<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+								<label>Leave Pending for HR Approval:</label>
+								<div class="floating-input mb-2">
+									<input type="text" class="form-control text-right" formControlName="LEAVE_PENDING_FOR_HR_APPROVAL" OnlyNumber='true' disabled placeholder="Leave Pending for HR App">
+								</div>
+							</div>
+						</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="page-content mt-2" *ngIf="isViewLeave">
+			<div class="col-md-12">
+				<div class="tableFixHead ">
+					<table class="table-theam-1 row_bgcolor_1">
+						<thead>
+							<tr>
+								<th class="">Leave Code</th>
+								<th class="">From Date</th>
+								<th class="">To Date</th>
+								<th class="">No. of Days</th>
+								<th class="">Status</th>
+								<th class="">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let data of all_leave_list;let i=index;" >
+								<td class="">{{data.LEAVE_NAME}}</td>
+								<td class="">{{data.FROM_DATE}}</td>
+								<td class="">{{data.TO_DATE}}</td>
+								<td class="">{{data.NO_OF_DAYS}}</td>
+								<td class=""  (dblclick)="openPopup(data, 'Status')">							
+								 <i class="fa fa-ban text-warning mr-2" *ngIf="data.STATUS == 'P'"></i> 
+								 <i class="fa fa-check-square text-success mr-2" *ngIf="data.STATUS == 'A' || data.STATUS == 'M'"></i>
+								 <i class="fa fa-times text-danger mr-2" *ngIf="data.STATUS == 'R'"></i>{{data.STATUS_DESC}}</td> 
+								<td class="">									
+									<a *ngIf="data.STATUS == 'P' || data.STATUS == 'M'">
+										<i class="fa fa-edit mr-2"  (click)="editLeave(data)" title="Edit"></i>  
+									</a>
+									<a *ngIf="(data.STATUS == 'P' && this.ROLE_NAME == 'HR USER') || (data.STATUS == 'M' && this.ROLE_NAME == 'HR USER')">
+										<i class="fa fa-trash "  (click)="editLeave(data)" title="Delete"></i>  
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+    </div>
+</form>
+
+
+<div class="modal fade" #attendance id="attendance" tabindex="-1" role="dialog" data-keyboard="false"
+    data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">leave Approval details</h5>
+                <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row mt-2" *ngFor="let data of aprrovalDetails">
+                    <div class="col-md-8">
+                        <label>Manager Name:</label>
+                        <div class="floating-input mb-1">
+                            <input type="text" [(ngModel)]="data.MANAGER_NAME" class="form-control" placeholder="Employee name"
+                                [ngModelOptions]="{standalone: true}" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4" >
+                        <label>Updated On</label>
+                        <div class="floating-input mb-1">
+                            <input type="text" [(ngModel)]="data.APPROVEDON"
+                            [ngModel]="data.APPROVEDON | date:'yyyy-MM-dd'" class="form-control" placeholder="Employee name"
+                                [ngModelOptions]="{standalone: true}" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-8" *ngIf="data.STATUS=='A'|| data.STATUS=='R' && data.HR_NAME != null">
+                        <label>HR Name:</label>
+                        <div class="floating-input mb-1">
+                            <input type="text" [(ngModel)]="data.HR_NAME" class="form-control" placeholder="Employee name"
+                                [ngModelOptions]="{standalone: true}" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4" *ngIf="data.STATUS =='A' ||  data.STATUS=='R' && data.HRAPPROVEDON != null">
+                        <label>Updated On</label>
+                        <div class="floating-input mb-1">
+                            <input type="text" [(ngModel)]="data.HRAPPROVEDON"
+                            [ngModel]="data.HRAPPROVEDON | date:'dd-mm-yy'" class="form-control" placeholder="Employee name"
+                                [ngModelOptions]="{standalone: true}" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-12" *ngIf="data.STATUS=='R'">
+                        <label>Reject Reason</label>
+                        <div class="floating-input mb-1">
+                            <input type="text" [(ngModel)]="data.REJECT_REASON" class="form-control" placeholder="Employee name"
+                                [ngModelOptions]="{standalone: true}" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="SaveConformationPopUp" #SaveConformationPopUp tabindex="-1" role="dialog" aria-labelledby="SaveConformationPopUp" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+	  <div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" >Warning</h5>
+		  </div>
+		<div class="modal-body">
+			<span class="modal-title" >{{warningmess}} ?</span>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="SAVE_LEAVE(1)">Ok</button>
+		  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+		</div>
+	  </div>
+	</div>
+  </div>

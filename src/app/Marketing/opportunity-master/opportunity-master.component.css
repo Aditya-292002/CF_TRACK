@@ -1,0 +1,19 @@
+.w-11d {
+    width: 165px;
+}
+
+.w-sr {
+    width: 66px;
+}
+
+.w-date {
+    width: 164px;
+}
+
+table .date-input {
+    right: 355px;
+}
+.card{
+    margin: 0;
+    flex-direction: inherit;
+}

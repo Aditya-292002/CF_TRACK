@@ -1,0 +1,105 @@
+.pro-teams {
+    display: inline-flex;
+    /* margin-right: 15px; */
+    text-align: center;
+    /* margin-bottom: 20px; */
+}
+.pro-team-lead {
+    display: inline-block;
+}
+.pro-teams .avatar-group {
+    display: inline-flex;
+}
+.pro-teams .avatar-group .avatar {
+    margin-right: 6px;
+    position: relative;
+    display: inline-block;
+    width: 34px;
+    height: 34px;
+    font-size: 10px;
+    background-color: transparent;
+}
+.pro-teams .avatar-group .avatar > img {
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.pro-teams .pro-team-members {
+    margin-left: 15px;
+    display: flex;
+    align-items: center;
+}
+.list-group-item .text-label{
+    color: #fff !important;
+    font-size: 15px;
+    line-height: 1.2;
+    font-weight: 600;
+}
+.list-group-item img{
+    width: 30px;
+    height: 30px;
+}
+.card{
+    margin: 0 ;
+    flex-direction: inherit;
+    }
+
+    /* list team member */
+    .activity .activity-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        position: relative;
+    }
+    .activity-list::before {
+        background: #ddd;
+        bottom: 0;
+        content: "";
+        left: 23px;
+        position: absolute;
+        top: 8px;
+        width: 2px;
+    }
+    .activity-list > li {
+        background-color: #fff;
+        margin-bottom: 10px;
+        padding: 10px;
+        position: relative;
+        border: 1px solid #dcdcdc;
+        box-shadow: 0 1px 1px 0 rgb(0 0 0 / 20%);
+    }
+    .activity .activity-list li::before {
+        background: #ddd;
+        bottom: 0;
+        content: "";
+        left: 22px;
+        position: absolute;
+        top: 40px;
+        width: 2px;
+    }
+    .activity .activity-list > li .activity-user {
+        height: 32px;
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        top: 7px;
+        left: 8px;
+        width: 32px;
+    }
+    .activity-user .avatar {
+        height: 32px;
+        line-height: 32px;
+        margin: 0;
+        width: 32px;
+    }
+    .activity .activity-list > li .activity-content {
+        background-color: #fff;
+        margin: 0 0 0 40px;
+        padding: 0;
+        position: relative;
+    }
+    .activity-list > li .activity-content .timeline-content a {
+        color: #616161;
+    }

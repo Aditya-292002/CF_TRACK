@@ -1,0 +1,163 @@
+<app-spinner [startSpinner]="spinner" *ngIf="spinner"></app-spinner>
+
+<!-- <section id="cover" class="min-vh-100">
+    <div id="cover-caption">
+        <div class="container mt-5"> 
+            <div class="row text-white">
+                <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4" *ngIf="!isForgetSceen">
+                    <h1 class="display-4 py-2 text-truncate">Welcome</h1>
+                    <br>
+                    <div class="px-2">
+                        <form (ngSubmit)="onSubmitLogin()" [formGroup]="loginForm" class="forms justify-content-center">
+                            <div class="form-group">    
+                                <label class="sr-only">Username</label>
+                                <input type="text" class="form-control" id="username" formControlName="username" #username placeholder="Username" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only">Password</label>
+                                <input type="password" class="form-control" id="password" formControlName="password" #password placeholder="Password" autocomplete="off" required>
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-lg mr-2">Login</button>
+                               
+                            </div>
+                            <a class="text-white forget-text float-right"
+                             (click)="enc();isForgetSceen = !isForgetSceen">Forgot Password?</a>
+
+                        </form>
+                        
+                    </div>
+                </div>
+        
+                <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4" *ngIf="isForgetSceen">
+                    <h3 class="display-4 py-2 text-truncate">Forgot Password</h3>
+                    <br>
+                    <div class="px-2">
+                        <form (ngSubmit)="onSubmitForgot()" class="forms justify-content-center">
+                            <div class="form-group">
+                                <label class="sr-only">Email Id</label>
+                                <input type="text" [(ngModel)]="login_userId" class="form-control" id="user_email_id" #user_email_id placeholder="example@gmail.com" [ngModelOptions]="{standalone: true}" required>
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-lg mr-3">Submit</button>
+                            </div>
+                            <a class="text-white forget-text float-right" (click)="isForgetSceen = !isForgetSceen;login_userId=''">Back to Login</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> -->
+
+<div class="parent">
+  <div class="child">
+    <div class="login-container" id="container">
+      <div class="divleft">
+        <div class="sidebar-footer">
+            <img src="../../../assets/images/TopLogo1.png" alt="" />
+          </div>
+        <div class="divImage"></div>
+        
+      </div>
+      <div class="divRight bg-white">
+        <div class="divCenter">
+          <div class="" *ngIf="!isForgetSceen">
+            <div class="w-100 d-flex justify-content-center mb-5">
+                <img class="divLogo" src="../../../assets/images/comflexlogo.png" alt="" />
+              
+               
+            </div>
+            <h6 class="text-truncate text_header px-2">Welcome to Comflex Technologies</h6>
+            <label class="text_subheader mb-3 px-2"
+              >Login to your account using your email & password
+              (e.g. john.doe@comflextech.com & xxxx@123).</label
+            >
+            <br />
+            <div class="px-2">
+              <form
+                (ngSubmit)="onSubmitLogin()"
+                [formGroup]="loginForm"
+                class="forms justify-content-center"
+              >
+                <div class="form-group">
+                  <label class="sr-only">Username</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    formControlName="username"
+                    #username
+                    placeholder="Username"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="sr-only">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    formControlName="password"
+                    #password
+                    placeholder="Password"
+                    autocomplete="off"
+                    required
+                  />
+                </div>
+                <div>
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-lg loginBtn mr-2"
+                  >
+                    Login
+                  </button>
+                </div>
+                <a
+                  class="forget-text float-right"
+                  (click)="enc(); isForgetSceen = !isForgetSceen"
+                  >Forgot Password?</a
+                >
+              </form>
+            </div>
+          </div>
+
+          <div class="text-center" *ngIf="isForgetSceen">
+            <h6 class="text-truncate text_header">Forgot Password</h6>
+            <br />
+            <div class="px-2">
+              <form
+                (ngSubmit)="onSubmitForgot()"
+                class="forms justify-content-center"
+              >
+                <div class="form-group">
+                  <label class="sr-only">Email Id</label>
+                  <input
+                    type="text"
+                    [(ngModel)]="login_userId"
+                    class="form-control"
+                    id="user_email_id"
+                    #user_email_id
+                    placeholder="example@gmail.com"
+                    [ngModelOptions]="{ standalone: true }"
+                    required
+                  />
+                </div>
+                <div>
+                  <button type="submit" class="btn btn-primary btn-lg loginBtn">
+                    Submit
+                  </button>
+                </div>
+                <a
+                  class="forget-text float-right"
+                  (click)="isForgetSceen = !isForgetSceen; login_userId = ''"
+                  >Back to Login</a
+                >
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

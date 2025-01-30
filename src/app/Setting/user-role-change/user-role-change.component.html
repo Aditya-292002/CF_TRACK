@@ -1,0 +1,41 @@
+<app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
+<form [formGroup]="form">
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-secondary  float-right m-1 ml-1 mr-1" title="Save" (click)="clear()">Clear</button>
+            <button class="btn btn-secondary  float-right m-1 ml-1 mr-1" title="Save"
+                (click)="updateRole()">Update</button>
+        </div>
+    </div>
+    <div class="row card d-flex flex-lg-row">
+        <div class="col-md-6">
+            <label>Employee :</label>
+            <div class="floating-input  list-btn">
+                <select class="form-control selectpicker show-tick" formControlName="EMP_NO" id="CODE"
+                    data-live-search="true" (change)="GetUserRoleDetails($event)" title="Select">
+                    <option *ngFor="let opt of EmpCommon_list; let i = index"
+                        [selected]="opt.EMP_CODE == form.get('EMP_NO').value" [value]="opt.USERID">{{ opt.EMP_CODE }}-{{ opt.USER_NAME }}</option>
+                </select>
+                <button type="button" (click)="resetDropdown('EMP_NO')" (click)="form.controls['EMP_NO'].reset()"
+                    class="close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span> 
+                </button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label>Role :</label>
+            <div class="floating-input list-btn mb-2">
+                <select class="form-control selectpicker show-tick" formControlName="ROLE_CODE" id="CODE" 
+                    data-live-search="true"  (change)="onChange($event)" title="Select">
+                    <option *ngFor="let opt of Role_list; let i = index"
+                        [selected]="opt.ROLE_ID == form.controls['ROLE_CODE'].value" [value]="opt.ROLE_ID">{{opt.ROLE_ID }}-{{ opt.ROLE_NAME }}</option>
+                </select>
+                <button type="button" class="close" (click)="resetDropdown('ROLE_CODE')"
+                    (click)="form.controls['ROLE_CODE'].reset()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</form>

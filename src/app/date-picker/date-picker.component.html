@@ -1,0 +1,7 @@
+<mat-form-field fxFlex="100" appearance="fill">
+    <mat-datepicker-toggle matPrefix [for]="picker" id='cal' #cal></mat-datepicker-toggle>
+    <input class="form-control" matInput [matDatepicker]="picker" [value]="dateValue" (dateInput)="addEvent('input', $event)" [placeholder]="placeholder" (dateChange)="dateClick()" (focus)="picker?.open()" [max]="maxdate" [min]="mindate" [disabled]="isDisable"
+        readonly />
+
+    <mat-datepicker #picker id="picker"></mat-datepicker>
+</mat-form-field>

@@ -1,0 +1,281 @@
+<app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
+<form [formGroup]="form">
+    <div class="d-flex justify-content-end ">
+        
+        <div class="floating-input m1-1">
+            <button class="btn btn-secondary  float-right " *ngIf="INVOICE_ID.length" (click)="SaveInvoiceApprove();" title="Save">Save</button>
+        </div>
+            <div class="floating-input list-btn">
+                <select class="form-control selectpicker show-tick" (change)="GetIvoiceDetail()" [(ngModel)]="INVOICE_ID" data-live-search="true" id="search" #search title="Search Request No" [ngModelOptions]="{standalone: true}">
+                    <option *ngFor="let opt of invoice_list; let i=index" 
+                    [selected]="opt.REQ_ID == INVOICE_ID"
+                    [value]="opt.REQ_ID" >{{ opt.REQ_NO }}</option>                     
+                </select>
+                <button type="button" class="close" onclick="resetDropdown('search')" (click)="INVOICE_ID='';f_clearForm()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+    </div>
+    <div  [ngClass]="{'norights': !(INVOICE_ID.length > 0) }">
+        <div class="mt-2">
+            <div class="row card ">
+                <div class="col-md-3">
+                    <label>Company<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['COMPANY_CODE'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" formControlName="COMPANY_CODE" (change)="filterLocations();" data-live-search="true" id="company" #company title="Select">
+                            <option *ngFor="let opt of company_list; let i=index" 
+                            [selected]="opt.COMPANY_CODE == form.controls['COMPANY_CODE'].value"
+                             [value]="opt.COMPANY_CODE" >{{ opt.COMPANY_NAME }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('company')" (click)="form.controls['COMPANY_CODE'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Location<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LOCATION_CODE'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" formControlName="LOCATION_CODE" data-live-search="true" id="location" #company title="Select">
+                            <option *ngFor="let opt of _location_list; let i=index" 
+                            [selected]="opt.LOCATION_CODE == form.controls['LOCATION_CODE'].value"
+                             [value]="opt.LOCATION_CODE" >{{ opt.LOCATION_NAME }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('location')" (click)="form.controls['LOCATION_CODE'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Invoice Type<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['DOCTYPE_CODE'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" formControlName="DOCTYPE_CODE" data-live-search="true" id="invoice_type" title="Select">
+                            <option *ngFor="let opt of invoice_type_list; let i=index" 
+                            [selected]="opt.DOCTYPE_CODE == form.controls['DOCTYPE_CODE'].value"
+                             [value]="opt.DOCTYPE_CODE" >{{ opt.DOCTYPE_DESC }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('invoice_type')" (click)="form.controls['DOCTYPE_CODE'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Financial Year<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['FYEAR'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" disabled formControlName="FYEAR" data-live-search="true" id="fyear" title="Select">
+                            <option *ngFor="let opt of fyear_list; let i=index" 
+                            [selected]="opt.FYEAR == form.controls['FYEAR'].value"
+                             [value]="opt.FYEAR" >{{ opt.FYEAR_DESC }}</option>
+                        </select>
+                        <!-- <button type="button" class="close" onclick="resetDropdown('fyear')"  (click)="form.controls['FYEAR'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button> -->
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Request No<span class="validator">*</span> :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['REQ_NO'].errors?.required}">
+                        <input type="text" class="form-control" formControlName="REQ_NO" disabled placeholder="Request No." OnlyNumber='true'>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Request Date<span class="validator">*</span> :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['REQ_DATE'].errors?.required}">
+                        <input type="text" class="form-control" formControlName="REQ_DATE" [(ngModel)]="REQ_DATE" readonly>
+                        <app-date-picker [(ngModel)]="REQ_DATE" id="reqdate" #reqdate class="date-input" [maxdate]="maxdate" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Customer<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['CUST_CODE'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" formControlName="CUST_CODE" disabled id="customer" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of customer_list; let i=index" 
+                            [selected]="opt.CUST_CODE == form.controls['CUST_CODE'].value"
+                             [value]="opt.CUST_CODE" >{{ opt.CUST_NAME }}</option>                     
+                        </select>
+                        <!-- <button type="button" class="close" onclick="resetDropdown('customer')" (click)="form.controls['CUST_CODE'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button> -->
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Project<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['PROJ_CODE'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" formControlName="PROJ_CODE" (change)="GetTaskList()" disabled id="project" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of project_list; let i=index" 
+                            [selected]="opt.PROJ_CODE == form.controls['PROJ_CODE'].value"
+                                [value]="opt.PROJ_CODE">{{ opt.PROJ_NAME }}</option>
+                        </select>
+                        <!-- <button type="button" class="close" onclick="resetDropdown('project')"  (click)="form.controls['PROJ_CODE'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button> -->
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Invoice Value<span class="validator">*</span> :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['INVOICE_VALUE'].errors?.required}">
+                        <input type="text" class="form-control" formControlName="INVOICE_VALUE" placeholder="Invoice Value">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Currency<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['CURRENCY_CODE'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="currency" formControlName="CURRENCY_CODE" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of currency_list; let i=index" 
+                            [selected]="opt.CURRENCY_CODE == form.controls['CURRENCY_CODE'].value"
+                             [value]="opt.CURRENCY_CODE" >{{ opt.CURRENCY_NAME }}</option>                     
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('currency')" (click)="form.controls['CURRENCY_CODE'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label>Heading<span class="validator">*</span> :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['HEADING'].errors?.required}">
+                        <input type="text" class="form-control" formControlName="HEADING" placeholder="Heading">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-2">
+            <div class="row card">
+                <div class="form-inline col-md-12">
+                    <h6 class="mb-0 col-md-6 p-0">Invoice Approve Details</h6>
+                    <div class="col-md-6 text-right" *ngIf="invoice_detail.length">
+                        <label class="float-right">
+                            <a href data-toggle="modal" data-target="#alltasks" class="text-uppercase text-decoration-none">Show Tasks</a>
+                        </label>
+                    </div>
+                    <hr class="m-0 mb-2">
+                </div>
+                <div class="col-md-12">
+                    <div class="tableFixHead">
+                        <table class="table-theam-1 table-width row_bgcolor_1">
+                            <thead>
+                                <tr>
+                                    <!-- <th class="width-5"></th> -->
+                                    <th class="width-20">Task</th>
+                                    <th class="width-20">Detailed</th>
+                                    <th class="width-20">Client Ref</th>
+                                    <th class="width-15">Actual Hrs</th>
+                                    <th class="width-15">Cost</th>
+                                    <th class="width-15">Invoice Value</th>
+                                    <th class="width-15">Hours</th>
+                                    <!-- <th class="width-10">Action</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of _invoice_detail;let i=index;">
+                                    <!-- <td class="width-5">
+                                        <div class="floating-input">
+                                            <input type="checkbox" [(ngModel)]="data.ACTIVE" class="form-control" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td> -->
+                                    <td class="width-20">{{ data.TASK_DESC }}</td>
+                                    <td class="width-20">{{ data.TASK_DETAILS }}</td>
+                                    <td class="width-20">{{ data.CLIENT_REFNO }}</td>
+                                    <td class="width-15">{{ data.ACTUAL_HOURS_D }}</td>
+                                    <td class="width-15">
+                                        <input type="text" [(ngModel)]="data.COST" id="cost_{{i}}" DecimalDigit class="px-1 form-control" placeholder="00.00" value="" autocomplete="off" [ngModelOptions]="{standalone: true}">
+                                    </td>
+                                    <td class="width-15"></td>
+                                    <td class="width-15">
+                                        <div class="floating-input">
+                                            <input type="text" [(ngModel)]="data.BILLED_HOURS_D" id="invoicehrs_{{i}}" TimeOnly="HHHH:MM" [disabled]="!data.ACTIVE" class="px-1 form-control" placeholder="HHHH:MM" value="" autocomplete="off" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <!-- <td class="width-10">
+                                        <i class="fa fa-save mx-2"></i>
+                                        <i class="fa fa-trash-o mx-2"></i>
+                                    </td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--  -->
+                <div class="col-md-3 mt-2">
+                    <label>Cost :</label>
+                    <div class="floating-input ">
+                        <input type="text" placeholder="Cost" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="col-md-3 mt-2">
+                    <label>Old Bill Value :</label>
+                    <div class="floating-input ">
+                        <input type="text" placeholder="Old Bill" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="col-md-3 mt-2">
+                    <label>Margin :</label>
+                    <div class="floating-input ">
+                        <input type="text" placeholder="Margin" class="form-control" readonly>
+                    </div>
+                </div>
+                <div class="col-md-3 mt-2">
+                    <label>Margin% :</label>
+                    <div class="floating-input ">
+                        <input type="text" placeholder="Margin%" class="form-control" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+</form>
+
+
+<!-- Modal -->
+<div class="modal fade" #alltasks id="alltasks" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tasks</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body py-2">
+                <div class="row">
+                    <div class="col-md-4 ml-auto">
+                        <div class="floating-input">
+                            <input type="text" class="form-control" [(ngModel)]="task_search_val" placeholder="Search" [ngModelOptions]="{standalone: true}">
+                        </div>
+                    </div>
+                </div>
+                <div class="tableFixHead mt-2">
+                    <table class="table-theam-1 row_bgcolor_3">
+                        <thead>
+                            <tr>
+                                <th class="width-5 text-center"></th>
+                                <th class="w-20">Task</th>
+                                <th class="w-20">Details</th>
+                                <th class="w-10">Client Ref.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let data of invoice_detail | filter: task_search_val;let i=index;">
+                                <tr>
+                                    <td class="width-5 text-center">
+                                        <label>
+                                            <input class="form-check-input ml-0 table-check" type="checkbox" id="c_{{i}}" [(ngModel)]="data.ACTIVE" [ngModelOptions]="{standalone: true}">
+                                        </label>
+
+                                    </td>
+                                    <td class="w-20">
+                                        <label for="c_{{i}}"> {{ data.TASK_DESC }} </label></td>
+                                    <td class="w-20">{{ data.TASK_DETAILS }}</td>
+                                    <td class="w-20">{{ data.CLIENT_REFNO }}</td>
+                                </tr>
+
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" (click)="add_tasks()" class="btn btn-secondary" data-dismiss="modal">Add</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

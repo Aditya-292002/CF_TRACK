@@ -1,0 +1,272 @@
+<app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
+<form [formGroup]="form">
+    <div class="row">
+        <!-- <div class="col-md-12">
+            <button class="btn btn-secondary  float-right m-1 ml-1 mr-1" title="Save" (click)="bankSave()">Save</button>
+        </div> -->
+        <div class="col-md-12">
+            <div class="row card">
+                <div class="col-md-5">
+                    <div class="floating-input  list-btn">
+                        <select class="form-control selectpicker show-tick" id="Company" [ngClass]="{'invalid-control':form.controls['COMPANY_CODE'].errors?.required}"
+                        formControlName="COMPANY_CODE"  data-live-search="true" title="Select">
+                            <option *ngFor="let opt of company_list; let i=index" 
+                            [selected]="opt.COMPANY_CODE == form.controls['COMPANY_CODE'].value"
+                            [value]="opt.COMPANY_CODE" >{{ opt.COMPANY_NAME }}</option>                  
+                        </select>
+                        <button type="button" class="close"  (click)="form.controls['COMPANY_CODE'].reset();" onclick="resetDropdown('Company')"  aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="floating-input  list-btn">
+                        <select class="form-control selectpicker show-tick" id="Location" [ngClass]="{'invalid-control':form.controls['LOCATION_CODE'].errors?.required}"
+                        formControlName="LOCATION_CODE"  data-live-search="true" title="Select">
+                            <option *ngFor="let opt of _location_list; let i=index" 
+                            [selected]="opt.LOCATION_CODE == form.controls['LOCATION_CODE'].value"
+                            [value]="opt.LOCATION_CODE" >{{ opt.LOCATION_NAME }}</option>                   
+                        </select>
+                        <button type="button" class="close"  (click)="form.controls['LOCATION_CODE'].reset();" onclick="resetDropdown('Location')"  aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-secondary" title="Save" (click)="bankSave()">Save</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 pr-0 padd_right mt-2 d-flex ">
+            <div class="row card">
+                <div class="col-xl-6 col-lg-4 col-md-4 col-sm-4">
+                    <label>Payment Date :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['TRXN_DATE'].errors?.required}" >
+                        <input type="text" class="form-control"    formControlName="TRXN_DATE" [(ngModel)]="TRXN_DATE">
+                        <!-- <app-date-picker [(ngModel)]="TRXN_DATE" id="rec_date" class="date-input" [maxdate]="" [mindate]="" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker> -->
+                        <div class="date-input">
+                            <mat-form-field fxFlex="100" appearance="fill">
+                                <mat-datepicker-toggle matPrefix [for]="picker1" id='cal1' #cal1></mat-datepicker-toggle>
+                                <input class="form-control" (dateChange)="ChangeReceiptDate()" [value]="_DATE1" matInput [(ngModel)]="_DATE1" [ngModelOptions]="{standalone: true}" [matDatepicker]="picker1" [min]="min_date" [max]="maxdate" [disabled]="false" readonly />
+    
+                                <mat-datepicker #picker1 id="picker1"></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div> 
+                <div class="col-xl-6 col-lg-4 col-md-4 col-sm-4">
+                    <label>Payment No. :</label>
+                    <div class="floating-input ">
+                        <input type="text" class="form-control" disabled placeholder="Payment No." formControlName="TRXN_ID">
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-4 col-md-4 col-sm-4">
+                    <label>Doc No :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['KEY_VALUE'].errors?.required}"  >
+                        <select class="form-control selectpicker show-tick dd_size" id="_docno" formControlName="KEY_VALUE" (change)="ChangeDocument()" [ngClass]="{'invalid-control':form.controls['KEY_VALUE'].errors?.required}"
+                        data-live-search="true" title="Select" >
+                            <option *ngFor="let opt of doc_list; let i=index" 
+                            [selected]="opt.KEY_VALUE == form.controls['KEY_VALUE'].value"
+                            [value]="opt.KEY_VALUE" >{{ opt.DOC_NO }} - {{ opt.REMARKS }}</option>                     
+                        </select>
+                        <button type="button" class="close"  (click)="form.controls['KEY_VALUE'].reset();" onclick="resetDropdown('_docno')"  aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- <div class="col-md-6">
+                    <label>Project :</label>
+                    <div class="floating-input  list-btn">
+                        <select class="form-control selectpicker show-tick" id="PROJ_CODE" formControlName="PROJ_CODE" [ngClass]="{'invalid-control':form.controls['PROJ_CODE'].errors?.required}"
+                        data-live-search="true" title="Select">
+                        <option *ngFor="let opt of project_list; let i=index" 
+                        [selected]="opt.PROJ_CODE == form.controls['PROJ_CODE'].value"
+                        [value]="opt.PROJ_CODE" >{{ opt.PROJ_NAME }}</option>                    
+                        </select>
+                        <button type="button" class="close"  (click)="form.controls['PROJ_CODE'].reset();" onclick="resetDropdown('PROJ_CODE')"  aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div> -->
+                <div class="col-xl-12 col-lg-10 col-md-10 col-sm-10">
+                    <label>Remarks :</label>
+                    <div class="floating-input ">
+                        <textarea name="" id="" rows="2" class="form-control" placeholder="Remarks" formControlName="REMARKS" [ngClass]="{'invalid-control':isSubmited && form.controls['REMARKS'].errors?.required}"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mt-2">
+            <div class="row card">
+                <div class="col-xl-12 col-lg-4 col-md-4 col-sm-4">
+                    <label>Bank :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['BANK_CODE'].errors?.required}" >
+                        <select class="form-control selectpicker show-tick" id="_bank" formControlName="BANK_CODE" 
+                        data-live-search="true" title="Select">
+                            <option *ngFor="let opt of bank_list; let i=index" 
+                            [selected]="opt.BANK_CODE == form.controls['BANK_CODE'].value"
+                            [value]="opt.BANK_CODE" >{{ opt.BANK_NAME }}</option>                      
+                        </select>
+                        <button type="button" class="close"  (click)="form.controls['BANK_CODE'].reset();" onclick="resetDropdown('_bank')"  aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>     
+                <div class="col-xl-12 col-lg-4 col-md-4 col-sm-4">
+                    <label>Payment Amount :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['TRXN_AMT_1'].errors?.required}">
+                        <input type="text" class="form-control cost" enabled costInput (change)="CalculateAdjustAmount()" formControlName="TRXN_AMT_1" id="Received_Amount" placeholder="Payment Amount" autocomplete="off" >
+                    </div>
+                </div>
+                
+                <div class="col-xl-12 col-lg-4 col-md-4 col-sm-4">
+                    <label>Party Debit Amount :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['TRXN_AMT'].errors?.required}">
+                        <input type="text" class="form-control cost" enabled costInput (change)="CalculateAdjustAmount()" formControlName="TRXN_AMT" id="Received_Amount" placeholder="Party Debit Amount" autocomplete="off" >
+                    </div>
+                </div>
+                <div class="col-xl-12 col-lg-4 col-md-4 col-sm-4">
+                    <label>Pay Ref No. :</label>
+                    <div class="floating-input ">
+                        <input type="text" class="form-control" placeholder="Pay Ref No." formControlName="PAY_REFNO" [ngClass]="{'invalid-control':isSubmited && form.controls['PAY_REFNO'].errors?.required}" >
+                    </div>
+                </div>
+                <!-- <div class="col-md-12">
+                    <label>Payment Base :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['TRXN_BASE'].errors?.required}">
+                        <input type="text" class="form-control cost" disabled costInput placeholder="Received Base" formControlName="TRXN_BASE">
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="col-md-12 mt-2">
+            <div class="row card">
+                <div class="col-md-12">
+                    <div class="form-inline">
+                        <h6 class="mb-0 col-md-6 p-0">Adjustment Details</h6>
+                        <div class="col-md-6 text-right">
+                            <label class="float-right">
+                                <a href data-toggle="modal" (click)="showbill()" data-target="#alltasks" class="text-uppercase text-decoration-none">Show Bills</a>
+                            </label>
+                        </div>
+                        <hr class="m-0 mb-2">
+                    </div>
+                    <div class="tableFixHead">
+                        <table class="table-theam-1 row_bgcolor_1 table_width">
+                            <thead>
+                                <tr>
+                                    <th class="" style="width: 100px;">Adjust Amt.</th>
+                                    <th class="w-1">Doc No.</th> 
+                                    <th class="w-1">Doc Date</th>
+                                    <th class="w-2">Emp No</th>
+                                    <th class="w-3">Emp Name</th>
+                                    <th class="w-1">Amt.</th>
+                                    <th class="w-1">Balance Amt.</th>  
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of _detail_list;let i=index;">
+                                    <td class="" style="width: 100px;">
+                                        <div class="floating-input ">
+                                            <input type="text" class="form-control cost" enabled costInput (change)="CalculateAdjustAmount()" [(ngModel)]="data.ADJUST_AMT" [ngModelOptions]="{standalone: true}" [disabled]="!data.ACTIVE"  id="Adjust_Amt{{i}}" OnlyNumber='true' >
+                                          </div>
+                                    </td>
+                                    <td class="w-1">{{data.DOC_NO}}</td>
+                                    <td class="w-1">{{data.DOC_DATE}}</td>
+                                    <td class="w-2">{{data.EMP_NO}}</td>
+                                    <td class="w-3">{{data.EMP_NAME}}</td> 
+                                    <td class="w-1">{{data.AMT}}</td>
+                                    <td class="w-1" >{{data.BALANCE_AMT}}</td>
+                                   
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div  class=" mt-2 d-flex ">
+                        <div  class="form-inline">
+                            <label >Adjust Total :</label>
+                            <div  class="floating-input ml-2 ">
+                                <input  class="form-control cost" formControlName="ADJUST_TOTAL" (change)="CalculateAdjustAmount()" disabled costInput placeholder="Adjust Total" type="text" style="width: 108px;" OnlyNumber='true' autocomplete="off" >
+                            </div>
+                        </div>
+                        <div  class="col-md-5 mt-1 form-inline">
+                            <label >Balance to Adjust :</label>
+                            <div  class="floating-input ml-2">
+                                <input  class="form-control ml-1 cost"  formControlName="BAL_TO_ADJUST" disabled costInput placeholder="Bal to Adj" type="text" style="width: 108px;" OnlyNumber='true' >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<!-- Modal -->
+<div class="modal fade" #alltasks id="alltasks" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document" style="max-width: 1200px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Bank Details</h5>
+                <button type="button" class="close"  data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="row" style="position: sticky;
+                top: 0;
+                z-index: 21;
+                background: #fff;
+                margin-top: 4px;">
+                    <div class="col-md-4 ml-auto">
+                        <div class="floating-input">
+                            <input type="text" class="form-control" [(ngModel)]="task_search_val" placeholder="Search" [ngModelOptions]="{standalone: true}" >
+                        </div>
+                    </div>
+                </div>
+                <div class="tableFixHead mt-2" >
+                    <table class="table-theam-1 row_bgcolor_1">
+                        <thead>
+                            <tr>
+                                <th style="width:80px">Adjust Amt.</th>
+                                <th class="w-1">Doc No.</th> 
+                                <th class="w-1">Doc Date</th>
+                                <th class="w-2">Emp No</th>
+                                <th class="w-3">Emp Name</th>
+                                <th class="w-1">Amt.</th>
+                                <th class="w-1">Balance Amt.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let data of detail_list; let i=index;">
+                            <tr>
+                                <td class="" style="width:80px">
+                                    <label>
+                                        <input class="form-check-input ml-0 table-check" type="checkbox" id="c_{{i}}" [(ngModel)]="data.ACTIVE" [ngModelOptions]="{standalone: true}">
+                                    </label>
+
+                                </td>
+ 
+                                <td class="w-1">{{data.DOC_NO}}</td>
+                                <td class="w-1">{{data.DOC_DATE}}</td>
+                                <td class="w-2">{{data.EMP_NO}}</td>
+                                <td class="w-3">{{data.EMP_NAME}}</td> 
+                                <td class="w-1">{{data.AMT}}</td>
+                                <td class="w-1" >{{data.BALANCE_AMT}}</td>
+                               
+                            </tr>
+                            </ng-container> 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button"  class="btn btn-secondary" (click)="f_addRow()"  (change)="CalculateAdjustAmount()" formControlName="Add"
+                data-dismiss="modal">Add</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,101 @@
+/* calendar css style */
+
+@media (min-width: 1000px) and (max-width: 1050px) { 
+    .weekdays .w-day{
+        width: 103px;
+    }
+    .mini-sidebar .cal-body .weekdays .w-day{
+        width: 129px !important;
+    }
+}
+@media (min-width: 1050px) and (max-width: 1090px) { 
+    .weekdays .w-day{
+        width: 110px;
+    }
+    .mini-sidebar .cal-body .weekdays .w-day{
+        width: auto !important;
+    }
+}
+@media (min-width: 769px) and (max-width: 879px) { 
+    .weekdays .w-day{
+        width: 115px;
+    }
+    .mini-sidebar .cal-body .weekdays .w-day{
+        width: 102px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .weekdays .w-day{
+        width: 100px;
+    }
+}
+
+/*  dropdown css style  */
+
+@media (min-width: 1200px) and (max-width: 1385px) { 
+    table td .dd_width .bootstrap-select {
+        width: 200px !important;
+    } 
+    .bootstrap-select.dd_size .dropdown-menu {
+        max-width: 200px ;
+      } 
+      table td .bootstrap-select.dd_ellipsis .dropdown-toggle .filter-option  {
+        width: 200px !important;
+    } 
+    .select_picker .bootstrap-select .dropdown-toggle .filter-option {
+        width: 172px !important;
+    
+    }
+}
+@media (min-width: 1024px) and (max-width: 1199px) { 
+    
+    table td .dd_width .bootstrap-select { 
+       width: 160px !important;
+   } 
+    .bootstrap-select.dd_size .dropdown-menu {
+    max-width: 175px ;
+  } 
+  table td .bootstrap-select.dd_ellipsis .dropdown-toggle .filter-option  {
+    width: 130px !important;
+}
+    .select_picker .bootstrap-select .dropdown-toggle .filter-option {
+        width: 110px !important;
+
+    }
+}                  
+@media (min-width: 500px) and (max-width: 1023px) {
+    table td .dd_width .bootstrap-select { 
+       width: 140px !important;
+   } 
+   .bootstrap-select.dd_size  .dropdown-menu {
+    max-width: 170px ;
+  }
+  table td .bootstrap-select.dd_ellipsis .dropdown-toggle .filter-option  {
+    width: 100px !important;
+}
+.select_picker .bootstrap-select .dropdown-toggle .filter-option {
+    width: 100px !important;
+
+}
+}
+
+/*  */
+@media (max-width: 768px) {
+    .page-wrapper.toggled .col-md-4,
+    .page-wrapper.toggled .col-md-6,
+    .page-wrapper.toggled .col-md-7 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 900px) {
+    .page-wrapper.toggled .col-md-4,
+    .page-wrapper.toggled .col-md-6,
+    .page-wrapper.toggled .col-md-7 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+ 

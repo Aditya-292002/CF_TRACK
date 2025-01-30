@@ -1,0 +1,284 @@
+<app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
+<form>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row card">
+                <div class="col-md-3">
+                    <label>Date :</label>
+                    <div class="floating-input mb-1">
+                        <input type="text" [(ngModel)]="DATE" [value]="DATE" class="form-control" [ngModelOptions]="{standalone: true}" placeholder="DD-MMM-YYYY" readonly>
+
+                        <div class="date-input">
+                            <mat-form-field fxFlex="100" appearance="fill">
+                                <mat-datepicker-toggle matPrefix [for]="picker" id='cal' #cal></mat-datepicker-toggle>
+                                <input class="form-control" (dateChange)="parseDate(1)" [value]="_DATE" matInput [(ngModel)]="_DATE" [ngModelOptions]="{standalone: true}" [matDatepicker]="picker" [max]="maxdate" [disabled]="false" readonly />
+
+                                <mat-datepicker #picker id="picker"></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>Time in :</label>
+                    <div class="floating-input mb-1">
+                        <input type="text" [(ngModel)]="H_TIME_IN" placeholder="HH:MM" class="form-control" [ngModelOptions]="{standalone: true}" readonly>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>Time Out :</label>
+                    <div class="floating-input mb-1">
+                        <input type="text" [(ngModel)]="H_TIME_OUT" placeholder="HH:MM" class="form-control" [ngModelOptions]="{standalone: true}" readonly>
+                    </div>
+                </div>
+
+                <div class="col-md-5">
+                    <label>Status :</label>
+                    <div class="floating-input mb-1">
+                        <input type="text" [(ngModel)]="ATT_STATUS" placeholder="Status" class="form-control" [ngModelOptions]="{standalone: true}" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+        <div class="col-md-12 mt-2">
+            <div class="row card">
+                <div class="col-md-12 mt-1">
+                    <div class="form-inline">
+                        <h6 class="col-md-6 text-left p-0">Employee Time-Sheet Details</h6>
+                        <span class="d-inline-block col-md-5 text-right">
+                            <label for="" class="d-inline-block mr-4">
+                                <i class="fa fa-check-square mx-1" title="Approve" style="color: green;"></i> 
+                               <strong> Approve </strong>
+                            </label>
+                            <label for="" class="d-inline-block mr-4">
+                                <i class="fa fa-times mx-1" title="Reject" style="color: red;"></i> 
+                               <strong> Reject </strong>
+                            </label>
+                            <label for="" class="d-inline-block mr-4">
+                                <i class="fa fa-ban mx-1" title="Pending" style="color: orange;"></i> 
+                               <strong> Pending </strong>
+                            </label>
+                            
+                        </span>
+                        <span class="d-inline-block col-md-1 p-0 text-right">
+                            <button type="button" (click)="f_addRow();" [disabled]="isAddRow" class="p-0 btn text-primary btn-dis">
+                                <i class='fas fa-plus-circle mr-1'></i>Add</button>
+                        </span>
+                        <hr class="m-0 mb-1">
+                    </div>
+
+                    <div class="tableFixHead ">
+                        <table class="table-theam-1 row_bgcolor_2">
+                            <thead>
+                                <tr>
+                                    <th style="width: 1%;" *ngIf="timesheet_detail.length >0"></th>
+                                    <th>Project</th>
+                                    <th class="w-20"> Task</th>
+                                    <th class="w-20">Type</th>
+                                    <th class="w-10">Time (hh:mm)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let data of timesheet_detail; let i=index;">
+                                    <!-- [ngClass]="{'row_rejectcolor':data.APPROVAL_STATUS == 'R','row_approvecolor':data.APPROVAL_STATUS == 'A'}" -->
+                                    <tr *ngIf="data.ISDELETED != 1">
+
+                                        <td rowspan="1" *ngIf="data.APPROVAL_STATUS == 'A'" class="pb-0" style="width: 8px;">
+                                            <i class="fa fa-check-square m-1" title="Approve" style="color: green;"></i>
+                                        </td>
+
+                                        <td rowspan="1" *ngIf="data.APPROVAL_STATUS == 'P'" class="pb-0" style="width: 8px;">
+                                            <i class="fa fa-ban m-1" title="Pending" style="color: orange;"></i>
+                                        </td>
+
+                                        <td rowspan="1" *ngIf="data.APPROVAL_STATUS == 'R'" class="pb-0" style="width: 8px;">
+                                            <i class="fa fa-times m-1" title="Reject" style="color: red;"></i>
+                                        </td>
+                                        <td class="w-20 pb-1 pr-0">
+                                            <div class="floating-input">
+
+                                                <select class="form-control selectpicker show-tick" [(ngModel)]="data.PROJ_CODE" (change)="f_changeProject(data.PROJ_CODE,i)" id="p_{{i}}" (change)="onChangeDetail()" data-container="body" data-size="5" [ngModelOptions]="{standalone: true}" data-live-search="true"
+                                                    title="Select">
+                                                <option value="" disabled></option>
+                                                <option *ngFor="let opt of project_list; let i=index" 
+                                                [selected]="opt.PROJ_CODE == data.PROJ_CODE" 
+                                                [value]="opt.PROJ_CODE">{{ opt.PROJ_NAME }}</option>
+                                            </select>
+                                            </div>
+                                        </td>
+                                        <td class="pb-1 pr-0">
+                                            <div class="floating-input">
+                                                <select class="form-control selectpicker show-tick" [(ngModel)]="data.TASKID" id="t_{{i}}" (change)="onChangeDetail()" data-container="body" data-size="5" [ngModelOptions]="{standalone: true}" data-live-search="true" title="Select">
+                                                <option value="" disabled></option>
+                                                <option *ngFor="let opt of data.TASKS; let i=index" 
+                                                [selected]="opt.TASKID == data.TASKID" 
+                                                [value]="opt.TASKID">{{ opt.TASK_DESC }}</option>
+                                            </select>
+                                            </div>
+                                        </td>
+                                        <td class="w-20 pb-1 pr-0">
+                                            <div class="floating-input">
+                                                <select class="form-control selectpicker show-tick" [(ngModel)]="data.ACTIVITY_TYPE" id="tt_{{i}}" (change)="onChangeDetail()" data-container="body" data-size="5" [ngModelOptions]="{standalone: true}" data-live-search="true" title="Select">
+                                               <option value="" disabled></option>
+                                                <option *ngFor="let opt of task_type_list; let i=index" 
+                                                [selected]="opt.TASKTYPE_CODE == data.ACTIVITY_TYPE" 
+                                                [value]="opt.TASKTYPE_CODE">{{ opt.TASKTYPE_DESC }}</option>
+                                            </select>
+                                            </div>
+                                        </td>
+                                        <td class="pb-1 w-10">
+                                            <!-- <div class="floating-input">
+                                                <input type="text" [(ngModel)]="data.TOTAL_TIME" TimeOnly="HH:MM" (change)="validateTime(i);onChangeDetail()" class="form-control px-2 py-0" (change)="onChangeDetail()" placeholder="HH:MM" value="" id="tm_{{i}}" [ngModelOptions]="{standalone: true}">
+                                            </div> -->
+                                            <input type="hidden" [(ngModel)]="data.TOTAL_TIME" [ngModelOptions]="{standalone: true}">
+                                            <div class="floating-input d-inline-block">
+
+                                                <select id="hr" class="form-control px-0 pt-1" [(ngModel)]="data.HH" id="h_{{i}}" (change)="data.TOTAL_TIME = data.HH +':'+ data.MM" aria-placeholder="HH" [ngModelOptions]="{standalone: true}">
+                                                <option *ngFor="let h of hours" [value]="h">{{h}}</option>
+                                            </select>
+                                            </div>
+                                            <div class="floating-input d-inline-block">
+                                                <select id="mn" class="form-control px-0 pt-1" [(ngModel)]="data.MM" id="m_{{i}}" (change)="data.TOTAL_TIME = data.HH +':'+ data.MM" aria-placeholder="MM" [ngModelOptions]="{standalone: true}">
+                                            <option *ngFor="let m of minutes" [value]="m">{{m}}</option>
+                                            </select>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="" *ngIf="data.ISDELETED != 1">
+                                        <td></td>
+                                        <td colspan="3" class="pt-0 pr-0">
+                                            <div class="floating-input">
+                                                <textarea rows="1" [(ngModel)]="data.REMARKS" [value]='data.REMARKS' id="r_{{i}}" placeholder="Remarks" (change)="onChangeDetail()" class="pt-0 form-control mr-3" [ngModelOptions]="{standalone: true}"></textarea>
+                                            </div>
+                                        </td>
+                                        <!-- <td class="p-1 doc w-10">
+                                            <div id="attachment-body">
+                                                <label id="File-Lable" for="File-For_{{i}}" title="Attach file">
+                                                    <i class="fa fa-paperclip" aria-hidden="true"></i>
+                                                </label>
+                                                <input id="File-For_{{i}}" class="d-none" type="file">
+                                            </div>
+                                            <i class="fa fa-eye" aria-hidden="true" title="view file"></i>
+                                        </td> -->
+                                        <td class="p-1 pt-0 w-10">
+
+                                            <button type="button" *ngIf="data.APPROVAL_STATUS == 'R'" data-toggle="popover" data-trigger="hover" data-placement="left" title="Reject Remark" [attr.data-content]="data.REJECT_REASON" class="btn py-0 remark_tooltip" id="pop_{{i}}" data-container="body">
+                                            <svg height="682pt" viewBox="-21 -47 682.66669 682" width="670pt" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="m552.011719-1.332031h-464.023438c-48.515625 0-87.988281 39.464843-87.988281 87.988281v283.972656c0 48.414063 39.300781 87.816406 87.675781 87.988282v128.863281l185.191407-128.863281h279.144531c48.515625 0 87.988281-39.472657 87.988281-87.988282v-283.972656c0-48.523438-39.472656-87.988281-87.988281-87.988281zm50.488281 371.960937c0 27.835938-22.648438 50.488282-50.488281 50.488282h-290.910157l-135.925781 94.585937v-94.585937h-37.1875c-27.839843 0-50.488281-22.652344-50.488281-50.488282v-283.972656c0-27.84375 22.648438-50.488281 50.488281-50.488281h464.023438c27.839843 0 50.488281 22.644531 50.488281 50.488281zm0 0"/><path d="m171.292969 131.171875h297.414062v37.5h-297.414062zm0 0"/><path d="m171.292969 211.171875h297.414062v37.5h-297.414062zm0 0"/><path d="m171.292969 291.171875h297.414062v37.5h-297.414062zm0 0"/>
+                                            </svg>
+                                        </button>
+
+                                            <button type="button" *ngIf="data.APPROVAL_STATUS == 'P'" (click)="deleteDetail(i)" class="btn py-0 remark_tooltip" title="Delete Task">
+                                        <svg  xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="red" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                          </svg>
+                                        </button>
+                                        </td>
+                                    </tr>
+
+                                </ng-container>
+
+                                <tr *ngIf="isAddRowVisible">
+                                    <td rowspan="2" class="pb-0" style="width: 8px;" *ngIf="timesheet_detail.length >0">
+
+                                    </td>
+                                    <td class="w-20 pb-0 pr-0">
+                                        <div class="floating-input list-btn">
+                                            <select class="form-control selectpicker show-tick" [(ngModel)]="new_data.PROJECT" (change)="filterTasks()" id="proj_n" data-container="body" data-size="5" [ngModelOptions]="{standalone: true}" data-live-search="true" title="Select">
+                                            <option *ngFor="let opt of project_list; let i=index" 
+                                            [selected]="opt == ''" 
+                                            [value]="opt | json">{{ opt.PROJ_NAME }}</option>
+                                        </select>
+                                            <button type="button" class="close" onclick="resetDropdown('proj_n')" (click)="new_data.PROJECT=''" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    </td>
+                                    <td class=" pb-0 pr-0">
+                                        <div class="floating-input list-btn">
+                                            <select class="form-control selectpicker show-tick" [(ngModel)]="new_data.TASK_ID" id="task_n" data-container="body" data-size="5" [ngModelOptions]="{standalone: true}" data-live-search="true" title="Select">
+                                            
+                                            <option *ngFor="let opt of _task_list; let i=index" 
+                                            [selected]="opt.TASKID == new_data.TASK_ID" 
+                                            [value]="opt.TASKID">{{ opt.TASK_DESC }}</option>
+                                        </select>
+                                            <button type="button" class="close" onclick="resetDropdown('task_n')" (click)="new_data.TASK_ID=''" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    </td>
+                                    <td class="w-20 pb-0 pr-0">
+                                        <div class="floating-input list-btn">
+
+                                            <select class="form-control selectpicker show-tick" [(ngModel)]="new_data.TASKTYPE_CODE" id="type_n" data-container="body" data-size="5" [ngModelOptions]="{standalone: true}" data-live-search="true" title="Select">
+                                            <option *ngFor="let opt of task_type_list; let i=index" 
+                                            [selected]="opt.TASKTYPE_CODE == new_data.TASKTYPE_CODE" 
+                                            [value]="opt.TASKTYPE_CODE">{{ opt.TASKTYPE_DESC }}</option>
+                                        </select>
+                                            <button type="button" class="close" onclick="resetDropdown('type_n')" (click)="new_data.TASKTYPE_CODE=''" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    </td>
+                                    <td class="pb-1 w-10">
+                                        <!-- <div class="d-inline-block"> -->
+                                        <input type="hidden" [(ngModel)]="new_data.TIME" [ngModelOptions]="{standalone: true}">
+                                        <div class="floating-input d-inline-block">
+
+                                            <select id="hr" class="form-control px-0 pt-1" [(ngModel)]="new_data.HH" placeholder="HH" (change)="new_data.TIME = new_data.HH +':'+ new_data.MM;add_time()" aria-placeholder="HH" [ngModelOptions]="{standalone: true}">
+                                                <option *ngFor="let h of hours" [value]="h">{{h}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="floating-input d-inline-block">
+                                            <select id="mn" class="form-control px-0 pt-1" [(ngModel)]="new_data.MM" placeholder="MM" (change)="new_data.TIME = new_data.HH +':'+ new_data.MM;add_time()" aria-placeholder="MM" [ngModelOptions]="{standalone: true}">
+                                            <option *ngFor="let m of minutes" [value]="m">{{m}}</option>
+                                            </select>
+                                        </div>
+                                        <!-- </div> -->
+                                    </td>
+                                </tr>
+                                <tr class="" *ngIf="isAddRowVisible">
+                                    <td colspan="3" class="pt-0 ">
+                                        <div class="floating-input ">
+                                            <textarea rows="1" [(ngModel)]="new_data.REMARK" placeholder="Remarks" class="form-control  mr-0 pt-0 " [ngModelOptions]="{standalone: true}"></textarea>
+
+                                        </div>
+                                    </td>
+
+                                    <td class="p-1 pt-0 w-10">
+
+                                        <button type="button" (click)="isAddRowVisible = false;" class="btn py-0 remark_tooltip" title="Delete Task">
+                                    <svg  xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="red" class="bi bi-trash" viewBox="0 0 16 16">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                      </svg>
+                                    </button>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-md-5">
+                            </div>
+                            <div class="col-md-7">
+                                <div class="form-inline mt-1 float-right">
+                                    <label class="mr-2"><strong>Time Logged :</strong></label>
+                                    <div class="floating-input">
+                                        <input type="text" [(ngModel)]="total_hrs_time" placeholder="HH:MM" class="form-control w-100" value="00:00" [ngModelOptions]="{standalone: true}" readonly>
+                                    </div>
+
+                                    <button type="button" title="Submit" class="btn btn-secondary mr-1 ml-1" (click)="onSubmitTimeSheet()" [disabled]="!save_allow">Submit</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

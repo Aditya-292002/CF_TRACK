@@ -1,0 +1,633 @@
+<div class="layout-wrapper layout-content-navbar">
+  <div class="layout-container" [ngClass]="[ (isShowToggle == true) ? '' : 'width-sidebar' ]">
+    <aside
+      id="layout-menu"
+      class="layout-menu menu-vertical menu bg-menu-theme"
+      
+    >
+      <div class="app-brand demo" [ngClass]="[ (isShowToggle == true) ? '' : 'my-3' ]">
+        <span class="app-brand-logo demo">
+          <img src="../../../assets/images/comflexlogo.png" alt="" />
+        </span>
+          <div (click)="showToggleFun()"
+          class= "angle-icon absolute cursor-pointer rounded-full z-10
+            -right-3 top-4 w-10 border-8 "
+            [ngClass]="[ (isShowToggle == true) ? '' : 'rotate-180' ]"></div>  
+      </div>
+      <div class="menu-inner-shadow" style="display: none"></div>
+      <ul class="menu-inner py-1 ps scrollcontainer">
+         <!-- <li class="menu-item" (click)="menuClick('dashboard', 0)">
+          <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon pi pi-home"></i>
+            <div data-i18n="Dashboard" [ngClass]="[ (isShowToggle == true) ? '' : 'd-none' ]">Dashboard</div>
+          </a>
+        </li> 
+        <li
+          class="menu-item"
+          *ngFor="let menu of menu_list; let i = index"
+          (click)="menu_expand_collapse(menu_list, i, menu.TOGGLE)"
+          data-toggle="collapse"
+          [attr.aria-expanded]="menu.TOGGLE"
+          [ngClass]="{ active: click_index == i }"
+          attr.href="#multiCollapseExample_{{ i }}"
+          attr.aria-controls="multiCollapseExample_{{ i }}"
+        >
+          <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <selfMarketing
+              class="menu-icon"
+              *ngIf="menu.FUNCTION_CODE == 'HR'"
+            ></selfMarketing>
+            <marketing
+              class="menu-icon"
+              *ngIf="menu.FUNCTION_CODE == 'MK'"
+            ></marketing>
+            <projectMngt
+              class="menu-icon"
+              *ngIf="menu.FUNCTION_CODE == 'PR'"
+            ></projectMngt>
+            <finance
+              class="menu-icon"
+              *ngIf="menu.FUNCTION_CODE == 'FI'"
+            ></finance>
+            <projectMngt
+              class="menu-icon"
+              *ngIf="menu.FUNCTION_CODE == 'RP'"
+            ></projectMngt>
+            <payroll
+              class="menu-icon"
+              *ngIf="menu.FUNCTION_CODE == 'PY'"
+            ></payroll>
+            <print class="menu-icon" *ngIf="menu.FUNCTION_CODE == 'PT'"></print>
+            <invoice class="menu-icon" *ngIf="menu.FUNCTION_CODE == 'IV'">
+            </invoice>
+            <purchase class="menu-icon" *ngIf="menu.FUNCTION_CODE == 'PC'">
+            </purchase>
+            <settings class="menu-icon" *ngIf="menu.FUNCTION_CODE == 'SS'">
+            </settings>
+            <div [ngClass]="[ (isShowToggle == true) ? '' : 'd-none' ]">{{ menu.FUNCTION_DESC }}</div>
+          </a>
+
+          <ul
+            class="menu-sub"
+            *ngIf="menu.DETAIL.length > 0 && menu.TOGGLE == true"
+          >
+            <li
+              class="menu-item"
+              *ngFor="let submenu of menu.DETAIL; let j = index"
+              (click)="select_submain(menu_list, i, j)"
+              [ngClass]="{ active: isSubActive == j }"
+            >
+              <a
+                class="menu-link"
+                (click)="menuClick(submenu, j)"
+                title="{{ submenu.FUNCTION_DESC }}"
+              >
+                <div [ngClass]="[ (isShowToggle == true) ? '' : 'd-none' ]">{{ submenu.FUNCTION_DESC }}</div>
+              </a>
+            </li>
+          </ul>
+        </li>  
+       -->
+
+     <!-- PRIYANKA DIDI CODE -->
+          <li *ngFor="let data of menu_list;" class="menu-item w-full" 
+        [ngClass]="[ data.IS_SUBSELECTED == true ? 'active' : '' ]">
+          <div class="menu-link" id="accordion" (click)="MainMenuClick(data)">
+            <i class="menu-icon pi {{data.ICON}}"></i>
+            <div class="flex-wrap w-full" >
+              <div class="text-truncate w-full d-flex justify-content-between"  >
+                  <div [ngClass]="[ (isShowToggle == true) ? '' : 'd-none' ]"><span>{{data.FUNCTION_DESC}}</span></div>
+                  <i class="pi pi-angle-right ms-auto mt-1" [ngClass]="[ data.IS_SUBSELECTED == true ? 'rotate-90' : (isShowToggle == true) ? '' : 'd-none' ]"></i>
+                  
+              </div>
+            </div> 
+          </div> 
+          <ul *ngIf="data.IS_SUBSELECTED" >
+            <li *ngFor="let item of data.DETAIL;" class="submenu-item w-full" 
+             [ngClass]="[ item.IS_SUBSELECTED == true || item.URL === this.Url ? 'active' : '']" (click)="subMenuClick(item)" >
+           <div class="menu-link submenu" >
+                <div class="d-flex flex-wrap w-full" [ngClass]="[ (isShowToggle == true) ? '' : 'd-none' ]">
+                  <div class="text-truncate" >
+                    {{item.FUNCTION_DESC}}
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </li>   
+      
+      </ul>
+      <div class="sidebar-footer">
+        <img src="../../../assets/images/TopLogo1.png" alt="">
+      </div>
+    </aside>
+    <div class="layout-page">
+      <nav
+        class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+        id="layout-navbar"
+      >
+        <div class="navbar-nav-right" id="navbar-collapse">
+          <div class="hide-text">
+            <h6 class="mb-0">{{ this.COMPANY_NAME }} : {{this.LOCATION_NAME}} ({{this.FYEAR_DESC}})</h6>
+          </div>
+          <ul class="navbar-nav ">
+            <li class="nav-item navbar-dropdown dropdown-timesheet dropdown">
+              <a class="nav-link p-0" (click)="CheckAttendance()">
+                <div class="avatar mr-2">
+                  <svg
+                    style="fill: #f5f5f5"
+                    class=""
+                    xmlns="http://www.w3.org/2000/svg"
+                    id="Layer_1"
+                    data-name="Layer 1"
+                    viewBox="0 0 512 512"
+                    width="35"
+                    height="35"
+                  >
+                    <path
+                      d="M476,43.051H442.585V30.634a6,6,0,0,0-6-6H255.453a6,6,0,0,0-6,6V43.051H206.038a26.027,26.027,0,0,0-26,26v43.232A88.807,88.807,0,0,0,37.083,182.717V209.61a21.454,21.454,0,0,0-13.778,15.269A26.863,26.863,0,0,0,39.75,256.331v5.738a87.274,87.274,0,0,0,45.194,76.4v26.359l-47.333,20.2c-.111.048-.22.1-.327.152a49.92,49.92,0,0,0-27.263,40.268c-.014.165-.021.332-.021.5v55.421a6,6,0,0,0,6,6H242.769a6,6,0,0,0,6-6V426.878H476a26.028,26.028,0,0,0,26-26V69.049A26.028,26.028,0,0,0,476,43.051ZM261.453,36.634H430.585V59.019H261.453ZM49.083,182.717a76.856,76.856,0,1,1,153.712,0v27.316c-14.868,1.607-60.255,4.032-96.7-20.134,25.042-3.338,55.568-11.026,78.208-28.389a6,6,0,1,0-7.3-9.521c-41.187,31.589-114.766,28.257-115.5,28.218a6.008,6.008,0,0,0-6.3,5.627l-1.8,29.633-3.915-2.01a.762.762,0,0,1-.4-.519Zm2.667,79.352V251.788a6,6,0,0,0-4.965-5.911A14.848,14.848,0,0,1,34.96,227.735a9.348,9.348,0,0,1,5.344-6.49,12.668,12.668,0,0,0,3.7,2.888l9.8,5.031a7.676,7.676,0,0,0,11.16-6.217c0-.038.006-.075.008-.113l1.857-30.485c4.9.046,12.478-.034,21.69-.676,49.005,41.688,118.357,30.048,121.323,29.527a5.979,5.979,0,0,0,1.776-.629,9.506,9.506,0,0,1,7.343,7.164,14.844,14.844,0,0,1-11.824,18.142,6,6,0,0,0-4.965,5.911v10.281a75.209,75.209,0,0,1-150.417,0Zm128.291,69.14v36.269l-6.216-2.652V335.584Q177.032,333.532,180.041,331.209ZM161.825,342v21.542a85.4,85.4,0,0,1-64.881,0V343.954A87.19,87.19,0,0,0,161.825,342Zm74.944,133.371H22V426.2A37.86,37.86,0,0,1,42.5,395.99l49.964-21.324a97.348,97.348,0,0,0,73.851,0l49.965,21.325A37.856,37.856,0,0,1,236.769,426.2ZM490,400.88a14.013,14.013,0,0,1-14,14H246.652a49.945,49.945,0,0,0-25.167-29.7c-.107-.055-.216-.1-.327-.152L192.041,372.6V320.052a86.854,86.854,0,0,0,22.126-57.983v-5.738a26.861,26.861,0,0,0,16.445-31.45,21.5,21.5,0,0,0-15.817-15.9V182.717A88.506,88.506,0,0,0,192.041,123.4V69.049a14.013,14.013,0,0,1,14-14h43.415v9.968a6,6,0,0,0,6,6H436.585a6,6,0,0,0,6-6V55.051H476a14.013,14.013,0,0,1,14,14Z"
+                    />
+                    <path
+                      d="M446.584,221.686H402.718a6,6,0,0,0,0,12h43.866a6,6,0,0,0,0-12Z"
+                    />
+                    <path
+                      d="M362.157,233.686h14.715a6,6,0,0,0,0-12H362.157a6,6,0,0,0,0,12Z"
+                    />
+                    <path
+                      d="M446.584,286.582H431.689a6,6,0,1,0,0,12h14.895a6,6,0,0,0,0-12Z"
+                    />
+                    <path
+                      d="M410.937,298.582a6,6,0,0,0,0-12H331.478a6,6,0,1,0,0,12Z"
+                    />
+                    <path
+                      d="M310.437,286.582h-5.361a6,6,0,0,0,0,12h5.361a6,6,0,0,0,0-12Z"
+                    />
+                    <path
+                      d="M245.212,286.582a6,6,0,0,0,0,12H279.23a6,6,0,0,0,0-12Z"
+                    />
+                    <path
+                      d="M446.584,346.563H412.249a6,6,0,0,0,0,12h34.335a6,6,0,0,0,0-12Z"
+                    />
+                    <path
+                      d="M390.714,346.563H386.4a6,6,0,0,0,0,12h4.311a6,6,0,1,0,0-12Z"
+                    />
+                    <path
+                      d="M369.514,346.563H336.9a6,6,0,0,0,0,12h32.615a6,6,0,0,0,0-12Z"
+                    />
+                    <path
+                      d="M310.437,346.563H245.212a6,6,0,0,0,0,12h65.225a6,6,0,0,0,0-12Z"
+                    />
+                    <path
+                      d="M446.584,170.6h-3.872a6,6,0,0,0,0,12h3.872a6,6,0,0,0,0-12Z"
+                    />
+                    <path
+                      d="M374.339,182.6h42.528a6,6,0,0,0,0-12H374.339a6,6,0,0,0,0,12Z"
+                    />
+                    <path
+                      stroke-width="2"
+                      d="M446.584,120.6H403.717a6,6,0,0,0,0,12h42.867a6,6,0,0,0,0-12Z"
+                    />
+                    <path
+                      d="M374.339,132.6h3.533a6,6,0,0,0,0-12h-3.533a6,6,0,0,0,0,12Z"
+                    />
+                    <path
+                      stroke-width="2"
+                      d="M287.875,237.92a66,66,0,1,0-66-66A66.075,66.075,0,0,0,287.875,237.92Zm0-120a54,54,0,1,1-54,54A54.062,54.062,0,0,1,287.875,117.92Z"
+                    />
+                    <path
+                      stroke-width="2"
+                      d="M270.268,198.079a6,6,0,0,0,8.485,0l43.832-43.832a6,6,0,0,0-8.485-8.485l-39.589,39.589L261.649,172.49a6,6,0,1,0-8.485,8.484Z"
+                    />
+                  </svg>
+                </div>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item mt-0 waves-effect">
+                    <div class="d-flex align-items-center">
+                      <div class="flex-shrink-0 me-2">
+                        <div class="avatar avatar-online">
+                          <img
+                            src="../../assets/img/avatars/1.png"
+                            alt=""
+                            class="rounded-circle"
+                          />
+                        </div>
+                      </div>
+                      <div class="flex-grow-1">
+                        <h6 class="mb-0">John Doe</h6>
+                        <small class="text-muted">Admin</small>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!-- User -->
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+              <a
+                class="nav-link p-0" data-toggle="dropdown" href="#" role="button"
+                aria-haspopup="true" aria-expanded="false"
+               
+              >
+                <div class="avatar avatar-online" *ngIf="!profile_pic">
+                  <img
+                    src="../assets/images/png/male.png"
+                    alt=""
+                    class="rounded-circle"
+                  />
+                </div>
+                <div class="avatar avatar-online" *ngIf="profile_pic">
+                  <img
+                    src="data:image/png;base64,{{ profile_pic }}"
+                    alt=""
+                    class="rounded-circle"
+                  />
+                </div>
+              </a> 
+              <div
+                class="dropdown-menu dropdown-menu-right dropdown-menu-accout"
+              >
+                <div class="dropdown-header p-0">
+                  <div class="media d-user">
+                    <div class="avatar avatar-online" *ngIf="!profile_pic">
+                      <img
+                        src="../assets/images/png/male.png"
+                        alt=""
+                        class="rounded-circle"
+                      />
+                    </div>
+
+                    <div class="avatar avatar-online" *ngIf="profile_pic">
+                      <img
+                        src="data:image/png;base64,{{ profile_pic }}"
+                        alt=""
+                        class="rounded-circle "
+                      />
+                    </div>
+                    <div class="media-body mt-2">
+                      <h6 class="mt-0 mb-0">{{ login_user }}</h6>
+                      <span>{{ designation }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="ISFINANCE == true" class="dropdown-divider"></div>
+                <a
+                  *ngIf="ISFINANCE == true"
+                  class="dropdown-item"
+                  (click)="ShowChangeFyear()"
+                >
+                  <i class="fa fa-calendar mr-2" aria-hidden="true"></i>
+                  <label>Change Fyear</label>
+                </a>
+                
+                <a class="dropdown-item" (click)="OnChangePassword()">
+                  <i class="icon fa fa-key key mr-2"></i>
+                  <label>Change Password</label>
+                </a>
+               
+                <a
+                  class="dropdown-item"
+                  data-toggle="modal"
+                  data-target="#logoutwarning"
+                >
+                  <i class="icon fa fa-power-off powerOff mr-2"></i>
+                  <label>Sign Out</label>
+                </a>
+              </div>
+
+              <!-- <p-overlayPanel #op>
+                <ng-template pTemplate>
+                  <ul class="">
+                    <li class='py-2 '>
+                      <div class="flex">
+                        <div class="shrink-0 me-3">
+                          <div class=" hide-arrow">
+                            <div class="avatar avatar-online">
+                              <i class="pi pi-user w-px-40 h-auto rounded-circle" ></i>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="grow">
+                          <span class="block Table_Header Text_Primary">
+                              {{USER_NAME}}
+                          </span>
+                          <small class="text-muted Helper_Text">System Admin</small>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <hr/>
+                    </li>
+                    <li class='py-2 cursor-pointer'>
+                      <button class="dropdown-item" (click)="signOut()">
+                        <i class="pi pi-sign-out me-2"></i>
+                        <span class="align-middle Table_Header">Logout</span>
+                      </button>
+                    </li>
+                  </ul>
+                </ng-template>
+            </p-overlayPanel> -->
+            </li>
+            <!--/ User -->
+          </ul>
+        </div>
+      </nav>
+      <div class="content-wrapper">
+        <div class="container-xxl flex-grow-1 main-container">
+          <router-outlet></router-outlet>
+        </div>
+        <footer class="content-footer footer bg-footer-theme">
+          <div class="container-xxl">
+            <div class="footer-container  py-4 text-center">
+              <div class="text-body">
+              <!-- <img src="../../../assets/images/TopLogo1.png" alt=""> -->
+               <a href="https://comflextech.com" target="_blank" class="footer-link"> ©  2024 Comflex Technologies Pvt. Ltd. | All Rights Reserved. </a>
+              </div>
+              
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Attendance-->
+<div
+  class="modal fade"
+  #attendance
+  id="attendance"
+  tabindex="-1"
+  role="dialog"
+  data-keyboard="false"
+  data-backdrop="static"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Attendance</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          *ngIf="attendance_type == 'TIME_OUT'"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row mt-2">
+          <div class="col-md-12">
+            <label>Employee :</label>
+            <div class="floating-input mb-1">
+              <input
+                type="text"
+                [(ngModel)]="EMP_NAME"
+                class="form-control"
+                placeholder="Employee name"
+                [ngModelOptions]="{ standalone: true }"
+                readonly
+              />
+            </div>
+          </div>
+
+          <div class="col-md-5">
+            <label>System Time :</label>
+            <div class="floating-input mb-1">
+              <input
+                type="text"
+                [(ngModel)]="SYS_DATE_TIME"
+                class="form-control"
+                disabled
+                [ngModelOptions]="{ standalone: true }"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-7">
+            <label>Status :</label>
+            <div class="floating-input mb-1">
+              <input type="text" class="form-control" disabled />
+            </div>
+          </div>
+          <div class="col-md-5">
+            <label>Date :</label>
+            <div class="floating-input mb-1">
+              <input
+                type="text"
+                [(ngModel)]="ATT_DATE"
+                class="form-control"
+                [ngModelOptions]="{ standalone: true }"
+                disabled
+              />
+              <app-date-picker
+                class="date-input"
+                [maxdate]=""
+                [isDisable]="true"
+              ></app-date-picker>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <strong *ngIf="attendance_type == 'TIME_IN'" style="font-size: 13px"
+              >Time IN :<small>(24 hr time only)</small>
+            </strong>
+            <strong
+              *ngIf="attendance_type == 'TIME_OUT'"
+              style="font-size: 13px"
+              >Time Out :<small>(24 hr time only)</small>
+            </strong>
+            <div class="floating-input mb-1">
+              <input
+                type="text"
+                [(ngModel)]="TIME_IN"
+                TimeOnly="HH:MM"
+                placeholder="HH:MM"
+                class="form-control"
+                *ngIf="attendance_type == 'TIME_IN'"
+                [ngModelOptions]="{ standalone: true }"
+              />
+              <input
+                type="text"
+                [(ngModel)]="TIME_OUT"
+                TimeOnly="HH:MM"
+                placeholder="HH:MM"
+                class="form-control"
+                *ngIf="attendance_type == 'TIME_OUT'"
+                [ngModelOptions]="{ standalone: true }"
+              />
+            </div>
+          </div>
+          <div class="col-md-12 mt-1" *ngIf="attendance_type == 'TIME_IN'">
+            <label>Work Location :</label>
+            <div class="form-inline mt-1">
+              <div class="form-group radios mr-3">
+                <input
+                  id="office"
+                  type="radio"
+                  [(ngModel)]="WORK_LOC"
+                  value="O"
+                  name="WorkLoc"
+                  class="mr-1"
+                />
+                <label for="office"
+                  ><span class="span-txt">In Office </span></label
+                >
+              </div>
+              <div class="form-group radios mr-3">
+                <input
+                  id="wfh"
+                  type="radio"
+                  [(ngModel)]="WORK_LOC"
+                  value="W"
+                  name="WorkLoc"
+                  class="mr-1"
+                />
+                <label for="wfh"
+                  ><span class="span-txt">Work From Home </span></label
+                >
+              </div>
+              <div class="form-group radios mr-3">
+                <input
+                  id="outOfOffice"
+                  type="radio"
+                  [(ngModel)]="WORK_LOC"
+                  value="C"
+                  name="WorkLoc"
+                  class="mr-1"
+                />
+                <label for="outOfOffice"
+                  ><span class="span-txt">Out Of Office </span></label
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          (click)="onSubmitAttendance()"
+          [disabled]="isAttendance"
+          class="btn btn-secondary"
+        >
+          Save
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          *ngIf="attendance_type == 'TIME_OUT'"
+          data-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Logout Warning-->
+<div
+  class="modal fade"
+  #logoutwarning
+  id="logoutwarning"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content mt-5">
+      <div class="modal-header header-background py-1">
+        <h5 class="modal-title" id="exampleModalLabel">CFTRACK</h5>
+      </div>
+      <div class="modal-body">
+        <label>Are you sure, you want to logout?</label>
+      </div>
+      <div class="modal-footer py-0">
+        <button
+          type="button"
+          (click)="f_logout()"
+          class="btn btn-primary py-1"
+          data-dismiss="modal"
+        >
+          Yes
+        </button>
+        <button type="button" class="btn btn-danger py-1" data-dismiss="modal">
+          No
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Change Fyear-->
+<div
+  class="modal fade"
+  #chagefyear
+  id="chagefyear"
+  tabindex="-1"
+  role="dialog"
+  data-keyboard="false"
+  data-backdrop="static"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Change Fyear</h5>
+        <button
+          *ngIf="FYEAR_CLOSE == true"
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row mt-2">
+          <div class="col-md-12">
+            <label>Financial Year :</label>
+            <div class="floating-input mb-1">
+              <select
+                class="form-control selectpicker show-tick"
+                [(ngModel)]="FYEAR"
+                [ngModelOptions]="{ standalone: true }"
+                data-live-search="true"
+                id="fyear"
+                #fyear
+                title="Select"
+              >
+                <option
+                  *ngFor="let opt of fyear_list; let i = index"
+                  [selected]="opt.FYEAR == FYEAR"
+                  [value]="opt.FYEAR"
+                >
+                  {{ opt.FYEAR_DESC }}
+                </option>
+              </select>
+              <!-- <button type="button" class="close" onclick="resetDropdown('fyear')" (click)="FYEAR" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          (click)="onContinueFyear()"
+          class="btn btn-secondary"
+        >
+          Continue
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,521 @@
+<app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
+<form [formGroup]="form">
+<div class="row">
+        <div class="col-md-12" >
+            <div class="card1 d-flex  justify-content-between">
+                <div class=" " >
+                    <div class="float-left" *ngIf="!isViewExpense"  >
+                            <div class="form-check form-check-inline">
+                                <input type="radio" name="status" value="pending" 
+                                    [checked]='true' (click)="GetExpenseList('P');">
+                                <label class="form-check-label ml-2" for="inlineRadio1">Pending List</label>
+                            </div>
+    
+                            <div class="form-check form-check-inline">
+                                <input type="radio" name="status" value="Approved" (click)="GetExpenseList('A');">
+                                <label class="form-check-label ml-2" for="inlineRadio3">Approved List</label>
+                            </div>
+                    </div>
+                    
+        <div class="" *ngIf="isViewExpense">
+            <h5 class="formName ">{{ sharedService.formName }}</h5>
+          
+        </div>
+                </div>
+                <div *ngIf="isViewExpense">
+                    <button class="btn btn-secondary mr-1" (click)="ViewExpenseList()" 
+                    title="View Leave Details">
+                    <i class="far fa-eye mr-1"></i>List
+                    </button>
+                    <button class="btn btn-secondary mr-1" data-toggle="modal" 
+                    data-target="#cancleexpense" title="Cancel" 
+                    *ngIf="isCancel">Cancel</button>
+                    <button class="btn btn-secondary "  (click)="SaveExpense(0)" 
+                    title="Save">Save</button>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="isViewExpense" class="mt-2">
+                <div class="mt-2 d-flex">
+                    <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 pr-0 padd_right d-flex  ">
+                        <div class="row card">
+                            <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
+                                    <label>Doc Type :<span class="text-danger">*</span></label>
+                                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['EXP_TYPE'].errors?.required}">
+                                        <select class="form-control selectpicker show-tick" id="doc_type"
+                                        formControlName="EXP_TYPE"  data-live-search="true" title="Select">
+                                            <option *ngFor="let opt of doc_type_list; let i=index" 
+                                            [selected]="opt.DOCTYPE_CODE == form.controls['EXP_TYPE'].value"
+                                            [value]="opt.DOCTYPE_CODE" >{{ opt.DOCTYPE_DESC }}</option>                     
+                                        </select>
+                                        <button type="button" class="close" (click)="form.controls['EXP_TYPE'].reset();" onclick="resetDropdown('doc_type')"  aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
+                                <label>Voucher No. :</label>
+                                <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['FYEAR'].errors?.required}">
+                                    <input type="text"  formControlName="EXPENSE_NO" class="form-control" placeholder="Voucher No">
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
+                                <label>Voucher Date :</label>
+                                <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['FYEAR'].errors?.required}">
+                                    <input type="text"  formControlName="EXPENSE_DATE" class="form-control" [(ngModel)]="EXPENSE_DATE" placeholder="DD-MMM-YYYY" readonly>
+                                    <!-- <app-date-picker class="date-input" [(ngModel)]="EXPENSE_DATE" id="exp_date" #doj class="date-input" [maxdate]="min_date" [mindate]="maxdate" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker> -->
+                                    <div class="date-input">
+                                        <mat-form-field fxFlex="100" appearance="fill">
+                                            <mat-datepicker-toggle matPrefix [for]="picker" id='cal' #cal></mat-datepicker-toggle>
+                                            <input class="form-control" (dateChange)="ChangeDate()" [value]="_DATE" matInput [(ngModel)]="_DATE" [ngModelOptions]="{standalone: true}" [matDatepicker]="picker" [min]="min_date" [max]="maxdate" [disabled]="false" readonly />
+                
+                                            <mat-datepicker #picker id="picker"></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
+                                <label>Pay To :</label>
+                                <div class="form-inline">
+                                    <div class="form-group radios mr-3">
+                                        <input id="vendor" type="radio"  class="mr-2"  formControlName="PAY_TO" value="V" checked  (click)="showContent($event.target.value);">
+                                        <label for="vendor"><span class="span-txt">Vendor
+                                            </span></label>
+                                    </div>
+                                    <div class="form-group radios mr-3">
+                                        <input id="employee" type="radio"  class="mr-2" formControlName="PAY_TO"  value="E"  (click)="showContent($event.target.value);"  >
+                                        <label for="employee"><span class="span-txt">Employee
+                                            </span></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12" *ngIf="radioSelected">
+                                <label>Vendor :<span class="text-danger">*</span></label>
+                                <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['VENDOR_NO'].errors?.required}" *ngIf="radioSelected">
+                                    <select class="form-control selectpicker show-tick" id="_vendor" 
+                                    formControlName="VENDOR_NO" data-live-search="true" title="Select" (change)="SelectVendor();">
+                                        <option *ngFor="let opt of vendor_list; let i=index" 
+                                        [selected]="opt.VENDOR_NO == form.controls['VENDOR_NO'].value"
+                                        [value]="opt.VENDOR_NO" >{{ opt.VENDOR_NAME }}</option>                    
+                                    </select>
+                                    <button type="button" class="close" (click)="form.controls['VENDOR_NO'].reset();" onclick="resetDropdown('_vendor')"  aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12" *ngIf="!radioSelected">
+                                <label >Employee :<span class="text-danger">*</span></label>
+                                <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['EMP_NO'].errors?.required}" *ngIf="!radioSelected">
+                                    <select class="form-control selectpicker show-tick " id="_employee" 
+                                    formControlName="EMP_NO" data-live-search="true" title="Select">
+                                        <option *ngFor="let opt of employee_list; let i=index" 
+                                        [selected]="opt.EMP_CODE == form.controls['EMP_NO'].value"
+                                        [value]="opt.EMP_CODE" >{{ opt.EMP_CODE }} - {{ opt.USER_NAME }}</option>                      
+                                    </select>
+                                    <button type="button" class="close" (click)="form.controls['EMP_NO'].reset();" onclick="resetDropdown('_employee')"  aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                <label>Remarks :<span class="text-danger">*</span></label>
+                                <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['REMARKS'].errors?.required}">
+                                    <textarea name="" id="" rows="2" formControlName="REMARKS" class="form-control" placeholder="Remarks"></textarea>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class=" col-xl-4 col-lg-12 col-md-12 col-sm-12  d-flex ">
+                            <div class="row card">
+                                <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+                                    <label>PO No. :</label>
+                                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['PO_ID'].errors?.required}">
+                                        <input type="text"  formControlName="PO_ID" class="form-control" placeholder="PO No">
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+                                    <label>Bill No. :<span class="text-danger">*</span></label>
+                        <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['BILL_NO'].errors?.required}">
+                            <input type="text"  formControlName="BILL_NO" class="form-control" placeholder="Bill No">
+                        </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+                                    <label>Bill Date :<span class="text-danger">*</span></label>
+                        <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['BILL_DATE'].errors?.required}">
+                            <input type="text"  formControlName="BILL_DATE" class="form-control" [(ngModel)]="BILL_DATE">
+                            <app-date-picker class="date-input" [(ngModel)]="BILL_DATE" id="bill_date" #doj class="date-input" [maxdate]="" [mindate]="" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
+                        </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+                                    <label>Pay By Date :<span class="text-danger">*</span></label>
+                                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['DUE_DATE'].errors?.required}">
+                                        <input type="text"  formControlName="DUE_DATE" class="form-control" [(ngModel)]="DUE_DATE" >
+                                        <!-- <app-date-picker class="date-input" [(ngModel)]="DUE_DATE" id="due_date" #doj class="date-input" [maxdate]="" [mindate]="" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker> -->
+                                        <div class="date-input">
+                                            <mat-form-field fxFlex="100" appearance="fill">
+                                                <mat-datepicker-toggle matPrefix [for]="picker1" id='cal1' #cal1></mat-datepicker-toggle>
+                                                <input class="form-control" (dateChange)="ChangeDate1()" [value]="_DATE1" matInput [(ngModel)]="_DATE1" [ngModelOptions]="{standalone: true}" [matDatepicker]="picker1" [min]="" [max]="" [disabled]="false" readonly />
+                    
+                                                <mat-datepicker #picker1 id="picker1"></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+                                    <label>Currency :<span class="text-danger">*</span></label>
+                                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['CURRENCY_CODE'].errors?.required}">
+                                        <select class="form-control selectpicker show-tick" id="Currency" (change)="GetSelectCurrency(form.controls['CURRENCY_CODE'].value)"
+                                        formControlName="CURRENCY_CODE"  data-live-search="true" title="Select">
+                                            <option *ngFor="let opt of currency_list; let i=index" 
+                                            [selected]="opt.CURRENCY_CODE == form.controls['CURRENCY_CODE'].value"
+                                            [value]="opt.CURRENCY_CODE" >{{ opt.CURRENCY_NAME }}</option>                     
+                                        </select>
+                                        <button type="button" class="close" (click)="form.controls['CURRENCY_CODE'].reset();" onclick="resetDropdown('Currency')"  aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+                                    <label>Exchange Rate :<span class="text-danger">*</span></label>
+                        <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['EXCHANGE_RATE'].errors?.required}">
+                            <input type="text"  formControlName="EXCHANGE_RATE" (change)="CalculateFinalAmount()" class="form-control cost" placeholder="Exchange Rate" [readonly]="isExchangeRate" >
+                        </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            <div class="col-md-12 mt-2">
+                <div class="row card">
+                    <div class="col-md-12">
+                        <div class="form-inline">
+                            <h6 class="mb-0 col-md-6 p-0">Exp Details</h6>
+                            <div class="row-add col-md-6 text-right p-0">
+                                <button type="button" class="btn text-primary pb-0" (click)="f_addRow();">
+                                    <i class='fas fa-plus-circle mr-2'></i>Add</button>
+                            </div>
+                            <hr class="m-0 mb-2">
+                        </div>
+                        <div class="tableFixHead">
+                            <table class="table-theam-1 row_bgcolor_2">
+                                <thead>
+                                    <tr>
+                                        <!-- <th class="w-1"></th> -->
+                                        <th class="w-1">Sr.No</th>
+                                        <th class="w-2">Exp.Head</th>
+                                        <th class="w-3">Qty</th>
+                                        <th class="w-4">Price</th>
+                                        <th class="w-4">Base</th>
+                                        <th class="w-2">Project Code</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let data of _expense_detail; let i=index;">
+                                        <tr *ngIf="data.ACTIVE != 0">
+                                            <!-- <td class="w-1">
+                                                <div class="floating-input">
+                                                    <input type="checkbox" class="form-control" checked id="check_{{i}}" [(ngModel)]="data.ACTIVE" [ngModelOptions]="{standalone: true}">
+                                                </div>
+                                            </td> -->
+                                            <td class="w-1 pb-0 pt-0">{{i+1}}</td>
+                                            <td class="w-2 pb-0" >
+                                                <div class="floating-input">
+                                                    <select class="form-control selectpicker show-tick dd_ellipsis" [(ngModel)]="data.EXPENSE_HEAD"  id="exp_{{i}}" data-container="body" 
+                                                      [ngModelOptions]="{standalone: true}" data-live-search="true"
+                                                                title="Select">
+                                                            <option value="" disabled></option>
+                                                            <option *ngFor="let opt of exphead_list; let i=index" 
+                                                            [selected]="opt.EXPENSE_HEAD == data.EXPENSE_HEAD" 
+                                                            [value]="opt.EXPENSE_HEAD" title="{{ opt.EXPENSE_NAME }}">{{ opt.EXPENSE_NAME }}</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td class="w-3 pb-0">
+                                                <div class="floating-input">
+                                                    <input type="text"   class="form-control cost" [(ngModel)]="data.QTY"  placeholder="Qty"  (change)="CalculateFinalAmount()" [ngModelOptions]="{standalone: true}">
+                                                </div>
+                                            </td>
+                                            <td class="w-4 pb-0">
+                                                <div class="floating-input">
+                                                    <input type="text"   class="form-control cost" [(ngModel)]="data.PRICE"  costInput placeholder="Price"  (change)="CalculateFinalAmount()" [ngModelOptions]="{standalone: true}">
+                                                </div>
+                                            </td>
+                                            <td class="w-4 pb-0">
+                                                <div class="floating-input">
+                                                    <input type="text"  class="form-control cost" [(ngModel)]="data.EXPENSE_AMOUNT" disabled  costInput placeholder="Base"  [ngModelOptions]="{standalone: true}">
+                                                </div>
+                                            </td>
+                                            <td class="w-2 pb-0" >
+                                                <div class="floating-input">
+                                                    <select class="form-control selectpicker show-tick dd_ellipsis" [(ngModel)]="data.PROJ_CODE" id="p_{{i}}" data-container="body" [ngModelOptions]="{standalone: true}" data-live-search="true"
+                                                                title="Select">
+                                                            <option value="" disabled></option>
+                                                            <option *ngFor="let opt of project_list; let i=index" 
+                                                            [selected]="opt.PROJ_CODE == data.PROJ_CODE"
+                                                            [value]="opt.PROJ_CODE" title="{{ opt.PROJ_NAME }}" >{{ opt.PROJ_NAME }}</option>  
+                                                    </select> 
+                                                </div>
+                                                <button
+                                                type="button"
+                                                class="close"
+                                                *ngIf="this._expense_detail.length > 1"
+                                                (click)="RemoveExpenseIndex(i)"
+                                                aria-label="Close"
+                                              >
+                                                <span aria-hidden="true">&times;</span>
+                                              </button>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="data.ACTIVE != 0">
+                                            <td class=""></td>
+                                            <td colspan="2" class="w-4">
+                                                <div class="floating-input">
+                                                    <textarea name="" id="" rows="2" class="form-control" placeholder="Description" [(ngModel)]="data.REMARKS"  [ngModelOptions]="{standalone: true}"></textarea>
+                                                </div>
+                                            </td>
+                                            <td colspan="3"  class="">
+                                                <table>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="floating-input form-inline">
+                                                                <label class="ml-2 font-weight-bold">SGST :</label>
+                                                                <div class="d-flex">
+                                                                    <input type="text" id="sgst_val_{{i}}"  class="form-control ml-1 mr-1 cost" (change)="CalculateFinalAmount()" placeholder="SGST Value" disabled costInput [(ngModel)]="data.SGST_AMOUNT"  [ngModelOptions]="{standalone: true}">
+                                                                    <label class="ml-1">{{ data.SGST_RATE}}%</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="floating-input form-inline">
+                                                                <label class="ml-2 font-weight-bold">CGST :</label>
+                                                                    <div class="d-flex">
+                                                                    <input type="text" id="cgst_val_{{i}}"  class="form-control ml-1 mr-1 cost" (change)="CalculateFinalAmount()" placeholder="CGST Value" disabled costInput [(ngModel)]="data.CGST_AMOUNT"  [ngModelOptions]="{standalone: true}">
+                                                                    <label class="ml-1">{{ data.CGST_RATE}}%</label>
+                                                                    </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="floating-input form-inline ">
+                                                                <label class="ml-2  font-weight-bold">IGST :</label>
+                                                                <div class="d-flex">
+                                                                <input type="text" id="igst_val_{{i}}"  class="form-control ml-1 mr-1 cost" (change)="CalculateFinalAmount()" placeholder="IGST Value" disabled costInput [(ngModel)]="data.IGST_AMOUNT"  [ngModelOptions]="{standalone: true}">
+                                                                <label class="ml-1">{{ data.IGST_RATE}}%</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <!-- <td class="w-10 pb-0" >
+                                                <div class="floating-input"  style="margin-top: -42px;">
+                                                    <input type="text" class="form-control" placeholder="PO Sr.No" [(ngModel)]="data.PO_SRNO" maxlength="2" [ngModelOptions]="{standalone: true}">
+                                                </div>
+                                            </td> -->
+                                        </tr>
+                                    </ng-container>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mt-2">
+                <div class="row card">
+                    <div class="col-md-2">
+                        <label>Base Amount :</label>
+                        <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['EXPENSE_AMT'].errors?.required}">
+                            <input type="text"  formControlName="EXPENSE_AMT" class="form-control cost" disabled costInput placeholder="Base Amount">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label>CGST :</label>
+                        <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['CGST_AMT'].errors?.required}">
+                            <input type="text"  formControlName="CGST_AMT" class="form-control cost" disabled costInput placeholder="CGST">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label>SGST :</label>
+                        <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['SGST_AMT'].errors?.required}">
+                            <input type="text"  formControlName="SGST_AMT" class="form-control cost" disabled costInput placeholder="SGST">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label>IGST :</label>
+                        <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['IGST_AMT'].errors?.required}">
+                            <input type="text"  formControlName="IGST_AMT" class="form-control cost" disabled costInput placeholder="IGST">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label>Round Off :</label>
+                        <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['ROUNDOFF'].errors?.required}">
+                            <input type="text"  formControlName="ROUNDOFF" (change)="CalculateFinalAmount()"   class="form-control cost"  costInput placeholder="Round Off">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label>Total Amount :</label>
+                        <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['TOTAL_BILL'].errors?.required}">
+                            <input type="text"  formControlName="TOTAL_BILL" class="form-control cost" disabled costInput placeholder="Total Amount">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label>TDS Applicable :</label>
+                        <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['TDS_APPLICABLE'].errors?.required}">
+                            <input type="text"  formControlName="TDS_APPLICABLE" disabled costInput class="form-control cost" placeholder="TDS Applicable">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label>Tax Code :</label>
+                        <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['TDS_CODE'].errors?.required}">
+                            <select class="form-control selectpicker show-tick" id="tax_code" 
+                            formControlName="TDS_CODE" (change)="ChangeTDS()" data-live-search="true" title="Select">
+                                <option *ngFor="let opt of tds_code_list; let i=index" 
+                                [selected]="opt.TDS_CODE == form.controls['TDS_CODE'].value"
+                                [value]="opt.TDS_CODE" >{{ opt.TDS_NAME }}</option>                      
+                            </select>
+                            <button type="button" class="close" (click)="form.controls['TDS_CODE'].reset();" onclick="resetDropdown('tax_code')"  aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label>TDS% :</label>
+                        <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['TDS_RATE'].errors?.required}">
+                            <input type="text"  formControlName="TDS_RATE" disabled class="form-control cost" placeholder="TDS%">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label>TDS Amount :</label>
+                        <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['TDS_AMT'].errors?.required}">
+                            <input type="text"  formControlName="TDS_AMT" disabled class="form-control cost" placeholder="TDS Amount">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label>Pay Amount :</label>
+                        <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['BASE_BILL'].errors?.required}">
+                            <input type="text"  formControlName="BASE_BILL" disabled class="form-control cost" placeholder="Pay Amount">
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+            <div class="col-md-12 mt-2">
+                <div class="row card">
+                    <div class="col-md-8">
+                    <h6 class="mb-0 col-md-6 p-0">Document Upload</h6>
+                    <hr class="m-0 mb-2" />
+                    <ul class="list-group">
+                        <li
+                        class="list-group-item d-flex justify-content-between att-doc py-1"
+                        >
+                        <input
+                            type="file"
+                            #fileInput
+                            id="fileInput"
+                            (change)="selectDocument($event)"
+                            accept=".png,.jpg,.pdf"
+                            class="doc-input"
+                        />
+                        <label class="att-doc-label" title="Documents">
+                            Documents
+                        </label>
+                        <span class="" *ngIf="!NO_RIGHTS">
+                            <label
+                            for="fileInput"
+                            class="att-doc-label-add"
+                            title="Add Document"
+                            >
+                            <i class="fa fa-paperclip"></i> Attach
+                            </label>
+                        </span>
+                        </li>
+                        <ng-container
+                        *ngFor="let file of uploadedDocument; let i = index"
+                        >
+                        <li
+                            class="list-group-item d-flex justify-content-between py-2"
+                            *ngIf="file.ACTIVE != 0"
+                        >
+                            <label class="doc-label" (click)="f_downloadDocument(file)">
+                            <i class="fa fa-paperclip mr-2"></i>
+                            {{ file.DOCUMENT_FILENAME }}
+                            </label>
+                            <span class="del-red">
+                            <i
+                                class="fas fa-trash-alt"
+                                id="f_{{ i }}"
+                                (click)="removeDoc(i)"
+                                title="Delete Document"
+                            ></i>
+                            </span>
+                        </li>
+                        </ng-container>
+                
+                        <li
+                        class="list-group-item text-center py-1 disabled"
+                        *ngIf="this.uploadedDocument.length == 0"
+                        >
+                        <h6 class="m-0">No Documents</h6>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
+            </div> 
+        </div>
+
+        <div class="page-content mt-1" *ngIf="!isViewExpense">
+            <div class="col-md-12">
+                <div class="tableFixHead ">
+                    <table class="table-theam-1 row_bgcolor_1">
+                        <thead>
+                            <tr> 
+                                <th>Expense No.</th>
+                                <th>Expense Date</th>
+                                <th>Pay To</th>
+                                <th>Bill No.</th>
+                                <th>Bill Date.</th>
+                                <th class="w-110">Action</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of all_expense_detail;let i=index;">
+                                <td>{{data.EXPENSE_NO}}</td>
+                                <td>{{data.EXPENSE_DATE}}</td>
+                                <td>{{data.PAY_TO}}</td> 
+                                <td>{{data.BILL_NO}}</td>
+                                <td>{{data.BILL_DATE}}</td>
+                                <td class="w-110">
+                                    <a>
+                                        <i class="fa fa-edit" (click)="editExpence(data)" title="Edit"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+</div>
+</form>
+
+
+<div class="modal fade" #cancleexpense id="cancleexpense" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content mt-5">
+            <div class="modal-header header-background py-1">
+                <h5 class="modal-title" id="exampleModalLabel">CFTRACK</h5>
+            </div>
+            <div class="modal-body">
+                <label>Are you sure, you want to this expense is cancel?</label>
+        </div>
+
+            <div class="modal-footer py-0">
+                <button type="button"  class="btn btn-primary py-1"
+                    data-dismiss="modal" (click)="SaveExpense(1);">Yes</button>
+                <button type="button" class="btn btn-danger py-1" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>

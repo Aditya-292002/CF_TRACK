@@ -1,0 +1,14 @@
+table .w-10{
+    width: 150px;
+}
+table .w-30{
+    width: 250px;
+}
+table .w-20{
+    width: 200px;
+}
+
+.card{ 
+    margin: 0 !important;
+    flex-direction: inherit !important;
+    }

@@ -1,0 +1,81 @@
+<form  [formGroup]="form">
+    <div class="row">
+        <div class="col-md-12 mt-2">
+            <div class="row card">
+                <div class="col-md-3">
+                    <label>Form Date<span class="validator">*</span> :</label>
+                    <div class="floating-input">
+                        <input type="text" class="form-control"  formControlName="FROM_DATE"   [(ngModel)]="FROM_DATE"  > 
+                        <div class="date-input">
+                            <mat-form-field fxFlex="100" appearance="fill">
+                                <mat-datepicker-toggle matPrefix [for]="picker1" id="from_date"></mat-datepicker-toggle>
+                                <input class="form-control" (dateChange)="ChangeFormDate()"  [value]="_DATE1" matInput [(ngModel)]="_DATE1" [ngModelOptions]="{standalone: true}"
+                                 [matDatepicker]="picker1" [min]="min_date" [max]="maxdate" [disabled]="false" readonly />
+                                <mat-datepicker #picker1 id="picker1"></mat-datepicker>
+                            </mat-form-field> 
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>To Date<span class="validator">*</span> :</label>
+                    <div class="floating-input">
+                        <input type="text" class="form-control"  formControlName="TO_DATE"  [(ngModel)]="TO_DATE" >  
+                        <div class="date-input">
+                            <mat-form-field fxFlex="100" appearance="fill">
+                                <mat-datepicker-toggle matPrefix [for]="picker2" id='to_date' ></mat-datepicker-toggle>
+                                <input class="form-control" (dateChange)="ChangeToDate()"  [value]="_DATE2" matInput [(ngModel)]="_DATE2" [ngModelOptions]="{standalone: true}"
+                                 [matDatepicker]="picker2" [min]="min_date" [max]="" [disabled]="false" readonly />
+                                <mat-datepicker #picker2 id="picker2"></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 ">
+                    <button class="btn btn-secondary mt-4" (click)="searchList()"
+                    title="Search">Search</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mt-2">
+            <div class="row card">
+                <div class="col-md-12">
+                    <div class="tableFixHead ">
+                        <table class="table-theam-1 row_bgcolor_1">
+                            <thead>
+                                <tr> 
+                                    <th class="w-10">Expense No.</th>
+                                    <th class="w-10">Expense Date</th>
+                                    <th class="w-20">Pay To</th>
+                                    <th class="w-10">Bill No.</th>
+                                    <th class="w-10">Bill Date</th>
+                                    <th class="w-10">Amount</th>
+                                    <th class="w-10">Total Amt</th>
+                                    <th class="w-10">Pay Amt</th>
+                                    <th class="w-10">Action</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of all_expense_detail;let i=index;">
+                                    <td class="w-10">{{data.EXPENSE_NO}}</td>
+                                    <td class="w-10">{{data.EXPENSE_DATE}}</td>
+                                    <td class="w-20">{{data.PAY_TO}}</td> 
+                                    <td class="w-10">{{data.BILL_NO}}</td>   
+                                    <td class="w-10">{{data.BILL_DATE}}</td> 
+                                    <td class="w-10">{{data.AMT}}</td>         
+                                    <td class="w-10">{{data.TOTAL_AMOUNT}}</td>
+                                    <td class="w-10">{{data.PAY_AMOUNT}}</td>
+                                    <td class="w-10">
+                                        <a>
+                                            <i class="fa fa-print medium mr-2"  (click)="Print(data);" title="Print"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

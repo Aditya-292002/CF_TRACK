@@ -1,0 +1,103 @@
+@media (max-width: 992px) {
+    #app .content-wrapper {
+        margin-left: 0 !important;
+    }
+    .top-toolbar.navbar-mobile.navbar-tablet {
+        z-index: 99;
+        display: flex;
+        flex-direction: row;
+    }
+    .top-toolbar.navbar-mobile.navbar-tablet .navbar-nav.nav-left {
+        order: 1;
+    }
+    .top-toolbar.navbar-mobile.navbar-tablet .navbar-nav {
+        display: flex;
+        flex-direction: row;
+        padding-left: 0;
+        margin-bottom: 0;
+        height: 4.0625rem;
+    }
+    .top-toolbar.navbar-mobile.navbar-tablet .navbar-nav .nav-item a i {
+        font-size: 22px;
+        line-height: 3.06;
+        max-height: 65px;
+    }
+    .top-toolbar.navbar-desktop {
+        background-color: #fff;
+    }
+    .top-toolbar.navbar-desktop {
+        top: 0;
+        transition: all .3s ease;
+        position: absolute;
+        width: 100%;
+    }
+    .sidebar.sidebar-left .sidebar-content {
+        position: fixed;
+        min-height: 100vh;
+        transition: all .3s ease;
+        transform: translate3D(-100%, 0, 0);
+    }
+    .btn-menu i {
+        display: none;
+    }
+    .sidebar-content .main-menu {
+        padding-top: 65px!important;
+    }
+    .top-toolbar.navbar-mobile.navbar-tablet .navbar-nav.nav-center.site-logo {
+        position: relative;
+    }
+    .top-toolbar.navbar-mobile.navbar-tablet .navbar-nav.nav-center {
+        order: 2; 
+    }
+    .site-logo li {
+        display: inline-block;
+    }
+    .top-toolbar.navbar-mobile.navbar-tablet .navbar-nav.nav-right {
+        padding: 0;
+        order: 3;
+        position: relative;
+    }
+    .top-toolbar.navbar-mobile.navbar-tablet .navbar-nav .nav-item a {
+        line-height: 2.3;
+    }
+    .mini-close {
+        display: block;
+    }
+    .sidebar.sidebar-left .sidebar-content .main-menu .nav.metismenu .has-arrow::after {
+        right: 20px;
+    }
+    .sidebar-footer {
+        max-width: 300px;
+    }
+    /* top panel */
+    .mobile-topbar-toggle .top-toolbar.navbar-desktop {
+        top: 65px;
+    }
+    .top-toolbar.navbar-desktop {
+        background-color: #fff;
+    }
+    .btn-tablet {
+        display: block;
+    }
+    .margin-top {
+        margin-top: 75px!important;
+    }
+    .header-controls{
+        display: none;
+    }
+    .site-logo {
+        display: none;
+    }
+    .formName{
+                margin-top: 5px;
+    }
+
+}
+
+@media (max-width: 991.98px) {
+    .site-logo li .logo_mobile {
+        position: absolute;
+        top: 18px;
+        left: -2px;
+    }
+}
