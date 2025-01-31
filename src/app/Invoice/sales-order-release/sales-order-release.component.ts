@@ -321,7 +321,6 @@ export class SalesOrderReleaseComponent implements OnInit {
     }
 
     if(type == 'REJECT'){
-      console.log('this.EJECT_REMARKS -> ' , this.REJECT_REMARKS)
       if (!this.sharedService.isValid(this.REJECT_REMARKS)) {
         this.toast.error('Enter a remarks');
         return;
@@ -418,6 +417,7 @@ export class SalesOrderReleaseComponent implements OnInit {
     this.SO_DATE = '';
     this.DUE_DATE = '';
     this.PO_DATE = '';
+    this.REJECT_REMARKS = '';
     this.project_list = [];
     this.invoice_type_list = [];
     this.SO_MILESTONE_T = [{
@@ -439,7 +439,6 @@ export class SalesOrderReleaseComponent implements OnInit {
       this.sharedService.loginUser = sessionStorage.getItem('user_detail') ? JSON.parse(sessionStorage.getItem('user_detail')) : []
     }
     this.form.get('CURRENCY_CODE').setValue("INR");
-    this.form.get('REJECT_REMARKS').setValue("");
     this.form.get('FYEAR').setValue(this.sharedService.loginUser[0].FYEAR);
     this.form.get('COMPANY_CODE').setValue(this.sharedService.loginUser[0].COMPANY_CODE);
     this.form.get('LOCATION_CODE').setValue(this.sharedService.loginUser[0].LOCATION_CODE);

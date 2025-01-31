@@ -2,7 +2,7 @@
 <form [formGroup]="form">
   <div class="row">
     <!--  -->
-    <div class="col-md-12 mb-1" >
+    <div class="col-md-12 mb-1" *ngIf="UPDATE_RIGHTS || ADD_RIGHTS">
       <div class="d-flex flex-wrap justify-content-between">
         <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
         <div class="d-flex  col-md-8 justify-content-end">
@@ -47,7 +47,7 @@
           </button>
           <button
             class="btn btn-secondary mr-2"
-            *ngIf="!isNewAdd"
+            *ngIf="!isNewAdd && ADD_RIGHTS"
             (click)="f_addNew(1)"
             title="Add New"
           >
@@ -56,7 +56,7 @@
           <button
             class="btn btn-secondary mr-2"
             (click)="f_saveFormData('INSERT')"
-            *ngIf="isNewAdd"
+            *ngIf="isNewAdd && ADD_RIGHTS"
             title="Save"
           >
             Save
