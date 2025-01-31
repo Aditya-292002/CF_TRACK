@@ -15,7 +15,7 @@
             <button class="btn btn-secondary  float-right ml-1 mr-1" *ngIf="!isViewSO" (click)="viewSOList()"
             title="view Leave Details"><i class="far fa-eye mr-1"></i> List</button>
             <!-- <button class="btn btn-secondary  float-right ml-1 mr-1" *ngIf="!isViewSO"
-            (click)="SaveSalesOrderRelease()" title="Save">Save</button> 
+            (click)="SaveInvoiceRequestApprove()" title="Save">Save</button> 
             <button class="btn btn-secondary  float-right ml-2 " 
             *ngIf="isViewSO"  (click)="backToForm()"
                 title="Add New">Add New</button> -->
@@ -539,14 +539,20 @@
       </div>
       <div class="modal-body">
         <label>Are you sure, you want reject this invoice request ?</label>
+        <label>Remarks <span class="validator">*</span>:</label>
+      <div class="floating-input">
+        <textarea name="" id="" rows="1" class="form-control" [(ngModel)]="REJECT_REMARKS"
+          placeholder="Remarks">
+      </textarea>
       </div>
-
+      </div>
+      
       <div class="modal-footer py-0">
         <button
           type="button"
           class="btn btn-primary py-1"
           data-dismiss="modal"
-          (click)="SaveSalesOrderRelease('REJECT')"
+          (click)="SaveInvoiceRequestApprove('REJECT')"
         >
           Yes
         </button>
@@ -582,7 +588,7 @@
           type="button"
           class="btn btn-primary py-1"
           data-dismiss="modal"
-          (click)="SaveSalesOrderRelease('APPROVE')"
+          (click)="SaveInvoiceRequestApprove('APPROVE')"
         >
           Yes
         </button>
