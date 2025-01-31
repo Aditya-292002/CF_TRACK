@@ -29,10 +29,10 @@
         </div>
         <div class="w-50">
           <div class="d-flex justify-content-end gap-3">
-            <button type="button" class="btn btn-primary mt-3 mr-3 loginBtnDanger">
+            <button class="btn btn-primary mt-3 mr-3 loginBtnDanger" (click)="redirectBtn('customer')" >
               + Add Customer
             </button>
-            <button type="button" class="btn btn-primary mt-3 loginBtn">
+            <button  class="btn btn-primary mt-3 loginBtn" (click)="redirectBtn('project')" >
               + Add project
             </button>
           </div> 
