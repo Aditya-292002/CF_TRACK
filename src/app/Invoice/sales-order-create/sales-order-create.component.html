@@ -314,7 +314,7 @@
                                                         <!-- <p-togglebutton [(ngModel)]="data.IS_CLOSED" onLabel="Locked" offLabel="Unlocked">
                                                         </p-togglebutton> -->
                                                         <input class="ml-2" type="checkbox" title="Close Milestone" 
-                                                         [(ngModel)]="data.IS_CLOSED"  [ngModelOptions]="{standalone: true}">
+                                                         [(ngModel)]="data.IS_CLOSED" [ngModelOptions]="{standalone: true}">
                                                     </div> 
                                                 </td>
                                             </tr>
@@ -485,7 +485,7 @@
                 <div   style="display: flex;justify-content: space-between;align-items: center;margin-bottom: 5px;">
                     <div class="row text-center ">
                         <label class="ml-2">
-                            <input type="radio" name="status" (click)="GetSOList('')" value="solist" [checked]='true'> So List
+                            <input type="radio" name="status" (click)="GetSOList('')" value="solist" [checked]='true'> SO List
                         </label>
                         <label class="ml-2">
                             <input type="radio" name="status" value="all" (click)="GetSOList('RELEASE')" > Request List
@@ -522,9 +522,12 @@
                     <td class="width-10" *ngIf="SoRelease">{{data.SO_STATUS}}</td>
                     <td class="width-10" *ngIf="!SoRelease"> {{data.SO_VALUE | costFilter }}</td>
                     <td class="width-10" *ngIf="SoRelease"> {{data.TOTAL_AMOUNT_VALUE | costFilter }}</td>
-                    <td class="width-10">
-                         <i class="fa fa-edit small" (click)="editInvoice(data,SoRelease)" title="Edit"></i>
+                    <td class="width-10" *ngIf="!SoRelease">
+                         <i class="fa fa-plus-square" (click)="editInvoice(data,SoRelease)" title="Add"></i>
                     </td>
+                    <td class="width-10" *ngIf="SoRelease">
+                        <i class="fa fa-edit " (click)="editInvoice(data,SoRelease)" title="Edit"></i>
+                   </td>
                 </tr>
             </ng-template>
         </p-table>

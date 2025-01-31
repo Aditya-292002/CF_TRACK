@@ -1,7 +1,7 @@
 <app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
 <form [formGroup]="form">
     <div class="row">
-        <div class="col-md-12" >
+        <div class="col-md-12" *ngIf="UPDATE_RIGHTS || ADD_RIGHTS">
             <div class="d-flex flex-wrap justify-content-between">
                 <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
                 <div class="d-flex  col-md-8 justify-content-end">
@@ -18,8 +18,8 @@
                         </div>
                     </div>
                     <button class="btn btn-secondary   mr-1" *ngIf="isUpdate" (click)="f_clearForm()"   title="Cancel">Cancel</button>
-                    <button class="btn btn-secondary  mr-1" *ngIf="!isUpdate " (click)="saveFormData('INSERT')"   title="Save">Save</button>
-                    <button class="btn btn-secondary  mr-1" *ngIf="isUpdate " (click)="saveFormData('UPDATE')"   title="Save">Save</button>
+                    <button class="btn btn-secondary  mr-1" *ngIf="!isUpdate && ADD_RIGHTS" (click)="saveFormData('INSERT')"   title="Save">Save</button>
+                    <button class="btn btn-secondary  mr-1" *ngIf="isUpdate && UPDATE_RIGHTS" (click)="saveFormData('UPDATE')"   title="Save">Save</button>
 
                 </div>
             </div>
@@ -76,8 +76,7 @@
                 <div class="col-md-4">
                     <label>Project Name<span class="validator">*</span> :</label>
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['PROJ_NAME'].errors?.required}">
-                        <!-- InputType="AlphaSpace" -->
-                        <input type="text" formControlName="PROJ_NAME" maxlength="100" placeholder="Project Name" Uppercase class="form-control ">
+                        <input type="text" formControlName="PROJ_NAME" maxlength="100" placeholder="Project Name" InputType="AlphaSpace" Uppercase class="form-control ">
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -166,7 +165,7 @@
         <!--  -->
         <div class="col-md-12 mt-2">
             <div class="row card">
-                <!-- <div class="col-md-4">
+                <div class="col-md-4">
                     <label>PO No. :</label>
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['PO_NO'].errors?.required}">
                         <input type="text" formControlName="PO_NO"  maxlength="50" placeholder="PO No." class="form-control">
@@ -212,7 +211,7 @@
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['PO_EXCHANGE_RATE'].errors?.required}">
                         <input type="text" formControlName="PO_EXCHANGE_RATE"  maxlength="10" placeholder="Exchange Rate" class="form-control" OnlyNumber='true'>
                     </div>
-                </div> -->
+                </div>
                 <div class="col-md-4">
                     <label>Project Manager<span class="validator">*</span> :</label>
                     <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['PROJ_MGR'].errors?.required}">
@@ -298,13 +297,12 @@
         </div>
        <!--  -->
        <div class="col-md-12 mt-2">
-          <!-- <div class="head-2 form-inline">
+            <div class="row card">
+                <div class="col-md-12">
+                    <!-- <div class="head-2 form-inline">
                         <h5 class="text-left">Milestone Details</h5>
     
                     </div> -->
-            <!-- <div class="row card"> -->
-                <!-- <div class="col-md-12">
-                  
                     <div class="form-inline">
                         <h6 class="mb-0 col-md-6 p-0">Milestone Details</h6>
                         <div class="row-add col-md-6 text-right p-0">
@@ -349,7 +347,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div> -->
+                </div>
                 <div class="col-md-7 mt-1">
                     <!-- <div class="head-2 form-inline">
                         <h5 class="text-left">Documents</h5>
@@ -388,7 +386,7 @@
                             </tbody>
                         </table>
                     </div> -->
-<!--     
+    
     
                     <ul class="list-group">
                         <li class="list-group-item d-flex justify-content-between att-doc py-1">
@@ -419,9 +417,9 @@
                         <li class="list-group-item text-center py-1 disabled" *ngIf="NoDocs == 0">
                             <h6 class="m-0"> No Documents</h6>
                         </li>
-                    </ul> -->
+                    </ul>
                 </div>
-            <!-- </div> -->
+            </div>
         </div>
     </div>
 </form>
