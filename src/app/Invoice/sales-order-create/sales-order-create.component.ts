@@ -95,9 +95,9 @@ export class SalesOrderCreateComponent implements OnInit {
   TOTAL_AMOUNT_VALUE: any = 0;
   TOTAL_COST_VALUE: any = 0;
   status_list:any = [ {SO_STATUS: "PENDING" ,STATUS_NAME: "PENDING" },
-    {SO_STATUS: "CLOSE" ,STATUS_NAME: "CLOSE" }
+    {SO_STATUS: "CLOSE" ,STATUS_NAME: "CLOSE" },
+    {SO_STATUS: "REJECT" ,STATUS_NAME: "REJECT" }
    ]
-  SO_Detail_list:any = [];
   SO_list:any = [];
   SO_UPLOADED_DOCUMENT:any = [];
   base64Pdf:any = '';
@@ -105,6 +105,10 @@ export class SalesOrderCreateComponent implements OnInit {
   raisedinvoiceonmaxDate:any = new Date();
   TOTAL_REQUEST_VALUE: any = 0;
   TOTAL_BILLED_VALUE: any = 0;
+  SoRelease:boolean = false;
+  SO_REQUEST_UPLOADED_DOCUMENT:any = [];
+  IS_UPDATE: any = 0;
+  SO_STATUS:any;
 
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
@@ -189,7 +193,7 @@ export class SalesOrderCreateComponent implements OnInit {
 currentDate.setMonth(currentDate.getMonth() + 1);
 this.raisedinvoiceonmaxDate = currentDate.toISOString().split('T')[0];
       this.GetSOCommonList();
-      this.GetSOList();
+      this.GetSOList('');
     }, 150)
     this.spinner = false;
   
@@ -277,22 +281,22 @@ this.raisedinvoiceonmaxDate = currentDate.toISOString().split('T')[0];
       }
     }
     this.isSubmited = true;
-    if (this.form.controls['CUST_CODE'].invalid) {
-      this.toast.error('Please select company');
-      return;
-    }
-    if (this.form.controls['PROJ_CODE'].invalid) {
-      this.toast.error('Please select project');
-      return;
-    }
-    if (this.form.controls['DOCTYPE_CODE'].invalid) {
-      this.toast.error('Please select SO type');
-      return;
-    }
-    if (this.form.controls['SO_STATUS'].invalid) {
-      this.toast.error('Please enter request Status');
-      return;
-    }
+    // if (this.form.controls['CUST_CODE'].invalid) {
+    //   this.toast.error('Please select company');
+    //   return;
+    // }
+    // if (this.form.controls['PROJ_CODE'].invalid) {
+    //   this.toast.error('Please select project');
+    //   return;
+    // }
+    // if (this.form.controls['DOCTYPE_CODE'].invalid) {
+    //   this.toast.error('Please select SO type');
+    //   return;
+    // }
+    // if (this.form.controls['SO_STATUS'].invalid) {
+    //   this.toast.error('Please enter request Status');
+    //   return;
+    // }
     if (this.form.controls['REQUEST_REMARKS'].invalid) {
       this.toast.error('Please enter Remarks ');
       return;
@@ -334,11 +338,11 @@ this.raisedinvoiceonmaxDate = currentDate.toISOString().split('T')[0];
       element.REQ_VALUE = +(this.currencyPipe.parse(element.REQ_VALUE));
     })
 
-    if (this.f_validateFormData()) {
       let data = {
         USERID: this.sharedService.loginUser[0].USERID,
         TYPE: "",
         IS_CHECK: val,
+        IS_UPDATE: this.IS_UPDATE,
         SO_RELEASE_Header: this.form.value,
         SO_RELEASE_MILESTONE_T: SO_MILESTONE_T,
         SO_RELEASE_DOCUMENT_LIST: this.uploadedDocument,
@@ -375,7 +379,6 @@ this.raisedinvoiceonmaxDate = currentDate.toISOString().split('T')[0];
       }, err => {
         this.spinner = false;
       });
-    }
   }
 
   f_validateFormData() {
@@ -462,24 +465,30 @@ this.raisedinvoiceonmaxDate = currentDate.toISOString().split('T')[0];
   }
 
   viewSOList() {
-    this.GetSOList();
+    this.GetSOList('');
     this.f_clearForm();
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);
   }
 
-  GetSOList() {
+  GetSOList(val:any) {
     let data = {
-      LISTTYPE: "",
+      LISTTYPE: val,
       USERID: this.sharedService.loginUser[0].USERID,
     }
     this.spinner = true;
-    this.http.PostRequest(this.apiUrl.GetSOList, data).then(res => {
+    this.SO_list = [];
+    this.http.PostRequest(this.apiUrl.GetSOList, data).then((res:any) => {
       if (res.flag) {
-        // console.log(res)
         this.SO_list = res.SO_list;
-        this.GetPendingData('P');
+        if(val == 'RELEASE'){
+           this.SoRelease = true;
+        }else {
+          this.SoRelease = false;
+        }
+        // console.log('this.SO_list ->' ,  this.SO_list)
+        // this.GetPendingData('P');
         this.isViewSO = true;
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh').trigger('change');
@@ -532,38 +541,49 @@ this.raisedinvoiceonmaxDate = currentDate.toISOString().split('T')[0];
     });
   }
 
-  editInvoice(data:any) {
-    // this.GetSalesOrderReleaseDetail(data.REQ_ID)
-    this.GetSODetail(data.SO_ID)
-    this.editing = true;
+  editInvoice(data:any,val:any) {
+    this.SO_STATUS = data.SO_STATUS;
+    if(val == true){
+      this.GetSalesOrderReleaseDetail(data.REQ_ID,data.SO_ID);
+   }else if(val == false){
+      this.GetSODetail(data.SO_ID);
+   }
   }
 
-  // GetSalesOrderReleaseDetail(REQ_ID:any) {
-  //   let data = {
-  //     REQ_ID: REQ_ID
-  //   }
-  //   this.http.PostRequest(this.apiUrl.GetSalesOrderReleaseDetail, data).then(res => {
-  //     if (res.flag == 1) {
-  //       this.SO_Detail_list = res.SO_Detail_list;
-  //       this.SO_MILESTONE_T = res.SO_Milestone_list;
-  //       this.uploadedDocument = res.SO_Document_list;
-  //       for (let i = 0; i < this.SO_Detail_list.length; i++) {
-  //         this.TOTAL_AMOUNT_VALUE = this.SO_Detail_list[i].TOTAL_AMOUNT_VALUE;
-  //       }
-  //       this.SO_MILESTONE_T.forEach((element:any)=>{
-  //         element.EXPECTED_DATE = new Date(element.EXPECTED_DATE);
-  //       })
-  //       this.f_fillFormData();
-  //       setTimeout(() => {
-  //         $('.selectpicker').selectpicker('refresh').trigger('change');
-  //       }, 100);
-  //     } else {
-  //       this.spinner = false;
-  //     }
-  //   }, err => {
-  //     this.spinner = false;
-  //   });
-  // }
+  GetSalesOrderReleaseDetail(REQ_ID:any,SO_ID:any) {
+    this.TOTAL_REQUEST_VALUE = 0;
+    this.TOTAL_BILLED_VALUE = 0;
+    this.TOTAL_AMOUNT_VALUE = 0;
+    let data = {
+      REQ_ID: REQ_ID,
+      SO_ID: SO_ID
+    }
+    this.http.PostRequest(this.apiUrl.GetSalesOrderReleaseDetail, data).then(res => {
+      if (res.flag == 1) {
+        this.SO_list = res.SO_Detail_list;
+        this.SO_MILESTONE_T = res.SO_Milestone_list;
+        // this.SO_UPLOADED_DOCUMENT = res.SO_Document_list;
+        this.SO_REQUEST_UPLOADED_DOCUMENT = res.SO_Request_Document_list;
+        this.SO_MILESTONE_T.forEach((element:any)=>{
+          element.EXPECTED_DATE = new Date(element.EXPECTED_DATE);
+          this.TOTAL_AMOUNT_VALUE += element.REQ_VALUE;
+          element.REQ_VALUE = this.currencyPipe.transform(element.REQ_VALUE)
+          this.TOTAL_REQUEST_VALUE += element.DOC_VALUE;
+          this.TOTAL_BILLED_VALUE += element.BILLED_VALUE;
+        })
+        // this.TOTAL_AMOUNT_VALUE = this.SO_list[0].TOTAL_AMOUNT_VALUE;
+        this.f_fillFormData();
+        this.IS_UPDATE = 1;
+        setTimeout(() => {
+          $('.selectpicker').selectpicker('refresh').trigger('change');
+        }, 100);
+      } else {
+        this.spinner = false;
+      }
+    }, err => {
+      this.spinner = false;
+    });
+  }
 
   GetSODetail(SO_ID:any) {
     this.TOTAL_REQUEST_VALUE = 0;
@@ -583,9 +603,13 @@ this.raisedinvoiceonmaxDate = currentDate.toISOString().split('T')[0];
           element.EXPECTED_DATE = new Date(element.EXPECTED_DATE);
           this.TOTAL_REQUEST_VALUE += element.DOC_VALUE;
           this.TOTAL_BILLED_VALUE += element.BILLED_VALUE;
+          this.TOTAL_AMOUNT_VALUE += element.REQ_VALUE;
+          element.REQ_VALUE = this.currencyPipe.transform(element.REQ_VALUE)
         })
-        this.TOTAL_AMOUNT_VALUE = this.SO_list[0].TOTAL_AMOUNT_VALUE;
+        // this.TOTAL_AMOUNT_VALUE = this.SO_list[0].TOTAL_AMOUNT_VALUE;
         this.f_fillFormData();
+        this.editing = true;
+        this.IS_UPDATE = 0;
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh').trigger('change');
         }, 100);
@@ -599,6 +623,7 @@ this.raisedinvoiceonmaxDate = currentDate.toISOString().split('T')[0];
   f_fillFormData() {
     this.isViewSO = false
     this.form.get("SO_ID").setValue(this.SO_list[0].SO_ID)
+    this.form.get("REQ_ID").setValue(this.SO_list[0].REQ_ID)
     this.filterLocations();
     this.form.get("LOCATION_STATE").setValue(this.SO_list[0].LOCATION_STATE)
     this.form.get("STATE_CODE").setValue(this.SO_list[0].STATE_CODE)
@@ -622,6 +647,7 @@ this.raisedinvoiceonmaxDate = currentDate.toISOString().split('T')[0];
     this.form.get("PROJ_CODE").setValue(this.SO_list[0].PROJ_CODE)
     this.form.get("SO_STATUS").setValue(this.SO_list[0].SO_STATUS)
     this.form.get("SO_REMARKS").setValue(this.SO_list[0].SO_REMARKS)
+    this.form.get("REQUEST_REMARKS").setValue(this.SO_list[0].REQUEST_REMARKS)
     this.SelectState();
     setTimeout(() => {
       this.form.get("COMPANY_CODE").setValue(this.SO_list[0].COMPANY_CODE)
@@ -759,20 +785,19 @@ this.raisedinvoiceonmaxDate = currentDate.toISOString().split('T')[0];
     this.TOTAL_AMOUNT_VALUE = this.currencyPipe.transform(TOTAL_AMOUNT_VALUE)
   }
 
-  GetPendingData(type:any) {
-    this.PendingSO_list = [];
-    if (type == 'P') {
-     this.SO_list.forEach((element:any)=>{
-      if(element.SO_STATUS == type){
-         this.PendingSO_list.push(element)
-      }
-     })
-    } else if(type == 'All'){
-      this.PendingSO_list = this.SO_list;
-      this.isPending = false;
-    }
-    // console.log('PendingSO_list ->' , this.PendingSO_list)
-  }
+  // GetPendingData(type:any) {
+  //   this.PendingSO_list = [];
+  //   if (type == 'P') {
+  //    this.SO_list.forEach((element:any)=>{
+  //     if(element.SO_STATUS == type){
+  //        this.PendingSO_list.push(element)
+  //     }
+  //    })
+  //   } else if(type == 'All'){
+  //     this.PendingSO_list = this.SO_list;
+  //     this.isPending = false;
+  //   }
+  // }
 
   keyPressNumbers(event) {
     var charCode = (event.which) ? event.which : event.keyCode;

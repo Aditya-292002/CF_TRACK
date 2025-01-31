@@ -6,7 +6,8 @@
             <h5 class="formName " >{{ sharedService.formName }}</h5>
         </div>
         <div class="">
-            <button class="btn btn-secondary  float-right ml-1 mr-1" *ngIf="!isViewSO"
+            <button class="btn btn-secondary  float-right ml-1 mr-1" 
+            *ngIf="!isViewSO && (this.SO_STATUS == 'PENDING' || this.SO_STATUS == 'P')"
             (click)="SaveSalesOrderRelease(0)" title="Save">Save</button>
             <button class="btn btn-secondary  float-right ml-1 mr-1" *ngIf="!isViewSO" (click)="viewSOList()"
             title="view Leave Details"><i class="far fa-eye mr-1"></i> List</button>
@@ -361,7 +362,7 @@
                 <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12  pr-0 padd_right ">
                     
                     <div>
-                    <!-- <div class="row card ">
+                    <div class="row card " *ngIf="!SoRelease">
                         <div class="col-md-12 mt-1">
                             <div class="d-flex justify-content-between">
                                 <div>
@@ -392,11 +393,11 @@
                         </li>
                             </ul>
                         </div>
-                    </div> -->
-                    <div class="row card col-md-12 mt-1">
+                    </div>
+                    <div class="row card col-md-12 mt-1" *ngIf="SoRelease">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h6 class="mb-0 p-0">Sales Order Document</h6>
+                                <h6 class="mb-0 p-0">Invoice Request</h6>
                             </div>
                         </div>
                         <hr class="m-0 mb-2">
@@ -409,7 +410,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <ng-container *ngFor="let file of SO_UPLOADED_DOCUMENT; let i=index;">
+                                    <ng-container *ngFor="let file of SO_REQUEST_UPLOADED_DOCUMENT; let i=index;">
                                         <tr>
                                             <td class="">  {{file.DOCUMENT_FILENAME}}</td>
                                             <td class=""> 
@@ -477,18 +478,18 @@
     </div>
     
     <div class=" mt-2" *ngIf="isViewSO">
-        <div class="col-md-12 card">
-            <p-table #datatable [value]="PendingSO_list"  
+        <div class="col-md-12 card" >
+            <p-table #datatable [value]="SO_list"  
             [globalFilterFields]="['SO_NO','CUST_NAME','PROJ_NAME','SO_REMARKS','SO_VALUE']">
             <ng-template pTemplate="caption">
                 <div   style="display: flex;justify-content: space-between;align-items: center;margin-bottom: 5px;">
                     <div class="row text-center ">
-                        <!-- <label class="ml-2">
-                            <input type="radio" name="status" (click)="GetPendingData('P')" value="pending" (change)="GetPendingData('P')"  [checked]='true'> Pending
+                        <label class="ml-2">
+                            <input type="radio" name="status" (click)="GetSOList('')" value="solist" [checked]='true'> So List
                         </label>
                         <label class="ml-2">
-                            <input type="radio" name="status" value="all" (click)="GetPendingData('All')" (change)="GetPendingData('All')"> All
-                        </label> -->
+                            <input type="radio" name="status" value="all" (click)="GetSOList('RELEASE')" > Request List
+                        </label>
                         </div>
                 <div class="floating-input  " style="width: 20%;" >
                     <input type="text" pInputText  placeholder="Search"  
@@ -498,29 +499,36 @@
             </ng-template>
             <ng-template pTemplate="header" let-flight>
                 <tr>
-                    <th class="width-2">SO No</th>
-                    <th class="width-20">Customer Name</th>
-                    <th class="width-20">Project Name</th>
-                    <th class="width-10">SO Remarks</th>
-                    <th class="width-10">SO Value</th>
+                    <th class="width-2" *ngIf="!SoRelease">SO No</th>
+                    <th class="width-2" *ngIf="SoRelease">Req No</th>
+                    <th class="width-10">Customer Name</th>
+                    <th class="width-10">Project Name</th>
+                    <th class="width-10" *ngIf="!SoRelease">SO Remarks</th>
+                    <th class="width-10" *ngIf="SoRelease">Approval Remarks</th>
+                    <th class="width-10" *ngIf="SoRelease">Approval Status</th>
+                    <th class="width-10" *ngIf="!SoRelease">SO Value</th>
+                    <th class="width-10" *ngIf="SoRelease">Request Amount</th>
                     <th class="width-1">Action</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-data>
                 <tr>
-                    <td class="width-2">{{data.SO_NO}}</td>
-                    <td class="width-20">{{data.CUST_NAME}}</td>
-                    <td class="width-20">{{data.PROJ_NAME}}</td>
-                    <td class="width-20">{{data.SO_REMARKS}}</td>
-                    <td class="width-20"> {{data.SO_VALUE | costFilter }}</td>
+                    <td class="width-2" *ngIf="!SoRelease">{{data.SO_NO}}</td>
+                    <td class="width-2" *ngIf="SoRelease">{{data.REQ_NO}}</td>
+                    <td class="width-10">{{data.CUST_NAME}}</td>
+                    <td class="width-10">{{data.PROJ_NAME}}</td>
+                    <td class="width-10" *ngIf="!SoRelease">{{data.SO_REMARKS}}</td>
+                    <td class="width-10" *ngIf="SoRelease">{{data.REJECT_REMARKS}}</td>
+                    <td class="width-10" *ngIf="SoRelease">{{data.SO_STATUS}}</td>
+                    <td class="width-10" *ngIf="!SoRelease"> {{data.SO_VALUE | costFilter }}</td>
+                    <td class="width-10" *ngIf="SoRelease"> {{data.TOTAL_AMOUNT_VALUE | costFilter }}</td>
                     <td class="width-10">
-                         <i class="fa fa-edit small" (click)="editInvoice(data)" title="Edit"></i>
+                         <i class="fa fa-edit small" (click)="editInvoice(data,SoRelease)" title="Edit"></i>
                     </td>
                 </tr>
             </ng-template>
         </p-table>
         </div>
-      
     </div>
     
   
