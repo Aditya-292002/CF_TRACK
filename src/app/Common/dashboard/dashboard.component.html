@@ -29,10 +29,10 @@
         </div>
         <div class="w-50">
           <div class="d-flex justify-content-end gap-3">
-            <button type="button" class="btn btn-primary mt-3 mr-3 loginBtnDanger">
+            <button class="btn btn-primary mt-3 mr-3 loginBtnDanger" (click)="redirectBtn('customer')" >
               + Add Customer
             </button>
-            <button type="button" class="btn btn-primary mt-3 loginBtn">
+            <button  class="btn btn-primary mt-3 loginBtn" (click)="redirectBtn('project')" >
               + Add project
             </button>
           </div> 
@@ -52,13 +52,14 @@
         </div>
       </div>
     </div>
+    
     <div class="col-sm-12 col-md-3">
       <div class="card p-0">
         <div class="card-body text-center p-2">
           <span class="avatar rounded-circle bg-purple mb-3">
             <i class="pi pi-users fs-16"></i>
           </span>
-          <h6 class="fs-13 text_subheader mb-1">Total No of Clients</h6>
+          <h6 class="fs-13 text_subheader mb-1">Total No of Clients</h6>   
           <h3 class="mb-3 text_header">45/50</h3>
         </div>
       </div>
