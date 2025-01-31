@@ -1,17 +1,11 @@
 <app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
 <form [formGroup]="form">
-  <div class="row x justify-between">
+  <div class="row justify-between">
 
     <div class="col-md-8">
       <h5 class="mb-0 headers" *ngIf="!isViewLeave">Leave Details</h5>
     </div>
     <div class="col-md-4">
-      <!-- <button type="button" class="btn-Primary mr-2" (click)="openModel()" [disabled]="viewSchedulledFlag" [ngClass]="viewSchedulledFlag ? 'dissablebtn' : ''"> -->
-      <!-- <button type="button" class="btn-Primary mr-2" (click)="openModel()">Save</button> -->
-
-      <!-- <button class="btn btn-secondary  float-right m-1 ml-1 mr-1" *ngIf="isViewLeave" (click)="viewLeaveList()"
-        title="view list Details back" data-toggle="modal" data-target="#viewLeave">View leave</button> -->
-
       <button class="btn btn-secondary  float-right m-1 ml-1 mr-1" *ngIf="!isViewLeave" data-toggle="modal"
         data-target="#approve_leave" title="Approve">Approve</button>
       <button class="btn btn-secondary  float-right m-1 ml-1 mr-1" *ngIf="!isViewLeave" data-toggle="modal"
@@ -20,149 +14,134 @@
         title="view Leave Details">Back</button>
     </div>
 
-    <div class="page-content mt-2" *ngIf="isViewLeave">
-      <div class="col-md-12">
-      </div>
-
-      <div class="col-md-12" *ngIf="isViewLeave">
-        <div class="row">
-            <div class="col-md-3 mt-2">
-                <div class="floating-input list-btn">
-                    <select class="form-control selectpicker show-tick" formControlName="EMP_NO"
-                        (change)="onChange($event)" data-live-search="true" #emp id="emp{{i}}" title="Employee Name"
-                        enabled>
-                        <option *ngFor="let opt of EmpCommon_list; let i=index"
-                            [selected]="opt.EMP_NO == form.controls['EMP_NO'].value" [value]="opt.EMP_CODE">{{
-                            opt.EMP_CODE }} - {{ opt.USER_NAME }}</option>
-                    </select>
-                    <button type="button" class="close" (click)="resetDropdown('EMP_NO')"
-                        (click)="form.controls['EMP_NO'].reset()" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 mt-2 pl-0">
-                <div class="floating-input">
-                    <input type="text" class="form-control" formControlName="FROM_DATE" [(ngModel)]="FROM_DATE"
-                        (change)="ChangeFDate()" placeholder="FROM DATE" readonly>
-                    <!-- <app-date-picker id="reqdate" [(ngModel)]="JV_DATE" #reqdate class="date-input" [ngModelOptions]="{standalone: true}"></app-date-picker> -->
-                    <div class="date-input">
-                        <mat-form-field fxFlex="100" appearance="fill">
-                            <mat-datepicker-toggle matPrefix [for]="picker2" id='cal2{{i}}'
-                                #cal2></mat-datepicker-toggle>
-                            <input class="form-control" (dateChange)="ChangeFDate()" [value]="F_DATE" matInput
-                                [(ngModel)]="F_DATE" [ngModelOptions]="{standalone: true}" [matDatepicker]="picker2"
-                                [min]="min_date" [max]="maxdate" [disabled]="false" readonly />
-
-                            <mat-datepicker #picker2 id="picker2"></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-2 col-lg-3 col-md-2 col-sm-2 mt-2 pl-0 padd-1">
-                <div class="floating-input">
-                    <input type="text" class="form-control" formControlName="TO_DATE" [(ngModel)]="TO_DATE" enabled
-                        placeholder="TO DATE" readonly>
-                    <!-- <app-date-picker id="reqdate" [(ngModel)]="JV_DATE" #reqdate class="date-input" [ngModelOptions]="{standalone: true}"></app-date-picker> -->
-                    <div class="date-input" id="div_todate">
-                        <mat-form-field fxFlex="100" appearance="fill">
-                            <mat-datepicker-toggle matPrefix [for]="picker3" id="dt_cal3{{i}}"
-                                #dt_cal3></mat-datepicker-toggle>
-                            <input class="form-control" (dateChange)="ChangeTDate()" [value]="T_DATE" id="cal3"
-                                matInput [(ngModel)]="T_DATE" [ngModelOptions]="{standalone: true}"
-                                [matDatepicker]="picker3" [min]="min_date" [max]="maxdate" [disabled]="false"
-                                readonly />
-
-                            <mat-datepicker #picker3 id="picker3"></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 mt-2 pl-0 padd-1">
-              <div class="d-flex justify-content-center mr-2 mb-2">
-
-                <div>
-                
-                  <input type="radio" id="age1" name="age" value="P" (change)="filterListWithStatus($event.target.value)"
-                    checked>
-                    <label for="age1" class="mr-2 ml-2">Pending</label>
-                </div>
-      
-                <div>
-                  
-                  <input type="radio" id="age2" name="age" value="R" (change)="filterListWithStatus($event.target.value)">
-                  <label for="age2" class="ml-2 mr-2">Rejected</label>
-      
-                </div>
-                <div>
-                
-                  <input type="radio" id="age2" name="age" value="A" (change)="filterListWithStatus($event.target.value)">
-                  <label for="age2" class="ml-2 mr-2">Approved</label>
-      
-                </div>
+    <div class="col-md-12" *ngIf="isViewLeave">
+      <div class="row">
+          <div class="col-md-3 mt-2">
+              <div class="floating-input list-btn">
+                  <select class="form-control selectpicker show-tick" formControlName="EMP_NO"
+                      (change)="onChange($event)" data-live-search="true" #emp id="emp{{i}}" title="Employee Name"
+                      enabled>
+                      <option *ngFor="let opt of EmpCommon_list; let i=index"
+                          [selected]="opt.EMP_NO == form.controls['EMP_NO'].value" [value]="opt.EMP_CODE">{{
+                          opt.EMP_CODE }} - {{ opt.USER_NAME }}</option>
+                  </select>
+                  <button type="button" class="close" (click)="resetDropdown('EMP_NO')"
+                      (click)="form.controls['EMP_NO'].reset()" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
               </div>
-            </div>
-  
+          </div>
 
-            <div class=" col-xl-2 col-lg-2 col-md-3 col-sm-3 pl-0 mt-2">
-              <div class="d-flex justify-content-around">
-                <button class="btn btn-secondary" (click)="GetSearchLeaveList()" id="Search{{i}}"
-                    title="Search">Search</button>
+          <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 mt-2 pl-0">
+              <div class="floating-input">
+                  <input type="text" class="form-control" formControlName="FROM_DATE" [(ngModel)]="FROM_DATE"
+                      (change)="ChangeFDate()" placeholder="From Date" readonly>
+                  <!-- <app-date-picker id="reqdate" [(ngModel)]="JV_DATE" #reqdate class="date-input" [ngModelOptions]="{standalone: true}"></app-date-picker> -->
+                  <div class="date-input">
+                      <mat-form-field fxFlex="100" appearance="fill">
+                          <mat-datepicker-toggle matPrefix [for]="picker2" id='cal2{{i}}'
+                              #cal2></mat-datepicker-toggle>
+                          <input class="form-control" (dateChange)="ChangeFDate()" [value]="F_DATE" matInput
+                              [(ngModel)]="F_DATE" [ngModelOptions]="{standalone: true}" [matDatepicker]="picker2"
+                              [min]="min_date" [max]="maxdate" [disabled]="false" readonly />
 
-                    <button class="btn btn-secondary" (click)="clear()" id="Search{{i}}" title="Search">Clear</button>
+                          <mat-datepicker #picker2 id="picker2"></mat-datepicker>
+                      </mat-form-field>
                   </div>
-            </div>
-            <!-- <div class=" col-xl-1 col-lg-2 col-md-2 col-sm-2 mt-2">
-                <button class="btn btn-secondary" (click)="clear()" id="Search{{i}}" title="Search">Clear</button>
-          
-            </div> -->
+              </div>
+          </div>
+          <div class="col-xl-2 col-lg-3 col-md-2 col-sm-2 mt-2 pl-0 padd-1">
+              <div class="floating-input">
+                  <input type="text" class="form-control" formControlName="TO_DATE" [(ngModel)]="TO_DATE" enabled
+                      placeholder="To Date" readonly>
+                  <!-- <app-date-picker id="reqdate" [(ngModel)]="JV_DATE" #reqdate class="date-input" [ngModelOptions]="{standalone: true}"></app-date-picker> -->
+                  <div class="date-input" id="div_todate">
+                      <mat-form-field fxFlex="100" appearance="fill">
+                          <mat-datepicker-toggle matPrefix [for]="picker3" id="dt_cal3{{i}}"
+                              #dt_cal3></mat-datepicker-toggle>
+                          <input class="form-control" (dateChange)="ChangeTDate()" [value]="T_DATE" id="cal3"
+                              matInput [(ngModel)]="T_DATE" [ngModelOptions]="{standalone: true}"
+                              [matDatepicker]="picker3" [min]="min_date" [max]="maxdate" [disabled]="false"
+                              readonly />
 
-
-            <div class="col-md-12 mt-2" >
-              <div class="tableFixHead ">
-                <table class="table-theam-1 table_width row_bgcolor_1">
-                  <thead>
-                    <tr>
-                      <th class="w-40">Employee Name</th>
-                      <th class="w-20">Leave Type</th>
-                      <th class="w-20">From Date</th>
-                      <th class="w-20">To Date</th>
-                      <th class="w-20">No. of Days</th>
-                      <!-- <th class="w-40">Reason</th> -->
-                      <th class="w-20">Status</th>
-                      <th class="w-20">Action</th>
-      
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let data of Employee_list;let i=index;">
-                      <td class="w-40"  id="USER_NAME{{i}}">{{data.USER_NAME}}</td>
-                      <td  class="w-20" id="LEAVE_TYPE{{i}}">{{data.LEAVE_TYPE}}</td>
-                      <td class="w-20" id="FROM_DATE{{i}}">{{data.FROM_DATE}}</td>
-                      <td class="w-20" id="TO_DATE{{i}}">{{data.TO_DATE}}</td>
-                      <td class="w-20" id="NO_OF_DAYS{{i}}">{{data.NO_OF_DAYS}}</td>
-                      <!-- <td class="w-40" id="Reason{{i}}">
-                          {{data.REASON}}
-                      </td> -->
-                      <td class="w-20" id="Val{{i}}">{{data.STATUS}}
-                      </td>
-                      <td class="w-20">
-                        <!-- <button class="viewBtn" (click)="viewDetails(data)" pTooltip="view details" tooltipPosition="top"> -->
-                        <!-- <i class="menu-icon pi pi-pencil"></i> -->
-                        <i class="fas fa-eye text-info mr-3" *ngIf=" data.STATUS == 'Pending' || data.STATUS == 'P'"
-                          (click)="viewDetails(data)"></i>
-                        </td>
-      
-                    </tr>
-                  </tbody>
-                </table>
+                          <mat-datepicker #picker3 id="picker3"></mat-datepicker>
+                      </mat-form-field>
+                  </div>
+              </div>
+          </div>
+          <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 mt-2 pl-0 padd-1">
+            <div class="d-flex justify-content-center mr-2 mb-2">
+              <div>
+                <input type="radio" id="age1" name="age" value="P" (change)="filterListWithStatus($event.target.value)"
+                  checked>
+                  <label for="age1" class="mr-2 ml-2">Pending</label>
+              </div>
+    
+              <div>
+                <input type="radio" id="age2" name="age" value="R" (change)="filterListWithStatus($event.target.value)">
+                <label for="age2" class="ml-2 mr-2">Rejected</label>
+              </div>
+              <div>
+                <input type="radio" id="age2" name="age" value="A" (change)="filterListWithStatus($event.target.value)">
+                <label for="age2" class="ml-2 mr-2">Approved</label>
               </div>
             </div>
-        </div>
-    </div>
+          </div>
+          <div class=" col-xl-2 col-lg-2 col-md-3 col-sm-3 pl-0 mt-2">
+            <div class="d-flex justify-content-around">
+              <button class="btn btn-secondary" (click)="GetSearchLeaveList()" id="Search{{i}}"
+                  title="Search">Search</button>
+
+                  <button class="btn btn-secondary" (click)="clear()" id="Search{{i}}" title="Search">Clear</button>
+                </div>
+          </div>
+          <!-- <div class=" col-xl-1 col-lg-2 col-md-2 col-sm-2 mt-2">
+              <button class="btn btn-secondary" (click)="clear()" id="Search{{i}}" title="Search">Clear</button>
+        
+          </div> -->
 
 
+          <div class="col-md-12 mt-2" >
+            <div class="tableFixHead ">
+              <table class="table-theam-1 table_width row_bgcolor_1">
+                <thead>
+                  <tr>
+                    <th class="w-40">Employee Name</th>
+                    <th class="w-20">Leave Type</th>
+                    <th class="w-20">From Date</th>
+                    <th class="w-20">To Date</th>
+                    <th class="w-20">No. of Days</th>
+                    <!-- <th class="w-40">Reason</th> -->
+                    <th class="w-20">Status</th>
+                    <th class="w-20">Action</th>
+    
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of Employee_list;let i=index;">
+                    <td class="w-40"  id="USER_NAME{{i}}">{{data.USER_NAME}}</td>
+                    <td  class="w-20" id="LEAVE_TYPE{{i}}">{{data.LEAVE_TYPE}}</td>
+                    <td class="w-20" id="FROM_DATE{{i}}">{{data.FROM_DATE}}</td>
+                    <td class="w-20" id="TO_DATE{{i}}">{{data.TO_DATE}}</td>
+                    <td class="w-20" id="NO_OF_DAYS{{i}}">{{data.NO_OF_DAYS}}</td>
+                    <!-- <td class="w-40" id="Reason{{i}}">
+                        {{data.REASON}}
+                    </td> -->
+                    <td class="w-20" id="Val{{i}}">{{data.STATUS}}
+                    </td>
+                    <td class="w-20">
+                      <!-- <button class="viewBtn" (click)="viewDetails(data)" pTooltip="view details" tooltipPosition="top"> -->
+                      <!-- <i class="menu-icon pi pi-pencil"></i> -->
+                      <i class="fas fa-eye text-info mr-3" *ngIf=" data.STATUS == 'Pending' || data.STATUS == 'P'"
+                        (click)="viewDetails(data)"></i>
+                      </td>
+    
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+      </div>
     </div>
   </div>
 </form>
@@ -335,10 +314,10 @@
 </div>
 
 <div class="">
-  <div class="row mt-2" *ngIf="!isViewLeave" [style]="!isViewLeave ? 'display: block' : 'display: none'">
+  <div class="row" *ngIf="!isViewLeave" [style]="!isViewLeave ? 'display: block' : 'display: none'">
     <div id="viewForm">
-      <div class="mt-2 d-flex">
-          <div class="col-xl-9 col-lg-12 col-md-12 col-sm-12 pr-0 padd_right d-flex  ">
+      <div class="d-flex mb-2">
+          <div class="col-xl-9 col-lg-12 col-md-12 col-sm-12  ">
               <div class="row card">
                   <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
                       <label>Employee :<span class="text-danger">*</span></label>
@@ -417,54 +396,49 @@
   </div>
   
   </div>
-  <div>
-    <div class="d-flex justify-content-center mr-2 p-3" *ngIf="!isViewLeave">
-
-      <div>
-        
-        <input type="radio" id="age1" name="age" value="HISTORY" (change)="employeeHistory($event.target.value)"
-          checked>
-          <label for="age1" class="mr-2 ml-2">Employee History</label>
+  <div class="card row ">
+    <div class="col-md-12">
+      <div class="d-flex w-100" *ngIf="!isViewLeave">
+        <div>
+          <input type="radio" id="age1" name="age" value="HISTORY" (change)="employeeHistory($event.target.value)"
+            checked>
+            <label for="age1" class="mr-2 ml-2">Employee History</label>
+        </div>
+        <div>
+          <input type="radio" id="age2" name="age" value="CLASH" (change)="employeeHistory($event.target.value)">
+          <label for="age2" class="ml-2 mr-2">Others Leave details</label>
+        </div>
       </div>
-
-      <div>
-       
-        <input type="radio" id="age2" name="age" value="CLASH" (change)="employeeHistory($event.target.value)">
-        <label for="age2" class="ml-2 mr-2">Others Leave details</label>
-
-      </div>
-    </div>
-    <div class="page-content1 " *ngIf="!isViewLeave">
-
-      <div class="col-md-12">
-        <div class="tableFixHead ">
-          <table class="table-theam-1 table_width row_bgcolor_1">
-            <thead>
-              <tr>
-                <th class="w-20" *ngIf="employeeDetailsFToggle=='CLASH'">Employee Name</th>
-                <th class="w-20">Leave Type</th>
-                <th class="w-130">From Date</th>
-                <th class="w-130">To Date</th>
-                <th class="w-130">No. of Days</th>
-                <th class="w-40">Reason</th>
-                <th class="w-130">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let data of EmployeeHistory;let i=index;">
-                <td id="USER_NAME{{i}}" *ngIf="employeeDetailsFToggle=='CLASH'">{{data.USER_NAME}}</td>
-                <td id="LEAVE_TYPE{{i}}">{{data.LEAVE_TYPE}}</td>
-                <td class="w-130" id="FROM_DATE{{i}}">{{data.FROM_DATE}}</td>
-                <td class="w-130" id="TO_DATE{{i}}">{{data.TO_DATE}}</td>
-                <td class="w-130" id="NO_OF_DAYS{{i}}">{{data.NO_OF_DAYS}}</td>
-                <td class="w-40" id="Reason{{i}}">{{data.REASON}}</td>
-                <td class="w-130" id="Val{{i}}">{{data.STATUS}}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+      <div class="" *ngIf="!isViewLeave">
+        <div class="">
+          <div class="tableFixHead ">
+            <table class="table-theam-1 row_bgcolor_1">
+              <thead>
+                <tr>
+                  <th class="w-20" *ngIf="employeeDetailsFToggle=='CLASH'">Employee Name</th>
+                  <th class="w-20">Leave Type</th>
+                  <th class="w-130">From Date</th>
+                  <th class="w-130">To Date</th>
+                  <th class="w-130">No. of Days</th>
+                  <th class="w-40">Reason</th>
+                  <th class="w-130">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of EmployeeHistory;let i=index;">
+                  <td id="USER_NAME{{i}}" *ngIf="employeeDetailsFToggle=='CLASH'">{{data.USER_NAME}}</td>
+                  <td id="LEAVE_TYPE{{i}}">{{data.LEAVE_TYPE}}</td>
+                  <td class="w-130" id="FROM_DATE{{i}}">{{data.FROM_DATE}}</td>
+                  <td class="w-130" id="TO_DATE{{i}}">{{data.TO_DATE}}</td>
+                  <td class="w-130" id="NO_OF_DAYS{{i}}">{{data.NO_OF_DAYS}}</td>
+                  <td class="w-40" id="Reason{{i}}">{{data.REASON}}</td>
+                  <td class="w-130" id="Val{{i}}">{{data.STATUS}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
-
   </div>
