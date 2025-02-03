@@ -236,9 +236,6 @@
                         <div class="col-xl-12 col-lg-8 col-md-12 col-sm-12">
                             <div class="d-flex justify-content-between">
                                 <h6 class="">Milestones Detail</h6>
-                                <!-- <button type="button" (click)="f_addmilestone();" class="btn text-primary pb-0">
-                                    <i class='fas fa-plus-circle mr-2'></i>Add
-                                </button> -->
                             </div>
 
                             <hr class="m-0 mb-2">
@@ -479,7 +476,7 @@
     
     <div class=" mt-2" *ngIf="isViewSO">
         <div class="col-md-12 card" >
-            <p-table #datatable [value]="SO_list"  
+            <p-table #datatable [value]="SO_list"   [scrollable]="true" scrollHeight="400px"
             [globalFilterFields]="['SO_NO','CUST_NAME','PROJ_NAME','SO_REMARKS','SO_VALUE']">
             <ng-template pTemplate="caption">
                 <div   style="display: flex;justify-content: space-between;align-items: center;margin-bottom: 5px;">
@@ -492,7 +489,7 @@
                         </label>
                         </div>
                 <div class="floating-input  " style="width: 20%;" >
-                    <input type="text" pInputText  placeholder="Search"  
+                    <input type="text" pInputText  placeholder="Search"  class="form-control"
                     (input)="datatable.filterGlobal($event.target.value, 'contains')">
                 </div>
             </div>
@@ -500,15 +497,15 @@
             <ng-template pTemplate="header" let-flight>
                 <tr>
                     <th class="width-2" *ngIf="!SoRelease">SO No</th>
-                    <th class="width-2" *ngIf="SoRelease">Req No</th>
-                    <th class="width-10">Customer Name</th>
-                    <th class="width-10">Project Name</th>
-                    <th class="width-10" *ngIf="!SoRelease">SO Remarks</th>
-                    <th class="width-10" *ngIf="SoRelease">Approval Remarks</th>
-                    <th class="width-10" *ngIf="SoRelease">Approval Status</th>
-                    <th class="width-10" *ngIf="!SoRelease">SO Value</th>
-                    <th class="width-10" *ngIf="SoRelease">Request Amount</th>
-                    <th class="width-1">Action</th>
+                    <th class="" *ngIf="SoRelease">Req No</th>
+                    <th class="">Customer Name</th>
+                    <th class="">Project Name</th>
+                    <th class="" *ngIf="!SoRelease">SO Remarks</th>
+                    <th class="" *ngIf="SoRelease">Approval Remarks</th>
+                    <th class="" *ngIf="SoRelease">Approval Status</th>
+                    <th class="" *ngIf="!SoRelease">SO Value</th>
+                    <th class="" *ngIf="SoRelease">Request Amount</th>
+                    <th class="width-2">Action</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-data>
