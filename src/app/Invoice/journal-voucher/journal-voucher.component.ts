@@ -228,7 +228,7 @@ constructor(public sharedService: SharedServiceService,
         return false;
       }
     };
-  
+    
       for(let i=0; i< this.Jv_detail.length; i++){    
         this.Jv_detail[i].BILLED_HOURS = this.f_H_M(this.Jv_detail[i].BILLED_HOURS_D) 
       }
@@ -237,10 +237,15 @@ constructor(public sharedService: SharedServiceService,
       if (this.Debit_VALUE == 0 || this.Credit_VALUE == 0) {
         this.toast.error('Debit or Credit total not allowed zero');
         return false;
-      }else if (this.Debit_VALUE != this.Credit_VALUE) {
+      }else if (this.pipeService.removeCommaseprated(this.Debit_VALUE) != this.pipeService.removeCommaseprated(this.Credit_VALUE)) {
         this.toast.error('Debit and Credit total should be match');
         return false;
       }  
+      this._JV_Detail.forEach((element)=>{
+       element.DEBIT_AMT=this.pipeService.removeCommaseprated( element.DEBIT_AMT);
+       element.CREDIT_AMT=this.pipeService.removeCommaseprated(  element.CREDIT_AMT);
+      })
+
       let data = {
         TYPE:"APPROVE",
         SaveJV: [{
@@ -261,9 +266,8 @@ constructor(public sharedService: SharedServiceService,
         JV_ID: this.JV_ID,
         JVNO: this.JV_NO,
       }
-
-    // console.log(JSON.stringify(data));
-    // return
+     //console.log('res',data);
+     //return
     this.http.PostRequest(this.apiUrl.SaveJV, data ).then(res => {
       if (res.flag) {
         this.toast.success(res.msg);
@@ -351,6 +355,9 @@ constructor(public sharedService: SharedServiceService,
   }
 
   CalculateTotalAmount(index: any){
+    this._JV_Detail[index].DEBIT_AMT =this.pipeService.removeCommaseprated((this._JV_Detail[index].DEBIT_AMT));
+    this._JV_Detail[index].CREDIT_AMT = this.pipeService.removeCommaseprated((this._JV_Detail[index].CREDIT_AMT));
+
     this._selected_index = index;
     this._JV_Detail[index].DEBIT_AMT = this.checkVal(this._JV_Detail[index].DEBIT_AMT);
     this._JV_Detail[index].CREDIT_AMT = this.checkVal(this._JV_Detail[index].CREDIT_AMT);
@@ -372,7 +379,7 @@ constructor(public sharedService: SharedServiceService,
       let debitAmount = element["DEBIT_AMT"];
       if (debitAmount !== null && debitAmount !== undefined) {
         if (typeof debitAmount === 'string') {
-          debitAmount = parseFloat(debitAmount);
+          debitAmount = parseFloat(this.pipeService.removeCommaseprated(debitAmount));
         }
         if (!isNaN(debitAmount)) {
           TOTAL_DEBIT += debitAmount;
@@ -381,7 +388,7 @@ constructor(public sharedService: SharedServiceService,
       let creditAmount = element["CREDIT_AMT"];
       if (creditAmount !== null && creditAmount !== undefined) {
         if (typeof creditAmount === 'string') {
-          creditAmount = parseFloat(creditAmount);
+          creditAmount = parseFloat(this.pipeService.removeCommaseprated(creditAmount));
         }
         if (creditAmount === null) {
           creditAmount = 0;
@@ -391,14 +398,20 @@ constructor(public sharedService: SharedServiceService,
         }
       }
     }); 
-    this.Debit_VALUE = this.pipeService.setCommaseprated((+TOTAL_DEBIT).toFixed(2));
-    this.Credit_VALUE = this.pipeService.setCommaseprated((+TOTAL_CREDIT).toFixed(2));
+      this.Debit_VALUE = TOTAL_DEBIT;
+      this.Credit_VALUE =TOTAL_CREDIT;
+   this.Debit_VALUE = this.pipeService.setCommaseprated((+TOTAL_DEBIT).toFixed(2));
+   this.Credit_VALUE = this.pipeService.setCommaseprated((+TOTAL_CREDIT).toFixed(2));
     this._JV_Detail.forEach((element:any)=>{
       if(element.CREDIT_AMT == 0 && element.DEBIT_AMT == 0 || element.CREDIT_AMT == null && element.DEBIT_AMT == null){
       element.disabled2 = false;
       element.disabled1 = false;
       }
     })
+
+   this._JV_Detail[index].DEBIT_AMT =this.pipeService.setCommaseprated((+this._JV_Detail[index].DEBIT_AMT).toFixed(2));
+   this._JV_Detail[index].CREDIT_AMT = this.pipeService.setCommaseprated((+this._JV_Detail[index].CREDIT_AMT).toFixed(2));
+
   }
 
   checkVal(val:any){
@@ -512,7 +525,7 @@ constructor(public sharedService: SharedServiceService,
           let debitAmount = element["DEBIT_AMT"];
           if (debitAmount !== null && debitAmount !== undefined) {
             if (typeof debitAmount === 'string') {
-              debitAmount = parseFloat(debitAmount);
+              debitAmount = parseFloat(this.pipeService.removeCommaseprated(debitAmount));
             }
             if (!isNaN(debitAmount)) {
               TOTAL_DEBIT += debitAmount;
@@ -521,7 +534,7 @@ constructor(public sharedService: SharedServiceService,
           let creditAmount = element["CREDIT_AMT"];
           if (creditAmount !== null && creditAmount !== undefined) {
             if (typeof creditAmount === 'string') {
-              creditAmount = parseFloat(creditAmount);
+              creditAmount = parseFloat(this.pipeService.removeCommaseprated(creditAmount));
             }
             if (creditAmount === null) {
               creditAmount = 0;
@@ -531,8 +544,8 @@ constructor(public sharedService: SharedServiceService,
             }
           }
         }); 
-        this.Debit_VALUE = (TOTAL_DEBIT.toFixed(2));
-        this.Credit_VALUE = (TOTAL_CREDIT.toFixed(2));
+        this.Debit_VALUE = this.pipeService.setCommaseprated((+TOTAL_DEBIT).toFixed(2));
+        this.Credit_VALUE =  this.pipeService.setCommaseprated((+TOTAL_CREDIT).toFixed(2));
         this.isViewJV = !this.isViewJV;
         // console.log('_JV_Detail 2 -> ' , this._JV_Detail)
         setTimeout(() => {

@@ -51,3 +51,10 @@ table .w-4{
         width: 140px;
     }
 }
+
+.green {
+    background-color: #cfffcf !important;
+ }
+ .red{
+    background-color: #ffe0db !important;
+ }

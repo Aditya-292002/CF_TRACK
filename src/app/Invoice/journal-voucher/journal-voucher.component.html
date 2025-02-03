@@ -15,7 +15,7 @@
         <button
           class="btn btn-secondary"
           [hidden]="inboundClick"
-          *ngIf="isViewJV"
+          *ngIf="!isViewJV"
           (click)="SAVE_JV()"
           title="Save"
         >
@@ -386,7 +386,7 @@
 
                 <td colspan="1" class="total_grid">
                   <div class="form-inline">
-                    <label>Total </label>
+                    <label>Total</label>
                     <div class="floating-input ml-3">
                       <input
                         type="text"
