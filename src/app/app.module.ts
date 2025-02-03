@@ -109,7 +109,7 @@ import { SalesOrderReleaseComponent } from './Invoice/sales-order-release/sales-
 import { CheckboxModule } from 'primeng/checkbox';
 import { SalesOrderCreateComponent } from './Invoice/sales-order-create/sales-order-create.component';
 import { ToggleButtonModule } from 'primeng/togglebutton';
-
+import { TooltipModule } from 'primeng/tooltip';
 
 
 
@@ -253,7 +253,8 @@ export const MY_DATE_FORMATS = {
     TreeTableModule,
     NgApexchartsModule,
     CheckboxModule,
-    ToggleButtonModule
+    ToggleButtonModule, 
+    TooltipModule
   ],
   providers: [
     AuthGuard,

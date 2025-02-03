@@ -723,9 +723,9 @@ GetReimbursementDetail(REIMBURSEMENT_ID:any,val:any){
       IS_CANCLE: 0,
       REIMBURSEMENT_DOCUMENT: this.uploadedDocument
    }
-  //console.log('data ->' , JSON.stringify(data))
-  
-  this.http.PostRequest(this.apiUrl.SaveReimbursement, data ).then((res:any) => {
+    console.log('data ->' , data)
+    //return;
+    this.http.PostRequest(this.apiUrl.SaveReimbursement, data ).then((res:any) => {
     if (res.flag) {
       this.toast.success(res.msg)
       this.f_clearForm();
@@ -804,10 +804,7 @@ GetReimbursementDetail(REIMBURSEMENT_ID:any,val:any){
       this.spinner = false;
     });
   }
-  CalculateApprovedFinalAmount(){
-
-  }
-
+  
 }
 
 
