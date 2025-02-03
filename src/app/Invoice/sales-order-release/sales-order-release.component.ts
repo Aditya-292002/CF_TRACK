@@ -104,6 +104,7 @@ export class SalesOrderReleaseComponent implements OnInit {
   raisedinvoiceonmaxDate:any = new Date();
   TOTAL_REQUEST_VALUE: any = 0;
   TOTAL_BILLED_VALUE: any = 0;
+  REJECT_REMARKS:any;
 
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
@@ -260,7 +261,7 @@ export class SalesOrderReleaseComponent implements OnInit {
     }
   }
 
-  SaveSalesOrderRelease(type:any) {
+  SaveInvoiceRequestApprove(type:any) {
     let SO_ID = this.form.get("SO_ID").value
     let REQ_ID = this.form.get("REQ_ID").value
     // let _documents = [];
@@ -319,10 +320,18 @@ export class SalesOrderReleaseComponent implements OnInit {
       }
     }
 
+    if(type == 'REJECT'){
+      if (!this.sharedService.isValid(this.REJECT_REMARKS)) {
+        this.toast.error('Enter a remarks');
+        return;
+      }
+    }
+
     for (const el of this.SO_MILESTONE_T) {
       el.REQ_VALUE = +(this.currencyPipe.parse(el.REQ_VALUE));
     }
 
+ 
       let data = {
         "USERID": this.sharedService.loginUser[0].USERID,
         "TYPE": type,
@@ -330,6 +339,7 @@ export class SalesOrderReleaseComponent implements OnInit {
         "REQ_ID": REQ_ID,
         "KIND_ATTN": this.form.get("KIND_ATTN").value,
         "REMARKS": this.form.get("REQUEST_REMARKS").value,
+        "REJECT_REMARKS": this.REJECT_REMARKS,
         "RAISE_INVOICE_ON": this.form.get("RAISE_INVOICE_ON").value,
         // "SO_RELEASE_Header": this.form.value,
         "SO_RELEASE_MILESTONE_T": this.SO_MILESTONE_T,
@@ -407,6 +417,7 @@ export class SalesOrderReleaseComponent implements OnInit {
     this.SO_DATE = '';
     this.DUE_DATE = '';
     this.PO_DATE = '';
+    this.REJECT_REMARKS = '';
     this.project_list = [];
     this.invoice_type_list = [];
     this.SO_MILESTONE_T = [{
@@ -533,7 +544,7 @@ export class SalesOrderReleaseComponent implements OnInit {
         this.SO_UPLOADED_DOCUMENT = res.SO_Document_list;
         this.SO_REQUEST_UPLOADED_DOCUMENT = res.SO_Request_Document_list;
         this.SO_MILESTONE_T.forEach((element:any)=>{
-          element.EXPECTED_DATE = this.datepipe.transform(element.EXPECTED_DATE, 'dd-MMM-yyyy')
+          element.EXPECTED_DATE = this.datepipe.transform(element.EXPECTED_DATE, 'dd-MMM-yyyy');
           element.REQ_VALUE = this.currencyPipe.transform(element.REQ_VALUE)
           this.TOTAL_REQUEST_VALUE += element.DOC_VALUE;
           this.TOTAL_BILLED_VALUE += element.BILLED_VALUE;

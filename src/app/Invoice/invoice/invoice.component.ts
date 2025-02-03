@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import { DatePipe } from '@angular/common';
 import { saveAs } from 'file-saver';
 import { PipeService } from 'src/app/services/pipe.service';
+import { element } from 'protractor';
 // import { MatDatepickerFilter } from '@angular/material/datepicker';
 
 
@@ -62,6 +63,7 @@ export class InvoiceComponent implements OnInit {
     _project_list:Array<any> = [];
     state_list: Array<any> = [];
     service_list: Array<any> = [];
+    _service_list: Array<any> = [];
     templete_list: Array<any> = [];
     _invoice_detail: Array<any> = [];
     all_invoice_list: Array<any> = [];
@@ -73,6 +75,10 @@ export class InvoiceComponent implements OnInit {
     isSubmited: boolean = false;
     isViewInvoice:boolean = false;
     invoice_header : Array<any> = [];
+    SO_Detail_list: Array<any> = [];
+    RAISE_INVOICE_ON: any = new Date();
+    minDate: any = new Date();
+    raisedinvoiceonmaxDate:any = new Date();
 
     constructor(public sharedService: SharedServiceService,
       private apiUrl: ApiUrlService,
@@ -104,7 +110,8 @@ export class InvoiceComponent implements OnInit {
       PO_NO: ["",Validators.required],
       PO_DATE: ["",Validators.required],
       KIND_ATTN: "",
-      CURRENCY_CODE: ["INR",Validators.required],
+      CURRENCY_CODE: ["INR",Validators.required], 
+      RAISE_INVOICE_ON: ["", Validators.required],
       EXCHANGE_RATE:["",Validators.required],
       DOC_VALUE:["",Validators.required],
       BASE_VALUE:"",
@@ -132,13 +139,13 @@ export class InvoiceComponent implements OnInit {
 
 ngAfterViewInit(){    
   setTimeout(() => {
-    if (this.sharedService.form_rights.ADD_RIGHTS) {
-      this.ADD_RIGHTS = this.sharedService.form_rights.ADD_RIGHTS
-    }
-    if (this.sharedService.form_rights.UPDATE_RIGHTS) {
-      this.UPDATE_RIGHTS = this.sharedService.form_rights.UPDATE_RIGHTS
-    }
-    this.NO_RIGHTS = this.ADD_RIGHTS || this.UPDATE_RIGHTS?false:true;
+    // if (this.sharedService.form_rights.ADD_RIGHTS) {
+    //   this.ADD_RIGHTS = this.sharedService.form_rights.ADD_RIGHTS
+    // }
+    // if (this.sharedService.form_rights.UPDATE_RIGHTS) {
+    //   this.UPDATE_RIGHTS = this.sharedService.form_rights.UPDATE_RIGHTS
+    // }
+    // this.NO_RIGHTS = this.ADD_RIGHTS || this.UPDATE_RIGHTS?false:true;
 
     if(this.sharedService.loginUser[0].FYEAR == undefined){
       this.sharedService.loginUser = sessionStorage.getItem('user_detail') ? JSON.parse(sessionStorage.getItem('user_detail')):[]
@@ -303,9 +310,6 @@ ngAfterViewInit(){
     this.http.PostRequest(this.apiUrl.GetInvoiceList, data).then(res => {
       if (res.flag) {
         this.invoice_list = res.invoice_list;
-        this.f_fillFormData();
-        this.f_clearForm();
-        this.filterProject();
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh').trigger('change');
         }, 100);
@@ -353,47 +357,38 @@ ngAfterViewInit(){
   filterProject(){
     // console.log("calling filterProject")
     this.CalculateFinalAmount();
-    if(this.form.getRawValue().CUST_CODE != "" && this.form.getRawValue().CUST_CODE != null){
-      
-    console.log("CUST_CODE : " + this.form.getRawValue().CUST_CODE + ".")
-      this._project_list = [];
-      this.project_list.forEach(element => {
-        
-        if(element.CUST_CODE == this.form.getRawValue().CUST_CODE+""){
-          this._project_list.push(element)
-          }
-      });
-
-      this.customer_list.forEach(element => {
-        if(element.CUST_CODE == this.form.getRawValue().CUST_CODE){
-          
+    this._project_list = [];
+     this.project_list.forEach((element:any)=>{
+      if(element.CUST_CODE == this.form.controls['CUST_CODE'].value){
+        this._project_list.push(element);
+      }
+     })
+     this.customer_list.forEach((element:any) => {
+      if(element.CUST_CODE == this.form.controls['CUST_CODE'].value){
           this.form.get('STATE_CODE').setValue(element.CUST_STATE+"");
           this.form.get('KIND_ATTN').setValue(element.CUST_KINDATTN);
           this.form.get('CURRENCY_CODE').setValue(element.CUST_CURRENCY);
-          if(element.CUST_CURRENCY == "INR"){            
-            this.form.get('EXCHANGE_RATE').setValue(1);
-            document.getElementById('EXCHANGE_RATE').setAttribute("disabled","true");
-          }
-          else{
-            document.getElementById('EXCHANGE_RATE').removeAttribute("disabled")   
-          }
-          
-          var due_date_new = new Date(this.form.getRawValue().BILLING_DATE);
-          this.credit_days = Number(element.CUST_CREDITDAYS);          
-          
-          var new_date  = moment(new Date(due_date_new)).add(this.credit_days,'d');          
-          this.form.get('DUE_DATE').setValue(new_date);
-          this.GetGSTRate();
-          // this.CalculateFinalAmount();
-        }
-      });
-    } else {
-      this._project_list = this.project_list
-      
-    }
-    
+          if (element.CUST_CURRENCY == "INR") {
+              this.form.get('EXCHANGE_RATE').setValue(1);
+              document.getElementById('EXCHANGE_RATE').setAttribute("disabled", "true");
+            }
+            else {
+              document.getElementById('EXCHANGE_RATE').removeAttribute("disabled")
+            }
+      }
+     })
+     this.form.get("PROJ_CODE").setValue(this.SO_Detail_list[0].PROJ_CODE)
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
+
+      // this._service_list = [];
+      // this.service_list.forEach((element:any)=>{
+      //   if(element.SERVICE_CODE == this.SO_Detail_list[0].SERVICE_CODE){
+      //     console.log("" )
+      //     this.form.get("SERVICE_CODE").setValue(this.SO_Detail_list[0].SERVICE_CODE)
+      //   }
+      //  })
+
     }, 100);
   }
 
@@ -521,10 +516,10 @@ ngAfterViewInit(){
       this.toast.warning('Please select invoice type');
       return false;
     } 
-   else if (this.form.controls['FYEAR'].invalid) {
-      this.toast.warning('Please select FYEAR');
-      return false;
-    }  
+  //  else if (this.form.controls['FYEAR'].invalid) {
+  //     this.toast.warning('Please select FYEAR');
+  //     return false;
+  //   }  
     else if (this.form.controls['BILLING_DATE'].invalid) {
       this.toast.warning('Please enter request date');
       return false;
@@ -784,13 +779,20 @@ ngAfterViewInit(){
   }
 
   GetSalesOrderReleaseDetail() {
+    let SO_ID = 0;
+    this.invoice_list.forEach((element:any)=>{
+      if(element.REQ_ID == this.form.controls['REQ_ID'].value){
+         SO_ID = element.SO_ID
+      }
+    })
     let data = {
-      REQ_ID: this.form.controls['REQ_ID'].value
+      REQ_ID: this.form.controls['REQ_ID'].value,
+      SO_ID: SO_ID
     }
     this.http.PostRequest(this.apiUrl.GetSalesOrderReleaseDetail, data).then(res => {
       if (res.flag == 1) {
         // console.log(' res ->' , res)
-        // this.SO_Detail_list = res.SO_Detail_list;
+        this.SO_Detail_list = res.SO_Detail_list;
         // this.SO_MILESTONE_T = res.SO_Milestone_list;
         // this.uploadedDocument = res.SO_Document_list;
         // for (let i = 0; i < this.SO_Detail_list.length; i++) {
@@ -799,8 +801,19 @@ ngAfterViewInit(){
         // this.SO_MILESTONE_T.forEach((element:any)=>{
         //   element.EXPECTED_DATE = new Date(element.EXPECTED_DATE);
         // })
+        this.form.get("PO_NO").setValue(this.SO_Detail_list[0].PO_NO)
+        this.form.get("KIND_ATTN").setValue(this.SO_Detail_list[0].KIND_ATTN)
+        this.form.get("COMPANY_CODE").setValue(this.SO_Detail_list[0].COMPANY_CODE)
+        this.form.get("CUST_CODE").setValue(this.SO_Detail_list[0].CUST_CODE)
+        this.form.get("TEMPLATE_CODE").setValue(this.SO_Detail_list[0].TEMPLATE_CODE)
+        this._invoice_detail[0].SERVICE_CODE = this.SO_Detail_list[0].SERVICE_CODE
+        this._invoice_detail[0].DOC_VALUE = this.SO_Detail_list[0].TOTAL_AMOUNT_VALUE
+        this.CalculateFinalAmount();
+        this.RAISE_INVOICE_ON = new Date(this.SO_Detail_list[0].RAISE_INVOICE_ON)
+        // this.form.get("SERVICE_CODE").setValue(this.SO_Detail_list[0].SERVICE_CODE)
+        // this.form.get("DOC_VALUE").setValue(this.SO_Detail_list[0].TOTAL_AMOUNT_VALUE)
+        this.filterProject();
         this.spinner = false;
-        // this.f_fillFormData();
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh').trigger('change');
         }, 100);
@@ -810,6 +823,14 @@ ngAfterViewInit(){
     }, err => {
       this.spinner = false;
     });
+  }
+
+  removeData(data: any): void {
+    const index = this._invoice_detail.indexOf(data);
+    if (index !== -1) {
+      this._invoice_detail.splice(index, 1);
+    }
+    this.CalculateFinalAmount();
   }
 
   }

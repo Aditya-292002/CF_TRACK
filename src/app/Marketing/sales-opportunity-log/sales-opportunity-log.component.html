@@ -4,8 +4,8 @@
     <div class="col-md-12">
         <!-- <button class="btn btn-secondary  float-right m-1 ml-1 mr-1" title="Save">Save</button> -->
         <button class="btn btn-secondary  float-right m-1 ml-1 mr-1" *ngIf="isUpdate" (click)="f_clearForm()"   title="Cancel">Cancel</button>
-        <button class="btn btn-secondary float-right m-1 ml-1 mr-1" *ngIf="!isUpdate " (click)="SaveSalesOpportunityLog('INSERT')"  title="Save">Save</button>
-        <button class="btn btn-secondary float-right m-1 ml-1 mr-1" *ngIf="isUpdate " (click)="SaveSalesOpportunityLog('UPDATE')"  title="Save">Save</button>
+        <button class="btn btn-secondary float-right m-1 ml-1 mr-1" *ngIf="!isUpdate && ADD_RIGHTS" (click)="SaveSalesOpportunityLog('INSERT')"  title="Save">Save</button>
+        <button class="btn btn-secondary float-right m-1 ml-1 mr-1" *ngIf="isUpdate && UPDATE_RIGHTS" (click)="SaveSalesOpportunityLog('UPDATE')"  title="Save">Save</button>
 
     </div>
     <div class="col-md-12">

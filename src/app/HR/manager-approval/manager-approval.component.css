@@ -16,10 +16,6 @@
         background-color: #fff;
         color: #333 !important;
     }
-    /* .modal-footer {
-        justify-content: center;
-        border: none;
-    } */
     .dropdown-item {
         display: block;
         width: 100%;
@@ -33,37 +29,10 @@
         border: 0;
     }
 
-    /* .date-input {
-        right: 27px;
-    } */
-
     .tableFixHead { 
-        min-height: 200px;
         max-height: 400px;
         overflow-y: auto;
     }   
     .w-20{ 
         width: 130px; 
     }
-
-     
-
-    /* @media (max-width: 992px) {
-    .padd-1{
-        padding-left: 15px !important;
-    }
-} */
-/* .viewBtn{
-    color: #fff;
-    background-color: #b7292b;
-    border-color: #b7292b;
-    border: 0;
-    padding: 6px 8px;
-    border-radius: 6px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items:center ;
-    cursor: pointer;
-    font-size: 10px;
-} */

@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup
   profile_pic: string = "";
+  login_user:any;
   constructor(
     private authService: AuthServiceService,
     private route: RoutingService,
@@ -72,8 +73,15 @@ export class LoginComponent implements OnInit {
               sessionStorage.setItem('user_detail', JSON.stringify(res.user_detail))
               sessionStorage.setItem('profile_pic', res.b64)
               this.sharedService.formName = "";
+              this.login_user = this.sharedService.loginUser[0].EMP_CODE 
                 setTimeout(() => {
-                  this.route.changeRoute('');
+                  // this.route.changeRoute('');
+                  if(this.login_user === '1001'){
+                    this.route.changeRoute('/dashboard');
+                  }else{
+                    this.route.changeRoute('/calendar');
+                  }
+                 
                 }, 150);
             } else {
               this.loginForm.reset()

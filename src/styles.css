@@ -275,6 +275,7 @@ table .dropdown.bootstrap-select {
 table .form-control {
     height: calc(1em + .75rem + 1px) !important;
     padding: 2px .5rem !important;
+    font-size: 0.9rem !important;
 }
 
 table .bootstrap-select.form-control {
@@ -745,7 +746,7 @@ label.doc-label {
 
 .doc-label:hover {
     color: #1838ad;
-    font-size: 18px;
+    /* font-size: 18px; */
 }
 
 .del-red {

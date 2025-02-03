@@ -77,7 +77,9 @@ const routes: Routes = [
     loadChildren:'',
     children: [
       // {path: '', component:DashboardComponent },
-      {path: '', component:CalendarComponent},
+      // {path: '', component:CalendarComponent},
+      {path: 'dashboard', component:DashboardComponent },
+      {path: 'calendar', component:CalendarComponent},
       {path: 'employeeinfo', component:EmployeeComponent },
       {path: 'customer', component:CustomerComponent },
       {path: 'project', component:ProjectComponent },
