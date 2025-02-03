@@ -1,9 +1,9 @@
 <app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
 <form [formGroup]="form">
     <div class="row">
-        <div class="col-md-12" >
+        <div class="col-md-12" *ngIf="UPDATE_RIGHTS || ADD_RIGHTS">
             <!-- <button class="btn btn-secondary  float-right m-1 ml-1 mr-1" *ngIf="isUpdate" (click)="f_clearForm()"   title="Cancel">Cancel</button> -->
-            <button class="btn btn-secondary float-right m-1 ml-1 mr-1" (click)="SaveOpportunityMaster('INSERT')"  title="Save">Save</button>
+            <button class="btn btn-secondary float-right m-1 ml-1 mr-1" *ngIf="UPDATE_RIGHTS && ADD_RIGHTS" (click)="SaveOpportunityMaster('INSERT')"  title="Save">Save</button>
             <!-- <button class="btn btn-secondary float-right m-1 ml-1 mr-1" *ngIf="isUpdate && UPDATE_RIGHTS" (click)="SaveOpportunityMaster('UPDATE')"  title="Save">Save</button> -->
 
             <!-- <div class="col-md-4 float-right m-1">

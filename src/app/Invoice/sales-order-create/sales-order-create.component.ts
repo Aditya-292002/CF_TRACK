@@ -813,6 +813,13 @@ this.raisedinvoiceonmaxDate = currentDate.toISOString().split('T')[0];
     this.TOTAL_AMOUNT_VALUE = 0;
     this.SO_MILESTONE_T.forEach((element:any)=>{
       this.TOTAL_AMOUNT_VALUE += (+this.currencyPipe.parse(element.REQ_VALUE));
+      if((element.DOC_VALUE - element.BILLED_VALUE) == element.REQ_VALUE){
+         element.IS_CLOSED = true;
+      }else if(element.DOC_VALUE == element.REQ_VALUE){
+        element.IS_CLOSED = true;
+     }else{
+      element.IS_CLOSED = false;
+     }
     })
     this.TOTAL_AMOUNT_VALUE= this.TOTAL_AMOUNT_VALUE;
   }

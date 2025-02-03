@@ -60,11 +60,11 @@ export class ProjectComponent implements OnInit {
       LOCATION_CODE: ["",Validators.required],
       CUST_CODE: ["",Validators.required],
       DIVISION_CODE: ["",Validators.required],
-      // PO_NO: [""],
-      // PO_DATE: [""],
-      // PO_VALUE: [""],
-      // PO_CURRENCY: ["INR",Validators.required],
-      // PO_EXCHANGE_RATE: ["1"],
+      PO_NO: [""],
+      PO_DATE: [""],
+      PO_VALUE: [""],
+      PO_CURRENCY: ["INR",Validators.required],
+      PO_EXCHANGE_RATE: ["1"],
       PROJ_MGR: ["",Validators.required],
       ACCOUNT_MGR: [""],
       PROJ_STATUS: ["",Validators.required],
@@ -74,7 +74,7 @@ export class ProjectComponent implements OnInit {
       BILLED_VALUE: [null],
       PROJ_SEGMENT: ["",Validators.required],
       EXP_CLOSURE:[""],
-      // VALID_UPTO:[""],
+      VALID_UPTO:[""],
       TECHNICAL_OWNER:[""]
     })
 
@@ -244,11 +244,11 @@ export class ProjectComponent implements OnInit {
     this.form.get('PROJ_SEGMENT').setValue(data[0].PROJ_SEGMENT)
     this.form.get('CUST_CODE').setValue(data[0].CUST_CODE)
     this.form.get('DIVISION_CODE').setValue(data[0].DIVISION_CODE)
-    // this.form.get('PO_NO').setValue(data[0].PO_NO)
-    // this.form.get('PO_DATE').setValue(data[0].PO_DATE)
-    // this.form.get('PO_VALUE').setValue(data[0].PO_VALUE)
-    // this.form.get('PO_CURRENCY').setValue(data[0].PO_CURRENCY)
-    // this.form.get('PO_EXCHANGE_RATE').setValue(data[0].PO_EXCHANGE_RATE)
+    this.form.get('PO_NO').setValue(data[0].PO_NO)
+    this.form.get('PO_DATE').setValue(data[0].PO_DATE)
+    this.form.get('PO_VALUE').setValue(data[0].PO_VALUE)
+    this.form.get('PO_CURRENCY').setValue(data[0].PO_CURRENCY)
+    this.form.get('PO_EXCHANGE_RATE').setValue(data[0].PO_EXCHANGE_RATE)
     this.form.get('PROJ_MGR').setValue(data[0].PROJ_MGR)
     this.form.get('ACCOUNT_MGR').setValue(data[0].ACCOUNT_MGR)
     this.form.get('PROJ_STATUS').setValue(data[0].PROJ_STATUS)
@@ -256,7 +256,7 @@ export class ProjectComponent implements OnInit {
     this.form.get('CUST_CONTACT').setValue(data[0].CUST_CONTACT)
     this.form.get('PROJ_REMARKS').setValue(data[0].PROJ_REMARKS)
     this.form.get('BILLED_VALUE').setValue(data[0].BILLED_VALUE)
-    // this.form.get('VALID_UPTO').setValue(data[0].VALID_UPTO)
+    this.form.get('VALID_UPTO').setValue(data[0].VALID_UPTO)
     this.form.get('TECHNICAL_OWNER').setValue(data[0].TECHNICAL_OWNER)
     this.GetCustomerDetail();
     
@@ -456,7 +456,7 @@ export class ProjectComponent implements OnInit {
   saveFormData(para: string = '') {
     this.isSubmited = true;
     if (this.form.valid) {
-      // if(this.form.getRawValue().PO_VALUE > 0 && this.form.getRawValue().PO_VALUE != undefined && this.form.getRawValue().PO_VALUE != null){
+      if(this.form.getRawValue().PO_VALUE > 0 && this.form.getRawValue().PO_VALUE != undefined && this.form.getRawValue().PO_VALUE != null){
         let exp_val_total = 0;
         for(let data of this.project_payment_detail){
           if(data.EXPECTED_VALUE >0 && data.EXPECTED_VALUE != undefined && data.EXPECTED_VALUE != undefined){
@@ -464,19 +464,19 @@ export class ProjectComponent implements OnInit {
           }
         }
 
-        // if(exp_val_total > this.form.getRawValue().PO_VALUE){
-        //   this.toast.warning("Total of Expected value is greater than PO Value");
-        //   return;
-        // } else if(exp_val_total < this.form.getRawValue().PO_VALUE){
-        //   this.toast.warning("Total of Expected value is less than PO Value");
-        //   return;
-        // }
-      // }
+        if(exp_val_total > this.form.getRawValue().PO_VALUE){
+          this.toast.warning("Total of Expected value is greater than PO Value");
+          return;
+        } else if(exp_val_total < this.form.getRawValue().PO_VALUE){
+          this.toast.warning("Total of Expected value is less than PO Value");
+          return;
+        }
+      }
       let _formData = this.form.getRawValue();
-      // if(_formData.PO_EXCHANGE_RATE == "" || _formData.PO_EXCHANGE_RATE == undefined)
-      //   _formData.PO_EXCHANGE_RATE = null;
+      if(_formData.PO_EXCHANGE_RATE == "" || _formData.PO_EXCHANGE_RATE == undefined)
+        _formData.PO_EXCHANGE_RATE = null;
 
-        // _formData.PO_VALUE = _formData.PO_VALUE == ""? null:_formData.PO_VALUE
+        _formData.PO_VALUE = _formData.PO_VALUE == ""? null:_formData.PO_VALUE
 
       let data = {
         project_detail: _formData,
@@ -523,8 +523,8 @@ export class ProjectComponent implements OnInit {
     this.project_payment_detail=[];
     this.search_project = "";
     this.isUpdate= false;
-   // this.form.get('PO_EXCHANGE_RATE').setValue("1")
-  //  this.form.get('PO_CURRENCY').setValue("INR")
+    this.form.get('PO_EXCHANGE_RATE').setValue("1")
+    this.form.get('PO_CURRENCY').setValue("INR")
     this.form.get('PROJECT_DATE').setValue(this.sharedService.getTodayDate())
     this.PROJECT_DATE = this.sharedService.getTodayDate();
     setTimeout(() => {
@@ -546,11 +546,9 @@ export class ProjectComponent implements OnInit {
       this.toast.warning("Please select Division");
     } else if(this.form.controls["PROJ_SEGMENT"].invalid){
       this.toast.warning("Please select Segment");
-    } 
-    // else if(this.form.controls["PO_CURRENCY"].invalid){
-    //   this.toast.warning("Please select Currency");
-    // } 
-    else if(this.form.controls["PROJ_MGR"].invalid){
+    } else if(this.form.controls["PO_CURRENCY"].invalid){
+      this.toast.warning("Please select Currency");
+    } else if(this.form.controls["PROJ_MGR"].invalid){
       this.toast.warning("Please select Project Manager");
     } else if(this.form.controls["PROJ_STATUS"].invalid){
       this.toast.warning("Please select Status");
@@ -562,22 +560,19 @@ export class ProjectComponent implements OnInit {
       this.toast.warning("Please enter Date");
     }  else if(this.form.controls["REFPROJ_CODE"].invalid){
       this.toast.warning("Please enter Ref Project Name");
-    } 
-    //  else if(this.form.controls["PO_NO"].invalid){
-    //   this.toast.warning("Please enter PO No");
-    // } else if(this.form.controls["PO_DATE"].invalid){
-    //   this.toast.warning("Please enter PO Date");
-    // } else if(this.form.controls["PO_VALUE"].invalid){
-    //   this.toast.warning("Please enter PO Value");
-    // }
-     else if(this.form.controls["ACCOUNT_MGR"].invalid){
+    }  else if(this.form.controls["PO_NO"].invalid){
+      this.toast.warning("Please enter PO No");
+    } else if(this.form.controls["PO_DATE"].invalid){
+      this.toast.warning("Please enter PO Date");
+    } else if(this.form.controls["PO_VALUE"].invalid){
+      this.toast.warning("Please enter PO Value");
+    } else if(this.form.controls["ACCOUNT_MGR"].invalid){
       this.toast.warning("Please enter Account Manager");
     }  else if(this.form.controls["PROJ_REMARKS"].invalid){
       this.toast.warning("Please enter Remarks");
-    }  
-    // else if(this.form.controls["VALID_UPTO"].invalid){
-    //   this.toast.warning("Please enter Valid Upto");
-    // }
+    }  else if(this.form.controls["VALID_UPTO"].invalid){
+      this.toast.warning("Please enter Valid Upto");
+    }
   }
 }
  

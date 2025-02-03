@@ -5,7 +5,7 @@
             <div class="d-flex  float-right" >
                 <button class="btn btn-secondary   mr-1"  (click)="viewList();"
                 title="view"><i class="far fa-eye mr-1"></i>viewList</button>
-                <button class="btn btn-secondary " (click)="SaveInvoiceRequestChange()" title="Save">Save</button>
+                <button class="btn btn-secondary "  *ngIf=" ADD_RIGHTS" (click)="SaveInvoiceRequestChange()" title="Save">Save</button>
                 <button class="btn btn-secondary float-right  ml-1" *ngIf="ViewListHideShow" (click)="back()"
                   title="Back">Back</button>
                   <!-- <button class="delete-button ml-1" (click)="removeData(data)" [disabled]="!editing">
