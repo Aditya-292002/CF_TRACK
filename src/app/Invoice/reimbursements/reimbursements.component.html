@@ -293,7 +293,8 @@
                     <tr *ngIf="data.ACTIVE != 0" class="mb-2">
                       <td class="">
                         <!-- w-2 -->
-                        <div class="floating-input">
+                         <div class="d-flex">
+                        <div class="floating-input pr-2">
                           <select
                             class="form-control dd_ellipsis"
                             [(ngModel)]="data.EXPENSE_HEAD"
@@ -310,12 +311,15 @@
                               *ngFor="let opt of exphead_list; let i = index"
                               [selected]="opt.EXPENSE_HEAD == data.EXPENSE_HEAD"
                               [value]="opt.EXPENSE_HEAD"
-                              title="{{ opt.EXPENSE_NAME }}"
-                            >
+                              title="{{ opt.EXPENSE_NAME }}">
                               {{ opt.EXPENSE_NAME }}
                             </option>
                           </select>
                         </div>
+                        <div class="" *ngFor="let opt of exphead_list; let i = index"> 
+                          <span *ngIf="opt.EXPENSE_HEAD == data.EXPENSE_HEAD" pTooltip="{{opt.REQUIREMENT_NOTE}}"><i class="pi pi-exclamation-circle " style="font-size: 1rem ;color:red"></i></span>
+                        </div>
+                      </div>
                       </td>
                       <td class="w-3">
                         <div class="floating-input">
