@@ -232,12 +232,8 @@
                         class="form-control selectpicker show-tick"
                         name="GL_NAME{{ index }}"
                         [(ngModel)]="data.GL_NO"
-                        [ngModelOptions]="{ standalone: true }"
-                        data-size="5"
                         (change)="ChangeGL(data.GL_NO, index)"
-                        data-live-search="true"
-                        id=""
-                        title="Select"
+                        data-container="body" data-size="3" [ngModelOptions]="{standalone: true}" data-live-search="true" title="Select"
                       >
                         <option value="" disabled></option>
                         <option
@@ -260,7 +256,8 @@
                         name="PARTY_NAME{{ index }}"
                         [(ngModel)]="data.PARTY_CODE"
                         [ngModelOptions]="{ standalone: true }"
-                        data-size="5"
+                        data-size="3"
+                        data-container="body"
                         data-live-search="true"
                         id=""
                         title="Select"
@@ -288,7 +285,9 @@
                         [ngModelOptions]="{ standalone: true }"
                         data-live-search="true"
                         id="Project{{ index }}"
+                        data-container="body"
                         title="Select"
+                        data-size="3"
                       >
                         <option
                           *ngFor="let opt of project_list; let i = index"
@@ -312,6 +311,8 @@
                         [ngModelOptions]="{ standalone: true }"
                         data-live-search="true"
                         name="Location{{ index }}"
+                        data-container="body"
+                        data-size="3"
                         title="Select"
                       >
                         <option value="" disabled></option>
