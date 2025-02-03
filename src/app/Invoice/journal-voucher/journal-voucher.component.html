@@ -219,6 +219,7 @@
                 <th class="w-2">Party</th>
                 <th class="w-2">Project</th>
                 <th class="w-2">Location</th>
+                <th  class="w-1-5" *ngIf="this._JV_Detail.length > 1"></th>
               </tr>
             </thead>
             <tbody>
@@ -323,17 +324,18 @@
                           {{ opt.LOCATION_NAME }}
                         </option>
                       </select>
-                      <button
-                        type="button"
-                        class="close"
-                        *ngIf="this._JV_Detail.length > 1"
-                        (click)="RemoveJvIndex(index)"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
                     </div>
                   </td>
+                  <td class="w-1-5 pb-0 pt-0"  *ngIf="this._JV_Detail.length > 1">  
+                     <button
+                    type="button"
+                    class="close"
+                    *ngIf="this._JV_Detail.length > 1"
+                    (click)="RemoveJvIndex(index)"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button></td>
                 </tr>
                 <tr>
                   <td class="pt-0"></td>
@@ -356,7 +358,7 @@
                       </div>
                     </div>
                   </td>
-                  <td colspan="1">
+                  <td colspan="1" >
                     <div class="form-inline">
                       <label>Credit </label>
                       <div class="floating-input ml-3">
@@ -374,6 +376,7 @@
                       </div>
                     </div>
                   </td>
+                  <td class="w-1-5 pb-0 pt-0"  *ngIf="this._JV_Detail.length > 1">  </td>
                 </tr>
               </ng-container>
 
@@ -412,6 +415,7 @@
                     </div>
                   </div>
                 </td>
+                <td class="w-1-5 pb-0 pt-0"  *ngIf="this._JV_Detail.length > 1">  </td>
               </tr>
             </tbody>
           </table>
