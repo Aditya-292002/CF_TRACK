@@ -2,21 +2,30 @@
 <form [formGroup]="form">
     <div class="row">
         <div class="col-md-12 " >
-            <button class="btn btn-secondary  float-right m-1 ml-1 mr-1" *ngIf="isUpdate" (click)="f_clearForm()" title="Cancel">Cancel</button>
-            <button class="btn btn-secondary float-right m-1 ml-1 mr-1" *ngIf="!isUpdate && ADD_RIGHTS" (click)="saveFormData('INSERT')" title="Save">Save</button>
-            <button class="btn btn-secondary float-right m-1 ml-1 mr-1" *ngIf="isUpdate && UPDATE_RIGHTS" (click)="saveFormData('UPDATE')" title="Save">Save</button>
+            <div class="d-flex  justify-content-between">
+                <div>
+                    <h5 class="formName " >{{ sharedService.formName }}</h5>
+                </div>
+                <div class="col-md-8 d-flex justify-content-end">
+                    <div class="col-md-8 mr-2">
+                        <div class="floating-input list-btn">
+                            <select class="form-control selectpicker show-tick dd_size select-width" (change)="searchTask()" [(ngModel)]="search_task_id" data-live-search="true" id="search" #search title="Search Task" [ngModelOptions]="{standalone: true}">
+                                <option *ngFor="let opt of task_list; let i=index" [selected]="opt.TASKID == search_task_id"
+                                    [value]="opt.TASKID">{{ opt.TASK_DESC }}</option>
+                            </select>
+                            <button type="button" class="close" onclick="resetDropdown('search')" (click)="search_task_id='';f_clearForm()" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary " *ngIf="isUpdate" (click)="f_clearForm()" title="Cancel">Cancel</button>
+                    <button class="btn btn-secondary" *ngIf="!isUpdate && ADD_RIGHTS" (click)="saveFormData('INSERT')" title="Save">Save</button>
+                    <button class="btn btn-secondary" *ngIf="isUpdate && UPDATE_RIGHTS" (click)="saveFormData('UPDATE')" title="Save">Save</button>
 
-            <div class="col-md-4 float-right m-1">
-                <div class="floating-input list-btn">
-                    <select class="form-control selectpicker show-tick dd_size select-width" (change)="searchTask()" [(ngModel)]="search_task_id" data-live-search="true" id="search" #search title="Search Task" [ngModelOptions]="{standalone: true}">
-                        <option *ngFor="let opt of task_list; let i=index" [selected]="opt.TASKID == search_task_id"
-                            [value]="opt.TASKID">{{ opt.TASK_DESC }}</option>
-                    </select>
-                    <button type="button" class="close" onclick="resetDropdown('search')" (click)="search_task_id='';f_clearForm()" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
             </div>
+            
+            
         </div>
         <div class="col-md-12">
             <div class="row card">
