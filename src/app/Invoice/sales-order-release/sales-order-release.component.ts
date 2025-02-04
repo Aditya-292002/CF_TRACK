@@ -105,7 +105,8 @@ export class SalesOrderReleaseComponent implements OnInit {
   TOTAL_REQUEST_VALUE: any = 0;
   TOTAL_BILLED_VALUE: any = 0;
   REJECT_REMARKS:any;
-
+  TOTAL_DOC_VALUE: any = 0;
+  
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
     private http: HttpRequestServiceService,
@@ -533,6 +534,7 @@ export class SalesOrderReleaseComponent implements OnInit {
     this.TOTAL_REQUEST_VALUE = 0;
     this.TOTAL_BILLED_VALUE = 0;
     this.TOTAL_AMOUNT_VALUE = 0;
+    this.TOTAL_DOC_VALUE = 0;
     let data = {
       REQ_ID: REQ_ID,
       SO_ID: SO_ID
@@ -545,11 +547,12 @@ export class SalesOrderReleaseComponent implements OnInit {
         this.SO_REQUEST_UPLOADED_DOCUMENT = res.SO_Request_Document_list;
         this.SO_MILESTONE_T.forEach((element:any)=>{
           element.EXPECTED_DATE = this.datepipe.transform(element.EXPECTED_DATE, 'dd-MMM-yyyy');
-          element.REQ_VALUE = this.currencyPipe.transform(element.REQ_VALUE)
+          element.REQ_VALUE = this.currencyPipe.transform(element.REQ_VALUE);
           this.TOTAL_REQUEST_VALUE += element.DOC_VALUE;
           this.TOTAL_BILLED_VALUE += element.BILLED_VALUE;
         })
         this.TOTAL_AMOUNT_VALUE = this.SO_Detail_list[0].TOTAL_AMOUNT_VALUE;
+        this.TOTAL_DOC_VALUE = this.SO_Detail_list[0].TOTAL_DOC_VALUE;
         this.f_fillFormData();
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh').trigger('change');
@@ -565,8 +568,8 @@ export class SalesOrderReleaseComponent implements OnInit {
   f_fillFormData() {
     this.isViewSO = false
     this.form.get("SO_ID").setValue(this.SO_Detail_list[0].SO_ID)
-    this.filterLocations();
     this.form.get("REQ_ID").setValue(this.SO_Detail_list[0].REQ_ID)
+    this.filterLocations();
     this.form.get("LOCATION_STATE").setValue(this.SO_Detail_list[0].LOCATION_STATE)
     this.form.get("STATE_CODE").setValue(this.SO_Detail_list[0].STATE_CODE)
     this.form.get("COMPANY_CODE").setValue(this.SO_Detail_list[0].COMPANY_CODE)
@@ -576,9 +579,9 @@ export class SalesOrderReleaseComponent implements OnInit {
     this.form.get("SO_NO").setValue(this.SO_Detail_list[0].SO_NO)
     this.form.get("CUST_CODE").setValue(this.SO_Detail_list[0].CUST_CODE)
     this.form.get("PO_NO").setValue(this.SO_Detail_list[0].PO_NO)
-    this.form.get("SO_DATE").setValue(this.datepipe.transform(this.SO_Detail_list[0].REQ_DATE, 'dd-MMM-yyyy'))
+    this.form.get("SO_DATE").setValue(this.datepipe.transform(this.SO_Detail_list[0].SO_DATE, 'dd-MMM-yyyy'))
     this.form.get("PO_DATE").setValue(this.datepipe.transform(this.SO_Detail_list[0].PO_DATE, 'dd-MMM-yyyy'))
-    // this.form.get("RAISE_INVOICE_ON").setValue(this.datepipe.transform(this.SO_Detail_list[0].RAISE_INVOICE_ON, 'dd-MMM-yyyy'))
+    // this.form.get("RAISE_INVOICE_ON").setValue(this.datepipe.transform(this.SO_list[0].RAISE_INVOICE_ON, 'dd-MMM-yyyy'))
     this.RAISE_INVOICE_ON = new Date(this.SO_Detail_list[0].RAISE_INVOICE_ON)
     this.form.get("KIND_ATTN").setValue(this.SO_Detail_list[0].KIND_ATTN)
     this.form.get("CURRENCY_CODE").setValue(this.SO_Detail_list[0].CURRENCY_CODE)
@@ -588,14 +591,14 @@ export class SalesOrderReleaseComponent implements OnInit {
     this.form.get("TEMPLATE_CODE").setValue(this.SO_Detail_list[0].TEMPLATE_CODE)
     this.form.get("PROJ_CODE").setValue(this.SO_Detail_list[0].PROJ_CODE)
     this.form.get("SO_STATUS").setValue(this.SO_Detail_list[0].SO_STATUS)
-    this.form.get("SO_REMARKS").setValue(this.SO_Detail_list[0].REMARKS)
+    this.form.get("SO_REMARKS").setValue(this.SO_Detail_list[0].SO_REMARKS)
     this.form.get("REQUEST_REMARKS").setValue(this.SO_Detail_list[0].REQUEST_REMARKS)
     this.SelectState();
     setTimeout(() => {
       this.form.get("COMPANY_CODE").setValue(this.SO_Detail_list[0].COMPANY_CODE)
       this.form.get("LOCATION_CODE").setValue(Number(this.SO_Detail_list[0].LOCATION_CODE))
-    this.form.get("SERVICE_CODE").setValue(this.SO_Detail_list[0].SERVICE_CODE)
     this.form.get("CUST_CODE").setValue(this.SO_Detail_list[0].CUST_CODE)
+    this.form.get("SERVICE_CODE").setValue(this.SO_Detail_list[0].SERVICE_CODE)
     this.form.get("TEMPLATE_CODE").setValue(this.SO_Detail_list[0].TEMPLATE_CODE)
     this.form.get("DOCTYPE_CODE").setValue(this.SO_Detail_list[0].DOCTYPE_CODE)
     this.form.get("SO_STATUS").setValue(this.SO_Detail_list[0].SO_STATUS)

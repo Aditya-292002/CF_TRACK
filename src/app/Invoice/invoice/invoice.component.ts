@@ -436,12 +436,9 @@ ngAfterViewInit(){
     //this.FINAL_BASE_VALUE_2 = FINAL_BASE_VALUE;
     this.form.get('BASE_VALUE').setValue((FINAL_BASE_VALUE).toFixed(2));
     this.form.get('BASE_VALUE').setValue((this.pipeService.setCommaseprated(FINAL_BASE_VALUE.toFixed(2))))
-    
-    this.costInput();
   }
 
-  costInput(){
-  }
+
 
   f_H_M(hours: string = ''): any {
     let col = [];
@@ -717,6 +714,7 @@ ngAfterViewInit(){
       
     this.SelectState();
         setTimeout(() => {
+    this.form.get("REQ_ID").setValue(this.invoice_header[0].REQ_ID)
           this.form.get("COMPANY_CODE").setValue(this.invoice_header[0].COMPANY_CODE)
  //         this.GetProjectList();
           this.form.get("LOCATION_CODE").setValue(Number(this.invoice_header[0].LOCATION_CODE))
@@ -808,13 +806,13 @@ ngAfterViewInit(){
         this.form.get("TEMPLATE_CODE").setValue(this.SO_Detail_list[0].TEMPLATE_CODE)
         this._invoice_detail[0].SERVICE_CODE = this.SO_Detail_list[0].SERVICE_CODE
         this._invoice_detail[0].DOC_VALUE = this.SO_Detail_list[0].TOTAL_AMOUNT_VALUE
-        this.CalculateFinalAmount();
         this.RAISE_INVOICE_ON = new Date(this.SO_Detail_list[0].RAISE_INVOICE_ON)
         // this.form.get("SERVICE_CODE").setValue(this.SO_Detail_list[0].SERVICE_CODE)
         // this.form.get("DOC_VALUE").setValue(this.SO_Detail_list[0].TOTAL_AMOUNT_VALUE)
         this.filterProject();
         this.spinner = false;
         setTimeout(() => {
+        this.CalculateFinalAmount();  
           $('.selectpicker').selectpicker('refresh').trigger('change');
         }, 100);
       } else {
