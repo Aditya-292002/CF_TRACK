@@ -22,7 +22,7 @@ export class UserRoleChangeComponent implements OnInit {
   Role_detail: any;
   result: any;
 
-  constructor(private sharedService: SharedServiceService,
+  constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
     private http: HttpRequestServiceService,
     private formBuilder: FormBuilder,
