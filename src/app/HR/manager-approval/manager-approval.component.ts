@@ -61,6 +61,7 @@ export class ManagerApprovalComponent implements OnInit {
 EmpCommon_list:any
 FROM_DATE1:any;
 TO_DATE1:any;
+REQ_ON:any
   constructor(private sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
     private http: HttpRequestServiceService,
@@ -232,7 +233,7 @@ TO_DATE1:any;
         this.toast.success(res.msg)
         this.Employee_list.splice(this.selectedIndex,1)
         console.log('res',res);
-        
+        this.GetSearchLeaveList();
         // this.isReject=false;
         // this.isApprove=true;
         // this.isPending=false;
@@ -413,6 +414,7 @@ TO_DATE1:any;
       this.isViewLeave = false; // Hide the leave form
       // Bind the data to the component properties
       this.REQ_ID=data.REQ_ID;
+      this.REQ_ON=data.REQ_ON;
       this.USER_NAME = data.USER_NAME;
       this.LEAVE_BALANCE = data.LEAVE_BALANCE;
       this.FROM_DATE1 = data.FROM_DATE;
@@ -469,8 +471,8 @@ TO_DATE1:any;
       this.spinner = false;
       let data={
         EMP_NO:this.EMP_NO,
-        FROM_DATE:this.FROM_DATE,
-        TO_DATE:this.TO_DATE
+        FROM_DATE:this.FROM_DATE1,
+        TO_DATE:this.TO_DATE1
       }
       this.http.PostRequest(this.apiUrl.PERIODWISE_LEAVE_DETAILS, data).then(res => {
         if (res.flag) {

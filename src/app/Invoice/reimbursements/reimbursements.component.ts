@@ -580,7 +580,7 @@ GetReimbursementDetail(REIMBURSEMENT_ID:any,val:any){
           
           extension = event.target.files[i].name.split(".");
           this.uploadingFiles.push(
-            {
+            { 
               DOCUMENT_FILENAME: event.target.files[i].name,
               DOCUMENT_SYSFILENAME: uuidv4() + '.' + extension[extension.length - 1],
               DOC_SRNO: this.uploadedDocument.length + 1,
