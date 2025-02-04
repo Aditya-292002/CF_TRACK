@@ -344,6 +344,7 @@ constructor(public sharedService: SharedServiceService,
         this.all_list.forEach(ele => {
           if(element.RECGRP == ele.RECGRP && element.GL_NO == ele.GL_NO ){
             this._JV_Detail[index].PARTY.push(ele)
+            console.log('ele',ele);
           }
         });
       }
@@ -371,7 +372,6 @@ constructor(public sharedService: SharedServiceService,
       element.disabled1 = false;
   }
     })
-
     this.isEnabled = true;
     var TOTAL_DEBIT=0;
     var TOTAL_CREDIT=0;
