@@ -865,3 +865,16 @@ li.att-doc {
     text-decoration: none;
     background-color: #1a6b8f !important;
 }
+
+.card-header {
+    padding: .75rem .75rem !important;
+    margin-bottom: 0;
+    background-color: #d5e3ea !important;
+    border-bottom: none !important;
+   }
+   .card-title {
+  color: #1e6b90 !important;
+  }
+  .card-header .collapse{
+    background-color: #fff;
+   }

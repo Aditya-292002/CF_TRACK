@@ -1,7 +1,7 @@
 <app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
 <div class="row " >
 <div class="col-md-12"> 
-    <div class="card1 d-flex  justify-content-between">
+    <div class="d-flex  justify-content-between">
         <div>
             <h5 class="formName " >{{ sharedService.formName }}</h5>
         </div>
@@ -120,7 +120,7 @@
                             <div class="floating-input">
                                 <textarea name="" id="" rows="1" class="form-control" formControlName="REQUEST_REMARKS"
                                   [ngClass]="{'invalid-control':isSubmited && form.controls['REQUEST_REMARKS'].errors?.required}"
-                                    placeholder="Enter Remarks" >
+                                    placeholder="Enter Remarks" [disabled]="this.SO_STATUS == 'REJECT'">         
                                 </textarea>
                             </div>
                         </div>
@@ -311,7 +311,8 @@
                                                         <!-- <p-togglebutton [(ngModel)]="data.IS_CLOSED" onLabel="Locked" offLabel="Unlocked">
                                                         </p-togglebutton> -->
                                                         <input class="ml-2" type="checkbox" title="Close Milestone" 
-                                                         [(ngModel)]="data.IS_CLOSED" [ngModelOptions]="{standalone: true}">
+                                                         [(ngModel)]="data.IS_CLOSED" [ngModelOptions]="{standalone: true}"
+                                                         [disabled]="this.SO_STATUS == 'REJECT'">
                                                     </div> 
                                                 </td>
                                             </tr>
@@ -375,7 +376,7 @@
                             <ul class="list-group">
                                 <ng-container *ngFor="let file of SO_UPLOADED_DOCUMENT;let i=index;">
                                     <li class="list-group-item d-flex justify-content-between py-2"
-                                        *ngIf="file.ACTIVE != 0">
+                                        *ngIf="file.ACTIVE != 0 || this.SO_STATUS == 'PENDING' || this.SO_STATUS == 'P'">
                                         <label class="doc-label" (click)="f_downloadDocument(file)">
                                             <i class="fa fa-paperclip mr-2"></i>
                                             {{file.DOCUMENT_FILENAME}}
@@ -421,14 +422,14 @@
                         </div>
                     </div>
                     </div>
-                    <div class="mt-2">
+                    <div class="mt-2" *ngIf="this.SO_STATUS == 'PENDING' || this.SO_STATUS == 'P'">
                         <div class="row card ">
                             <div class="col-md-12 mt-1">
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <h6 class="mb-0 p-0">Document Upload</h6>
                                     </div>
-                                    <div>
+                                    <div  >
                                         <label for="fileInput" class="text-primary " title="Add Document">
                                             <i class="fa fa-paperclip"></i> Attach
                                         </label>
@@ -437,8 +438,9 @@
                                 <hr class="m-0 mb-2">
     
                                 <ul class="list-group">
-                                    <li class="list-group-item d-flex justify-content-between att-doc py-1">
+                                    <li class="list-group-item d-flex justify-content-between att-doc py-1" >
                                         <input type="file" #fileInput id="fileInput" 
+                                        
                                         (change)="selectDocument($event)"
                                         accept=".png,.jpg,.pdf"
                                             class="doc-input" />
@@ -497,32 +499,33 @@
             <ng-template pTemplate="header" let-flight>
                 <tr>
                     <th class="width-2" *ngIf="!SoRelease">SO No</th>
-                    <th class="" *ngIf="SoRelease">Req No</th>
-                    <th class="">Customer Name</th>
-                    <th class="">Project Name</th>
-                    <th class="" *ngIf="!SoRelease">SO Remarks</th>
-                    <th class="" *ngIf="SoRelease">Approval Remarks</th>
-                    <th class="" *ngIf="SoRelease">Approval Status</th>
-                    <th class="" *ngIf="!SoRelease">SO Value</th>
-                    <th class="" *ngIf="SoRelease">Request Amount</th>
-                    <th class="width-2">Action</th>
+                    <th class="width-2" *ngIf="SoRelease">Req No</th>
+                    <th class="width-20">Customer Name</th>
+                    <th class="width-20">Project Name</th>
+                    <th class="width-10" *ngIf="!SoRelease">SO Remarks</th>
+                    <th class="width-10" *ngIf="SoRelease">App Remarks</th>
+                    <th class="width-10" *ngIf="SoRelease">App Status</th>
+                    <th class="width-10" *ngIf="!SoRelease">SO Amount</th>
+                    <th class="width-10" *ngIf="SoRelease">Req Amount</th>
+                    <th class="width-1" *ngIf="!SoRelease">Create</th>
+                    <th class="width-1" *ngIf="SoRelease">Edit</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-data>
                 <tr>
                     <td class="width-2" *ngIf="!SoRelease">{{data.SO_NO}}</td>
                     <td class="width-2" *ngIf="SoRelease">{{data.REQ_NO}}</td>
-                    <td class="width-10">{{data.CUST_NAME}}</td>
-                    <td class="width-10">{{data.PROJ_NAME}}</td>
+                    <td class="width-20">{{data.CUST_NAME}}</td>
+                    <td class="width-20">{{data.PROJ_NAME}}</td>
                     <td class="width-10" *ngIf="!SoRelease">{{data.SO_REMARKS}}</td>
                     <td class="width-10" *ngIf="SoRelease">{{data.REJECT_REMARKS}}</td>
                     <td class="width-10" *ngIf="SoRelease">{{data.SO_STATUS}}</td>
                     <td class="width-10" *ngIf="!SoRelease"> {{data.SO_VALUE | costFilter }}</td>
                     <td class="width-10" *ngIf="SoRelease"> {{data.TOTAL_AMOUNT_VALUE | costFilter }}</td>
-                    <td class="width-10" *ngIf="!SoRelease">
-                         <i class="fa fa-plus-square" (click)="editInvoice(data,SoRelease)" title="Add"></i>
+                    <td class="width-1" *ngIf="!SoRelease">
+                         <i class="fa fa-plus-square" (click)="editInvoice(data,SoRelease)" title="Create"></i>
                     </td>
-                    <td class="width-10" *ngIf="SoRelease">
+                    <td class="width-1" *ngIf="SoRelease">
                         <i class="fa fa-edit " (click)="editInvoice(data,SoRelease)" title="Edit"></i>
                    </td>
                 </tr>
@@ -550,7 +553,7 @@
         <h5 class="modal-title" id="exampleModalLabel">Conformation</h5>
       </div>
       <div class="modal-body">
-        <label>Invoice Request saveing for allready invoice create this req id</label>
+        <label>Against this selected Sales Order Invoice Request already created. Are you sure you want to raise new invoice request ?</label>
       </div>
 
       <div class="modal-footer py-0">

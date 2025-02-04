@@ -151,7 +151,6 @@ export class SalesOrderCreateComponent implements OnInit {
       SO_STATUS: ["PENDING", Validators.required],
       SO_REMARKS: ['', Validators.required],
       REQUEST_REMARKS: ['', Validators.required],
-      DOCUMENT_FILENAME: ["", Validators.required],
     })
       $('.selectpicker').selectpicker('refresh').trigger('change');
     this.minDate = new Date();
@@ -361,7 +360,7 @@ this.raisedinvoiceonmaxDate = currentDate.toISOString().split('T')[0];
           }, 100);
           this.spinner = false;
         } else if(res.flag == 2){
-          this.toast.warning(res.msg)
+          // this.toast.warning(res.msg)
            const modalElement = this.modal.nativeElement;
            $(modalElement).modal('show'); 
            this.SO_MILESTONE_T.forEach((element:any)=>{
@@ -482,11 +481,13 @@ this.raisedinvoiceonmaxDate = currentDate.toISOString().split('T')[0];
     this.http.PostRequest(this.apiUrl.GetSOList, data).then((res:any) => {
       if (res.flag) {
         this.SO_list = res.SO_list;
+        this.f_clearForm();
         if(val == 'RELEASE'){
            this.SoRelease = true;
         }else {
           this.SoRelease = false;
         }
+
         // console.log('this.SO_list ->' ,  this.SO_list)
         // this.GetPendingData('P');
         this.isViewSO = true;
