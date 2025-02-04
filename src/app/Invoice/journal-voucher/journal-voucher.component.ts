@@ -106,6 +106,8 @@ constructor(public sharedService: SharedServiceService,
       this.maxdate = this.sharedService.loginUser[0].TO_DATE;
       this.COMPANY_CURRENCY = this.sharedService.loginUser[0].COMPANY_CURRENCY;
      // this.LOCATION_CODE = this.sharedService.loginUser[0].LOCATION_CODE; 
+     console.log('hh');
+     
       this.GetJVCommonList();
       this.GetProjectList();
     $('.selectpicker').selectpicker('refresh').trigger('change');
@@ -389,8 +391,8 @@ constructor(public sharedService: SharedServiceService,
         }
       }
     }); 
-    this.Debit_VALUE = this.pipeService.setCommaseprated(TOTAL_DEBIT.toFixed(2));
-    this.Credit_VALUE = this.pipeService.setCommaseprated(TOTAL_CREDIT.toFixed(2));
+    this.Debit_VALUE = this.pipeService.setCommaseprated((+TOTAL_DEBIT).toFixed(2));
+    this.Credit_VALUE = this.pipeService.setCommaseprated((+TOTAL_CREDIT).toFixed(2));
     this._JV_Detail.forEach((element:any)=>{
       if(element.CREDIT_AMT == 0 && element.DEBIT_AMT == 0 || element.CREDIT_AMT == null && element.DEBIT_AMT == null){
       element.disabled2 = false;
@@ -423,6 +425,8 @@ constructor(public sharedService: SharedServiceService,
     this.spinner = true;
     this.http.PostRequest(this.apiUrl.GetJVList, data).then(res => {
       if (res.flag) {
+        console.log('res',res);
+        
         this.all_jv_list = res.jv_list;
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh').trigger('change');
@@ -483,8 +487,13 @@ constructor(public sharedService: SharedServiceService,
         this._JV_Detail.forEach((element:any)=>{
           if(element.DEBIT_AMT == 0 || element.DEBIT_AMT == null){
               element.disabled1 = true;
-          }else if(element.CREDIT_AMT == 0 || element.CREDIT_AMT == null){
+          }else{
+            element.DEBIT_AMT=this.pipeService.setCommaseprated((+element.DEBIT_AMT).toFixed());
+          }
+          if(element.CREDIT_AMT == 0 || element.CREDIT_AMT == null){
             element.disabled2 = true;
+        }else{
+          element.CREDIT_AMT=this.pipeService.setCommaseprated((+element.CREDIT_AMT).toFixed());
         }
         element.PARTY=[]; 
         if(element.RECGRP != null || element.RECGRP != "" || element.RECGRP != undefined){
@@ -607,8 +616,10 @@ constructor(public sharedService: SharedServiceService,
         }
       }
     }); 
-    this.Debit_VALUE = this.pipeService.setCommaseprated(TOTAL_DEBIT.toFixed(2));
-    this.Credit_VALUE = this.pipeService.setCommaseprated(TOTAL_CREDIT.toFixed(2));
+    this.Debit_VALUE = this.pipeService.setCommaseprated((+TOTAL_DEBIT).toFixed(2));
+    this.Credit_VALUE = this.pipeService.setCommaseprated((+TOTAL_CREDIT).toFixed(2));
+    // this.Debit_VALUE = this.pipeService.setCommaseprated(TOTAL_DEBIT.toFixed(2));
+    // this.Credit_VALUE = this.pipeService.setCommaseprated(TOTAL_CREDIT.toFixed(2));
   }
 
   GetResetGlNo(){

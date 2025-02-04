@@ -8,7 +8,9 @@
 table .w-1{
     width: 5%;
 }
-
+table .w-1-5{
+    width: 1%;
+}
 table .w-2{
     width: 20%; 
 } 
@@ -21,6 +23,9 @@ table .w-2{
 @media (min-width: 992px) and (max-width: 1110px) {
     table .w-1{
         width: 10%; 
+    }
+    table .w-1-5{
+        width: 5%; 
     }
     table .row-add{
         margin-left: -52px;

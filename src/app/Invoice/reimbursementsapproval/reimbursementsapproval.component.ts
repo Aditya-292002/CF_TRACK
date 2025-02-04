@@ -97,6 +97,8 @@ export class ReimbursementsapprovalComponent implements OnInit {
     REJECT_REASON:string="";
     Total_Req_Amount:any=0;
     differenceOfreqAndApp:boolean=false;
+  base64Pdf: any;
+  base64Image: any;
      constructor(public sharedService: SharedServiceService,
        private apiUrl: ApiUrlService,
        private http: HttpRequestServiceService,
@@ -853,5 +855,50 @@ export class ReimbursementsapprovalComponent implements OnInit {
   onCancelClick(){
     this.openModel=false;
   }
+  async ViewDocument(file:any){
+    console.log('inside ViewDocument',file);
+    if(file.DOCUMENT_TYPE == ".pdf" || file.DOCUMENT_TYPE==".PDF"){
+      console.log('inside pdf');
+      
+     this.base64Pdf = file.BASE64
+     await this.openPdfInNewTab();
+    }else {
+     this.base64Image = file.BASE64
+     const imageWindow = window.open();
+     if (imageWindow) {
+       imageWindow.document.write(
+         `<img src="${this.base64Image}" width="100%" height="auto" />`
+       );
+     }
+    }
+   }
+   async openPdfInNewTab() {
+  const byteCharacters = atob(this.base64Pdf.split(',')[1]); // Decode base64 string
+  const byteArrays = []; 
+  
+   for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+    const slice = byteCharacters.slice(offset, offset + 1024);
+    const byteNumbers = new Array(slice.length);
+
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+
+    const byteArray =await new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
+  }   
+
+  const blob = new Blob(byteArrays, { type: 'application/pdf' });
+
+  // Create a Blob URL0 
+  const blobUrl = URL.createObjectURL(blob);
+
+  // Open the Blob URL in a new tab
+  const pdfWindow = window.open(blobUrl, '_blank');
+  if (!pdfWindow) {
+    alert('Failed to open the PDF in a new tab.');
+  }
+  }
+
   
 }
