@@ -659,7 +659,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let data of all_expense_detail; let i = index">
+            <tr *ngFor="let data of all_expense_detail; let i = index" [class.green]="data.Status=='Approved'"  [class.red]="data.Status=='Reject'">
               <td>{{ data.REIMBURSEMENT_NO }}</td>
               <td>{{data.FULL_NAME}}</td>
               <td>{{ data.REIMBURSEMENT_DATE }}</td>
