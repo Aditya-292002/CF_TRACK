@@ -21,6 +21,7 @@ export class UserRoleChangeComponent implements OnInit {
   Role_list: any;
   Role_detail: any;
   result: any;
+  // result: any;
 
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
