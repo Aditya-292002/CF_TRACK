@@ -277,6 +277,7 @@ export class LeaveApprovalComponent implements OnInit {
         this.toast.success(res.msg)
         this.Employee_list.splice(this.selectedIndex,1)
         this.isViewLeave=true;
+        this.GetSearchLeaveList();
         // this.isReject=false;
         // this.isApprove=true;
         // this.isPending=false;
