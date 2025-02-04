@@ -2,12 +2,11 @@
     margin: 0 !important;
     flex-direction: inherit !important;
 }
-.table-theam-1{
-    width: max-content;
-}
+
 .tableFixHead{
     overflow-y: auto;
 } 
 table.row_bgcolor_1 tr td {
     border: 1px solid rgb(189 192 195 / 90%);
 }
+ 
