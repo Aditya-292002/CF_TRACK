@@ -85,9 +85,9 @@ export class SalesOrderComponent implements OnInit {
   SO_MILESTONE_T: Array<any> = [{
     EXPECTED_DATE: this.minDate,
     REMARKS: "",
-    DOC_VALUE: "0",
+    DOC_VALUE: 0,
     Active: 1,
-    BASE_VALUE:"0",
+    BASE_VALUE:0,
     IS_CLOSED: false,
     MILESTONE_SRNO: 1,
   }
@@ -307,6 +307,7 @@ export class SalesOrderComponent implements OnInit {
       // console.log('res ->' , res )
          this._project_list = res.PROJECT_LIST;
          this.project_list = this._project_list;
+         this.filterProject();
       setTimeout(() => {
         $('.selectpicker').selectpicker('refresh').trigger('change');
       }, 100);
@@ -378,6 +379,11 @@ export class SalesOrderComponent implements OnInit {
       this.toast.error('Please select service');
       return;
     }
+    if (this.form.controls['KIND_ATTN'].invalid) {
+      this.toast.error('Enter a Kind Attention');
+      return;
+    }
+    
     if (this.form.controls['SO_STATUS'].invalid) {
       this.toast.error('Please enter status');
       return;
@@ -425,12 +431,18 @@ export class SalesOrderComponent implements OnInit {
           this.f_uploadFiles(this.uploadedDocument)
           this.f_clearForm();
           this.viewSOList();
+          this.isViewSO = true;
           setTimeout(() => {
             $('.selectpicker').selectpicker('refresh').trigger('change');
           }, 100);
           this.spinner = false;
         } else {
           this.toast.warning(res.msg)
+          this.viewSOList();
+          this.isViewSO = true;
+          setTimeout(() => {
+            $('.selectpicker').selectpicker('refresh').trigger('change');
+          }, 100);
           this.spinner = false;
         }
       }, err => {
@@ -456,10 +468,10 @@ export class SalesOrderComponent implements OnInit {
     this.SO_MILESTONE_T = [{
       EXPECTED_DATE: this.minDate,
       REMARKS: "",
-      DOC_VALUE: "0",
+      DOC_VALUE: 0,
       Active: 1,
       IS_CLOSED: false,
-      BASE_VALUE:"0",
+      BASE_VALUE:0,
       MILESTONE_SRNO: 1,
     }
     ];
@@ -810,8 +822,8 @@ export class SalesOrderComponent implements OnInit {
     this.SO_MILESTONE_T.push({
       EXPECTED_DATE: this.minDate,
       REMARKS: "",
-      DOC_VALUE: "0",
-      BASE_VALUE:"0",
+      DOC_VALUE: 0,
+      BASE_VALUE:0,
       MILESTONE_SRNO: this.SO_MILESTONE_T.length + 1,
       IS_CLOSED: false
     })

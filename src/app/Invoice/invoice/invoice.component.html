@@ -17,7 +17,7 @@
         <div class="floating-input m1-1">
           <button
             class="btn btn-secondary"
-            *ngIf="ADD_RIGHTS && !isViewInvoice && !UpdateDisable"
+            *ngIf=" !isViewInvoice && !UpdateDisable"
             (click)="SaveInvoice()"
             title="Save"
           >
@@ -743,7 +743,6 @@
             formControlName="DOC_VALUE"
             disabled
             costInput
-            (change)="costInput()"
             placeholder="Bill Value"
           />
         </div>

@@ -72,7 +72,7 @@
                             </div>
                         </div>
                         <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
-                            <label>Kind Attention :</label>
+                            <label>Kind Attention <span class="validator">*</span>:</label>
                             <div class="floating-input ">
                                 <input type="text" class="form-control" formControlName="KIND_ATTN"
                                     placeholder="Kind Attention">
@@ -434,11 +434,11 @@
            <div   style="display: flex;justify-content: space-between;align-items: center;margin-bottom: 5px;">
                 <div class="row text-center ">
                     <label class="ml-3">
-                        <input type="radio" name="status" value="all" (change)="GetPendingData('All')" [checked]='true'> All
+                        <input type="radio" name="status" value="pending" (change)="GetPendingData('P')" [checked]='true' > Open
                     </label>
                     <label class="ml-2">
-                        <input type="radio" name="status" value="pending" (change)="GetPendingData('P')"  > Open
-                    </label>
+                        <input type="radio" name="status" value="all" (change)="GetPendingData('All')" > All
+                    </label>    
                     </div>
             <div class="floating-input  " style="width: 20%;" >
                 <input type="text" pInputText  placeholder="Search"  
