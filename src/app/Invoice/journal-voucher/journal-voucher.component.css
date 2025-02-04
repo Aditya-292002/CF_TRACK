@@ -14,36 +14,4 @@ table .w-1-5{
 table .w-2{
     width: 20%; 
 } 
-
-
-
 /* */
-
-
-@media (min-width: 992px) and (max-width: 1110px) {
-    table .w-1{
-        width: 10%; 
-    }
-    table .w-1-5{
-        width: 5%; 
-    }
-    table .row-add{
-        margin-left: -52px;
-    }
-    .total_grid .form-control{
-        width: 145px;
-    }
-}
-@media (min-width: 750px) and (max-width: 990px){
-    table .row-add{
-        margin-left: -44px;
-    }
-    .total_grid .form-control {
-        width: 145px;
-    }
-}
-@media (min-width: 427px){
-    table td .dd_width .bootstrap-select { 
-        width: 110px !important;
-    } 
-}
