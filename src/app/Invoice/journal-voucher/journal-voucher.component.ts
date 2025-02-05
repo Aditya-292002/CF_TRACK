@@ -242,8 +242,16 @@ constructor(public sharedService: SharedServiceService,
         return false;
       }  
       this._JV_Detail.forEach((element)=>{
+        
        element.DEBIT_AMT=this.pipeService.removeCommaseprated( element.DEBIT_AMT);
        element.CREDIT_AMT=this.pipeService.removeCommaseprated(  element.CREDIT_AMT);
+       
+       if(element.DEBIT_AMT==""){
+        element.DEBIT_AMT=0
+      }
+      if(element.CREDIT_AMT==""){
+        element.CREDIT_AMT=0
+      }
       })
 
       let data = {
@@ -266,8 +274,8 @@ constructor(public sharedService: SharedServiceService,
         JV_ID: this.JV_ID,
         JVNO: this.JV_NO,
       }
-     //console.log('res',data);
-     //return
+   //  console.log('res',data);
+    // return
     this.http.PostRequest(this.apiUrl.SaveJV, data ).then(res => {
       if (res.flag) {
         this.toast.success(res.msg);

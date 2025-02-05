@@ -264,11 +264,12 @@
                       >
                         <option
                           *ngFor="let opt of data.PARTY; let i = index"
-                          [selected]="opt.PARTY_CODE == data.PARTY_CODE"
+                          [selected]="opt.PARTY_CODE == '10001'"
                           [value]="opt.PARTY_CODE"
                         >
                           {{ opt.PARTY_CODE }} - {{ opt.PARTY_NAME }}
                         </option>
+                        <!-- {{ opt.PARTY_CODE }} - {{ opt.PARTY_NAME }} -->
                       </select>
                       <!-- <button type="button" class="close" onclick="resetDropdown('data.PARTY_CODE')" (click)="data.PARTY_CODE.reset()"  aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
