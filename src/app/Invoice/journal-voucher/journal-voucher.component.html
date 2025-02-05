@@ -257,11 +257,11 @@
                         [(ngModel)]="data.PARTY_CODE"
                         [ngModelOptions]="{ standalone: true }"
                         data-size="3"
-                        
                         data-live-search="true"
                         id=""
                         title="Select"
                       >
+                      <option value="" disabled></option>
                         <option
                           *ngFor="let opt of data.PARTY; let i = index"
                           [selected]="opt.PARTY_CODE == '10001'"
