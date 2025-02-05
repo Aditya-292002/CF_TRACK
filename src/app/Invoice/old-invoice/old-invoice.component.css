@@ -1,0 +1,31 @@
+table .w-10{
+    width: 4%;
+}
+table .w-20{
+    width: 115px;
+}
+table .form-control.w-16{
+    width: 115px;
+}
+table .w-25{
+    width: 18% !important;
+}
+table textarea.form-control{
+    height: auto !important;
+}
+.small{
+    font-size: 100%;
+}
+
+@media (max-width: 1024px) {
+    table .w-10{
+        width: 8%;
+    }
+    table .w-25{
+        width: 30% !important;
+    }
+}
+.card {
+    margin: 0 !important;
+    flex-direction: inherit !important;
+}

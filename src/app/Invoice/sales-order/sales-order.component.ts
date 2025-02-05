@@ -99,6 +99,7 @@ export class SalesOrderComponent implements OnInit {
    ]
    isExchangeRate:boolean = true;
    COMPANY_CURRENCY:any;
+   IS_UPDATE:any = 0;
 
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
@@ -193,7 +194,7 @@ export class SalesOrderComponent implements OnInit {
       }
       this.GetInvoiceList();
       this.GetSOCommonList();
-
+      this.GetSOList();
     }, 150)
     this.spinner = false;
   }
@@ -419,6 +420,7 @@ export class SalesOrderComponent implements OnInit {
         SO_Header: this.form.value,
         // SO_T: this._invoice_detail,
         SO_MILESTONE_T: this.SO_MILESTONE_T,
+        IS_UPDATE: this.IS_UPDATE,
         SO_DOCUMENT_LIST: this.uploadedDocument,
         TOTAL_AMOUNT_VALUE: +(this.TOTAL_AMOUNT_VALUE)
       }
@@ -553,6 +555,7 @@ export class SalesOrderComponent implements OnInit {
 
   backToForm() {
     this.editing = false;
+    this.IS_UPDATE = 0;
     this.isViewSO = !this.isViewSO;
     this.f_clearForm();
     if (this.form.get('CURRENCY_CODE').value == "INR") {
@@ -610,11 +613,13 @@ export class SalesOrderComponent implements OnInit {
   }
 
   editInvoice(data:any) {
+    this.IS_UPDATE = 1;
     this.GetSODetail(data.SO_ID)
     this.editing = true;
   }
 
   GetSODetail(SO_ID:any) {
+    this.TOTAL_AMOUNT_VALUE = 0;
     let data = {
       SO_ID: SO_ID
     }
@@ -629,12 +634,11 @@ export class SalesOrderComponent implements OnInit {
           element.EXPECTED_DATE = new Date(element.EXPECTED_DATE);  
           element.DOC_VALUE = this.currencyPipe.transform(element.DOC_VALUE);
         })
-        this.TOTAL_AMOUNT_VALUE = this.SO_list[0].TOTAL_AMOUNT_VALUE
+        this.TOTAL_AMOUNT_VALUE = this.SO_list[0].TOTAL_AMOUNT_VALUE;
         this.f_fillFormData();
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh').trigger('change');
         }, 100);
-
       } else {
         this.spinner = false;
       }
@@ -647,6 +651,7 @@ export class SalesOrderComponent implements OnInit {
     this.isViewSO = false
     // this.spinner = true;
     this.form.get("SO_ID").setValue(this.SO_list[0].SO_ID)
+    this.form.get("SO_NO").setValue(this.SO_list[0].SO_NO)
     this.filterLocations();
     // this.form.get("REQ_ID").setValue(this.SO_list[0].REQ_ID)
     this.form.get("LOCATION_STATE").setValue(this.SO_list[0].LOCATION_STATE)

@@ -105,7 +105,6 @@ export class SalesOrderReleaseComponent implements OnInit {
   TOTAL_REQUEST_VALUE: any = 0;
   TOTAL_BILLED_VALUE: any = 0;
   REJECT_REMARKS:any;
-  TOTAL_DOC_VALUE: any = 0;
   
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
@@ -534,7 +533,6 @@ export class SalesOrderReleaseComponent implements OnInit {
     this.TOTAL_REQUEST_VALUE = 0;
     this.TOTAL_BILLED_VALUE = 0;
     this.TOTAL_AMOUNT_VALUE = 0;
-    this.TOTAL_DOC_VALUE = 0;
     let data = {
       REQ_ID: REQ_ID,
       SO_ID: SO_ID
@@ -548,11 +546,10 @@ export class SalesOrderReleaseComponent implements OnInit {
         this.SO_MILESTONE_T.forEach((element:any)=>{
           element.EXPECTED_DATE = this.datepipe.transform(element.EXPECTED_DATE, 'dd-MMM-yyyy');
           element.REQ_VALUE = this.currencyPipe.transform(element.REQ_VALUE);
-          this.TOTAL_REQUEST_VALUE += element.DOC_VALUE;
-          this.TOTAL_BILLED_VALUE += element.BILLED_VALUE;
         })
         this.TOTAL_AMOUNT_VALUE = this.SO_Detail_list[0].TOTAL_AMOUNT_VALUE;
-        this.TOTAL_DOC_VALUE = this.SO_Detail_list[0].TOTAL_DOC_VALUE;
+        this.TOTAL_REQUEST_VALUE = this.SO_Detail_list[0].TOTAL_REQUEST_VALUE;
+        this.TOTAL_BILLED_VALUE = this.SO_Detail_list[0].TOTAL_BILLED_VALUE;
         this.f_fillFormData();
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh').trigger('change');

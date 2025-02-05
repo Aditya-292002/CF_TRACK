@@ -36,6 +36,7 @@ import { TimeSheetApproveComponent } from './Project/time-sheet-approve/time-she
 import { ResetPasswordComponent } from './Common/reset-password/reset-password.component';
 import { DatePipe } from '@angular/common';
 import { InvoiceComponent } from './Invoice/invoice/invoice.component';
+import { OldInvoiceComponent } from './Invoice/old-invoice/old-invoice.component';
 import { TimeSheetAttendanceComponent } from './HR/time-sheet-attendance/time-sheet-attendance.component';
 import { TimeSheetExtendComponent } from './HR/time-sheet-extend/time-sheet-extend.component';
 import { EncryptionService } from './services/encryption.service';
@@ -217,6 +218,7 @@ export const MY_DATE_FORMATS = {
     UserRoleChangeComponent,
     SalesOrderReleaseComponent,
     SalesOrderCreateComponent,
+    OldInvoiceComponent
   ],
   imports: [
     BrowserModule,

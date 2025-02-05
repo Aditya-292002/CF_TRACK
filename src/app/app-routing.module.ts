@@ -62,6 +62,7 @@ import { UserRoleChangeComponent } from './Setting/user-role-change/user-role-ch
 import { SalesOrderReleaseComponent } from './Invoice/sales-order-release/sales-order-release.component';
 import { SalesOrderCreateComponent } from './Invoice/sales-order-create/sales-order-create.component';
 import { RoleRightsComponent } from './Setting/role-rights/role-rights.component';
+import { OldInvoiceComponent } from './Invoice/old-invoice/old-invoice.component';
 
 
 
@@ -90,6 +91,7 @@ const routes: Routes = [
       {path: 'attendancebyadmin', component:TimeSheetAttendanceComponent },
       {path: 'timesheetallowextend', component:TimeSheetExtendComponent },
       {path: 'invoice', component:InvoiceComponent },
+      {path: 'oldinvoice', component:OldInvoiceComponent },
       {path: 'invoiceapprove', component:InvoiceApprovalComponent },
       {path: 'invoicerequest', component:InvoiceRequestComponent },
       {path: 'leaverequest', component:LeaveRequestComponent },
