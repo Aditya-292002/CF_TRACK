@@ -13,17 +13,15 @@ import { PipeService } from 'src/app/services/pipe.service';
 
 
 declare var $: any;
-
 @Component({
   selector: 'app-old-invoice',
   templateUrl: './old-invoice.component.html',
   styleUrls: ['./old-invoice.component.css']
 })
-
 export class OldInvoiceComponent implements OnInit {
+
   spinner: boolean = false;
   form: FormGroup
-  
     BILLING_DATE: any = '';
     DUE_DATE: any = '';
     PO_DATE: any = '';
@@ -784,4 +782,5 @@ ngAfterViewInit(){
     });
   }
 
-  }
+
+}
