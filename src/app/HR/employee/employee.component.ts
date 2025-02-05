@@ -190,7 +190,7 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
-  f_addNew(para: number = 0) {
+  f_addNew(para: number) {
     if (para) {
       this.emp_number_detail.forEach(element => {
         element.EXPIRY_DATE = '';

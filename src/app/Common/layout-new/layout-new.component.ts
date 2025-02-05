@@ -592,9 +592,9 @@ subMenuClick(data:any){
     }
   });
   //added by hemant 17-jan-2025
-  sessionStorage.setItem('form_rights',JSON.stringify(data))    
-  sessionStorage.setItem('route',this.sharedService.form_rights.URL)   
+  sessionStorage.setItem('form_rights',JSON.stringify(data))   
   this.sharedService.form_rights = data;
+  sessionStorage.setItem('route',this.sharedService.form_rights.URL)   
 
   this.FUNCTIONCODE = data.FUNCTION_CODE;
   localStorage.setItem('FUNCTION_CODE',this.FUNCTIONCODE)
