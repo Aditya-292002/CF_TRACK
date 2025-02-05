@@ -109,7 +109,8 @@ export class SalesOrderCreateComponent implements OnInit {
   SO_REQUEST_UPLOADED_DOCUMENT:any = [];
   IS_UPDATE: any = 0;
   SO_STATUS:any;
-
+  CANCEL_IND:boolean = false;
+  
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
     private http: HttpRequestServiceService,
@@ -265,6 +266,7 @@ this.raisedinvoiceonmaxDate = currentDate.toISOString().split('T')[0];
   }
 
   SaveSalesOrderRelease(val:any) {
+    
     let _documents = [];
     for (let i = 0; i < this.uploadedDocument.length; i++) {
       if (this.uploadedDocument[i].ISNEW == 1 || this.uploadedDocument[i].ACTIVE == 0) {
@@ -573,6 +575,7 @@ this.raisedinvoiceonmaxDate = currentDate.toISOString().split('T')[0];
         // this.TOTAL_AMOUNT_VALUE = this.SO_list[0].TOTAL_AMOUNT_VALUE;
         this.TOTAL_REQUEST_VALUE = this.SO_list[0].TOTAL_REQUEST_VALUE;
         this.TOTAL_BILLED_VALUE = this.SO_list[0].TOTAL_BILLED_VALUE;
+        this.CANCEL_IND = this.SO_list[0].CANCEL_IND;
         this.f_fillFormData();
         this.IS_UPDATE = 1;
         setTimeout(() => {
