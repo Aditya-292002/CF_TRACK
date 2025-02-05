@@ -618,7 +618,7 @@ constructor(public sharedService: SharedServiceService,
       let debitAmount = element["DEBIT_AMT"];
       if (debitAmount !== null && debitAmount !== undefined) {
         if (typeof debitAmount === 'string') {
-          debitAmount = parseFloat(debitAmount);
+          debitAmount = parseFloat(this.pipeService.removeCommaseprated(debitAmount));
         }
         if (!isNaN(debitAmount)) {
           TOTAL_DEBIT += debitAmount;
@@ -627,7 +627,7 @@ constructor(public sharedService: SharedServiceService,
       let creditAmount = element["CREDIT_AMT"];
       if (creditAmount !== null && creditAmount !== undefined) {
         if (typeof creditAmount === 'string') {
-          creditAmount = parseFloat(creditAmount);
+          creditAmount = parseFloat(this.pipeService.removeCommaseprated(creditAmount));
         }
         if (creditAmount === null) {
           creditAmount = 0;

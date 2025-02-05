@@ -143,11 +143,11 @@ export class LeaveApprovalComponent implements OnInit {
       
         this.min_date = this.sharedService.loginUser[0].FROM_DATE;
         this.maxdate = this.sharedService.loginUser[0].TO_DATE;
-        this.GetPendingLeave_Employee_List();
+       // this.GetPendingLeave_Employee_List();
 
        if(this.sharedService.loginUser[0].ROLE_NAME == 'SUPER ADMIN'){
           this.isAdmin = true;
-         this.GetPendingLeave_Employee_List();
+       //  this.GetPendingLeave_Employee_List();
          this.GetLeaveCommonList();
          this.GetPendingLeave_Employee();
        } else{
@@ -199,30 +199,31 @@ export class LeaveApprovalComponent implements OnInit {
 
   all_employee_list: Array<any> = [];
   Employee_list:Array<any>=[];
-  GetPendingLeave_Employee_List() {
-    let data = {
-      TYPE:"LIST"
+
+  // GetPendingLeave_Employee_List() {
+  //   let data = {
+  //     TYPE:"LIST"
   
-    }
+  //   }
 
-    this.http.PostRequest(this.apiUrl.GetPendingLeave_Employee_List_Detail, data).then(res => {
-     console.log(res)
-      if (res.flag) {
-        this.all_employee_list = res.pendingleave_emp_list_detail;
-        // this.Employee_list = res.pendingleave_emp_list_detail;
-        this.GetPendingLeave_Employee();
+  //   this.http.PostRequest(this.apiUrl.GetPendingLeave_Employee_List_Detail, data).then(res => {
+  //    console.log(res)
+  //   //  if (res.flag) {
+  //       this.all_employee_list = res.pendingleave_emp_list_detail;
+  //       // this.Employee_list = res.pendingleave_emp_list_detail;
+  //       this.GetPendingLeave_Employee();
 
-        setTimeout(() => {
-          $('.selectpicker').selectpicker('refresh').trigger('change');
-        }, 100);
-        this.spinner = false;
-      } else {
-        this.spinner = false;
-      }
-    }, err => {
-      this.spinner = false;
-    });
-  }
+  //       setTimeout(() => {
+  //         $('.selectpicker').selectpicker('refresh').trigger('change');
+  //       }, 100);
+  //       this.spinner = false;
+  //   //  } else {
+  //       this.spinner = false;
+  //    // }
+  //   }, err => {
+  //     this.spinner = false;
+  //   });
+  // }
 
   // changeViewList(){
   //   this.getAllEmployee();
