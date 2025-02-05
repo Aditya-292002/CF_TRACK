@@ -515,7 +515,9 @@ export class ReimbursementsapprovalComponent implements OnInit {
    f_downloadDocument(file: any) {
       if (file != undefined && file != null && file != "") {
         this.spinner = true;
-        this.http.PostRequest(this.apiUrl.GetFile, { DOCUMENT_FILENAME: file.DOCUMENT_FILENAME }).then(res => {
+        console.log('file.DOCUMENT_SYSFILENAM',file.DOCUMENT_SYSFILENAME);
+        
+        this.http.PostRequest(this.apiUrl.GetFile, { DOCUMENT_SYSFILENAME: file.DOCUMENT_SYSFILENAME }).then(res => {
           if (res.flag) {
             const byteString = atob(res.b64);
             const arrayBuffer = new ArrayBuffer(byteString.length);

@@ -242,8 +242,16 @@ constructor(public sharedService: SharedServiceService,
         return false;
       }  
       this._JV_Detail.forEach((element)=>{
+        
        element.DEBIT_AMT=this.pipeService.removeCommaseprated( element.DEBIT_AMT);
        element.CREDIT_AMT=this.pipeService.removeCommaseprated(  element.CREDIT_AMT);
+       
+       if(element.DEBIT_AMT==""){
+        element.DEBIT_AMT=0
+      }
+      if(element.CREDIT_AMT==""){
+        element.CREDIT_AMT=0
+      }
       })
 
       let data = {
@@ -266,8 +274,8 @@ constructor(public sharedService: SharedServiceService,
         JV_ID: this.JV_ID,
         JVNO: this.JV_NO,
       }
-     //console.log('res',data);
-     //return
+   //  console.log('res',data);
+    // return
     this.http.PostRequest(this.apiUrl.SaveJV, data ).then(res => {
       if (res.flag) {
         this.toast.success(res.msg);
@@ -344,6 +352,7 @@ constructor(public sharedService: SharedServiceService,
         this.all_list.forEach(ele => {
           if(element.RECGRP == ele.RECGRP && element.GL_NO == ele.GL_NO ){
             this._JV_Detail[index].PARTY.push(ele)
+            console.log('ele',ele);
           }
         });
       }
@@ -371,7 +380,6 @@ constructor(public sharedService: SharedServiceService,
       element.disabled1 = false;
   }
     })
-
     this.isEnabled = true;
     var TOTAL_DEBIT=0;
     var TOTAL_CREDIT=0;
@@ -610,7 +618,7 @@ constructor(public sharedService: SharedServiceService,
       let debitAmount = element["DEBIT_AMT"];
       if (debitAmount !== null && debitAmount !== undefined) {
         if (typeof debitAmount === 'string') {
-          debitAmount = parseFloat(debitAmount);
+          debitAmount = parseFloat(this.pipeService.removeCommaseprated(debitAmount));
         }
         if (!isNaN(debitAmount)) {
           TOTAL_DEBIT += debitAmount;
@@ -619,7 +627,7 @@ constructor(public sharedService: SharedServiceService,
       let creditAmount = element["CREDIT_AMT"];
       if (creditAmount !== null && creditAmount !== undefined) {
         if (typeof creditAmount === 'string') {
-          creditAmount = parseFloat(creditAmount);
+          creditAmount = parseFloat(this.pipeService.removeCommaseprated(creditAmount));
         }
         if (creditAmount === null) {
           creditAmount = 0;
