@@ -8,7 +8,7 @@
         <div class="">
             <button class="btn btn-secondary  float-right ml-1 mr-1" *ngIf="!isViewSO"
             (click)="SaveSalesOrder()" title="Save">Save</button>
-            <button class="btn btn-secondary  float-right ml-1 mr-1" *ngIf="!isViewSO" (click)="viewSOList()"
+            <button class="btn btn-secondary  float-right ml-1 mr-1" *ngIf="!isViewSO && this.SO_list.length > 0" (click)="viewSOList()"
             title="view Leave Details"><i class="far fa-eye mr-1"></i> List</button>
                 <button class="btn btn-secondary  float-right ml-2  " *ngIf="isViewSO"  
                 (click)="backToForm()" title="Add New">Add New
@@ -299,7 +299,7 @@
                                                         [ngModelOptions]="{standalone: true}"
                                                         (ngModelChange)="updateTotalAmount()">
                                                 </div>
-                                            </td> -->
+                                            </td> -->   
                                                 </td>
                                                 <td class="w-20">
                                                     <div class="floating-input">

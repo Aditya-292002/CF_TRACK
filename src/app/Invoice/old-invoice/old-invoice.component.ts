@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ApiUrlService } from 'src/app/services/api-url.service';
@@ -9,24 +9,21 @@ import * as moment from 'moment';
 import { DatePipe } from '@angular/common';
 import { saveAs } from 'file-saver';
 import { PipeService } from 'src/app/services/pipe.service';
-import { element } from 'protractor';
-import { CostFilterPipe } from 'src/app/resources/filter.pipe';
 // import { MatDatepickerFilter } from '@angular/material/datepicker';
 
 
 declare var $: any;
 
 @Component({
-  selector: 'app-invoice',
-  templateUrl: './invoice.component.html',
-  styleUrls: ['./invoice.component.css']
+  selector: 'app-old-invoice',
+  templateUrl: './old-invoice.component.html',
+  styleUrls: ['./old-invoice.component.css']
 })
 
-export class InvoiceComponent implements OnInit {
-   @ViewChild('CheckValidationForInvoiceCreate', { static: false }) modal: ElementRef;
-  
+export class OldInvoiceComponent implements OnInit {
   spinner: boolean = false;
   form: FormGroup
+  
     BILLING_DATE: any = '';
     DUE_DATE: any = '';
     PO_DATE: any = '';
@@ -65,7 +62,6 @@ export class InvoiceComponent implements OnInit {
     _project_list:Array<any> = [];
     state_list: Array<any> = [];
     service_list: Array<any> = [];
-    _service_list: Array<any> = [];
     templete_list: Array<any> = [];
     _invoice_detail: Array<any> = [];
     all_invoice_list: Array<any> = [];
@@ -77,12 +73,7 @@ export class InvoiceComponent implements OnInit {
     isSubmited: boolean = false;
     isViewInvoice:boolean = false;
     invoice_header : Array<any> = [];
-    SO_Detail_list: Array<any> = [];
-    RAISE_INVOICE_ON: any = new Date();
-    minDate: any = new Date();
-    raisedinvoiceonmaxDate:any = new Date();
-    VIEW_RAISE_INVOICE_ON: any = new Date();
-    
+
     constructor(public sharedService: SharedServiceService,
       private apiUrl: ApiUrlService,
       private http: HttpRequestServiceService,
@@ -91,11 +82,11 @@ export class InvoiceComponent implements OnInit {
       private datePipe: DatePipe,
       public validationService: ValidationService,
       private pipeService: PipeService,
-      public datepipe: DatePipe,
-    private currencyPipe: CostFilterPipe) { }
+      public datepipe: DatePipe) { }
 
   ngOnInit() {
     this.sharedService.formName = "Invoice"
+
     this.form = this.formBuilder.group({
       BILL_ID:[""],
       REQ_ID:"",
@@ -113,8 +104,7 @@ export class InvoiceComponent implements OnInit {
       PO_NO: ["",Validators.required],
       PO_DATE: ["",Validators.required],
       KIND_ATTN: "",
-      CURRENCY_CODE: ["INR",Validators.required], 
-      RAISE_INVOICE_ON: ["", Validators.required],
+      CURRENCY_CODE: ["INR",Validators.required],
       EXCHANGE_RATE:["",Validators.required],
       DOC_VALUE:["",Validators.required],
       BASE_VALUE:"",
@@ -130,21 +120,26 @@ export class InvoiceComponent implements OnInit {
       TEMPLATE_CODE:["",Validators.required],
       BILL_IND:"",
     })
+
+    
       $('.selectpicker').selectpicker('refresh').trigger('change');
+  
       this.userData = JSON.parse(sessionStorage.getItem('user_detail'))
       this.FYEAR =  this.userData[0].FYEAR
+    
   }
  
 
 ngAfterViewInit(){    
   setTimeout(() => {
-    // if (this.sharedService.form_rights.ADD_RIGHTS) {
-    //   this.ADD_RIGHTS = this.sharedService.form_rights.ADD_RIGHTS
-    // }
-    // if (this.sharedService.form_rights.UPDATE_RIGHTS) {
-    //   this.UPDATE_RIGHTS = this.sharedService.form_rights.UPDATE_RIGHTS
-    // }
-    // this.NO_RIGHTS = this.ADD_RIGHTS || this.UPDATE_RIGHTS?false:true;
+    if (this.sharedService.form_rights.ADD_RIGHTS) {
+      this.ADD_RIGHTS = this.sharedService.form_rights.ADD_RIGHTS
+    }
+    if (this.sharedService.form_rights.UPDATE_RIGHTS) {
+      this.UPDATE_RIGHTS = this.sharedService.form_rights.UPDATE_RIGHTS
+    }
+
+    this.NO_RIGHTS = this.ADD_RIGHTS || this.UPDATE_RIGHTS?false:true;
 
     if(this.sharedService.loginUser[0].FYEAR == undefined){
       this.sharedService.loginUser = sessionStorage.getItem('user_detail') ? JSON.parse(sessionStorage.getItem('user_detail')):[]
@@ -242,7 +237,7 @@ ngAfterViewInit(){
     || this.form.getRawValue().LOCATION_CODE != "" || this.form.getRawValue().LOCATION_CODE != undefined || this.form.getRawValue().LOCATION_CODE != null
     )
     {
-      this._invoice_detail.forEach((element:any) => {    
+      this._invoice_detail.forEach(element => {    
         if(element.SERVICE_CODE != "" || element.SERVICE_CODE != undefined || element.SERVICE_CODE != null){
           let data = {
             CUST_CODE:this.form.getRawValue().CUST_CODE,
@@ -253,12 +248,17 @@ ngAfterViewInit(){
           this.http.PostRequest(this.apiUrl.GetGstRate, data).then(res => {
             if (res.flag) {
               //console.log(res.gstrate_list[0].SGST_RATE);
+      
               //this._invoice_detail[this._selected_index].SGST_RATE = res.gstrate_list[0].SGST_RATE;
               //this._invoice_detail[this._selected_index].CGST_RATE = res.gstrate_list[0].CGST_RATE;
               //this._invoice_detail[this._selected_index].IGST_RATE = res.gstrate_list[0].IGST_RATE;
+              
               element.SGST_RATE = res.gstrate_list[0].SGST_RATE;
               element.CGST_RATE = res.gstrate_list[0].CGST_RATE;
               element.IGST_RATE = res.gstrate_list[0].IGST_RATE;
+              
+
+
               setTimeout(() => {
                 $('.selectpicker').selectpicker('refresh').trigger('change');
               }, 
@@ -297,13 +297,16 @@ ngAfterViewInit(){
 
   GetInvoiceList(){
     let data = {
-      LISTTYPE:"approved"
+      LISTTYPE:"pendingforinvoice"
     }
  
     this.spinner = true;
     this.http.PostRequest(this.apiUrl.GetInvoiceList, data).then(res => {
       if (res.flag) {
         this.invoice_list = res.invoice_list;
+        this.f_fillFormData();
+        this.f_clearForm();
+        this.filterProject();
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh').trigger('change');
         }, 100);
@@ -327,6 +330,7 @@ ngAfterViewInit(){
     } else {
       this._location_list = this.location_list
     }
+    
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);
@@ -348,39 +352,49 @@ ngAfterViewInit(){
   }
 
   filterProject(){
-    this._project_list = [];
-     this.project_list.forEach((element:any)=>{
-      if(element.CUST_CODE == this.form.controls['CUST_CODE'].value){
-        this._project_list.push(element);
-      }
-     })
-     this.customer_list.forEach((element:any) => {
-      if(element.CUST_CODE == this.form.controls['CUST_CODE'].value){
+    // console.log("calling filterProject")
+    this.CalculateFinalAmount();
+    if(this.form.getRawValue().CUST_CODE != "" && this.form.getRawValue().CUST_CODE != null){
+      
+    console.log("CUST_CODE : " + this.form.getRawValue().CUST_CODE + ".")
+      this._project_list = [];
+      this.project_list.forEach(element => {
+        
+        if(element.CUST_CODE == this.form.getRawValue().CUST_CODE+""){
+          this._project_list.push(element)
+          }
+      });
+
+      this.customer_list.forEach(element => {
+        if(element.CUST_CODE == this.form.getRawValue().CUST_CODE){
+          
           this.form.get('STATE_CODE').setValue(element.CUST_STATE+"");
           this.form.get('KIND_ATTN').setValue(element.CUST_KINDATTN);
           this.form.get('CURRENCY_CODE').setValue(element.CUST_CURRENCY);
-          if (element.CUST_CURRENCY == "INR") {
-              this.form.get('EXCHANGE_RATE').setValue(1);
-              document.getElementById('EXCHANGE_RATE').setAttribute("disabled", "true");
-            }
-            else {
-              document.getElementById('EXCHANGE_RATE').removeAttribute("disabled")
-            }
-      }
-     })
-     this.form.get("PROJ_CODE").setValue(this.SO_Detail_list[0].PROJ_CODE)
+          if(element.CUST_CURRENCY == "INR"){            
+            this.form.get('EXCHANGE_RATE').setValue(1);
+            document.getElementById('EXCHANGE_RATE').setAttribute("disabled","true");
+          }
+          else{
+            document.getElementById('EXCHANGE_RATE').removeAttribute("disabled")   
+          }
+          
+          var due_date_new = new Date(this.form.getRawValue().BILLING_DATE);
+          this.credit_days = Number(element.CUST_CREDITDAYS);          
+          
+          var new_date  = moment(new Date(due_date_new)).add(this.credit_days,'d');          
+          this.form.get('DUE_DATE').setValue(new_date);
+          this.GetGSTRate();
+          // this.CalculateFinalAmount();
+        }
+      });
+    } else {
+      this._project_list = this.project_list
+      
+    }
+    
     setTimeout(() => {
-    this.CalculateFinalAmount();
       $('.selectpicker').selectpicker('refresh').trigger('change');
-
-      // this._service_list = [];
-      // this.service_list.forEach((element:any)=>{
-      //   if(element.SERVICE_CODE == this.SO_Detail_list[0].SERVICE_CODE){
-      //     console.log("" )
-      //     this.form.get("SERVICE_CODE").setValue(this.SO_Detail_list[0].SERVICE_CODE)
-      //   }
-      //  })
-
     }, 100);
   }
 
@@ -395,7 +409,6 @@ ngAfterViewInit(){
   }
 
   CalculateFinalAmount (){
-    // console.log(' _invoice_detail 1 ->' , this._invoice_detail)
     var BILL_VALUE= 0;
     var SGST_VALUE= 0;
     var CGST_VALUE= 0;
@@ -403,8 +416,7 @@ ngAfterViewInit(){
     var TOT_VALUE= 0;
     var FINAL_TOTAL_ROUND = 0;
     var ROUNDOFF = 0;
-    // console.log(' _invoice_detail 2 ->' , this._invoice_detail)
-    this._invoice_detail.forEach((element:any) => {
+    this._invoice_detail.forEach(element => {
       BILL_VALUE += parseFloat(element.DOC_VALUE);      
       element.SGST_VALUE = (parseFloat(element.DOC_VALUE) * parseFloat(element.SGST_RATE)/100).toFixed(2);     
       element.CGST_VALUE = (parseFloat(element.DOC_VALUE) * parseFloat(element.CGST_RATE)/100).toFixed(2);     
@@ -430,7 +442,11 @@ ngAfterViewInit(){
     //this.FINAL_BASE_VALUE_2 = FINAL_BASE_VALUE;
     this.form.get('BASE_VALUE').setValue((FINAL_BASE_VALUE).toFixed(2));
     this.form.get('BASE_VALUE').setValue((this.pipeService.setCommaseprated(FINAL_BASE_VALUE.toFixed(2))))
-    // console.log(' _invoice_detail 3 ->' , this._invoice_detail)
+    
+    this.costInput();
+  }
+
+  costInput(){
   }
 
   f_H_M(hours: string = ''): any {
@@ -473,6 +489,8 @@ ngAfterViewInit(){
 
     // console.log(data);
     //return;
+  
+  
     this.http.PostRequest(this.apiUrl.SaveInvoice, data ).then(res => {
       if (res.flag) {
         this.toast.success(res.msg)
@@ -504,10 +522,10 @@ ngAfterViewInit(){
       this.toast.warning('Please select invoice type');
       return false;
     } 
-  //  else if (this.form.controls['FYEAR'].invalid) {
-  //     this.toast.warning('Please select FYEAR');
-  //     return false;
-  //   }  
+   else if (this.form.controls['FYEAR'].invalid) {
+      this.toast.warning('Please select FYEAR');
+      return false;
+    }  
     else if (this.form.controls['BILLING_DATE'].invalid) {
       this.toast.warning('Please enter request date');
       return false;
@@ -671,7 +689,7 @@ ngAfterViewInit(){
   f_fillFormData() {
     this.spinner = true;
     this.filterLocations();
-    // this.form.get("BILL_ID").setValue(this.invoice_header[0].BILL_ID)
+    this.form.get("BILL_ID").setValue(this.invoice_header[0].BILL_ID)
     this.form.get("REQ_ID").setValue(this.invoice_header[0].REQ_ID)
     this.form.get("LOCATION_STATE").setValue(this.invoice_header[0].LOCATION_STATE)
     this.form.get("STATE_CODE").setValue(this.invoice_header[0].STATE_CODE)
@@ -705,7 +723,6 @@ ngAfterViewInit(){
       
     this.SelectState();
         setTimeout(() => {
-    this.form.get("REQ_ID").setValue(this.invoice_header[0].REQ_ID)
           this.form.get("COMPANY_CODE").setValue(this.invoice_header[0].COMPANY_CODE)
  //         this.GetProjectList();
           this.form.get("LOCATION_CODE").setValue(Number(this.invoice_header[0].LOCATION_CODE))
@@ -765,87 +782,6 @@ ngAfterViewInit(){
     }, err => {
       this.spinner = false;
     });
-  }
-
-  GetSalesOrderReleaseDetail(val:any) {
-    let SO_ID = 0;
-    this.invoice_list.forEach((element:any)=>{
-      if(element.REQ_ID == this.form.controls['REQ_ID'].value){
-         SO_ID = element.SO_ID
-      }
-    })
-    let data = {
-      REQ_ID: this.form.controls['REQ_ID'].value,
-      SO_ID: SO_ID
-    }
-    // console.log('data ->' , data)
-    this.http.PostRequest(this.apiUrl.GetSalesOrderReleaseDetail, data).then(res => {
-      if (res.flag == 1) {
-        // console.log(' res ->' , res)
-        this.SO_Detail_list = res.SO_Detail_list;
-        // this.SO_MILESTONE_T = res.SO_Milestone_list;
-        // this.uploadedDocument = res.SO_Document_list;
-        // for (let i = 0; i < this.SO_Detail_list.length; i++) {
-        //   this.TOTAL_AMOUNT_VALUE = this.SO_Detail_list[i].TOTAL_AMOUNT_VALUE;
-        // }
-        // this.SO_MILESTONE_T.forEach((element:any)=>{
-        //   this._invoice_detail[0].SERVICE_CODE += element.REQ_VALUE;
-        // })
-        this.RAISE_INVOICE_ON = new Date(this.SO_Detail_list[0].RAISE_INVOICE_ON)
-        this.VIEW_RAISE_INVOICE_ON = this.datepipe.transform(this.SO_Detail_list[0].RAISE_INVOICE_ON, 'dd-MMM-yyyy');
-        let ToDate = new Date();
-        if (this.RAISE_INVOICE_ON > ToDate && val == 0) {
-          const modalElement = document.getElementById('CheckValidationForInvoiceCreate');
-          if (modalElement) {
-            modalElement.classList.add('show');
-            modalElement.style.display = 'block';
-          }
-        }else if(val == 1){
-          const modalElement = document.getElementById('CheckValidationForInvoiceCreate');
-          if (modalElement) {
-            modalElement.classList.remove('show');
-            modalElement.style.display = 'none';
-          }
-        }
-        this.form.get("PO_NO").setValue(this.SO_Detail_list[0].PO_NO)
-        this.form.get("KIND_ATTN").setValue(this.SO_Detail_list[0].KIND_ATTN)
-        this.form.get("COMPANY_CODE").setValue(this.SO_Detail_list[0].COMPANY_CODE)
-        this.form.get("CUST_CODE").setValue(this.SO_Detail_list[0].CUST_CODE)
-        this.form.get("TEMPLATE_CODE").setValue(this.SO_Detail_list[0].TEMPLATE_CODE)
-        this._invoice_detail[0].SERVICE_CODE = this.SO_Detail_list[0].SERVICE_CODE
-        this._invoice_detail[0].REMARKS = this.SO_Detail_list[0].REQUEST_REMARKS
-        this._invoice_detail[0].DOC_VALUE = this.SO_Detail_list[0].TOTAL_AMOUNT_VALUE.toString();
-        this.GetGSTRate();
-        this.filterProject();
-        this.spinner = false;
-        setTimeout(() => {
-          $('.selectpicker').selectpicker('refresh').trigger('change');
-        }, 100);
-      } else {
-        this.spinner = false;
-      }
-    }, err => {
-      this.spinner = false;
-    });
-  }
-
-  removeData(data: any): void {
-    const index = this._invoice_detail.indexOf(data);
-    if (index !== -1) {
-      this._invoice_detail.splice(index, 1);
-    }
-    this.CalculateFinalAmount();
-  }
-
-  CloseCheckValidationForInvoiceCreate(){
-    this.GetGSTRate();
-    this.filterProject(); 
-    const modalElement = document.getElementById('CheckValidationForInvoiceCreate');
-    if (modalElement) {
-      modalElement.classList.remove('show');
-      modalElement.style.display = 'none';
-    }
-    this.f_clearForm();
   }
 
   }

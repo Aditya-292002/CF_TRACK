@@ -566,13 +566,13 @@ this.raisedinvoiceonmaxDate = currentDate.toISOString().split('T')[0];
         // this.SO_UPLOADED_DOCUMENT = res.SO_Document_list;
         this.SO_REQUEST_UPLOADED_DOCUMENT = res.SO_Request_Document_list;
         this.SO_MILESTONE_T.forEach((element:any)=>{
+          this.TOTAL_AMOUNT_VALUE += element.REQ_VALUE
           element.EXPECTED_DATE = new Date(element.EXPECTED_DATE);
-          this.TOTAL_AMOUNT_VALUE += element.REQ_VALUE;
           element.REQ_VALUE = this.currencyPipe.transform(element.REQ_VALUE)
-          this.TOTAL_REQUEST_VALUE += element.DOC_VALUE;
-          this.TOTAL_BILLED_VALUE += element.BILLED_VALUE;
         })
         // this.TOTAL_AMOUNT_VALUE = this.SO_list[0].TOTAL_AMOUNT_VALUE;
+        this.TOTAL_REQUEST_VALUE = this.SO_list[0].TOTAL_REQUEST_VALUE;
+        this.TOTAL_BILLED_VALUE = this.SO_list[0].TOTAL_BILLED_VALUE;
         this.f_fillFormData();
         this.IS_UPDATE = 1;
         setTimeout(() => {
@@ -601,13 +601,13 @@ this.raisedinvoiceonmaxDate = currentDate.toISOString().split('T')[0];
         this.SO_MILESTONE_T = res.SO_Milestone_list;
         this.SO_UPLOADED_DOCUMENT = res.SO_Document_list;
         this.SO_MILESTONE_T.forEach((element:any)=>{
+          this.TOTAL_AMOUNT_VALUE += element.REQ_VALUE
           element.EXPECTED_DATE = new Date(element.EXPECTED_DATE);
-          this.TOTAL_REQUEST_VALUE += element.DOC_VALUE;
-          this.TOTAL_BILLED_VALUE += element.BILLED_VALUE;
-          this.TOTAL_AMOUNT_VALUE += element.REQ_VALUE;
           element.REQ_VALUE = this.currencyPipe.transform(element.REQ_VALUE)
         })
         // this.TOTAL_AMOUNT_VALUE = this.SO_list[0].TOTAL_AMOUNT_VALUE;
+        this.TOTAL_REQUEST_VALUE = this.SO_list[0].TOTAL_REQUEST_VALUE;
+        this.TOTAL_BILLED_VALUE = this.SO_list[0].TOTAL_BILLED_VALUE;
         this.f_fillFormData();
         this.editing = true;
         this.IS_UPDATE = 0;
