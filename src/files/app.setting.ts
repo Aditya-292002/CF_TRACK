@@ -12,7 +12,7 @@ export var AppSetting = {
     encryption: false,
     currencyFormatter:"INR"
 }
-
+//
 
 /***************************************************************************************************
  * To convert Readable string to Base64 string using Buffer
