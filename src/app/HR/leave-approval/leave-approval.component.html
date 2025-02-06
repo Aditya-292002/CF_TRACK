@@ -2,8 +2,8 @@
 <form [formGroup]="form">
     <div class="row">
         <div class="col-md-12">
-			<div class="d-flex justify-content-between">
-                <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
+			<div class="d-flex flex-wrap justify-content-between">
+                <h5 class="formName col-sm-12 col-md-12 col-lg-4">{{ sharedService.formName }}</h5>
                 <div class="">
                     <button class="btn btn-secondary mr-1" *ngIf="isViewLeave" (click)="viewLeaveList()"
                         title="view list Details back" data-toggle="modal" data-target="#viewLeave">View leave</button>
@@ -19,7 +19,7 @@
       </div> 
         <div class="col-md-12 mt-2" *ngIf="isViewLeave">
             <div class="row card">
-                <div class="col-md-3 mt-2">
+                <div class="col-sm-12 col-md-12 col-lg-3 mt-2">
                     <div class="floating-input list-btn">
                         <select class="form-control selectpicker show-tick" formControlName="EMP_NO"
                             (change)="onChange($event)" data-live-search="true" #emp id="emp{{i}}" title="Employee Name"
@@ -34,10 +34,10 @@
                         </button>
                     </div>
                 </div>
-                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 mt-2 pl-0">
+                <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 mt-2">
                     <div class="floating-input list-btn">
                         <select class="form-control selectpicker show-tick" formControlName="LEAVE_TYPE" id="TYPE{{i}}"
-                            (change)="onChange($event)" data-live-search="true" title="LEAVE TYPE">
+                            (change)="onChange($event)" data-live-search="true" title="Leave Type">
                             <option *ngFor="let opt of LeaveType_list; let i = index"
                                 [selected]="opt.LEAVE_TYPE == form.controls['LEAVE_TYPE'].value"
                                 [value]="opt.LEAVE_TYPE">{{ opt.LEAVE_TYPE_DESC }}</option>
@@ -47,10 +47,10 @@
                         </button>
                     </div>
                 </div>
-                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 mt-2 pl-0">
+                <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 mt-2">
                     <div class="floating-input">
                         <input type="text" class="form-control" formControlName="FROM_DATE" [(ngModel)]="FROM_DATE"
-                            (change)="ChangeFDate()" placeholder="FROM DATE" readonly>
+                            (change)="ChangeFDate()" placeholder="From Date" readonly>
                         <!-- <app-date-picker id="reqdate" [(ngModel)]="JV_DATE" #reqdate class="date-input" [ngModelOptions]="{standalone: true}"></app-date-picker> -->
                         <div class="date-input">
                             <mat-form-field fxFlex="100" appearance="fill">
@@ -65,10 +65,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-2 col-lg-3 col-md-2 col-sm-2 mt-2 pl-0 padd-1">
+                <div class="col-xl-2 col-lg-3 col-md-12 col-sm-12 mt-2">
                     <div class="floating-input">
                         <input type="text" class="form-control" formControlName="TO_DATE" [(ngModel)]="TO_DATE" enabled
-                            placeholder="TO DATE" readonly>
+                            placeholder="To Date" readonly>
                         <!-- <app-date-picker id="reqdate" [(ngModel)]="JV_DATE" #reqdate class="date-input" [ngModelOptions]="{standalone: true}"></app-date-picker> -->
                         <div class="date-input" id="div_todate">
                             <mat-form-field fxFlex="100" appearance="fill">
@@ -84,7 +84,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-2 col-lg-3 col-md-3 col-sm-3 mt-2 pl-0 padd-1">
+                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 mt-2">
                     <div class="floating-input list-btn">
                         <select class="form-control selectpicker show-tick" formControlName="STATUS" id="Status"
                             #filterName (change)="onChange($event)" data-live-search="true" title="Status">
@@ -99,11 +99,11 @@
                         </button>
                     </div>
                 </div>
-                <div class=" col-xl-1 col-lg-2 col-md-2 col-sm-2 pl-0 mt-2">
+                <div class=" col-xl-1 col-lg-2 col-md-12 col-sm-12  mt-2">
                     <button class="btn btn-secondary" (click)="GetSearchLeaveList()" id="Search{{i}}"
                         title="Search">Search</button>
                 </div>
-                <div class=" col-xl-1 col-lg-2 col-md-2 col-sm-2 mt-2">
+                <div class=" col-xl-1 col-lg-2 col-md-12 col-sm-12 mt-2">
                     <button class="btn btn-secondary" (click)="clear()" id="Search{{i}}" title="Search">Clear</button>
                     <!-- <i class="fas fa-times mr-3" (click)="clear()" title="Clear"></i> -->
                 </div>

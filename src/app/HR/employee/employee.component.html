@@ -4,9 +4,9 @@
     <!--  -->
     <div class="col-md-12 mb-1" *ngIf="UPDATE_RIGHTS || ADD_RIGHTS">
       <div class="d-flex flex-wrap justify-content-between">
-        <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
-        <div class="d-flex  col-md-8 justify-content-end">
-          <div class="col-md-8">
+        <h5 class="formName col-sm-12 col-md-12 col-lg-4">{{ sharedService.formName }}</h5>
+        <div class="d-flex flex-wrap  col-sm-12 col-md-12 col-lg-8 justify-content-end">
+          <div class="col-sm-12 col-md-12 col-lg-8">
             <div class="floating-input list-btn">
               <select
                 class="form-control selectpicker show-tick mr-2"
@@ -115,7 +115,7 @@
     <div class="tab-content">
       <div class="tab-pane mt-2 col-md-12" id="job" aria-labelledby="job">
         <div class="row card" [ngClass]="{ norights: NO_RIGHTS }">
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>Company :</label>
             <div
               class="floating-input mb-1 list-btn"
@@ -153,7 +153,7 @@
               </button>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>Location :</label>
             <div
               class="floating-input mb-1 list-btn"
@@ -191,7 +191,7 @@
               </button>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>Vendor :</label>
             <div
               class="floating-input mb-1 list-btn"
@@ -229,9 +229,9 @@
         </div>
         <!--  -->
         <div class="row">
-          <div class="col-md-8 pr-0 mt-2">
+          <div class="col-sm-12 col-md-12 col-lg-8 pr-0 mt-2">
             <div class="row card">
-              <div class="col-md-6">
+              <div class="col-sm-12 col-md-12 col-lg-6">
                 <label>Division :</label>
                 <div
                   class="floating-input mb-1 list-btn"
@@ -271,7 +271,7 @@
                   </button>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-sm-12 col-md-12 col-lg-6">
                 <label>Department :</label>
                 <div
                   class="floating-input mb-1 list-btn"
@@ -308,7 +308,7 @@
                   </button>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-sm-12 col-md-12 col-lg-6">
                 <label>Reporting To :</label>
                 <div
                   class="floating-input mb-1 list-btn"
@@ -346,7 +346,7 @@
                   </button>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-sm-12 col-md-12 col-lg-6">
                 <label>Date Of Joining<span class="validator">*</span> :</label>
                 <div
                   class="floating-input mb-1"
@@ -375,7 +375,7 @@
                   ></app-date-picker>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-sm-12 col-md-12 col-lg-6">
                 <label>Designation<span class="validator">*</span> :</label>
                 <div
                   class="floating-input mb-1"
@@ -394,7 +394,7 @@
                   />
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-sm-12 col-md-12 col-lg-6">
                 <label>WEF Date :</label>
                 <div
                   class="floating-input mb-1"
@@ -423,7 +423,7 @@
                 </div>
               </div>
 
-              <div class="col-md-6">
+              <div class="col-sm-12 col-md-12 col-lg-6">
                 <label>Bank Account No. :</label>
                 <div
                   class="floating-input mb-1"
@@ -442,7 +442,7 @@
                   />
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-sm-12 col-md-12 col-lg-6">
                 <label>IFSC :</label>
                 <div
                   class="floating-input mb-1"
@@ -465,7 +465,7 @@
             </div>
           </div>
           <!--  -->
-          <div class="col-md-4 mt-2">
+          <div class="col-sm-12 col-md-12 col-lg-4 mt-2">
             <div class="row card">
               <div class="col-md-12">
                 <label>Status :</label>
@@ -594,7 +594,7 @@
           <!--  -->
           <div class="col-md-12 mt-2">
             <div class="row card px-3">
-              <h6 class="mb-0 col-md-6 p-0">Statutory Details</h6>
+              <h6 class="mb-0 col-sm-12 col-md-12 col-lg-6 p-0">Statutory Details</h6>
               <hr class="m-0 mb-2" />
               <div class="tableFixHead">
                 <table class="table-theam-1 row_bgcolor_1">
@@ -650,7 +650,7 @@
         aria-labelledby="personal"
       >
         <div class="row card" [ngClass]="{ norights: NO_RIGHTS }">
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>Employee No.<span class="validator">*</span> :</label>
             <div
               class="floating-input mb-1"
@@ -672,7 +672,7 @@
               />
             </div>
           </div>
-          <div class="col-md-7">
+          <div class="col-sm-12 col-md-12 col-lg-7">
             <label>Type<span class="validator">*</span> :</label>
             <div class="form-inline mt-1">
               <div class="form-group radios mr-3">
@@ -733,7 +733,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-sm-12 col-md-12 col-lg-6">
             <div class="row">
               <div class="col-md-12">
                 <label>Name<span class="validator">*</span> :</label>
@@ -793,7 +793,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-sm-12 col-md-12 col-lg-6">
             <div class="row">
               <div class="col-sm-4 col-md-12">
                 <label for="">Profile Image :</label><br />
@@ -860,7 +860,7 @@
           </div>
         </div>
         <div class="row card mt-2" [ngClass]="{ norights: NO_RIGHTS }">
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>Gender :</label>
             <div class="form-inline">
               <div class="form-group radios mr-3">
@@ -889,7 +889,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>DOB<span class="validator">*</span> :</label>
             <div
               class="floating-input mb-1"
@@ -918,7 +918,7 @@
               ></app-date-picker>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>Marital Status<span class="validator">*</span> :</label>
             <div
               class="floating-input mb-1 list-btn"
@@ -956,7 +956,7 @@
               </button>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>Father Name :</label>
             <div
               class="floating-input mb-1"
@@ -975,7 +975,7 @@
               />
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>Mother Name :</label>
             <div
               class="floating-input mb-1"
@@ -995,7 +995,7 @@
             </div>
           </div>
 
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>Spouse Name :</label>
             <div
               class="floating-input mb-1"
@@ -1014,7 +1014,7 @@
               />
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>Religion :</label>
             <div
               class="floating-input mb-1"
@@ -1033,7 +1033,7 @@
               />
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>Caste :</label>
             <div
               class="floating-input mb-1"
@@ -1052,7 +1052,7 @@
               />
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>Nationality :</label>
             <div
               class="floating-input mb-1"
@@ -1071,7 +1071,7 @@
               />
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>Blood Group :</label>
             <div
               class="floating-input mb-1 list-btn"
@@ -1109,7 +1109,7 @@
               </button>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>Emergency Contact Person :</label>
             <div
               class="floating-input mb-1"
@@ -1129,7 +1129,7 @@
               />
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>Contact Person No :</label>
             <div
               class="floating-input mb-1"
@@ -1152,7 +1152,7 @@
         </div>
 
         <div class="row">
-          <div class="col-md-8 pr-0 mt-2">
+          <div class=" col-sm-12 col-md-12 col-lg-8 pr-0 mt-2">
             <div class="row card pb-4">
               <div class="col-md-12">
                 <label>Current Address :</label>
@@ -1198,7 +1198,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4 mt-2">
+          <div class="col-sm-12 col-md-12 col-lg-4 mt-2">
             <div class="row card">
               <div class="col-md-12">
                 <label>Mobile Official :</label>
@@ -1287,8 +1287,8 @@
         </div>
         <!--  -->
         <div class="row card mt-2">
-          <div class="col-md-8">
-            <h6 class="mb-0 col-md-6 p-0">Document Upload</h6>
+          <div class=" col-sm-12 col-md-12 col-lg-8">
+            <h6 class="mb-0 col-sm-12 col-md-12 col-lg-6 p-0">Document Upload</h6>
             <hr class="m-0 mb-2" />
             <!-- <div class="col-md-8" *ngIf="!NO_RIGHTS">
                             <div class="row">

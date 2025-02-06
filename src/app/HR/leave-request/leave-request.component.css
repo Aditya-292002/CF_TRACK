@@ -83,3 +83,7 @@ table .w-4{
         width: 140px;
     }
 }
+
+.small{
+    font-size: 14px;
+}
