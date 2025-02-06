@@ -16,6 +16,7 @@ import {
   ApexResponsive
 } from "ng-apexcharts";
 import { RoutingService } from "src/app/services/routing.service";
+import { log } from 'console';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -278,6 +279,9 @@ export class DashboardComponent implements OnInit {
   profile_pic: string = "";
   public chartOptions: Partial<ChartOptions>;
   public chartOptions1: Partial<ChartOptions1>;
+  userData: any;
+  Username: any;
+  Usernames: any;
 
   constructor(
     private sharedService: SharedServiceService,
@@ -433,7 +437,13 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.sharedService.formName = "Dashboard";
     this.profile_pic = this.sharedService.profile_pic;
-    this.login_user = this.sharedService.loginUser[0].USER_NAME;
+  //  console.log(' this.sharedService.loginUser', this.sharedService.user_detail);
+    this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
+    //this.login_user = this.sharedService.loginUser.USER_NAME;
+    //this.USER_ID = this.userData[0].USERID;
+    this.Username=this.userData[0].USER_NAME;
+    this.Usernames=this.Username.split(" ");
+    this.Username=this.Usernames[0];
   }
 
   ngAfterViewInit() {}
