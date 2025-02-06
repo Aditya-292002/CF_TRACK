@@ -59,6 +59,7 @@ export class LeaveRequestComponent implements OnInit {
   ROLE_NAME:any;
   isSaveReturn:any;
   warningmess:any;
+  ROLE_ID:any;
   
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
@@ -97,13 +98,13 @@ export class LeaveRequestComponent implements OnInit {
 
   ngAfterViewInit(){ 
     setTimeout(() => {
-      // if (this.sharedService.form_rights.ADD_RIGHTS) {
-      //   this.ADD_RIGHTS = this.sharedService.form_rights.ADD_RIGHTS
-      // }
-      // if (this.sharedService.form_rights.UPDATE_RIGHTS) {
-      //   this.UPDATE_RIGHTS = this.sharedService.form_rights.UPDATE_RIGHTS
-      // }
-      // this.NO_RIGHTS = this.ADD_RIGHTS || this.UPDATE_RIGHTS?false:true;
+      if (this.sharedService.form_rights.ADD_RIGHTS) {
+        this.ADD_RIGHTS = this.sharedService.form_rights.ADD_RIGHTS
+      }
+      if (this.sharedService.form_rights.UPDATE_RIGHTS) {
+        this.UPDATE_RIGHTS = this.sharedService.form_rights.UPDATE_RIGHTS
+      }
+      this.NO_RIGHTS = this.ADD_RIGHTS || this.UPDATE_RIGHTS?false:true;
       if(this.sharedService.loginUser[0].FYEAR == undefined){
         this.sharedService.loginUser = sessionStorage.getItem('user_detail') ? JSON.parse(sessionStorage.getItem('user_detail')):[]
         
@@ -183,11 +184,17 @@ export class LeaveRequestComponent implements OnInit {
   }
 
   Addrights(){
-    if(this.ADD_RIGHTS == false){
-      document.getElementById('emp').setAttribute("disabled","true");
-    }
-    else if(this.ADD_RIGHTS == true ){
+    this.ROLE_ID = this.sharedService.loginUser[0].ROLE_ID
+    // if(this.ADD_RIGHTS == false){
+    //   document.getElementById('emp').setAttribute("disabled","true");
+    // }
+    // else if(this.ADD_RIGHTS == true ){
+    //   document.getElementById('emp').removeAttribute("disabled");
+    // }
+    if(this.ROLE_ID === 3 || this.ROLE_ID === 5){
       document.getElementById('emp').removeAttribute("disabled");
+    }else {
+      document.getElementById('emp').setAttribute("disabled","true");
     }
   }
 

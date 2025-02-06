@@ -15,15 +15,17 @@
 					<div class="row card">
 						<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12" >
 							<label>Employee :<span class="text-danger">*</span></label>
-							<div class="floating-input list-btn mb-2" [ngClass]="{'invalid-control':isSubmited && form.controls['EMP_NO'].errors?.required}" >
-								<select class="form-control selectpicker show-tick"  formControlName="EMP_NO" 
+							<div class="floating-input list-btn mb-2" 
+							[ngClass]="{'invalid-control':isSubmited && form.controls['EMP_NO'].errors?.required}" >
+								<select class="form-control selectpicker show-tick"  
+								 formControlName="EMP_NO" 
 								 data-live-search="true" #emp id="emp" 
 								(change)="changeViewList()" title="Select" enabled>
 									<option *ngFor="let opt of EmpCommon_list; let i=index" 
 									[selected]="opt.EMP_CODE == form.controls['EMP_NO'].value"
 									[value]="opt.EMP_CODE" >{{ opt.EMP_CODE }} - {{ opt.USER_NAME }}</option>                     
 								</select>
-								<button type="button" class="close" onclick="resetDropdown('emp')" (click)="form.controls['EMP_NO'].reset()"  aria-label="Close">
+								<button type="button" class="close" *ngIf="ROLE_ID === 3 || ROLE_ID === 5" onclick="resetDropdown('emp')" (click)="form.controls['EMP_NO'].reset()"  aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
 							</div>
