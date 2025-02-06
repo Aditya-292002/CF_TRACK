@@ -11,7 +11,7 @@ export var AppSetting = {
     // defaultApiUrl: "http://103.74.54.211/Cftrackwebapi",
     encryption: false,
     currencyFormatter:"INR"
-}
+}   
 //
 
 /***************************************************************************************************

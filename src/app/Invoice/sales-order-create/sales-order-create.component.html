@@ -7,8 +7,11 @@
         </div>
         <div class="">
             <button class="btn btn-secondary  float-right ml-1 mr-1" 
-            *ngIf="!isViewSO && (this.SO_STATUS == 'PENDING' || this.SO_STATUS == 'P')"
+            *ngIf="!isViewSO && (this.SO_STATUS == 'PENDING' || this.SO_STATUS == 'P') && this.CANCEL_IND"
             (click)="SaveSalesOrderRelease(0)" title="Save">Save</button>
+            <button class="btn btn-secondary  float-right ml-1 mr-1" 
+            *ngIf="!isViewSO && (this.SO_STATUS == 'PENDING' || this.SO_STATUS == 'P') && this.CANCEL_IND"
+            (click)="SaveSalesOrderRelease(2)" title="Cancle">Cancle</button>
             <button class="btn btn-secondary  float-right ml-1 mr-1" *ngIf="!isViewSO" (click)="viewSOList()"
             title="view Leave Details"><i class="far fa-eye mr-1"></i> List</button>
         <!-- <button class="btn btn-secondary  float-right ml-2 " 
