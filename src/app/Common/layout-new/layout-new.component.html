@@ -21,8 +21,8 @@
             <i class="menu-icon pi pi-home"></i>
             <div data-i18n="Dashboard" [ngClass]="[ (isShowToggle == true) ? '' : 'd-none' ]">Dashboard</div>
           </a>
-        </li> 
-        <li
+        </li>  -->
+        <!-- <li
           class="menu-item"
           *ngFor="let menu of menu_list; let i = index"
           (click)="menu_expand_collapse(menu_list, i, menu.TOGGLE)"
@@ -86,10 +86,22 @@
               </a>
             </li>
           </ul>
-        </li>  
-       -->
+        </li>   -->
+      
 
      <!-- PRIYANKA DIDI CODE -->
+     <!-- <li class="menu-item" (click)="MainMenuClick('dashboard')">
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon pi pi-home"></i>
+        <div data-i18n="Dashboard" [ngClass]="[ (isShowToggle == true) ? '' : 'd-none' ]">Dashboard</div>
+      </a>
+    </li> 
+    <li class="menu-item" (click)="MainMenuClick('Calender')">
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon pi pi-home"></i>
+        <div data-i18n="Calender" [ngClass]="[ (isShowToggle == true) ? '' : 'd-none' ]">Calender</div>
+      </a>
+    </li>  -->
           <li *ngFor="let data of menu_list;" class="menu-item w-full" 
         [ngClass]="[ data.IS_SUBSELECTED == true ? 'active' : '' ]">
           <div class="menu-link" id="accordion" (click)="MainMenuClick(data)">
@@ -98,7 +110,6 @@
               <div class="text-truncate w-full d-flex justify-content-between"  >
                   <div [ngClass]="[ (isShowToggle == true) ? '' : 'd-none' ]"><span>{{data.FUNCTION_DESC}}</span></div>
                   <i class="pi pi-angle-right ms-auto mt-1" [ngClass]="[ data.IS_SUBSELECTED == true ? 'rotate-90' : (isShowToggle == true) ? '' : 'd-none' ]"></i>
-                  
               </div>
             </div> 
           </div> 

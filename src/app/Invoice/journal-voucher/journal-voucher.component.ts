@@ -245,6 +245,7 @@ constructor(public sharedService: SharedServiceService,
         
        element.DEBIT_AMT=this.pipeService.removeCommaseprated( element.DEBIT_AMT);
        element.CREDIT_AMT=this.pipeService.removeCommaseprated(  element.CREDIT_AMT);
+      // console.log();
        
        if(element.DEBIT_AMT==""){
         element.DEBIT_AMT=0
