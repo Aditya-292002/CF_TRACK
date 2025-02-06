@@ -2,11 +2,10 @@
 <form>
     <div class="row">
         <div class="col-md-12 mb-1" *ngIf="UPDATE_RIGHTS || ADD_RIGHTS">
-            <div class="d-flex justify-content-between">
-                <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
+            <div class="d-flex justify-content-between flex-wrap">
+                <h5 class="formName col-sm-12 col-md-12 col-lg-4">{{ sharedService.formName }}</h5>
                 <button class="btn btn-secondary" (click)="saveAttendanceTimeSheet();" [disabled]="!isAllowSave" *ngIf="ADD_RIGHTS" title="Save">Save</button>
             </div>
-           
         </div>
 
           <!-- <div class="col-md-12 mb-1">
@@ -20,7 +19,7 @@
         <div class="page-content">
             <div class="col-md-12 mt-2">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-sm-12 col-md-12 col-lg-6">
                         <label>Employee :</label>
                         <div class="floating-input  list-btn">
                             <select class="form-control selectpicker show-tick" id="emp" [(ngModel)]="EMP_CODE" (change)="CheckAttendance()" data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}">
@@ -33,7 +32,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="col-md-6"  >
+                    <div class="col-sm-12 col-md-12 col-lg-6"  >
                         <label>Work Location :</label>
                         <div class="form-inline mt-1">
                             <div class="form-group radios mr-3">
@@ -54,7 +53,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-sm-12 col-md-12 col-lg-4">
                         <label>Date :</label>
                         <div class="floating-input ">
                             <input type="text" [(ngModel)]="DATE" placeholder="dd-mm-yyyy" [value]="DATE" class="form-control" [ngModelOptions]="{standalone: true}"  readonly>
@@ -74,13 +73,13 @@
                             {{ user_msg }}
                         </div>
                     </div> -->
-                    <div class="col-md-4">
+                    <div class="col-sm-12 col-md-12 col-lg-4">
                         <label>Time IN<span class="validator">*</span>  :</label>
                         <div class="floating-input ">
                             <input type="text" [(ngModel)]="TIME_IN" (change)="changeTime()" TimeOnly="HH:MM" placeholder="hh:mm" class="form-control" [ngModelOptions]="{standalone: true}">
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-sm-12 col-md-12 col-lg-4">
                         <label>Time OUT<span class="validator">*</span>  :</label>
                         <div class="floating-input ">
                             <input type="text" [(ngModel)]="TIME_OUT" (change)="changeTime()" TimeOnly="HH:MM" placeholder="hh:mm" class="form-control" [ngModelOptions]="{standalone: true}">

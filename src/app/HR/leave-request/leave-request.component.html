@@ -9,9 +9,9 @@
             </div>
 			
       </div> 
-		<div  id="viewForm">
-			<div class="mt-2 d-flex">
-				<div class="col-xl-9 col-lg-12 col-md-12 col-sm-12 pr-0 padd_right d-flex  ">
+		<div  id="viewForm" class="col-md-12">
+			<div class="mt-2 row">
+				<div class="col-xl-9 col-lg-12 col-md-12 col-sm-12 ">
 					<div class="row card">
 						<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12" >
 							<label>Employee :<span class="text-danger">*</span></label>
@@ -97,7 +97,7 @@
 						</div>
 					</div> 
 				</div>
-				<div class=" col-xl-3 col-lg-12 col-md-12 col-sm-12  d-flex ">
+				<div class=" col-xl-3 col-lg-12 col-md-12 col-sm-12">
 						<div class="row card">
 							<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
 								<label>HR Approved Leave :</label>
@@ -122,9 +122,9 @@
 			</div>
 		</div>
 
-		<div class="page-content mt-2" *ngIf="isViewLeave">
-			<div class="col-md-12">
-				<div class="tableFixHead ">
+		<div class="mt-2 col-md-12 " *ngIf="isViewLeave">
+			<div class="card">
+				<div class="tableFixHead   ">
 					<table class="table-theam-1 row_bgcolor_1">
 						<thead>
 							<tr>
@@ -148,10 +148,10 @@
 								 <i class="fa fa-times text-danger mr-2" *ngIf="data.STATUS == 'R'"></i>{{data.STATUS_DESC}}</td> 
 								<td class="">									
 									<a *ngIf="data.STATUS == 'P' || data.STATUS == 'M'">
-										<i class="fa fa-edit mr-2"  (click)="editLeave(data)" title="Edit"></i>  
+										<i class="fa fa-edit small mr-2"  (click)="editLeave(data)" title="Edit"></i>  
 									</a>
 									<a *ngIf="(data.STATUS == 'P' && this.ROLE_NAME == 'HR USER') || (data.STATUS == 'M' && this.ROLE_NAME == 'HR USER')">
-										<i class="fa fa-trash "  (click)="editLeave(data)" title="Delete"></i>  
+										<i class="fa fa-trash  small"  (click)="editLeave(data)" title="Delete"></i>  
 									</a>
 								</td>
 							</tr>

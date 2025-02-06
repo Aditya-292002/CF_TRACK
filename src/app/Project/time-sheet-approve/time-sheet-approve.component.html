@@ -3,12 +3,12 @@
     <div class="row">
         <div class="col-md-12">
 			<div class="d-flex justify-content-between">
-                <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
+                <h5 class="formName col-sm-12 col-md-12 col-lg-4">{{ sharedService.formName }}</h5>
             </div>
         </div> 
             <div class="col-md-12">
                 <div class="row card">
-                    <div class="col-md-6">
+                    <div class="col-sm-12 col-md-12 col-lg-6">
                         <label>Employee :</label>
                         <div class="floating-input mb-2 list-btn">
                             <select class="form-control selectpicker show-tick" id="emp" [(ngModel)]="EMP_CODE" (change)="GetPendingAttendanceList()" data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}">
@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <h6 class="mb-0 col-md-6 p-0">Time-Sheet Details</h6>
+                        <h6 class="mb-0 col-sm-12 col-md-12 col-lg-6 p-0">Time-Sheet Details</h6>
                         <hr class="m-0 mb-2">
                         <div class="tableFixHead mt-2">
                             <table class="table-theam-1 row_bgcolor_1">
