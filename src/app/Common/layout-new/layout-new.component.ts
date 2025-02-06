@@ -564,6 +564,12 @@ ngAfterViewInit(){
 
 MainMenuClick(data:any){
   //console.log('formdetails',data);
+  if(data=="dashboard"){
+    this.router.navigate(["/dashboard"]);
+  }
+  if(data=="Calender"){
+    this.router.navigate(["/calendar"]);
+  }
   
   this.menu_list.forEach((element: any) => {
     if (element.FUNCTION_CODE == data.FUNCTION_CODE && element.IS_SUBSELECTED == true) {

@@ -1,8 +1,8 @@
 <div class="">
   <div class="card p-0 mb-3">
     <div class="card-body p-4">
-      <div class="d-flex">
-        <div class="w-50 d-flex justify-content-start gap-3">
+      <div class="d-flex flex-wrap">
+        <div class="w-50 d-flex justify-content-start  flex-wrap gap-3">
           <div>
             <span class="avatar avatar-xl flex-shrink-0">
               <img
@@ -16,7 +16,7 @@
             <div class="ml-3">
           </div>
           <div>
-              <h3 class="mb-2 text_header">Welcome Back, {{ login_user }}</h3>
+              <h3 class="mb-2 text_header">Welcome Back, {{ Username }}</h3>
               <p class="text_subheader">
                 You have
                 <span class="text-primary text-decoration-underline">21</span>
@@ -28,7 +28,7 @@
           </div>
         </div>
         <div class="w-50">
-          <div class="d-flex justify-content-end gap-3">
+          <div class="d-flex flex-wrap justify-content-end gap-3">
             <button class="btn btn-primary mt-3 mr-3 loginBtnDanger" (click)="redirectBtn('customer')" >
               + Add Customer
             </button>
@@ -41,7 +41,7 @@
     </div>
   </div>
   <div class="row mb-3">
-    <div class="col-sm-12 col-md-3">
+    <div class="col-sm-12 col-md-6 col-lg-3">
       <div class="card p-0">
         <div class="card-body text-center p-2">
           <span class="avatar rounded-circle bg-primary mb-3">
@@ -53,7 +53,7 @@
       </div>
     </div>
     
-    <div class="col-sm-12 col-md-3">
+    <div class="col-sm-12 col-md-6 col-lg-3">
       <div class="card p-0">
         <div class="card-body text-center p-2">
           <span class="avatar rounded-circle bg-purple mb-3">
@@ -64,7 +64,7 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-12 col-md-3">
+    <div class="col-sm-12 col-md-6 col-lg-3">
       <div class="card p-0">
         <div class="card-body text-center p-2">
           <span class="avatar rounded-circle bg-info mb-3">
@@ -75,7 +75,7 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-12 col-md-3">
+    <div class="col-sm-12 col-md-6 col-lg-3">
       <div class="card p-0">
         <div class="card-body text-center p-2">
           <span class="avatar rounded-circle bg-dark mb-3">
@@ -88,7 +88,7 @@
     </div>
   </div>
   <div class="row mb-3">
-    <div class="col-sm-12 col-md-4">
+    <div class="col-sm-12 col-md-12 col-lg-4">
       <div class="card p-0 h-100">
         <div class="card-body p-2">
           <div id="chart">
@@ -108,7 +108,7 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-12 col-md-8">
+    <div class="col-sm-12 col-md-12 col-lg-8">
       <div class="">
         <div class="form-tabs" id="form-tab">
           <ul class="nav nav-tabs" role="tablist">
@@ -175,7 +175,6 @@
                     <th>Achieve %</th>
                   </tr>
                 </ng-template>
-
                 <ng-template pTemplate="body" let-data>
                   <tr>
                     <td>{{ data.CURRENT_YEAR }}</td>
@@ -195,7 +194,7 @@
     </div>
   </div>
   <div class="row mb-3">
-    <div class="col-sm-12 col-md-6">
+    <div class="col-sm-12 col-md-12 col-lg-6">
       <div class="">
         <div class="form-tabs" id="form-tab">
           <ul class="nav nav-tabs" role="tablist">
@@ -289,7 +288,7 @@
         </div> 
       </div>
     </div>
-    <div class="col-sm-12 col-md-6">
+    <div class="col-sm-12 col-md-12 col-lg-6">
       <div class="card p-0 h-100">
         <div class="card-body">
           <h6 class="text-truncate text_header">Bank Details</h6>
@@ -323,7 +322,7 @@
     </div>
   </div>
   <div class="row mb-3">
-    <div class="col-md-6">
+    <div class="col-sm-12 col-md-12 col-lg-6">
       <div class="card">
         <div class="card-body">
           <h6 class="text-truncate text_header">Projects</h6>
@@ -360,7 +359,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-sm-12 col-md-12 col-lg-6">
       <div class="card">
         <div class="card-body">
           <h6 class="text-truncate text_header">Employee</h6>
@@ -407,5 +406,4 @@
       </div>
     </div>
   </div>
-
 </div>

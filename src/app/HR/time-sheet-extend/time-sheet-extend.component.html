@@ -2,8 +2,8 @@
 <form>
   <div class="row">
     <div class="col-md-12 mb-1" >
-      <div class="d-flex justify-content-between">
-        <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
+      <div class="d-flex flex-wrap justify-content-between">
+        <h5 class="formName col-sm-12 col-md-12 col-lg-4">{{ sharedService.formName }}</h5>
         <button
           class="btn btn-secondary "
           (click)="saveExtendTimeSheet()"
@@ -17,7 +17,7 @@
     <div class="page-content">
       <div class="col-md-12 mt-2">
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>Employee :</label>
             <div class="floating-input list-btn">
               <select
@@ -49,7 +49,7 @@
             </div>
           </div>
 
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>Date :</label>
             <div class="floating-input">
               <input
@@ -86,7 +86,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>Time IN :</label>
             <div class="floating-input">
               <input
@@ -99,7 +99,7 @@
               />
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>Time OUT :</label>
             <div class="floating-input">
               <input
@@ -112,7 +112,7 @@
               />
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>Expired by :</label>
             <div class="floating-input">
               <input
@@ -133,7 +133,7 @@
               ></app-date-picker>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-sm-12 col-md-12 col-lg-4">
             <label>Extend by :</label>
             <div class="floating-input">
               <input
@@ -176,7 +176,7 @@
             <div class="floating-input">
               <input
                 type="text"
-                [(ngModel)]="REMARKS"
+                [(ngModel)]="REMARKS" 
                 class="form-control"
                 [ngModelOptions]="{ standalone: true }"
               />
