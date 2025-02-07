@@ -336,6 +336,7 @@ export class LeaveApprovalComponent implements OnInit {
       if (res.flag) {
         this.toast.success(res.msg)
         this.Employee_list.splice(this.selectedINDEX,1)
+        this.isViewLeave=true;
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh').trigger('change');
         }, 100);
