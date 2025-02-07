@@ -16,7 +16,7 @@
 
     <div class="col-md-12" *ngIf="isViewLeave">
       <div class="row">
-          <div class="col-md-3 mt-2">
+          <div class="col-md-12 col-lg-3 mt-2">
               <div class="floating-input list-btn">
                   <select class="form-control selectpicker show-tick" formControlName="EMP_NO"
                       (change)="onChange($event)" data-live-search="true" #emp id="emp{{i}}" title="Employee Name"
@@ -32,7 +32,7 @@
               </div>
           </div>
 
-          <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 mt-2 pl-0">
+          <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 mt-2">
               <div class="floating-input">
                   <input type="text" class="form-control" formControlName="FROM_DATE" [(ngModel)]="FROM_DATE"
                       (change)="ChangeFDate()" placeholder="From Date" readonly>
@@ -50,7 +50,7 @@
                   </div>
               </div>
           </div>
-          <div class="col-xl-2 col-lg-3 col-md-2 col-sm-2 mt-2 pl-0 padd-1">
+          <div class="col-xl-2 col-lg-3 col-md-12 col-sm-12 mt-2 ">
               <div class="floating-input">
                   <input type="text" class="form-control" formControlName="TO_DATE" [(ngModel)]="TO_DATE" enabled
                       placeholder="To Date" readonly>
@@ -69,8 +69,8 @@
                   </div>
               </div>
           </div>
-          <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 mt-2 pl-0 padd-1">
-            <div class="d-flex justify-content-center mr-2 mb-2">
+          <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 mt-2 ">
+            <div class="d-flex flex-wrap mr-2 mb-2">
               <div>
                 <input type="radio" id="age1" name="age" value="P" (change)="filterListWithStatus($event.target.value)"
                   checked>
@@ -87,8 +87,8 @@
               </div>
             </div>
           </div>
-          <div class=" col-xl-2 col-lg-2 col-md-3 col-sm-3 pl-0 mt-2">
-            <div class="d-flex justify-content-around">
+          <div class=" col-xl-2 col-lg-2 col-md-12 col-sm-12 mt-2">
+            <div class="d-flex flex-wrap">
               <button class="btn btn-secondary" (click)="GetSearchLeaveList()" id="Search{{i}}"
                   title="Search">Search</button>
 
@@ -106,7 +106,7 @@
               <table class="table-theam-1 table_width row_bgcolor_1">
                 <thead>
                   <tr>
-                    <th class="w-40">Employee Name</th>
+                    <th class="w-20">Employee Name</th>
                     <th class="w-20">Leave Type</th>
                     <th class="w-20">From Date</th>
                     <th class="w-20">To Date</th>
@@ -119,7 +119,7 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let data of Employee_list;let i=index;">
-                    <td class="w-40"  id="USER_NAME{{i}}">{{data.USER_NAME}}</td>
+                    <td class="w-20"  id="USER_NAME{{i}}">{{data.USER_NAME}}</td>
                     <td  class="w-20" id="LEAVE_TYPE{{i}}">{{data.LEAVE_TYPE}}</td>
                     <td class="w-20" id="FROM_DATE{{i}}">{{data.FROM_DATE}}</td>
                     <td class="w-20" id="TO_DATE{{i}}">{{data.TO_DATE}}</td>
