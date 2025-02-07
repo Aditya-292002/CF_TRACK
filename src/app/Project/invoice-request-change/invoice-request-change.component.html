@@ -1,18 +1,18 @@
 <app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
-<div class="container">
+<div class="col-md-12">
     <div class="row">
-        <div class="col-md-12 mb-1">
-            <div class="d-flex  float-right" >
+        <div class="col-md-12">  
+            <div class="d-flex justify-content-between">
+              <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
+              <div>
                 <button class="btn btn-secondary   mr-1"  (click)="viewList();"
                 title="view"><i class="far fa-eye mr-1"></i>viewList</button>
                 <button class="btn btn-secondary "  *ngIf=" ADD_RIGHTS" (click)="SaveInvoiceRequestChange()" title="Save">Save</button>
                 <button class="btn btn-secondary float-right  ml-1" *ngIf="ViewListHideShow" (click)="back()"
                   title="Back">Back</button>
-                  <!-- <button class="delete-button ml-1" (click)="removeData(data)" [disabled]="!editing">
-                    <i class="fas fa-times delete-icon"></i>  -->
+              </div>
             </div>
-
-        </div>
+          </div>
     </div>
 </div>
 
@@ -64,10 +64,7 @@
                                 <div class="floating-input" *ngIf="isviewdata">
                                     <input type="text" class="form-control" formControlName="PROJ_CODE" placeholder="Project" disabled="true">
                                 </div>
-
                             </div>
-                            
-                          
                         </div>
                         <div class="row ">
                             <div class="col-md-6 mt-2">
