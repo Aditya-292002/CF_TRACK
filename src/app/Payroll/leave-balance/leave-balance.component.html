@@ -129,7 +129,7 @@
                             <tr>
                                 <th class="w-2">Employee</th>
                                 <th class="w-1">Pyear</th>
-                                <th class="w-3">DOJ</th>
+                                <!-- <th class="w-1">DOJ</th> -->
                                 <th class="w-1">Pending</th>
                                 <th class="w-1">Total Applied</th>
                                 <th class="w-1">Earned</th>
@@ -140,7 +140,7 @@
                             <tr *ngFor="let data of leaveDetailList;let i=index;">
                                 <td id="USER_NAME{{i}}">{{data.USER_NAME}}</td>
                                 <td id="LEAVE_TYPE{{i}}">{{data.PYEAR}}</td>
-                                <td></td>
+                                <!-- <td></td> -->
                                 <td class="w-1" id="FROM_DATE{{i}}">{{data.LEAVES_PENDING}}</td>
                                 <td class="w-1" id="TO_DATE{{i}}">{{data.TOTAL_LEAVES_APPLIED}}</td>
                                 <td class="w-1" id="NO_OF_DAYS{{i}}">{{data.LEAVE_EARNED}}</td>

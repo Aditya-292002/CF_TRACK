@@ -82,12 +82,12 @@ input[type=date] {
 /* width */
 
 .tableFixHead::-webkit-scrollbar {
-    width: 4px;
+    width: 6px;
     height: 8px;
 }
 
 .main-menu::-webkit-scrollbar {
-    width: 4px;
+    width: 6px;
 }
 
 
@@ -127,15 +127,15 @@ hr {
     width: 100%;
 }
 
-
+ 
 /*table style start  */
 
 .tableFixHead {
     /* width: 100%; */
     overflow-y: auto;
     width: 100%;
-    min-height: 0px;
-    max-height: 400px;
+    height: 100%;
+    max-height: 80vh;
     overflow-x: auto;
 }
 

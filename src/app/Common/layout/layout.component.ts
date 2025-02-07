@@ -390,6 +390,8 @@ status: boolean = false;
   getUserMenu(){
 
     this.http.PostRequest(this.apiUrl.GetMenuItems, {}).then(res => {
+
+      console.log("rest");
       if (res) {
         this.menu_list = res.menu_list
         this.spinner = false;
