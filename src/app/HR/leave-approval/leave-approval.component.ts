@@ -323,7 +323,7 @@ export class LeaveApprovalComponent implements OnInit {
         return
     }
     let data = {
-      REQ_ID:this.Employee_list[this.selectedINDEX].REQ_ID,
+     REQ_ID:this.REQ_ID,
      TYPE:"REJECT",
      REASON:this.reject_reason,
     //  Type:"HR Approval"
