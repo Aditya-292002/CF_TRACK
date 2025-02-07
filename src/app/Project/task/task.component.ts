@@ -19,8 +19,9 @@ export class TaskComponent implements OnInit {
 
   spinner: boolean = false;
   form: FormGroup;
-  PLANNED_START_DATE: any = "";
-  COMPLETION_DATE: any = "";
+  PLANNED_START_DATE: any = new Date();
+  COMPLETION_DATE: any = new Date();
+  
   constructor(
     public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
@@ -44,7 +45,7 @@ export class TaskComponent implements OnInit {
       TASKID: [0],
       COMPANY: [{ value: "", disabled: true }],
       CUSTOMER: [{ value: "", disabled: true }],
-      BRM_POINT: [""],
+      BRM_POINT: [0],
       BUSINESS_OWNER: [""],
       CLIENT_OWNER: [""],
       CLIENT_REFNO: [""],
@@ -89,14 +90,14 @@ export class TaskComponent implements OnInit {
         this.search_task_id = this.sharedService.commonData[0].TASKID;
         this.searchTask();
       }
-      this.form
-        .get("PLANNED_START_DATE")
-        .setValue(this.sharedService.getTodayDate());
-      this.PLANNED_START_DATE = this.sharedService.getTodayDate();
-      this.form
-        .get("COMPLETION_DATE")
-        .setValue(this.sharedService.getTodayDate());
-      this.COMPLETION_DATE = this.sharedService.getTodayDate();
+      // this.form
+      //   .get("PLANNED_START_DATE")
+      //   .setValue(this.sharedService.getTodayDate());
+      // this.PLANNED_START_DATE = this.sharedService.getTodayDate();
+      // this.form
+      //   .get("COMPLETION_DATE")
+      //   .setValue(this.sharedService.getTodayDate());
+      // this.COMPLETION_DATE = this.sharedService.getTodayDate();
       this.form.get("QUOTED_MANDAYS").setValue(0);
     }, 150);
   }

@@ -94,7 +94,7 @@
                         <textarea name="" formControlName="TASK_DETAILS" placeholder="Detail Description" id="" cols="30" rows="3" class="form-control"></textarea>
                     </div>
                 </div>
-                <div class="col-md-12">
+                <!-- <div class="col-md-12">
                     <label>BRM Point :</label>
                     <div class="form-inline mt-1">
                         <div class="form-group radios mr-3">
@@ -108,7 +108,7 @@
                                 </span></label>
                         </div>
                     </div>
-                </div>
+                </div> -->
                
             </div>
         </div>
@@ -119,7 +119,7 @@
                     <label>Est.Hours<span class="validator">*</span> :</label>
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['ESTIMATED_HOURS'].errors?.required}">
                         <!-- (keyup)="f_setTimeFormat('ESTIMATED_HOURS',$event.keyCode)" (focusout)="f_setTimeFormat('ESTIMATED_HOURS',$event.keyCode,'all')" -->
-                        <input type="text" formControlName="ESTIMATED_HOURS" placeholder="HHHH:MM" TimeOnly="HHHH:MM" class="form-control">
+                        <input type="text" formControlName="ESTIMATED_HOURS" placeholder="HH:MM" TimeOnly="HH:MM" class="form-control">
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -176,14 +176,14 @@
                     <label>Planned Start Date  :</label>
                     <div class="floating-input "  [ngClass]="{'invalid-control':isSubmited && form.controls['PLANNED_START_DATE'].errors?.required}">
                         <input type="text"  class="form-control" formControlName="PLANNED_START_DATE"  [(ngModel)]="PLANNED_START_DATE">
-                        <app-date-picker  class="date-input" [isDisable]='false' [(ngModel)]="PLANNED_START_DATE" [maxdate]=""  [ngModelOptions]="{standalone: true}" ></app-date-picker>
+                        <app-date-picker  class="date-input" [(ngModel)]="PLANNED_START_DATE" [ngModelOptions]="{standalone: true}" ></app-date-picker>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <label>Completion Date :</label>
                     <div class="floating-input "  [ngClass]="{'invalid-control':isSubmited && form.controls['COMPLETION_DATE'].errors?.required}">
                         <input type="text"  class="form-control" formControlName="COMPLETION_DATE"   [(ngModel)]="COMPLETION_DATE">
-                        <app-date-picker  class="date-input" [isDisable]='false'  [(ngModel)]="COMPLETION_DATE" [maxdate]=""  [ngModelOptions]="{standalone: true}" ></app-date-picker>
+                        <app-date-picker  class="date-input" [(ngModel)]="COMPLETION_DATE" [ngModelOptions]="{standalone: true}" ></app-date-picker>
                     </div>
                 </div>
                 <div class="col-md-4">

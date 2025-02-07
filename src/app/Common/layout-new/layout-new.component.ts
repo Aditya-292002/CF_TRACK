@@ -21,6 +21,7 @@ export class LayoutNewComponent implements OnInit {
   @ViewChild('attendance', { static: false }) attendance: ElementRef;  
   @ViewChild('chagefyear', { static: false }) chagefyear: ElementRef;
   spinner: boolean = false;
+  UserId: any;
   
   constructor(
     private route: RoutingService,
@@ -949,6 +950,14 @@ _temp : number = 0;
 
  showToggleFun(){
   this.isShowToggle = !this.isShowToggle;
+}
+getDashboad(){
+  let data={
+    "User_ID":this.UserId
+  }
+  
+  
+
 }
 
 }
