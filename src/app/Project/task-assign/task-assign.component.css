@@ -1,6 +1,9 @@
 table .w-10{
     width: 150px;
 }
+table .w-5{
+    width: 70px;
+}
 table .w-30{
     width: 250px;
 }

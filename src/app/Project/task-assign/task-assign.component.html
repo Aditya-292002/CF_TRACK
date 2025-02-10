@@ -63,42 +63,50 @@
         <!--  -->
         <div class="col-md-12 mt-2">
             <div class="row card">
-                <div class="col-md-12">
-                    <h6 class="mb-0 col-md-6 p-0">Task Status Details</h6>
-                    <hr class="m-0 mb-2">
+                  <div class="col-xl-12 col-lg-8 col-md-12 col-sm-12">
+                    <div class="d-flex justify-content-between">
+                      <h6 class="mb-0">Task Status Details</h6>
+                      <button
+                        type="button"
+                        class="btn text-primary pb-0"
+                        (click)="AddTask()"
+                      >
+                        <i class="fas fa-plus-circle mr-2"></i>Add Task
+                      </button>
+                    </div>
+                    <hr class="m-0 mb-2" />
+                  </div>
                     <div class="tableFixHead">
                         <table class="table-theam-1 row_bgcolor_1">
                             <thead>
                                 <tr>
-                                    <th class="w-10">Task No.</th>
-                                    <th class="w-30">Project.</th>
+                                    <th class="w-5">Task No</th>
+                                    <!-- <th class="w-30">Project</th> -->
                                     <th class="w-30">Task</th>
                                     <th class="w-10">Priority</th>
                                     <th class="w-10">Start Date</th>
-                                    <th class="w-20">Completion Date</th>
-                                    <th class="w-30">Business Owner</th>
+                                    <th class="w-10">Completion Date</th>
+                                    <!-- <th class="w-30">Business Owner</th> -->
                                     <th class="w-20">Staus</th>
+                                    <th class="w-5">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let data of task_list; let i=index;">
-                                    <td class="w-10">
-                                        <a (click)="f_OpenTask(data.TASKID)">
+                                    <td class="w-5">
                                             {{ data.TASK_NO }}
-    
-                                        </a>
                                     </td>
-                                    <td class="w-30">
+                                    <!-- <td class="w-30">
                                         {{ data.PROJ_NAME }}
-                                    </td>
+                                    </td> -->
                                     <td class="w-30">
                                         {{ data.TASK_DESC }}
                                     </td>
                                     <td class="w-10">{{ data.PRIORITY }}
                                     </td>
                                     <td>{{ data.PLANNED_START_DATE }}</td>
-                                    <td class="w-20">{{ data.COMPLETION_DATE }}</td>
-                                    <td class="w-30"> {{ data.BUSINESS_OWNERNAME }}</td>
+                                    <td>{{ data.COMPLETION_DATE }}</td>
+                                    <!-- <td class="w-30"> {{ data.BUSINESS_OWNERNAME }}</td> -->
                                     <td class="w-20">
                                         <select class="form-control selectpicker show-tick" [(ngModel)]="data.TASK_STATUS" data-container="body" data-size="5" (change)="f_openWarning(i,data.TASKID,data.TASK_STATUS)" data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}">
                                             <option value="" disabled></option>
@@ -107,11 +115,15 @@
                                             [value]="opt.TASK_STATUS">{{ opt.TASK_STATUS_DESC }}</option>
                                         </select>
                                     </td>
+                                    <td >
+                                    <i  class="fa fa-edit "
+                                    (click)="f_OpenTask(data.TASKID)"
+                                    title="Edit"></i>
+                                  </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                </div>
             </div>
         </div>
     </div>

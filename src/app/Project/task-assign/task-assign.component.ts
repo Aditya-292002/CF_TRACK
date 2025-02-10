@@ -7,6 +7,8 @@ import { HttpRequestServiceService } from 'src/app/services/http-request-service
 import { SharedServiceService } from 'src/app/services/shared-service.service';
 import { ValidationService } from 'src/app/services/validation.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 declare var $: any;
 
@@ -19,7 +21,16 @@ export class TaskAssignComponent implements OnInit {
   @ViewChild("warn_popup", { static: false }) warn_popup: ElementRef;
 
   spinner: boolean = false;
-  form: FormGroup;
+  form: FormGroup; 
+  project_list: Array<any> = [];
+  task_status_list: Array<any> = [];
+  task_list: Array<any> = [];
+  isSubmited: boolean = false;
+  old_task_list: Array<any> = [];
+  task_type_list: Array<any> = [];
+  _taskid:any;
+  _status: string = '';
+  _selected_index:any;
 
   constructor(
     public sharedService: SharedServiceService,
@@ -28,16 +39,13 @@ export class TaskAssignComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: RoutingService,
     private toast: ToastrService,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    private router:Router,
+    private datepipe:DatePipe
   ) {}
 
-  project_list: Array<any> = [];
-  task_status_list: Array<any> = [];
-  task_list: Array<any> = [];
-  isSubmited: boolean = false;
-
-  task_type_list: Array<any> = [];
   ngOnInit() {
+    localStorage.removeItem('TASKID')
     this.sharedService.formName = "Task Status Change";
     this.form = this.formBuilder.group({
       COMPANY: [{ value: "", disabled: true }],
@@ -75,7 +83,7 @@ export class TaskAssignComponent implements OnInit {
     }
   }
 
-  UpdateTaskStatus(TASKID, TASK_STATUS) {
+  UpdateTaskStatus(TASKID:any, TASK_STATUS:any) {
     let data = {
       task_detail: {
         TASKID: TASKID,
@@ -101,6 +109,7 @@ export class TaskAssignComponent implements OnInit {
       }
     );
   }
+
   GetTaskCommonList() {
     this.http.PostRequest(this.apiUrl.GetTaskCommonList, {}).then(
       (res) => {
@@ -125,7 +134,7 @@ export class TaskAssignComponent implements OnInit {
   onShowTask() {
     this.GetTaskList();
   }
-  private old_task_list: Array<any> = [];
+
   GetTaskList() {
     let data = {
       LISTTYPE: "",
@@ -137,13 +146,15 @@ export class TaskAssignComponent implements OnInit {
       (res) => {
         if (res.flag) {
           this.task_list = res.task_list;
-
+          // console.log(' this.task_list ->' , this.task_list)
+          this.task_list.forEach((element:any)=>{
+            element.PLANNED_START_DATE = this.datepipe.transform(element.PLANNED_START_DATE, 'dd-MMM-yyyy');
+            element.COMPLETION_DATE = this.datepipe.transform(element.COMPLETION_DATE, 'dd-MMM-yyyy');
+          })
           this.f_M_H(this.task_list);
-
           setTimeout(() => {
             $(".selectpicker").selectpicker("refresh").trigger("change");
           }, 100);
-
           this.spinner = false;
         } else {
           this.spinner = false;
@@ -154,6 +165,7 @@ export class TaskAssignComponent implements OnInit {
       }
     );
   }
+
   f_M_H(array: any = []): any {
     for (let data of array) {
       const H = Math.floor(data.ESTIMATED_HOURS / 60);
@@ -168,32 +180,28 @@ export class TaskAssignComponent implements OnInit {
       $(".selectpicker").selectpicker("refresh").trigger("change");
     }, 100);
   }
-  _taskid: number = null;
-  _status: string = null;
-  _selected_index: number = null;
-  f_openWarning(
-    index: number = null,
-    id: number = null,
-    status: string = null
-  ) {
+  
+  f_openWarning(index:any,id:any,status:any) {
     this._selected_index = index;
     this._taskid = id;
     this._status = status;
     $(this.warn_popup.nativeElement).modal("show");
   }
+
   f_reverseStatus() {
     this.task_list[this._selected_index].TASK_STATUS =
       this.old_task_list[this._selected_index].TASK_STATUS;
-
     setTimeout(() => {
       $(".selectpicker").selectpicker("refresh").trigger("change");
     }, 100);
     this._selected_index = null;
   }
+
   f_OpenTask(TASKID: string = "") {
     if (TASKID != null && TASKID != "" && TASKID != undefined) {
-      this.sharedService.commonData = [];
-      this.sharedService.commonData.push({ TASKID: TASKID });
+      // this.sharedService.commonData = [];
+      // this.sharedService.commonData.push({ TASKID: TASKID });
+      localStorage.setItem('TASKID',TASKID)
       this.route.changeRoute("task");
     }
   }
@@ -203,4 +211,10 @@ export class TaskAssignComponent implements OnInit {
       this.toast.warning("Please enter Project");
     }
   }
+
+  AddTask(){
+  localStorage.removeItem('TASKID')
+  this.router.navigate(['/task'])
+  }
+
 }
