@@ -6,7 +6,7 @@
                 <div>
                     <h5 class="formName " >{{ sharedService.formName }}</h5>
                 </div>
-                <div class="col-md-8 d-flex justify-content-end">
+                <div class="col-md-8 d-flex justify-content-end ">
                     <div class="col-md-8 mr-2">
                         <div class="floating-input list-btn">
                             <select class="form-control selectpicker show-tick dd_size select-width" (change)="searchTask()" [(ngModel)]="search_task_id" data-live-search="true" id="search" #search title="Search Task" [ngModelOptions]="{standalone: true}">
@@ -18,16 +18,16 @@
                             </button>
                         </div>
                     </div>
-                    <button class="btn btn-secondary " *ngIf="isUpdate" (click)="f_clearForm()" title="Cancel">Cancel</button>
-                    <button class="btn btn-secondary" *ngIf="!isUpdate && ADD_RIGHTS" (click)="saveFormData('INSERT')" title="Save">Save</button>
-                    <button class="btn btn-secondary" *ngIf="isUpdate && UPDATE_RIGHTS" (click)="saveFormData('UPDATE')" title="Save">Save</button>
+                    <button class="btn btn-secondary mr-2" *ngIf="isUpdate" (click)="CancleForm()" title="Cancel">Cancel</button>
+                    <button class="btn btn-secondary " *ngIf="!isUpdate && ADD_RIGHTS" (click)="saveFormData(0)" title="Save">Save</button>
+                    <button class="btn btn-secondary " *ngIf="isUpdate && UPDATE_RIGHTS" (click)="saveFormData(1)" title="Save">Save</button>
 
                 </div>
             </div>
             
             
         </div>
-        <div class="col-md-12">
+        <div class="col-md-12 mt-2">
             <div class="row card">
                 <div class="col-md-4">
                     <label>Project<span class="validator">*</span> :</label>

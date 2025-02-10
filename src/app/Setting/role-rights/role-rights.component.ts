@@ -43,47 +43,22 @@ export class RoleRightsComponent implements OnInit {
     this.GetRoleList();
      this.GetRoleRightsMasterList(); 
      this.getUserRoleList();
-    
-    //this.GetFilterMenuDisplay(this.FILTER_MENU_LIST)
     setTimeout(() => {
     $('.selectpicker').selectpicker('refresh').trigger('change');
   },210);
     this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
-    // console.log('userdata',this.userData);
-    
     this.USER_ID = this.userData[0].USERID;
     this.Username=this.userData[0].USER_NAME;
     this.Usernames=this.Username.split(" ");
     this.Username=this.Usernames[0];
-    // console.log('userData ->' , this.userData)
   }
-
-  // GetRoleRightsMasterList(){
-  //   let data = {
-  //     USER_ID: this.USER_ID
-  //   }
-  //   this.http.PostRequest(this.apiUrl.GetRoleRightsMasterList, data).then(res => {
-  //     if (res.flag) {
-  //       this.ROLE_RIGHTS_LIST = res.v_role_rights_list
-  //       setTimeout(() => {
-  //         $('.selectpicker').selectpicker('refresh').trigger('change');
-  //       }, 100);
-  //       this.spinner = false;
-  //     } else {
-  //       this.spinner = false;
-  //     }
-  //   });
-  // }
 
   async GetFilterMenuDisplay(arr: any){
     const itemMap = {};
     let roots = [];
     let counter=1
-  //  console.log('arr ->' , arr)
     arr.forEach((item:any) => {
-      // console.log('item ->' , item)
        if(item.FUNCTION_CODE != 0){
-        //console.log('item INSIDE ->' , item)
         itemMap[item.FUNCTION_CODE] = {
           key: '',
           data: {
@@ -94,26 +69,12 @@ export class RoleRightsComponent implements OnInit {
               ADD_RIGHTS: false,
               UPDATE_RIGHTS: false,
               DELETE_RIGHTS: false,
-              FORM_NAME: false,
-             
-              // VIEW_RIGHTS: item.VIEW_RIGHTS,
-              // ADD_RIGHTS: item.ADD_RIGHTS,
-              // UPDATE_RIGHTS: item.UPDATE_RIGHTS,
-              // DELETE_RIGHTS: item.DELETE_RIGHTS,
-              // FORM_NAME: item.FORM_NAME,
-             
-
-              // VIEW_RIGHTS: item.VIEW_RIGHTS,
-              // ADD_RIGHTS: item.ADD_RIGHTS,
-              // UPDATE_RIGHTS: item.UPDATE_RIGHTS,
-              // DELETE_RIGHTS: item.DELETE_RIGHTS,
-              // FORM_NAME: item.FORM_NAME
+              FORM_NAME: false
           },
           children: []
       };
        }else{
         item.FUNCTION_CODE=counter;
-       // console.log('item INSIDE ->' , item)
         itemMap[item.FUNCTION_CODE] = {
           key: '',
           data: {
@@ -125,47 +86,25 @@ export class RoleRightsComponent implements OnInit {
               UPDATE_RIGHTS: false,
               DELETE_RIGHTS: false,
               FORM_NAME: false,
-              // VIEW_RIGHTS: item.VIEW_RIGHTS,
-              // ADD_RIGHTS: item.ADD_RIGHTS,
-              // UPDATE_RIGHTS: item.UPDATE_RIGHTS,
-              // DELETE_RIGHTS: item.DELETE_RIGHTS,
-              // FORM_NAME: item.FORM_NAME,
-             
-
-              // VIEW_RIGHTS: item.VIEW_RIGHTS,
-              // ADD_RIGHTS: item.ADD_RIGHTS,
-              // UPDATE_RIGHTS: item.UPDATE_RIGHTS,
-              // DELETE_RIGHTS: item.DELETE_RIGHTS,
-              // FORM_NAME: item.FORM_NAME
           },
           children: []
       };
        }
        counter++;
-
     });
-    //console.log('item ->' , itemMap,arr)
     arr.forEach((item:any, index:any) => {
         const node = itemMap[item.FUNCTION_CODE];
-      //   console.log('node ->' , node)
       if(item.MODULE_CODE == ""){
-      //  console.log('node if->' , item.MODULE_CODE)
         node.key = item.FUNCTION_CODE ? `${itemMap[item.FUNCTION_CODE].key}-${itemMap[item.FUNCTION_CODE].children.length}` : `${index}`;
       }else{
-         console.log('node else->' , item.MODULE_CODE)
         node.key = item.MODULE_CODE ? `${itemMap[item.MODULE_CODE].key}-${itemMap[item.MODULE_CODE].children.length}` : `${index}`;
       }
-     // console.log('MODULE_CODE','fff',item,item.MODULE_CODE,itemMap[item.FUNCTION_CODE]);
-          
         if (item.MODULE_CODE) {
-       
             if (itemMap[item.MODULE_CODE]) {
-            //  console.log('node PUSH CHILD->' , item.MODULE_CODE)
-                itemMap[item.MODULE_CODE].children.push(node);
+               itemMap[item.MODULE_CODE].children.push(node);
             } 
         } else {
-         // console.log('node PUSH->' , item.MODULE_CODE)
-            roots.push(node);
+           roots.push(node);
         }
     });
     this.ROLE_RIGHTS_LIST = roots;
@@ -175,13 +114,11 @@ export class RoleRightsComponent implements OnInit {
    
   }
 
-  
 GetViewRights(functionCode:any){
   this.ViewRights(this.ROLE_RIGHTS_LIST,functionCode);
 }
 
 ViewRights(data:any,functionCode:any){
-  console.log('functionCode ->' , functionCode,data)
   data.forEach((item:any) => {
     if (item.data.FUNCTION_CODE == functionCode) {
       if(item.data.VIEW_RIGHTS == true){
@@ -208,8 +145,6 @@ ViewRights(data:any,functionCode:any){
       }
     }
   item.children.forEach((element:any)=>{
-    console.log('inside children');
-    
     if(element.data.FUNCTION_CODE == functionCode){
       if(element.data.VIEW_RIGHTS == true){
         element.data.ADD_RIGHTS = true;
@@ -226,83 +161,6 @@ ViewRights(data:any,functionCode:any){
     }
     });
   });
-
-  // if(functionCode == 'HC002'){
-  //   data.forEach((item:any) => {
-  //     if(item.data.FUNCTION_CODE == "HC002"){
-  //       if(item.data.VIEW_RIGHTS == false){
-  //     item.children.forEach((element:any)=>{
-  //         element.data.VIEW_RIGHTS = false;
-  //         element.data.UPDATE_RIGHTS = false;
-  //         element.data.ADD_RIGHTS = false;
-  //         element.data.DELETE_RIGHTS = false;
-  //     });
-  //     }
-  //     if(item.data.VIEW_RIGHTS == true){
-  //       item.children.forEach((element:any)=>{
-  //             element.data.VIEW_RIGHTS = true;
-  //       });
-  //     }
-  //   }
-  // });
-  // }
-  // if(functionCode == 'HC003'){
-  //   data.forEach((item:any) => {
-  //     if(item.data.FUNCTION_CODE == "HC003"){
-  //       if(item.data.VIEW_RIGHTS == false){
-  //         item.children.forEach((element:any)=>{
-  //               element.data.VIEW_RIGHTS = false;
-  //               element.data.UPDATE_RIGHTS = false;
-  //               element.data.ADD_RIGHTS = false;
-  //               element.data.DELETE_RIGHTS = false;
-  //           });
-  //       }
-  //       if(item.data.VIEW_RIGHTS == true){
-  //         item.children.forEach((element:any)=>{
-  //               element.data.VIEW_RIGHTS = true;
-  //           });
-  //       }
-  //     }
-  // });
-  // }
-  // if(functionCode == 'HC006'){
-  //   data.forEach((item:any) => {
-  //     if(item.data.FUNCTION_CODE == "HC006"){
-  //       if(item.data.VIEW_RIGHTS == false){
-  //     item.children.forEach((element:any)=>{
-  //         element.data.VIEW_RIGHTS = false;
-  //         element.data.UPDATE_RIGHTS = false;
-  //         element.data.ADD_RIGHTS = false;
-  //         element.data.DELETE_RIGHTS = false;
-  //     });
-  //     }
-  //     if(item.data.VIEW_RIGHTS == true){
-  //       item.children.forEach((element:any)=>{
-  //             element.data.VIEW_RIGHTS = true;
-  //       });
-  //     }
-  //   }
-  // });
-  // }
-  // if(functionCode == 'HC011'){
-  //   data.forEach((item:any) => {
-  //     if(item.data.FUNCTION_CODE == "HC011"){
-  //       if(item.data.VIEW_RIGHTS == false){
-  //         item.children.forEach((element:any)=>{
-  //             element.data.VIEW_RIGHTS = false;
-  //             element.data.UPDATE_RIGHTS = false;
-  //             element.data.ADD_RIGHTS = false;
-  //             element.data.DELETE_RIGHTS = false;
-  //           });
-  //       }
-  //       if(item.data.VIEW_RIGHTS == true){
-  //         item.children.forEach((element:any)=>{
-  //               element.data.VIEW_RIGHTS = true;
-  //           });
-  //       }
-  //     }
-  // });
-  // }
 }
 
 GetCreateRights(functionCode:any){
@@ -315,7 +173,6 @@ CreateRights(data:any,functionCode:any){
       if(item.data.ADD_RIGHTS == true){
         item.data.ADD_RIGHTS != item.data.ADD_RIGHTS;
         item.data.VIEW_RIGHTS = true;
-        // item.data.IS_SELECTED = true;
       }
     }
   item.children.forEach((element:any)=>{
@@ -325,7 +182,6 @@ CreateRights(data:any,functionCode:any){
         element.data.VIEW_RIGHTS = true;
         item.data.VIEW_RIGHTS = true;
         item.data.UPDATE_RIGHTS = true;
-        // element.data.IS_SELECTED = true;
       }
     }
     });
@@ -544,36 +400,29 @@ CancelRights(data:any,functionCode:any){
   });
   }
 }
+
 async GetRoleRightsMasterList(){
   let data = {
     USER_ID: this.USER_ID,
     ROLE_ID: this.ROLE_ID
   }
   this.spinner = true;
-  await this.http.PostRequest(this.apiUrl.GetRoleRightsMasterList, data).then(res => {
-  //  console.log(res,'res');
-    // if (res.flag) {
-     
+  await this.http.PostRequest(this.apiUrl.GetRoleRightsMasterList, data).then((res:any) => {
       this.ROLE_RIGHTS_LIST = res.role_rights_list
       setTimeout(() => {
         $('.selectpicker').selectpicker('refresh').trigger('change');
       }, 100);
       this.spinner = false;
-    // } else {
-      this.spinner = false;
-    // }
   });
- // console.log(this.ROLE_RIGHTS_LIST,'res1');
   await this.GetFilterMenuDisplay(this.ROLE_RIGHTS_LIST);
 }
+
 GetRoleList(){  
   let data = {
     USER_ID: this.USER_ID
   }
   this.http.PostRequest(this.apiUrl.GetMasterRoleCommonList, data).then(res => {
     if (res.flag) {
-      console.log(res,'res');
-      
       this.user_role_list = res.Role_list
       setTimeout(() => {
         $('.selectpicker').selectpicker('refresh').trigger('change');
@@ -584,14 +433,6 @@ GetRoleList(){
     }
   });
   
-}
-
-addRights(){
-
-}
-
-deleteRights(){
-
 }
 
 async getUserRoleList(){
@@ -649,9 +490,6 @@ saveData()
 {
   this.spinner = true;
   this.savingData=[]
-
-  console.log(' this.ROLE_RIGHTS_LIST', this.ROLE_RIGHTS_LIST);
-  
   this.ROLE_RIGHTS_LIST.forEach(element => {
   this.savingData.push(element.data)
   if(element.children.length>0){
@@ -665,9 +503,8 @@ saveData()
     ROLE_ID:this.ROLE_ID,
     ROLE_RIGHTS_LIST:this.savingData
   }
-  console.log('this.savingData',data);
-  
-  //return
+  // console.log('savingData',data);
+  // return
   this.http.PostRequest(this.apiUrl.SaveEmployeeRoleRights, data).then(res => {
     //console.log(res,'res getUserRoleList');
      if (res.flag) {

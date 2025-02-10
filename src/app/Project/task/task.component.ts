@@ -7,6 +7,7 @@ import { SharedServiceService } from 'src/app/services/shared-service.service';
 import { ValidationService } from 'src/app/services/validation.service';
 import { v4 as uuidv4 } from 'uuid';
 import { saveAs } from 'file-saver';
+import { Router } from '@angular/router';
 declare var $: any;
 @Component({
   selector: "app-task",
@@ -21,23 +22,42 @@ export class TaskComponent implements OnInit {
   form: FormGroup;
   PLANNED_START_DATE: any = new Date();
   COMPLETION_DATE: any = new Date();
-  
+  project_list: Array<any> = [];
+  task_status_list: Array<any> = [];
+  task_type_list: Array<any> = [];
+  task_list: Array<any> = [];
+  all_emp_list: Array<any> = [];
+  search_task_id: string = "";
+  ADD_RIGHTS: boolean = false;
+  UPDATE_RIGHTS: boolean = false;
+  isUpdate: boolean = false;
+  isAdd: boolean = false;
+  NO_RIGHTS: boolean = false;
+  isNewAdd: boolean = false;
+  buisness_owner_list: Array<any> = [];
+  technical_owner_list: Array<any> = [];
+  project_assign_emp_detail: Array<any> = [];
+  _technical_owner_list: Array<any> = [];
+  emp_list: Array<any> = [];
+  SelectedFileName: string = "";
+  uploadingFiles: Array<any> = [];
+  uploadedDocument: Array<any> = [];
+  NoDocs: number = 0;
+  selected_emp: any = "";
+  last_row: number = 0;
+  isSubmited: boolean = false;
+  textBoxDisabled: boolean  = true;
+  TASKID:any;
+
   constructor(
     public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
     private http: HttpRequestServiceService,
     private formBuilder: FormBuilder,
     private toast: ToastrService,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    private router:Router
   ) {}
-
-  project_list: Array<any> = [];
-  task_status_list: Array<any> = [];
-  task_type_list: Array<any> = [];
-  task_list: Array<any> = [];
-  all_emp_list: Array<any> = [];
-
-  search_task_id: string = "";
 
   ngOnInit() {
     this.sharedService.formName = "Task";
@@ -63,17 +83,13 @@ export class TaskComponent implements OnInit {
       CHARGEABLE: ["0", Validators.required],
       QUOTED_MANDAYS: ["", Validators.required],
     });
-    $(".selectpicker").selectpicker("refresh").trigger("change");
+      $(".selectpicker").selectpicker("refresh").trigger("change");
   }
 
-  ADD_RIGHTS: boolean = false;
-  UPDATE_RIGHTS: boolean = false;
-  isUpdate: boolean = false;
-  isAdd: boolean = false;
-  NO_RIGHTS: boolean = false;
-  isNewAdd: boolean = false;
   ngAfterViewInit() {
     setTimeout(() => {
+      this.TASKID = localStorage.getItem('TASKID');
+      this.search_task_id = this.TASKID;
       if (this.sharedService.form_rights.ADD_RIGHTS) {
         this.ADD_RIGHTS = this.sharedService.form_rights.ADD_RIGHTS;
       }
@@ -85,11 +101,13 @@ export class TaskComponent implements OnInit {
       this.GetTaskCommonList();
       this.GetTaskList();
       this.getEmployee();
-
-      if (this.sharedService.commonData.length > 0) {
-        this.search_task_id = this.sharedService.commonData[0].TASKID;
+      if (this.TASKID != null) {
         this.searchTask();
       }
+      // if (this.sharedService.commonData.length > 0) {
+      //   this.search_task_id = this.sharedService.commonData[0].TASKID;
+      //   this.searchTask();
+      // }
       // this.form
       //   .get("PLANNED_START_DATE")
       //   .setValue(this.sharedService.getTodayDate());
@@ -99,6 +117,7 @@ export class TaskComponent implements OnInit {
       //   .setValue(this.sharedService.getTodayDate());
       // this.COMPLETION_DATE = this.sharedService.getTodayDate();
       this.form.get("QUOTED_MANDAYS").setValue(0);
+      $(".selectpicker").selectpicker("refresh").trigger("change");
     }, 150);
   }
 
@@ -109,7 +128,6 @@ export class TaskComponent implements OnInit {
           this.project_list = res.project_list;
           this.task_status_list = res.task_status_list;
           this.task_type_list = res.task_type_list;
-
           setTimeout(() => {
             $(".selectpicker").selectpicker("refresh").trigger("change");
           }, 100);
@@ -123,6 +141,7 @@ export class TaskComponent implements OnInit {
       }
     );
   }
+
   GetTaskList() {
     let data = {
       LISTTYPE: "all",
@@ -131,7 +150,6 @@ export class TaskComponent implements OnInit {
       (res) => {
         if (res.flag) {
           this.task_list = res.task_list;
-
           setTimeout(() => {
             $(".selectpicker").selectpicker("refresh").trigger("change");
           }, 100);
@@ -146,8 +164,6 @@ export class TaskComponent implements OnInit {
     );
   }
 
-  buisness_owner_list: Array<any> = [];
-  technical_owner_list: Array<any> = [];
   getEmployee() {
     let data = {
       LISTTYPE: "",
@@ -159,9 +175,7 @@ export class TaskComponent implements OnInit {
           this.all_emp_list = res.employee_list;
           this.buisness_owner_list = res.employee_list;
           this.technical_owner_list = res.employee_list;
-
           this.filterEmployee();
-
           this.spinner = false;
         } else {
           this.spinner = false;
@@ -172,6 +186,7 @@ export class TaskComponent implements OnInit {
       }
     );
   }
+
   searchTask() {
     if (this.search_task_id != "" || this.search_task_id != undefined) {
       this.isUpdate = true;
@@ -182,7 +197,7 @@ export class TaskComponent implements OnInit {
       this.f_clearForm();
     }
   }
-  project_assign_emp_detail: Array<any> = [];
+
   GetTaskDetail() {
     let data = {
       TASKID: this.search_task_id,
@@ -206,6 +221,7 @@ export class TaskComponent implements OnInit {
       }
     );
   }
+
   f_fillFormData(data: Array<any> = []) {
     this.form.get("TASKID").setValue(this.search_task_id);
     this.form.get("BRM_POINT").setValue(data[0].BRM_POINT);
@@ -213,9 +229,7 @@ export class TaskComponent implements OnInit {
     this.form.get("CLIENT_OWNER").setValue(data[0].CLIENT_OWNER);
     this.form.get("CLIENT_REFNO").setValue(data[0].CLIENT_REFNO);
     this.form.get("PROJ_CODE").setValue(data[0].PROJ_CODE);
-    this.form
-      .get("ESTIMATED_HOURS")
-      .setValue(this.f_M_H(data[0].ESTIMATED_HOURS));
+    this.form.get("ESTIMATED_HOURS").setValue(this.f_M_H(data[0].ESTIMATED_HOURS));
     this.form.get("TASK_DESC").setValue(data[0].TASK_DESC);
     this.form.get("TASK_DETAILS").setValue(data[0].TASK_DETAILS);
     this.form.get("TASK_NO").setValue(data[0].TASK_NO);
@@ -231,7 +245,6 @@ export class TaskComponent implements OnInit {
     this.filterEmployee();
   }
 
-  _technical_owner_list: Array<any> = [];
   setCompany() {
     for (let data of this.project_list) {
       //if(this.form.getRawValue().TECHNICAL_OWNER != "" || this.form.getRawValue().TECHNICAL_OWNER != null){
@@ -258,7 +271,7 @@ export class TaskComponent implements OnInit {
     //   this._technical_owner_list = this.technical_owner_list
     // }
   }
-  emp_list: Array<any> = [];
+
   filterEmployee() {
     this.emp_list = [];
     let isAssign: boolean = false;
@@ -283,19 +296,13 @@ export class TaskComponent implements OnInit {
     }, 100);
   }
 
-  SelectedFileName: string = "";
-  uploadingFiles: Array<any> = [];
-  uploadedDocument: Array<any> = [];
-  NoDocs: number = 0;
   selectDocument(event: any) {
     this.uploadingFiles = [];
     let b64: string = "";
     let extension: string[] = [];
-
     for (let i = 0; i < event.target.files.length; i++) {
       extension = event.target.files[i].name.split(".");
       let _ext = extension[extension.length - 1].toUpperCase();
-
       if (
         _ext === "BAT" ||
         _ext === "GIF" ||
@@ -318,7 +325,6 @@ export class TaskComponent implements OnInit {
       reader.onload = () => {
         b64 = reader.result.toString().split(",")[1];
         extension = event.target.files[i].name.split(".");
-
         this.uploadingFiles.push({
           DOCUMENT_NAME: "",
           DOCUMENT_FILENAME: event.target.files[i].name,
@@ -336,11 +342,11 @@ export class TaskComponent implements OnInit {
       // this.SelectedFileName = event.target.files.length > 1 ? event.target.files.length + " Files selected" : event.target.files[i].name;
     }
   }
+
   uploadDoc() {
     for (let i = 0; i < this.uploadingFiles.length; i++) {
       this.uploadedDocument.push(this.uploadingFiles[i]);
     }
-
     this.fileInput.nativeElement.value = "";
     this.uploadingFiles = [];
     this.SelectedFileName = "";
@@ -368,8 +374,6 @@ export class TaskComponent implements OnInit {
     });
   }
 
-  selected_emp: any = "";
-  last_row: number = 0;
   addRow() {
     let selected: boolean = false;
     if (this.project_assign_emp_detail.length) {
@@ -416,13 +420,13 @@ export class TaskComponent implements OnInit {
     $("#emp").selectpicker("refresh").trigger("change");
     this.filterEmployee();
   }
+
   removeRow(index: number = null) {
     this.project_assign_emp_detail.splice(index, 1);
     this.filterEmployee();
   }
 
-  isSubmited: boolean = false;
-  saveFormData(para: string = "") {
+  saveFormData(para:any) {
     this.isSubmited = true;
     if (this.form.valid) {
       let _formData = this.form.getRawValue();
@@ -432,15 +436,17 @@ export class TaskComponent implements OnInit {
         this.form.getRawValue().CLIENT_REFNO == undefined
       )
         _formData.CLIENT_REFNO = 0;
-
       _formData.ESTIMATED_HOURS = this.f_H_M(_formData.ESTIMATED_HOURS);
 
       let data = {
         task_detail: _formData,
         project_assign_emp_detail: this.project_assign_emp_detail,
+        STATUS_UPDATE: para,
       };
+      console.log('data ->' , JSON.stringify(data));
+      // return
       this.http.PostRequest(this.apiUrl.SaveTaskDetail, data).then(
-        (res) => {
+        (res:any) => {
           if (res.flag) {
             // console.log(res);
             this.toast.success(res.msg);
@@ -460,6 +466,7 @@ export class TaskComponent implements OnInit {
       this.f_formValidation();
     }
   }
+
   f_downloadDocument(file: any) {
     if (file != undefined && file != null && file != "") {
       this.spinner = true;
@@ -482,6 +489,7 @@ export class TaskComponent implements OnInit {
         });
     }
   }
+
   f_clearForm() {
     this.form.reset();
     this.fileInput.nativeElement.value = "";
@@ -500,18 +508,16 @@ export class TaskComponent implements OnInit {
     let col = [];
     let H = 0;
     let M = 0;
-
     let time: any = null;
     if (hours != "" && hours != undefined && hours != null) {
       col = hours.split(":");
       H = +col[0] || 0;
       M = +col[1] || 0;
-
       time = H * 60 + M;
     }
-
     return time;
   }
+
   f_M_H(minutes: any = null): any {
     let hour = null;
     if (minutes != "" && minutes != undefined && minutes != null) {
@@ -554,12 +560,6 @@ export class TaskComponent implements OnInit {
     }
   }
 
-  textBoxDisabled = true;
-
-  // toggle(){
-  //   this.textBoxDisabled = !this.textBoxDisabled;
-  // }
-
   onChangeType(para: string = "") {
     if (para == "0") {
       this.textBoxDisabled = true;
@@ -572,4 +572,10 @@ export class TaskComponent implements OnInit {
       this.form.get("QUOTED_MANDAYS").setValue("");
     }
   }
+
+  CancleForm(){
+    this.f_clearForm();
+    this.router.navigate(['/taskassign'])
+  }
+
 }
