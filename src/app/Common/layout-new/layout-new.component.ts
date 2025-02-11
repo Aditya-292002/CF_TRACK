@@ -5,6 +5,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import { ToastrService } from 'ngx-toastr';
+import { element } from 'protractor';
 import { ApiUrlService } from 'src/app/services/api-url.service';
 import { AuthServiceService } from 'src/app/services/auth-service.service';
 import { HttpRequestServiceService } from 'src/app/services/http-request-service.service';
@@ -20,30 +21,19 @@ declare var jQuery: any;
 export class LayoutNewComponent implements OnInit {
   @ViewChild('attendance', { static: false }) attendance: ElementRef;  
   @ViewChild('chagefyear', { static: false }) chagefyear: ElementRef;
-  spinner: boolean = false;
-  UserId: any;
-  
-  constructor(
-    private route: RoutingService,
-    private authService: AuthServiceService,
-    public sharedService: SharedServiceService,
-    private http: HttpRequestServiceService,
-    private apiUrl: ApiUrlService,
-    private toast: ToastrService,
-    private datePipe: DatePipe,
-    private router: Router
-  ) { }
+  @HostListener('click', ['$event.target'])
 
-  login_user: string = "";
-  role_name : string = "";
-  designation : string = "";
-  SYS_DATE_TIME: any = '';
-  ATT_DATE: any = '';
-  WORK_LOC: any ='O';
-  ISFINANCE: boolean = false;
-  FYEAR: number = null;
-  FROM_DATE:Date = null;
-  TO_DATE:Date = null;
+  UserId:any;
+  login_user:any = "";
+  role_name:any = "";
+  designation:any = "";
+  SYS_DATE_TIME:any = '';
+  ATT_DATE:any = '';
+  WORK_LOC:any = 'O';
+  ISFINANCE:boolean = false;
+  FYEAR:any;
+  FROM_DATE:Date;
+  TO_DATE:Date;
   FYEAR_CLOSE:boolean=true;
   COMPANY_CODE:any;
   company_list:any = [];
@@ -52,9 +42,27 @@ export class LayoutNewComponent implements OnInit {
   FYEAR_DESC:any;
   location_list:any = [];
   Url:any;
-  headerName:string = "";
+  headerName:any = "";
   isShowToggle:boolean = false;
   FUNCTIONCODE:any;
+  click_index:any = -1;
+  isMainActive:any;
+  isSubActive:any;
+  status:boolean = false;
+  profile_pic:any;
+  attendance_type:any = 'TIME_IN'
+  isAttendance:boolean=false;
+  EMP_NAME:any;
+  _ATT_DATE:any;
+  ATT_REMARK:any;
+  TIME_IN: any;
+  TIME_OUT: any;
+  menu_list: Array<any>=[];
+  fyear_list: Array<any>=[];
+  issideBar: boolean = false;
+  _temp :any = 0;
+  istopBar:boolean = false;
+  mergedData:any = [];
 
 // MenuRightList=[
 //   {
@@ -389,7 +397,16 @@ export class LayoutNewComponent implements OnInit {
 //   }
 // ];
 
-
+constructor(
+  private route: RoutingService,
+  private authService: AuthServiceService,
+  public sharedService: SharedServiceService,
+  private http: HttpRequestServiceService,
+  private apiUrl: ApiUrlService,
+  private toast: ToastrService,
+  private datePipe: DatePipe,
+  private router: Router
+) { }
 
 ngOnInit() {
   let Url = this.router.url;
@@ -413,7 +430,6 @@ ngOnInit() {
     else
       $(".page-wrapper").addClass("toggled");
   });
-  
     $(".sidebar-dropdown > a").click(function () {
       $(".sidebar-submenu").slideUp(200);
       if (
@@ -435,27 +451,19 @@ ngOnInit() {
           .addClass("active");
       }
     });
-
     $("#close-sidebar").click(function () {
       $(".page-wrapper").removeClass("toggled");
     });
     $("#show-sidebar").click(function () {
       $(".page-wrapper").addClass("toggled");
     });
-
-    // this.url = this.route.url;
-
-    
   this.SYS_DATE_TIME = this.datePipe.transform(new Date(), 'dd-MMM-yyyy hh:mm:ss')
   this.ATT_DATE = this.datePipe.transform(new Date(), 'dd-MMM-yyyy')
-  
   //$$('.selectpicker').selectpicker('refresh').trigger('change');
   if(this.sharedService.loginUser[0].EMP_CODE == undefined){
     this.sharedService.loginUser = sessionStorage.getItem('user_detail') ? JSON.parse(sessionStorage.getItem('user_detail')):[]
     this.sharedService.profile_pic = sessionStorage.getItem('profile_pic') ? sessionStorage.getItem('profile_pic'):""
-
     this.profile_pic = this.sharedService.profile_pic
-    this.spinner = true;      
     this.login_user = this.sharedService.loginUser[0].EMP_CODE +" - "+this.sharedService.loginUser[0].USER_NAME
     this.role_name = this.sharedService.loginUser[0].ROLE_NAME
     this.ISFINANCE = this.sharedService.loginUser[0].ISFINANCE
@@ -466,12 +474,8 @@ ngOnInit() {
     this.getUserMenu();
     this.getFyear();
     this.onLoadCheckAttendance();
-
-//    console.log("this.sharedService.loginUser[0].FYEAR",this.sharedService.loginUser[0].FYEAR)
-    
   }   else{ 
     this.profile_pic = this.sharedService.profile_pic
-    this.spinner = true;      
     this.login_user = this.sharedService.loginUser[0].EMP_CODE +" - "+this.sharedService.loginUser[0].USER_NAME
     this.role_name = this.sharedService.loginUser[0].ROLE_NAME        
     this.ISFINANCE = this.sharedService.loginUser[0].ISFINANCE
@@ -481,9 +485,7 @@ ngOnInit() {
     this.getUserMenu();
     this.getFyear();
     this.onLoadCheckAttendance();
-
   }   
-
 }
 
 ngAfterViewInit(){    
@@ -497,14 +499,11 @@ ngAfterViewInit(){
     } else {
       this.authService.logout();
     }   
-
     this.sharedService.form_rights = JSON.parse(sessionStorage.getItem('form_rights'))  
     if(this.sharedService.loginUser[0].EMP_CODE == undefined){
       this.sharedService.loginUser = sessionStorage.getItem('user_detail') ? JSON.parse(sessionStorage.getItem('user_detail')):[]
       this.sharedService.profile_pic = sessionStorage.getItem('profile_pic') ? sessionStorage.getItem('profile_pic'):""
-
       this.profile_pic = this.sharedService.profile_pic
-      this.spinner = true;      
       this.login_user = this.sharedService.loginUser[0].EMP_CODE +" - "+this.sharedService.loginUser[0].USER_NAME
       this.role_name = this.sharedService.loginUser[0].ROLE_NAME
       this.ISFINANCE = this.sharedService.loginUser[0].ISFINANCE
@@ -515,12 +514,8 @@ ngAfterViewInit(){
       this.getUserMenu();
       this.getFyear();
       this.onLoadCheckAttendance();
-
-  //    console.log("this.sharedService.loginUser[0].FYEAR",this.sharedService.loginUser[0].FYEAR)
-      
     }   else{ 
       this.profile_pic = this.sharedService.profile_pic
-      this.spinner = true;      
       this.login_user = this.sharedService.loginUser[0].EMP_CODE +" - "+this.sharedService.loginUser[0].USER_NAME
       this.role_name = this.sharedService.loginUser[0].ROLE_NAME        
       this.ISFINANCE = this.sharedService.loginUser[0].ISFINANCE
@@ -530,9 +525,7 @@ ngAfterViewInit(){
       this.getUserMenu();
       this.getFyear();
       this.onLoadCheckAttendance();
-
     }   
-
     $(document).ready(function() {
       $("#addNewRow").click(function() {
         $('html,body').animate({
@@ -540,7 +533,6 @@ ngAfterViewInit(){
         }, 400);
     });
    });
-
     // top button function code
     $(document).ready(function(){
       $(window).scroll(function () {
@@ -558,20 +550,18 @@ ngAfterViewInit(){
           return false;
         });
     });
-
-   
   }, 100);
 }
 
 MainMenuClick(data:any){
-  //console.log('formdetails',data);
-  if(data=="dashboard"){
+  // console.log('data',data);
+  if(data.FUNCTION_DESC == "Dashboard"){
     this.router.navigate(["/dashboard"]);
   }
-  if(data=="Calender"){
+  if(data.FUNCTION_DESC == "Calendar"){
     this.router.navigate(["/calendar"]);
   }
-  
+
   this.menu_list.forEach((element: any) => {
     if (element.FUNCTION_CODE == data.FUNCTION_CODE && element.IS_SUBSELECTED == true) {
       element.IS_SUBSELECTED = false;
@@ -592,7 +582,6 @@ MainMenuClick(data:any){
 
 subMenuClick(data:any){
   // console.log('subMenuClick',data);
-  
   this.menu_list.forEach((element:any)=>{
     if(element.FUNCTION_CODE == data.FUNCTION_CODE){
        element.IS_SUBSELECTED = true;
@@ -602,55 +591,37 @@ subMenuClick(data:any){
   sessionStorage.setItem('form_rights',JSON.stringify(data))   
   this.sharedService.form_rights = data;
   sessionStorage.setItem('route',this.sharedService.form_rights.URL)   
-
   this.FUNCTIONCODE = data.FUNCTION_CODE;
   localStorage.setItem('FUNCTION_CODE',this.FUNCTIONCODE)
   this.router.navigate([data.URL]);
   this.Url = data.URL
 }
 
-
-  onActivate(event) {
+onActivate(event:any) {
     window.scrollTo(0, 0);
-  }
+}
 
-  profile_pic: string = "";
-
-  gotoDahboard(){
-    this.route.changeRoute('')
-  }
-
-  attendance_type: string = 'TIME_IN'
-  isAttendance: boolean=false;
-  EMP_NAME: string = ''
-  onLoadCheckAttendance() {
-    this.spinner = true;
+onLoadCheckAttendance() {
     this.SYS_DATE_TIME = this.datePipe.transform(new Date(), 'dd-MMM-yyyy hh:mm:ss')
     let data = {  }
     this.http.PostRequest(this.apiUrl.Check_Attendance, data).then(res => {
       if(this.role_name == "MANAGEMENT"){
-        this.isAttendance = true;        
-        this.spinner = false;
+        this.isAttendance = true; 
       }
       else if (res.flag  && res.today_flag != 1) {
         this.attendance_type = res.attendance_type
         this.ATT_DATE = res.Date;
         this.EMP_NAME = this.sharedService.loginUser[0].EMP_CODE +" - "+this.sharedService.loginUser[0].USER_NAME
-        
         jQuery(this.attendance.nativeElement).modal('show')
         this.isAttendance = false;
-        this.spinner = false;
       } else {
-        this.isAttendance = true;        
-        this.spinner = false;
+        this.isAttendance = true; 
       }
-    }, err => {
-      this.spinner = false;
     });
-  }
-  CheckAttendance(para: number = null) {
+}
+
+CheckAttendance(para:any) {
     this.f_clearPopup();
-    this.spinner = true;
     this.SYS_DATE_TIME = this.datePipe.transform(new Date(), 'dd-MMM-yyyy hh:mm:ss')
     let data = {  }
     this.http.PostRequest(this.apiUrl.Check_Attendance, data).then(res => {
@@ -658,47 +629,32 @@ subMenuClick(data:any){
         this.attendance_type = res.attendance_type
         this.ATT_DATE = res.Date;
         this.EMP_NAME = this.sharedService.loginUser[0].EMP_CODE +" - "+this.sharedService.loginUser[0].USER_NAME
-        
         jQuery(this.attendance.nativeElement).modal('show')
         this.isAttendance = false;
-        this.spinner = false;
       } else {
         this.isAttendance = true;
-        if(para == null){
+        if(para == 0){
           this.toast.warning(res.msg)
         }
-        
-        this.spinner = false;
       }
-    }, err => {
-      this.spinner = false;
     });
-  }
-  _ATT_DATE: any = ''
-  ATT_REMARK: string = '';
-  TIME_IN: any = '';
-  TIME_OUT: any = '';
-  onSubmitAttendance() {
-   
+}
+ 
+onSubmitAttendance() {
     let enterd_time: string = ''
     if (this.attendance_type == 'TIME_IN') {
-
       if(this.TIME_IN == '' || this.TIME_IN == undefined || this.TIME_IN == null){
         this.toast.warning("Please enter IN Time");
         return false;
       }
       enterd_time = this.TIME_IN;
-
     } else if (this.attendance_type == 'TIME_OUT') {
-
       if(this.TIME_OUT == '' || this.TIME_OUT == undefined || this.TIME_OUT == null){
         this.toast.warning("Please enter OUT Time");
         return false;
       }
       enterd_time = this.TIME_OUT;
-
     }
-    this.spinner = true
     let t = enterd_time.split(':')
     let h = t[0] || "";
     let m = t[1] || "00"
@@ -709,58 +665,37 @@ subMenuClick(data:any){
       IN_OUT_TIME: enterd_time,
       SYSTEM_TIME: this.SYS_DATE_TIME,
       WORK_LOC: this.WORK_LOC
-
     }
     this.http.PostRequest(this.apiUrl.Save_Attendance, data).then(res => {
       if (res.flag) { 
-        this.spinner = false;
         if(this.ATT_DATE == this.datePipe.transform(new Date(), 'dd-MMM-yyyy')){
           jQuery(this.attendance.nativeElement).modal('hide')
         }
         this.toast.success(res.msg)        
         this.f_clearPopup();
         this.CheckAttendance(1);
-       
       } else {
         this.toast.warning(res.msg)
-        this.spinner = false;
       }
-    }, err => {
-      this.spinner = false;
     });
-  }
-  f_clearPopup() {
-    this.ATT_DATE = ''
-    this._ATT_DATE = ''
+}
+
+f_clearPopup() {
+    this.ATT_DATE = '';
+    this._ATT_DATE = '';
     this.ATT_REMARK = '';
     this.TIME_IN = '';
     this.TIME_OUT = '';
-    // this.ATT_DATE = this.datePipe.transform(new Date(), 'dd-MMM-yyyy');
     this.isAttendance = false;
     this.attendance_type = 'TIME_IN';
-  }
+}
 
-  f_logout(){
+f_logout(){
     this.authService.logout();
     this.sharedService.loginUser =[{}]
-  }
-click_index: number = -1;
-isMainActive: number = null;
-isSubActive: number = null;
-status: boolean = false;
-  // menu_expand_collapse(index){
-  //   if(this.click_index == index && index != -1){
-  //     // this.click_index = null;
-  //   }
-  //   else{
-  //     this.click_index = index;
-  //     this.isMainActive = index;
-  //   }
-  // }
-  // formName: string = "";
+}
 
-  menu_expand_collapse(list,index,flag){
-  
+menu_expand_collapse(list:any,index:any,flag:any){
     if (index !== -1) {
       for (let i = 0; i < list.length; i++) {
         if (i != index)
@@ -770,21 +705,12 @@ status: boolean = false;
     } else if (index === -1) {
       for (let i = 0; i < list.length; i++) {
         list[i].TOGGLE = false;
-        
       }
     }
     this.click_index = index;
-    // if(this.click_index == index && index != -1){
-    //   this.click_index = null;
-    // }
-    // else{
-    //   this.click_index = index;
-    //   this.isMainActive = index;
-    // }
-  }
+}
 
-
- select_submain(list, pindex, cindex) {
+ select_submain(list:any, pindex:any, cindex:any) {
   for (let i = 0; i < list.length; i++) {
     if (list[i].DETAIL.length > 0) {
       for (let j = 0; j < list[i].DETAIL.length; j++) {
@@ -796,47 +722,52 @@ status: boolean = false;
   this.isShowToggle = true;
 }
 
-  menuClick(para: any, index: number = null){
+menuClick(para: any, index:any){
     // console.log(para);
     if(typeof(para)=='object' && para != ""){
       if(para.MODULE_CODE == "FI" && this.ISFINANCE == true && (this.FYEAR == null || this.FYEAR == 0 || this.FYEAR == undefined)){
         // jQuery(this.chagefyear.nativeElement).modal('show')
         // this.FYEAR_CLOSE = false;
-        
         this.route.changeRoute('/companyfyear')
       }
       else{
         this.isSubActive = index;
         sessionStorage.setItem('form_rights',JSON.stringify(para))
-        
         this.sharedService.form_rights = para;
         this.route.changeRoute(para.URL)
       }
-      
     } else if(para == 'dashboard'){
       this.route.changeRoute('')
       this.isSubActive = null;
     }
-  }
-  menu_list: Array<any>=[]
-  fyear_list: Array<any>=[]
-  getUserMenu(){
+}
 
+getUserMenu(){
     this.http.PostRequest(this.apiUrl.GetMenuItems, {}).then(res => {
       if (res) {
         this.menu_list = res.menu_list;
+        this.mergedData = this.menu_list.map((item:any) => {
+          if (item.FUNCTION_CODE === "DH" || item.FUNCTION_CODE === "CL") {
+            const mergedObject = { ...item };
+          item.DETAIL.forEach((detail:any) => {
+            Object.keys(detail).forEach(key => {
+              mergedObject[`${key}`] = detail[key];
+            });
+          });
+          delete mergedObject.DETAIL;
+            return mergedObject;
+          }
+          return item;
+        });
+        this.menu_list = this.mergedData
+        // console.log('mergedData -> ' , this.mergedData)
+        // console.log('menu_list -> ' , this.menu_list)
         this.IsSelectedSubMenu();
-        this.spinner = false;
-      } else {
-        this.spinner = false;
-      }
-    }, err => {
-      this.spinner = false;
+      } 
     });
-  }
+}
 
-
-  IsSelectedSubMenu(){
+IsSelectedSubMenu(){
     // this.menu_list.forEach((element: any) => {
     //   if (element.FORM_NAME == '') {
     //     if (element.sabmenu[0].FORM_NAME == this.url) {
@@ -844,9 +775,9 @@ status: boolean = false;
     //   }
     // }
     // });
-  }
+}
 
-  getFyear(){
+getFyear(){
 
     this.http.PostRequest(this.apiUrl.GetFyearList, {}).then(res => {
       if (res) {
@@ -879,48 +810,23 @@ status: boolean = false;
       this.FYEAR_DESC = element.FYEAR_DESC;
     }
   });
-  
   sessionStorage.setItem('user_detail', JSON.stringify(this.sharedService.loginUser))
   jQuery(this.chagefyear.nativeElement).modal('hide')
-
-        this.spinner = false;
       setTimeout(() => {
         //$$('.selectpicker').selectpicker('refresh').trigger('change');
       }, 100);
-      } else {
-        this.spinner = false;
-      }
-    }, err => {
-      this.spinner = false;
+      } 
     });
   
-  }
-
-  
-issideBar: boolean = false;
-_temp : number = 0;
- istopBar :boolean = false;
- @HostListener('click', ['$event.target'])
- onClickBody(para) {
-   if(this._temp==1){
-     this.issideBar = false;
-     this.istopBar = false;
-     this._temp = 0;
-   }
-
 }
 
-// status: boolean = false;
- clickEvent(){
-     this.status = !this.status;       
- }
- ShowChangeFyear(){
+ShowChangeFyear(){
    
   this.route.changeRoute("/companyfyear")
   //jQuery(this.chagefyear.nativeElement).modal('show')
- }
+}
 
- onContinueFyear(){
+onContinueFyear(){
   this.sharedService.loginUser[0].FYEAR = this.FYEAR;
   this.sharedService.loginUser[0].FYEAR = this.FYEAR;
   this.FYEAR_CLOSE = false;
@@ -937,27 +843,19 @@ _temp : number = 0;
   
   sessionStorage.setItem('user_detail', JSON.stringify(this.sharedService.loginUser))
   jQuery(this.chagefyear.nativeElement).modal('hide')
- }
+}
 
- onRouteChange(){
+onRouteChange(){
   this.route.changeRoute('notification')
- }
+}
 
- OnChangePassword(){
-   
+OnChangePassword(){
   this.route.changeRoute('changepassword')
- }
+}
 
- showToggleFun(){
+showToggleFun(){
   this.isShowToggle = !this.isShowToggle;
 }
-getDashboad(){
-  let data={
-    "User_ID":this.UserId
-  }
-  
-  
 
-}
 
 }
