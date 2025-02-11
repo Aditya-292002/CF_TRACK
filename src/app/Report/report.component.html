@@ -5,7 +5,7 @@
       <div class="d-flex justify-content-between">
         <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
       </div>
-    </div> -->   
+    </div> -->
 
     <div class="col-md-12">
       <div id="accordion1" class="accordion">
@@ -21,418 +21,417 @@
           <div
             id="collapseOne"
             class="card collapse show p-0"
-            data-parent="#accordion1"   
+            data-parent="#accordion1"
           >
-              <div class="col-md-12 mb-3">
-                <div class="row">
-                  <div class="col-sm-12 col-md-12 col-lg-3">
-                    <label>Report Name :</label>
-                    <div
-                      class="floating-input list-btn"
-                      [ngClass]="{
-                        'invalid-control':
-                          isSubmited &&
-                          form.controls['Report_ID'].errors?.required
-                      }"
-                    >
-                      <select
-                        class="form-control selectpicker show-tick"
-                        formControlName="Report_ID"
-                        id="report_id"
-                        data-live-search="true"
-                        #report_id
-                        title="Select"
-                        (change)="changeReport(1, 0)"
-                      >
-                        <option
-                          *ngFor="let opt of report_list; let i = index"
-                          [selected]="
-                            opt.Report_ID == form.controls['Report_ID'].value
-                          "
-                          [value]="opt.Report_ID"
-                        >
-                          {{ opt.Report_Name }}
-                        </option>
-                      </select>
-                      <button
-                        type="button"
-                        class="close"
-                        onclick="resetDropdown('report_id')"
-                        (click)="form.controls['Report_ID'].reset()"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                  </div>
-  
-                  <div class="col-sm-12 col-md-12 col-lg-3">
-                    <label>Financial Year :</label>
-                    <div
-                      class="floating-input list-btn"
-                      [ngClass]="{
-                        'invalid-control':
-                          isSubmited && form.controls['FYEAR'].errors?.required
-                      }"
-                    >
-                      <select
-                        class="form-control selectpicker show-tick"
-                        id="fyear"
-                        formControlName="FYEAR"
-                        data-live-search="true"
-                        #fyear
-                        title="Select"
-                        (change)="changeReport(0, form.controls['FYEAR'].value)"
-                      >
-                        <option
-                          *ngFor="let opt of fyear_list; let i = index"
-                          [selected]="opt.FYEAR == form.controls['FYEAR'].value"
-                          [value]="opt.FYEAR"
-                        >
-                          {{ opt.FYEAR_DESC }}
-                        </option>
-                      </select>
-                      <button
-                        type="button"
-                        class="close"
-                        onclick="resetDropdown('fyear')"
-                        (click)="form.controls['FYEAR'].reset()"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                  </div>
+            <div class="col-md-12 mb-3">
+              <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-3">
+                  <label>Report Name :</label>
                   <div
-                    class="col-sm-12 col-md-12 col-lg-3"
-                    *ngIf="isShowFromDate"
+                    class="floating-input list-btn"
+                    [ngClass]="{
+                      'invalid-control':
+                        isSubmited &&
+                        form.controls['Report_ID'].errors?.required
+                    }"
                   >
-                    <label>From Date :</label>
-                    <div class="floating-input">
-                      <input
-                        type="text"
-                        class="form-control"
-                        formControlName="para4"
-                        [(ngModel)]="para4"
-                        [value]="para4"
-                        readonly
-                      />
-                      <!-- <app-date-picker id="from_date" [(ngModel)]="para4" class="date-input" [maxdate]="" [mindate]="" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker> -->
-                      <div class="date-input">
-                        <mat-form-field fxFlex="100" appearance="fill">
-                          <mat-datepicker-toggle
-                            matPrefix
-                            [for]="picker"
-                            id="from_date"
-                            #from_date
-                          ></mat-datepicker-toggle>
-                          <input
-                            class="form-control"
-                            (dateChange)="ChangeDate()"
-                            [value]="_DATE"
-                            matInput
-                            [(ngModel)]="_DATE"
-                            [ngModelOptions]="{ standalone: true }"
-                            [matDatepicker]="picker"
-                            [min]="min_date"
-                            [max]="maxdate"
-                            [disabled]="false"
-                            readonly
-                          />
-  
-                          <mat-datepicker #picker id="picker"></mat-datepicker>
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-12 col-md-12 col-lg-3" *ngIf="isShowToDate">
-                    <label>To Date :</label>
-                    <div class="floating-input">
-                      <input
-                        type="text"
-                        class="form-control"
-                        formControlName="para5"
-                        [(ngModel)]="para5"
-                        readonly
-                      />
-                      <!-- <app-date-picker id="todate"   #todate  [(ngModel)]="para5" class="date-input" [maxdate]="min_date" [mindate]="" [isDisable]='false' [ngModelOptions]="{standalone: true}" ></app-date-picker> -->
-                      <div class="date-input">
-                        <mat-form-field fxFlex="100" appearance="fill">
-                          <mat-datepicker-toggle
-                            matPrefix
-                            [for]="picker"
-                            id="to_date"
-                            #to_date
-                          ></mat-datepicker-toggle>
-                          <input
-                            class="form-control"
-                            (dateChange)="ChangeToDate()"
-                            [value]="TO_DATE"
-                            matInput
-                            [(ngModel)]="TO_DATE"
-                            [ngModelOptions]="{ standalone: true }"
-                            [matDatepicker]="picker"
-                            [min]="min_date"
-                            [max]="maxdate"
-                            [disabled]="false"
-                            readonly
-                          />
-  
-                          <mat-datepicker #picker id="picker"></mat-datepicker>
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-  
-                  <div
-                    class="col-sm-12 col-md-12 col-lg-3"
-                    *ngIf="isShowAsOnDate"
-                  >
-                    <label>As On Date :</label>
-                    <div class="floating-input">
-                      <input
-                        type="text"
-                        class="form-control"
-                        formControlName="para4"
-                        [(ngModel)]="para4"
-                        readonly
-                      />
-                      <app-date-picker
-                        id="todate"
-                        #todate
-                        [(ngModel)]="para4"
-                        class="date-input"
-                        [maxdate]=""
-                        [mindate]="min_date"
-                        [isDisable]="false"
-                        [ngModelOptions]="{ standalone: true }"
-                      ></app-date-picker>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12 col-lg-3 col-sm-12">
-                    <label>Company :</label>
-                    <div
-                      class="floating-input list-btn"
-                      [ngClass]="{
-                        'invalid-control':
-                          isSubmited &&
-                          form.controls['COMPANY_CODE'].errors?.required
-                      }"
+                    <select
+                      class="form-control selectpicker show-tick"
+                      formControlName="Report_ID"
+                      id="report_id"
+                      data-live-search="true"
+                      #report_id
+                      title="Select"
+                      (change)="changeReport(1, 0)"
                     >
-                      <select
-                        class="form-control selectpicker show-tick"
-                        id="company"
-                        formControlName="COMPANY_CODE"
-                        data-live-search="true"
-                        #company
-                        title="Select"
-                        (change)="filterLocations()"
+                      <option
+                        *ngFor="let opt of report_list; let i = index"
+                        [selected]="
+                          opt.Report_ID == form.controls['Report_ID'].value
+                        "
+                        [value]="opt.Report_ID"
                       >
-                        <option
-                          *ngFor="let opt of company_list; let i = index"
-                          [selected]="
-                            opt.COMPANY_CODE ==
-                            form.controls['COMPANY_CODE'].value
-                          "
-                          [value]="opt.COMPANY_CODE"
-                        >
-                          {{ opt.COMPANY_NAME }}
-                        </option>
-                      </select>
-                      <button
-                        type="button"
-                        class="close"
-                        onclick="resetDropdown('company')"
-                        (click)="form.controls['COMPANY_CODE'].reset()"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="col-md-12 col-lg-3 col-sm-12">
-                    <label>Location :</label>
-                    <div
-                      class="floating-input list-btn"
-                      [ngClass]="{
-                        'invalid-control':
-                          isSubmited &&
-                          form.controls['LOCATION_CODE'].errors?.required
-                      }"
-                    >
-                      <select
-                        class="form-control selectpicker show-tick"
-                        id="Location"
-                        formControlName="LOCATION_CODE"
-                        data-live-search="true"
-                        #Location
-                        title="Select"
-                      >
-                        <option
-                          *ngFor="let opt of location_list; let i = index"
-                          [selected]="
-                            opt.LOCATION_CODE ==
-                            form.controls['LOCATION_CODE'].value
-                          "
-                          [value]="opt.LOCATION_CODE"
-                        >
-                          {{ opt.LOCATION_NAME }}
-                        </option>
-                      </select>
-                      <button
-                        type="button"
-                        class="close"
-                        onclick="resetDropdown('Location')"
-                        (click)="form.controls['LOCATION_CODE'].reset()"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div
-                    class="col-md-12 col-lg-3 col-sm-12"
-                    *ngIf="isFilterCustomer"
-                  >
-                    <label>{{ CaptionSelection1 }} :</label>
-                    <div
-                      class="floating-input list-btn"
-                      [ngClass]="{
-                        'invalid-control':
-                          isSubmited && form.controls[''].errors?.required
-                      }"
-                    >
-                      <select
-                        class="form-control selectpicker show-tick"
-                        formControlName="para1"
-                        id="customer"
-                        data-live-search="true"
-                        #company
-                        title="Select"
-                        (change)="changeReportTable()"
-                      >
-                        <option
-                          *ngFor="let opt of list1; let i = index"
-                          [selected]="opt.val == form.controls['para1'].value"
-                          [value]="opt.val"
-                        >
-                          {{ opt.text }}
-                        </option>
-                      </select>
-                      <button
-                        type="button"
-                        class="close"
-                        onclick="resetDropdown('customer')"
-                        (click)="form.controls['para1'].reset()"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                  </div>
-                  <div
-                    class="col-md-12 col-lg-3 col-sm-12"
-                    *ngIf="isFilterProject"
-                  >
-                    <label>{{ CaptionSelection2 }} :</label>
-                    <div
-                      class="floating-input list-btn"
-                      [ngClass]="{
-                        'invalid-control':
-                          isSubmited && form.controls[''].errors?.required
-                      }"
-                    >
-                      <select
-                        class="form-control selectpicker show-tick"
-                        formControlName="para2"
-                        id="project"
-                        data-live-search="true"
-                        title="Select"
-                      >
-                        <option
-                          *ngFor="let opt of list2; let i = index"
-                          [selected]="opt.val == form.controls['para2'].value"
-                          [value]="opt.val"
-                        >
-                          {{ opt.text }}
-                        </option>
-                      </select>
-                      <button
-                        type="button"
-                        class="close"
-                        onclick="resetDropdown('project')"
-                        (click)="form.controls['para2'].reset()"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                  </div>
-                  <div
-                    class="col-md-12 col-lg-3 col-sm-12"
-                    *ngIf="isFilterSelection"
-                  >
-                    <label>{{ CaptionSelection3 }} :</label>
-                    <div
-                      class="floating-input list-btn"
-                      [ngClass]="{
-                        'invalid-control':
-                          isSubmited && form.controls[''].errors?.required
-                      }"
-                    >
-                      <select
-                        class="form-control selectpicker show-tick"
-                        formControlName="para3"
-                        id="vendor"
-                        data-live-search="true"
-                        title="Select"
-                      >
-                        <option
-                          *ngFor="let opt of list3; let i = index"
-                          [selected]="opt.val == form.controls['para3'].value"
-                          [value]="opt.val"
-                        >
-                          {{ opt.text }}
-                        </option>
-                      </select>
-                      <button
-                        type="button"
-                        class="close"
-                        onclick="resetDropdown('vendor')"
-                        (click)="form.controls['para3'].reset()"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                  </div>
-                  <div
-                    class="col-md-12 col-lg-1 col-sm-12"
-                    *ngIf="isshowFilterSelection"
-                  >
+                        {{ opt.Report_Name }}
+                      </option>
+                    </select>
                     <button
-                      class="btn btn-secondary mt-4"
-                      title="Show"
-                      (click)="showFilterSelectionTable()"
+                      type="button"
+                      class="close"
+                      onclick="resetDropdown('report_id')"
+                      (click)="form.controls['Report_ID'].reset()"
+                      aria-label="Close"
                     >
-                      Show
+                      <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <!-- <div class="col-md-2 " *ngIf="isshowFilterSelection && detail.length > 0">
-                              <button class="btn btn-secondary mt-4 "  title="Excel Download" (click)="ExcelDownload()" >Excel Download</button> 
-                          </div> -->
+                </div>
+
+                <div class="col-sm-12 col-md-12 col-lg-3">
+                  <label>Financial Year :</label>
+                  <div
+                    class="floating-input list-btn"
+                    [ngClass]="{
+                      'invalid-control':
+                        isSubmited && form.controls['FYEAR'].errors?.required
+                    }"
+                  >
+                    <select
+                      class="form-control selectpicker show-tick"
+                      id="fyear"
+                      formControlName="FYEAR"
+                      data-live-search="true"
+                      #fyear
+                      title="Select"
+                      (change)="changeReport(0, form.controls['FYEAR'].value)"
+                    >
+                      <option
+                        *ngFor="let opt of fyear_list; let i = index"
+                        [selected]="opt.FYEAR == form.controls['FYEAR'].value"
+                        [value]="opt.FYEAR"
+                      >
+                        {{ opt.FYEAR_DESC }}
+                      </option>
+                    </select>
+                    <button
+                      type="button"
+                      class="close"
+                      onclick="resetDropdown('fyear')"
+                      (click)="form.controls['FYEAR'].reset()"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="col-sm-12 col-md-12 col-lg-3"
+                  *ngIf="isShowFromDate"
+                >
+                  <label>From Date :</label>
+                  <div class="floating-input">
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="para4"
+                      [(ngModel)]="para4"
+                      [value]="para4"
+                      readonly
+                    />
+                    <!-- <app-date-picker id="from_date" [(ngModel)]="para4" class="date-input" [maxdate]="" [mindate]="" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker> -->
+                    <div class="date-input">
+                      <mat-form-field fxFlex="100" appearance="fill">
+                        <mat-datepicker-toggle
+                          matPrefix
+                          [for]="picker"
+                          id="from_date"
+                          #from_date
+                        ></mat-datepicker-toggle>
+                        <input
+                          class="form-control"
+                          (dateChange)="ChangeDate()"
+                          [value]="_DATE"
+                          matInput
+                          [(ngModel)]="_DATE"
+                          [ngModelOptions]="{ standalone: true }"
+                          [matDatepicker]="picker"
+                          [min]="min_date"
+                          [max]="maxdate"
+                          [disabled]="false"
+                          readonly
+                        />
+
+                        <mat-datepicker #picker id="picker"></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-3" *ngIf="isShowToDate">
+                  <label>To Date :</label>
+                  <div class="floating-input">
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="para5"
+                      [(ngModel)]="para5"
+                      readonly
+                    />
+                    <!-- <app-date-picker id="todate"   #todate  [(ngModel)]="para5" class="date-input" [maxdate]="min_date" [mindate]="" [isDisable]='false' [ngModelOptions]="{standalone: true}" ></app-date-picker> -->
+                    <div class="date-input">
+                      <mat-form-field fxFlex="100" appearance="fill">
+                        <mat-datepicker-toggle
+                          matPrefix
+                          [for]="picker"
+                          id="to_date"
+                          #to_date
+                        ></mat-datepicker-toggle>
+                        <input
+                          class="form-control"
+                          (dateChange)="ChangeToDate()"
+                          [value]="TO_DATE"
+                          matInput
+                          [(ngModel)]="TO_DATE"
+                          [ngModelOptions]="{ standalone: true }"
+                          [matDatepicker]="picker"
+                          [min]="min_date"
+                          [max]="maxdate"
+                          [disabled]="false"
+                          readonly
+                        />
+
+                        <mat-datepicker #picker id="picker"></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  class="col-sm-12 col-md-12 col-lg-3"
+                  *ngIf="isShowAsOnDate"
+                >
+                  <label>As On Date :</label>
+                  <div class="floating-input">
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="para4"
+                      [(ngModel)]="para4"
+                      readonly
+                    />
+                    <app-date-picker
+                      id="todate"
+                      #todate
+                      [(ngModel)]="para4"
+                      class="date-input"
+                      [maxdate]=""
+                      [mindate]="min_date"
+                      [isDisable]="false"
+                      [ngModelOptions]="{ standalone: true }"
+                    ></app-date-picker>
+                  </div>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-md-12 col-lg-3 col-sm-12">
+                  <label>Company :</label>
+                  <div
+                    class="floating-input list-btn"
+                    [ngClass]="{
+                      'invalid-control':
+                        isSubmited &&
+                        form.controls['COMPANY_CODE'].errors?.required
+                    }"
+                  >
+                    <select
+                      class="form-control selectpicker show-tick"
+                      id="company"
+                      formControlName="COMPANY_CODE"
+                      data-live-search="true"
+                      #company
+                      title="Select"
+                      (change)="filterLocations()"
+                    >
+                      <option
+                        *ngFor="let opt of company_list; let i = index"
+                        [selected]="
+                          opt.COMPANY_CODE ==
+                          form.controls['COMPANY_CODE'].value
+                        "
+                        [value]="opt.COMPANY_CODE"
+                      >
+                        {{ opt.COMPANY_NAME }}
+                      </option>
+                    </select>
+                    <button
+                      type="button"
+                      class="close"
+                      onclick="resetDropdown('company')"
+                      (click)="form.controls['COMPANY_CODE'].reset()"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="col-md-12 col-lg-3 col-sm-12">
+                  <label>Location :</label>
+                  <div
+                    class="floating-input list-btn"
+                    [ngClass]="{
+                      'invalid-control':
+                        isSubmited &&
+                        form.controls['LOCATION_CODE'].errors?.required
+                    }"
+                  >
+                    <select
+                      class="form-control selectpicker show-tick"
+                      id="Location"
+                      formControlName="LOCATION_CODE"
+                      data-live-search="true"
+                      #Location
+                      title="Select"
+                    >
+                      <option
+                        *ngFor="let opt of location_list; let i = index"
+                        [selected]="
+                          opt.LOCATION_CODE ==
+                          form.controls['LOCATION_CODE'].value
+                        "
+                        [value]="opt.LOCATION_CODE"
+                      >
+                        {{ opt.LOCATION_NAME }}
+                      </option>
+                    </select>
+                    <button
+                      type="button"
+                      class="close"
+                      onclick="resetDropdown('Location')"
+                      (click)="form.controls['LOCATION_CODE'].reset()"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div
+                  class="col-md-12 col-lg-3 col-sm-12"
+                  *ngIf="isFilterCustomer"
+                >
+                  <label>{{ CaptionSelection1 }} :</label>
+                  <div
+                    class="floating-input list-btn"
+                    [ngClass]="{
+                      'invalid-control':
+                        isSubmited && form.controls[''].errors?.required
+                    }"
+                  >
+                    <select
+                      class="form-control selectpicker show-tick"
+                      formControlName="para1"
+                      id="customer"
+                      data-live-search="true"
+                      #company
+                      title="Select"
+                      (change)="changeReportTable()"
+                    >
+                      <option
+                        *ngFor="let opt of list1; let i = index"
+                        [selected]="opt.val == form.controls['para1'].value"
+                        [value]="opt.val"
+                      >
+                        {{ opt.text }}
+                      </option>
+                    </select>
+                    <button
+                      type="button"
+                      class="close"
+                      onclick="resetDropdown('customer')"
+                      (click)="form.controls['para1'].reset()"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="col-md-12 col-lg-3 col-sm-12"
+                  *ngIf="isFilterProject"
+                >
+                  <label>{{ CaptionSelection2 }} :</label>
+                  <div
+                    class="floating-input list-btn"
+                    [ngClass]="{
+                      'invalid-control':
+                        isSubmited && form.controls[''].errors?.required
+                    }"
+                  >
+                    <select
+                      class="form-control selectpicker show-tick"
+                      formControlName="para2"
+                      id="project"
+                      data-live-search="true"
+                      title="Select"
+                    >
+                      <option
+                        *ngFor="let opt of list2; let i = index"
+                        [selected]="opt.val == form.controls['para2'].value"
+                        [value]="opt.val"
+                      >
+                        {{ opt.text }}
+                      </option>
+                    </select>
+                    <button
+                      type="button"
+                      class="close"
+                      onclick="resetDropdown('project')"
+                      (click)="form.controls['para2'].reset()"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="col-md-12 col-lg-3 col-sm-12"
+                  *ngIf="isFilterSelection"
+                >
+                  <label>{{ CaptionSelection3 }} :</label>
+                  <div
+                    class="floating-input list-btn"
+                    [ngClass]="{
+                      'invalid-control':
+                        isSubmited && form.controls[''].errors?.required
+                    }"
+                  >
+                    <select
+                      class="form-control selectpicker show-tick"
+                      formControlName="para3"
+                      id="vendor"
+                      data-live-search="true"
+                      title="Select"
+                    >
+                      <option
+                        *ngFor="let opt of list3; let i = index"
+                        [selected]="opt.val == form.controls['para3'].value"
+                        [value]="opt.val"
+                      >
+                        {{ opt.text }}
+                      </option>
+                    </select>
+                    <button
+                      type="button"
+                      class="close"
+                      onclick="resetDropdown('vendor')"
+                      (click)="form.controls['para3'].reset()"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="col-md-12 col-lg-1 col-sm-12"
+                  *ngIf="isshowFilterSelection"
+                >
+                  <button
+                    class="btn btn-secondary mt-4"
+                    title="Show"
+                    (click)="showFilterSelectionTable()"
+                  >
+                    Show
+                  </button>
+                </div>
+                <!-- <div class="col-md-2 " *ngIf="isshowFilterSelection && detail.length > 0">
+                              <button class="btn btn-secondary mt-4 "  title="Excel Download" (click)="ExcelDownload()" >Excel Download</button> 
+                          </div> -->
+              </div>
+            </div>
           </div>
           <!--  -->
         </div>
       </div>
     </div>
-    
 
     <!-- 
         <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
@@ -447,63 +446,65 @@
           </ul>
           <div [ngbNavOutlet]="nav"></div> -->
 
-    <div class="bg-white w-100 mt-2" *ngIf="isshowFilterTable">
-      <div class="">
-        <div class="col-md-12" *ngIf="isshowFilterSelection && detail.length > 0">
-          <div class="row">
-            <div class="col-md-12 col-lg-6">
-              <button
-                class="btn btn-secondary mb-1"
-                *ngIf="BackCount > 0"
-                title="Back"
-                (click)="back()"
-              >
-                Back
-              </button>
-            </div>
-            <div class="col-md-12 col-lg-6 text-right">
-              <button
-                class="btn btn-secondary mb-1"
-                title="Excel Download"
-                (click)="ExcelDownload()"
-              >
-                Excel Download
-              </button>
+    <div class=" col-md-12 mt-2">
+      <div class="bg-white col-md-12" *ngIf="isshowFilterTable">
+        <div class="row">
+          <div
+            class="col-md-12 mt-2 mb-2"
+            *ngIf="isshowFilterSelection && detail.length > 0"
+          >
+            <div class="row">
+              <div class="col-md-12 col-lg-6">
+                <button
+                  class="btn btn-secondary mb-1"
+                  *ngIf="BackCount > 0"
+                  title="Back"
+                  (click)="back()"
+                >
+                  Back
+                </button>
+              </div>
+              <div class="col-md-12 col-lg-6 text-right">
+                <button
+                  class="btn btn-secondary mb-1"
+                  title="Excel Download"
+                  (click)="ExcelDownload()"
+                >
+                  Excel Download
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-12">
-          <div class="tableFixHeadReoprt">
-            <table class="table-theam">
-              <thead>
-                <tr>
-                  <th
-                    *ngFor="let item of header"
-                    
-                  >
-                    {{ item.Col_Name }}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let col of detail">
-                  <td
-                    *ngFor="let item of header"
-                    (click)="DrillDown(col, item)"
-                    [ngStyle]="{
-                      'text-align': item.Col_Type == 'N' ? 'right' : 'left',
-                      'font-weight': item.ISBOLD == '1' ? '600' : '400'
-                     
-                    }"
-                  >
-                    {{ getData(col, item.Col_Name) }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="col-md-12">
+            <div class="tableFixHeadReoprt">
+              <table class="table-theam">
+                <thead>
+                  <tr>
+                    <th *ngFor="let item of header">
+                      {{ item.Col_Name }}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let col of detail">
+                    <td
+                      *ngFor="let item of header"
+                      (click)="DrillDown(col, item)"
+                      [ngStyle]="{
+                        'text-align': item.Col_Type == 'N' ? 'right' : 'left',
+                        'font-weight': item.ISBOLD == '1' ? '600' : '400'
+                      }"
+                    >
+                      {{ getData(col, item.Col_Name) }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </div>
+ 
   </div>
 </form>
