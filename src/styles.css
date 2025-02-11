@@ -162,7 +162,7 @@ table.table-theam-1 {
 }
 
 table.table-theam-1 th {
-    background: #424a5a;
+    background: #34374c;
     color: #fff; 
     font-weight: 400;
     position: sticky;
@@ -171,14 +171,24 @@ table.table-theam-1 th {
     /* z-index: 20; */
 }
 
-table th,
-table td {
+table.table-theam-1 th,
+table.table-theam-1 td {
     text-align: left;
     padding: 5px;
     vertical-align: top;
     word-wrap: break-word;
     word-break: break-all;
     font-size: 0.9em;
+}
+table.table-theam  th,
+table.table-theam  td {
+  text-align: left;
+  padding: 5px;
+  vertical-align: top !important;
+  white-space: nowrap !important;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  font-size: 0.9em;
 }
 
 /* table.table-theam-1 td a,
