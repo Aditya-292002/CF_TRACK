@@ -5,7 +5,9 @@
     margin: 0 !important;
     flex-direction: inherit !important;
     }
-
+.icon-big{
+    font-size: 20px;
+}
 .list-group li{
     height: 32px;
 }
