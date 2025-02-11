@@ -2,11 +2,14 @@
     margin: 0 !important;
     flex-direction: inherit !important;
 }
+table .w-5{
+    width: 50px;
+}
 table .w-10{
-    width: 110px;
+    width: 100px;
 } 
 table .w-20{
-    width: 300px;
+    width: 270px;
 }
 
  @media (max-width: 1024px) {

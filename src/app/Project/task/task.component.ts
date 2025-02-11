@@ -8,6 +8,7 @@ import { ValidationService } from 'src/app/services/validation.service';
 import { v4 as uuidv4 } from 'uuid';
 import { saveAs } from 'file-saver';
 import { Router } from '@angular/router';
+import { element } from 'protractor';
 declare var $: any;
 @Component({
   selector: "app-task",
@@ -358,7 +359,7 @@ export class TaskComponent implements OnInit {
     });
   }
 
-  removeDoc(fileIndex: number = null) {
+  removeDoc(fileIndex:any) {
     if (this.uploadedDocument[fileIndex].ISNEW == 1) {
       this.uploadedDocument.splice(fileIndex, 1);
     } else if (this.uploadedDocument[fileIndex].ACTIVE == 1) {
@@ -375,6 +376,10 @@ export class TaskComponent implements OnInit {
   }
 
   addRow() {
+    if(!this.sharedService.isValid(this.selected_emp)){
+        this.toast.error('Select a Employee');
+        return
+    }
     let selected: boolean = false;
     if (this.project_assign_emp_detail.length) {
       if (this.selected_emp != "") {
@@ -421,9 +426,14 @@ export class TaskComponent implements OnInit {
     this.filterEmployee();
   }
 
-  removeRow(index: number = null) {
-    this.project_assign_emp_detail.splice(index, 1);
-    this.filterEmployee();
+  removeRow(data:any) {
+    this.project_assign_emp_detail.forEach((element:any,index:any)=>{
+      if(element.EMP_NO == data.EMP_NO){
+         this.project_assign_emp_detail.splice(index,1)
+      } 
+    })
+    this.selected_emp = "";
+    // this.filterEmployee();
   }
 
   saveFormData(para:any) {
@@ -443,7 +453,7 @@ export class TaskComponent implements OnInit {
         project_assign_emp_detail: this.project_assign_emp_detail,
         STATUS_UPDATE: para,
       };
-      console.log('data ->' , JSON.stringify(data));
+      // console.log('data ->' , JSON.stringify(data));
       // return
       this.http.PostRequest(this.apiUrl.SaveTaskDetail, data).then(
         (res:any) => {

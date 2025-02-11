@@ -81,11 +81,12 @@
         </div>
         <!--  -->
         <div class="col-md-8 mt-2 pr-0">
-            <div class="row card pb-3">
+            <div class="row card pb-3 h-100">
                 <div class="col-md-12">
                     <label>Task Description<span class="validator">*</span> :</label>
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['TASK_DESC'].errors?.required}">
-                        <input type="text" formControlName="TASK_DESC" InputType="AlphaNumSpace" placeholder="Task Description" class="form-control">
+                        <textarea name="" formControlName="TASK_DESC"  id=""  placeholder="Task Description" cols="30" rows="3" class="form-control"></textarea>
+                         <!-- <input type="text" formControlName="TASK_DESC" InputType="AlphaNumSpace" placeholder="Task Description" class="form-control"> -->
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -112,9 +113,9 @@
                
             </div>
         </div>
-        <!--  -->
-        <div class="col-md-4 mt-2">
-            <div class="row card">
+
+        <div class="col-md-4 mt-2 ">
+            <div class="row card h-100">
                 <div class="col-md-12">
                     <label>Est.Hours<span class="validator">*</span> :</label>
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['ESTIMATED_HOURS'].errors?.required}">
@@ -214,9 +215,21 @@
         <div class="col-md-12 mt-2">
             <div class="row card">
                 <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-2">
-                    <div class="">
-                        <h6 class="mb-0 col-md-6 p-0">Task Details</h6>
-                        <hr class="m-0 mb-2">
+                    <div class="" >
+                        <label>Employee :</label>
+                        <div class="d-flex " >
+                            <select class=" form-control selectpicker show-tick" [(ngModel)]="selected_emp" data-container="body" data-size="5" id="emp" #emp data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}">
+                                <option *ngFor="let opt of emp_list; let i=index" [value]="opt | json">
+                                    {{ opt.EMP_CODE }} - {{ opt.USER_NAME }}</option>
+                            </select>
+                                <button type="button" class="btn text-primary " (click)="addRow()">
+                                    <i class='fa fa-plus-square icon-big'></i>
+                                </button>
+                         </div>
+                    </div>
+                    <div class=" ">
+                        <h6 class="">Task Details</h6>
+                        <hr class="m-0 mb-2 ">
                     </div>
                     <div class="tableFixHead v_400scroll">
                         <table class="table-theam-1 row-bgcolor_1">
@@ -227,7 +240,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                <!-- <tr>
                                     <td>
                                         <select class="form-control selectpicker show-tick" [(ngModel)]="selected_emp" (change)="addRow()" data-container="body" data-size="5" id="emp" #emp data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}">
                                             <option *ngFor="let opt of emp_list; let i=index" [value]="opt | json">
@@ -235,19 +248,19 @@
                                         </select>
                                     </td>
                                     <td class="w-action">
-                                        <!-- <span class="row-add">
+                                        <span class="row-add">
                                             <button type="button" class="btn text-primary p-0" (click)="addRow()">
                                                 <i class='fas fa-plus-circle mr-2'></i>Add
                                             </button>
-                                        </span> -->
+                                        </span>
                                     </td>
-                                </tr>
+                                </tr> -->
                                 <tr *ngFor="let data of project_assign_emp_detail; let i=index;">
                                     <td>
                                         {{ data.EMP_NO }} - {{ data.FULL_NAME }}
                                     </td>
                                     <td class="row-add">
-                                        <button type="button" class="btn text-primary p-0" (click)="removeRow(i)">
+                                        <button type="button" class="btn text-primary p-0" (click)="removeRow(data)">
                                             <i class='fas fa-trash-alt text-danger mr-2'></i></button>
                                     </td>
                                 </tr>
