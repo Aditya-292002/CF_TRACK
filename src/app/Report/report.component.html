@@ -1,11 +1,11 @@
 <app-spinner [startSpinner]="spinner" *ngIf="spinner"></app-spinner>
 <form [formGroup]="form">
   <div class="row">
-    <div class="col-md-12">
+    <!-- <div class="col-md-12">
       <div class="d-flex justify-content-between">
         <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
       </div>
-    </div>
+    </div> -->   
 
     <div class="col-md-12">
       <div id="accordion1" class="accordion">
@@ -155,7 +155,7 @@
                         [(ngModel)]="para5"
                         readonly
                       />
-                      <!-- <app-date-picker id="todate"  #todate  [(ngModel)]="para5" class="date-input" [maxdate]="min_date" [mindate]="" [isDisable]='false' [ngModelOptions]="{standalone: true}" ></app-date-picker> -->
+                      <!-- <app-date-picker id="todate"   #todate  [(ngModel)]="para5" class="date-input" [maxdate]="min_date" [mindate]="" [isDisable]='false' [ngModelOptions]="{standalone: true}" ></app-date-picker> -->
                       <div class="date-input">
                         <mat-form-field fxFlex="100" appearance="fill">
                           <mat-datepicker-toggle
@@ -447,60 +447,61 @@
           </ul>
           <div [ngbNavOutlet]="nav"></div> -->
 
-    <div class="page-content mt-2" *ngIf="isshowFilterTable">
-      <div class="col-md-12" *ngIf="isshowFilterSelection && detail.length > 0">
-        <div class="row">
-          <div class="col-md-12 col-lg-6">
-            <button
-              class="btn btn-secondary mb-1"
-              *ngIf="BackCount > 0"
-              title="Back"
-              (click)="back()"
-            >
-              Back
-            </button>
-          </div>
-          <div class="col-md-12 col-lg-6 text-right">
-            <button
-              class="btn btn-secondary mb-1"
-              title="Excel Download"
-              (click)="ExcelDownload()"
-            >
-              Excel Download
-            </button>
+    <div class="bg-white w-100 mt-2" *ngIf="isshowFilterTable">
+      <div class="">
+        <div class="col-md-12" *ngIf="isshowFilterSelection && detail.length > 0">
+          <div class="row">
+            <div class="col-md-12 col-lg-6">
+              <button
+                class="btn btn-secondary mb-1"
+                *ngIf="BackCount > 0"
+                title="Back"
+                (click)="back()"
+              >
+                Back
+              </button>
+            </div>
+            <div class="col-md-12 col-lg-6 text-right">
+              <button
+                class="btn btn-secondary mb-1"
+                title="Excel Download"
+                (click)="ExcelDownload()"
+              >
+                Excel Download
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-12">
-        <div class="tableFixHead">
-          <table class="table-theam-1 row_bgcolor_1">
-            <thead>
-              <tr>
-                <th
-                  *ngFor="let item of header"
-                  [ngStyle]="{
-                    width: item.Col_Size == '20' ? '150px' : 'auto'
-                  }"
-                >
-                  {{ item.Col_Name }}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let col of detail">
-                <td
-                  *ngFor="let item of header"
-                  (click)="DrillDown(col, item)"
-                  [ngStyle]="{
-                    'text-align': item.Col_Type == 'N' ? 'right' : 'left',
-                    'font-weight': item.ISBOLD == '1' ? '600' : '400'
-                  }"
-                >
-                  {{ getData(col, item.Col_Name) }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="col-md-12">
+          <div class="tableFixHeadReoprt">
+            <table class="table-theam">
+              <thead>
+                <tr>
+                  <th
+                    *ngFor="let item of header"
+                    
+                  >
+                    {{ item.Col_Name }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let col of detail">
+                  <td
+                    *ngFor="let item of header"
+                    (click)="DrillDown(col, item)"
+                    [ngStyle]="{
+                      'text-align': item.Col_Type == 'N' ? 'right' : 'left',
+                      'font-weight': item.ISBOLD == '1' ? '600' : '400'
+                     
+                    }"
+                  >
+                    {{ getData(col, item.Col_Name) }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
