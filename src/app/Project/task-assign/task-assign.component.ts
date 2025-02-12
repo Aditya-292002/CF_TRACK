@@ -9,6 +9,7 @@ import { ValidationService } from 'src/app/services/validation.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { element } from 'protractor';
 
 declare var $: any;
 
@@ -19,6 +20,7 @@ declare var $: any;
 })
 export class TaskAssignComponent implements OnInit {
   @ViewChild("warn_popup", { static: false }) warn_popup: ElementRef;
+  @ViewChild('UpdateTaskassignEmployee', { static: false }) modal: ElementRef;
 
   spinner: boolean = false;
   form: FormGroup; 
@@ -31,6 +33,9 @@ export class TaskAssignComponent implements OnInit {
   _taskid:any;
   _status: string = '';
   _selected_index:any;
+  TASK_STATUS:any;
+  project_assign_emp_detail:any = [];
+  TASK_ID:any;
 
   constructor(
     public sharedService: SharedServiceService,
@@ -46,7 +51,8 @@ export class TaskAssignComponent implements OnInit {
 
   ngOnInit() {
     localStorage.removeItem('TASKID')
-    this.sharedService.formName = "Task Status Change";
+    // localStorage.removeItem('PROJ_CODE')
+    this.sharedService.formName = "Project Dashboard";
     this.form = this.formBuilder.group({
       COMPANY: [{ value: "", disabled: true }],
       CUSTOMER: [{ value: "", disabled: true }],
@@ -59,6 +65,8 @@ export class TaskAssignComponent implements OnInit {
 
   ngAfterViewInit() {
     setTimeout(() => {
+      this.form.get("PROJ_CODE").setValue(localStorage.getItem('PROJ_CODE'));
+      this.form.get("TASK_STATUS").setValue("");
       // if (this.sharedService.form_rights.ADD_RIGHTS) {
       //   this.ADD_RIGHTS = this.sharedService.form_rights.ADD_RIGHTS
       // }
@@ -66,7 +74,6 @@ export class TaskAssignComponent implements OnInit {
       //   this.UPDATE_RIGHTS = this.sharedService.form_rights.UPDATE_RIGHTS
       // }
       this.GetTaskCommonList();
-      this.GetTaskList();
     }, 150);
   }
 
@@ -75,9 +82,9 @@ export class TaskAssignComponent implements OnInit {
       if (data.PROJ_CODE == this.form.getRawValue().PROJ_CODE) {
         this.form.get("COMPANY").setValue(data.COMPANY_NAME);
         this.form.get("CUSTOMER").setValue(data.CUST_NAME);
-        this.GetTaskList();
-        this.form.get("TASK_STATUS").setValue("");
-        this.form.get("TASKTYPE_CODE").setValue("");
+        this.GetTaskList(0);
+        // this.form.get("TASK_STATUS").setValue("");
+        // this.form.get("TASKTYPE_CODE").setValue("");
         break;
       }
     }
@@ -98,6 +105,7 @@ export class TaskAssignComponent implements OnInit {
           this._taskid = null;
           this._status = null;
           $(this.warn_popup.nativeElement).modal("hide");
+          this.GetTaskList(0);
           this.spinner = false;
         } else {
           this.toast.warning(res.msg);
@@ -116,7 +124,12 @@ export class TaskAssignComponent implements OnInit {
         if (res.flag) {
           this.project_list = res.project_list;
           this.task_status_list = res.task_status_list;
+          this.task_status_list.push( {
+            "TASK_STATUS": "A",
+            "TASK_STATUS_DESC": "ALL"
+          })
           this.task_type_list = res.task_type_list;
+          this.setCompany();
           setTimeout(() => {
             $(".selectpicker").selectpicker("refresh").trigger("change");
           }, 100);
@@ -131,11 +144,17 @@ export class TaskAssignComponent implements OnInit {
     );
   }
 
-  onShowTask() {
-    this.GetTaskList();
+  onShowTask(status:any) {
+    if (this.form.controls["PROJ_CODE"].invalid) {
+      this.toast.warning("Select a Project");
+      return
+    }
+    this.TASK_STATUS = status;
+    this.GetTaskCommonList();
+    this.GetTaskList(1);
   }
 
-  GetTaskList() {
+  GetTaskList(val:any) {
     let data = {
       LISTTYPE: "",
       PROJ_CODE: this.form.getRawValue().PROJ_CODE,
@@ -150,8 +169,29 @@ export class TaskAssignComponent implements OnInit {
           this.task_list.forEach((element:any)=>{
             element.PLANNED_START_DATE = this.datepipe.transform(element.PLANNED_START_DATE, 'dd-MMM-yyyy');
             element.COMPLETION_DATE = this.datepipe.transform(element.COMPLETION_DATE, 'dd-MMM-yyyy');
+            element.ACTUAL_COMPLETION_DATE = this.datepipe.transform(element.ACTUAL_COMPLETION_DATE, 'dd-MMM-yyyy');
           })
           this.f_M_H(this.task_list);
+          if(val == 1){
+            if(this.TASK_STATUS == 'A'){
+              setTimeout(() => {
+                this.task_list = this.task_list;
+                  $(".selectpicker").selectpicker("refresh").trigger("change");
+                }, 100);
+            }else {
+              let tasklist = [];
+              this.task_list.forEach((element:any)=>{
+                if(element.TASK_STATUS == this.TASK_STATUS){
+                    tasklist.push(element)
+                }
+              })
+              setTimeout(() => {
+                this.task_list = [];
+                this.task_list = tasklist;
+                  $(".selectpicker").selectpicker("refresh").trigger("change");
+                }, 100);
+            }
+          }
           setTimeout(() => {
             $(".selectpicker").selectpicker("refresh").trigger("change");
           }, 100);
@@ -175,7 +215,14 @@ export class TaskAssignComponent implements OnInit {
         ":" +
         ("00" + M.toString()).slice(-2);
     }
-
+    for (let data of array) {
+      const H = Math.floor(data.TOTAL_MIN / 60);
+      const M = data.TOTAL_MIN % 60;
+      data.TOTAL_MIN =
+        ("0000" + H.toString()).slice(-4) +
+        ":" +
+        ("00" + M.toString()).slice(-2);
+    }
     setTimeout(() => {
       $(".selectpicker").selectpicker("refresh").trigger("change");
     }, 100);
@@ -188,33 +235,72 @@ export class TaskAssignComponent implements OnInit {
     $(this.warn_popup.nativeElement).modal("show");
   }
 
-  f_reverseStatus() {
-    this.task_list[this._selected_index].TASK_STATUS =
-      this.old_task_list[this._selected_index].TASK_STATUS;
-    setTimeout(() => {
-      $(".selectpicker").selectpicker("refresh").trigger("change");
-    }, 100);
-    this._selected_index = null;
-  }
-
   f_OpenTask(TASKID: string = "") {
     if (TASKID != null && TASKID != "" && TASKID != undefined) {
       // this.sharedService.commonData = [];
       // this.sharedService.commonData.push({ TASKID: TASKID });
       localStorage.setItem('TASKID',TASKID)
-      this.route.changeRoute("task");
-    }
-  }
-
-  f_formValidation() {
-    if (this.form.controls["PROJ_CODE"].invalid) {
-      this.toast.warning("Please enter Project");
+      localStorage.setItem('PROJ_CODE',this.form.controls["PROJ_CODE"].value)
+    this.router.navigate(['/task'])
     }
   }
 
   AddTask(){
-  localStorage.removeItem('TASKID')
-  this.router.navigate(['/task'])
+    if (this.form.controls["PROJ_CODE"].invalid) {
+      this.toast.warning("Select a Project");
+      return
+    }
+    localStorage.removeItem('TASKID')
+    localStorage.setItem('PROJ_CODE',this.form.controls["PROJ_CODE"].value)
+    this.router.navigate(['/task'])
+  }
+
+  GetTaskDetail(id:any) {
+    this.TASK_ID = id
+    let data = {
+      TASKID: this.TASK_ID 
+    };
+    this.http.PostRequest(this.apiUrl.GetTaskDetail, data).then(
+      (res:any) => {
+        if (res.flag) {
+          this.project_assign_emp_detail = res.project_assign_emp_detail;
+          const modalElement = this.modal.nativeElement;
+          $(modalElement).modal('show'); 
+          setTimeout(() => {
+            $(".selectpicker").selectpicker("refresh").trigger("change");
+          }, 100);
+          this.spinner = false;
+        } else {
+          this.spinner = false;
+        }
+      },
+      (err) => {
+        this.spinner = false;
+      }
+    );
+  }
+
+  UpdateTaskEmployeeDetails(){
+    let data = {
+        TASK_ID: this.TASK_ID,
+        TASK_DETAILS: this.project_assign_emp_detail,
+    };
+    // console.log('data ->' , JSON.stringify(data))
+    // return
+    this.http.PostRequest(this.apiUrl.UpdateTaskEmployeeDetails, data).then(
+      (res:any) => {
+        if (res.flag) {
+          this.toast.success(res.msg);
+          this.spinner = false;
+        } else {
+          this.toast.warning(res.msg);
+          this.spinner = false;
+        }
+      },
+      (err) => {
+        this.spinner = false;
+      }
+    );
   }
 
 }

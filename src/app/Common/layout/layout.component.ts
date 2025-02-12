@@ -404,8 +404,10 @@ status: boolean = false;
   }
 
   getFyear(){
-
-    this.http.PostRequest(this.apiUrl.GetFyearList, {}).then(res => {
+    let data = {
+      "IS_ALL": 0
+    }
+    this.http.PostRequest(this.apiUrl.GetFyearList, data).then(res => {
       if (res) {
         this.fyear_list = res.fyear_list;
         this.company_list = res.company_list;

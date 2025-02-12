@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { saveAs } from 'file-saver';
 import { Router } from '@angular/router';
 import { element } from 'protractor';
+import { DatePipe } from '@angular/common';
 declare var $: any;
 @Component({
   selector: "app-task",
@@ -21,8 +22,8 @@ export class TaskComponent implements OnInit {
 
   spinner: boolean = false;
   form: FormGroup;
-  PLANNED_START_DATE: any = new Date();
-  COMPLETION_DATE: any = new Date();
+  PLANNED_START_DATE: any = this.datepipe.transform(new Date(), 'dd-MMM-yyyy');
+  COMPLETION_DATE: any = this.datepipe.transform(new Date(), 'dd-MMM-yyyy');
   project_list: Array<any> = [];
   task_status_list: Array<any> = [];
   task_type_list: Array<any> = [];
@@ -49,6 +50,8 @@ export class TaskComponent implements OnInit {
   isSubmited: boolean = false;
   textBoxDisabled: boolean  = true;
   TASKID:any;
+  maxdate = new Date();
+  min_date = new Date(new Date().getFullYear(), 0, 1);
 
   constructor(
     public sharedService: SharedServiceService,
@@ -57,11 +60,12 @@ export class TaskComponent implements OnInit {
     private formBuilder: FormBuilder,
     private toast: ToastrService,
     private validationService: ValidationService,
-    private router:Router
+    private router:Router,
+    private datepipe:DatePipe
   ) {}
 
   ngOnInit() {
-    this.sharedService.formName = "Task";
+    this.sharedService.formName = "Add Task";
     this.form = this.formBuilder.group({
       TASKID: [0],
       COMPANY: [{ value: "", disabled: true }],
@@ -78,7 +82,7 @@ export class TaskComponent implements OnInit {
       TASK_STATUS: [""],
       TASK_TYPE: ["", Validators.required],
       TECHNICAL_OWNER: [""],
-      PRIORITY: [""],
+      PRIORITY: ["N"],
       PLANNED_START_DATE: [""],
       COMPLETION_DATE: [""],
       CHARGEABLE: ["0", Validators.required],
@@ -90,6 +94,7 @@ export class TaskComponent implements OnInit {
   ngAfterViewInit() {
     setTimeout(() => {
       this.TASKID = localStorage.getItem('TASKID');
+      this.form.get("PROJ_CODE").setValue(localStorage.getItem('PROJ_CODE'));
       this.search_task_id = this.TASKID;
       if (this.sharedService.form_rights.ADD_RIGHTS) {
         this.ADD_RIGHTS = this.sharedService.form_rights.ADD_RIGHTS;
@@ -103,7 +108,7 @@ export class TaskComponent implements OnInit {
       this.GetTaskList();
       this.getEmployee();
       if (this.TASKID != null) {
-        this.searchTask();
+        this.searchTask(1);
       }
       // if (this.sharedService.commonData.length > 0) {
       //   this.search_task_id = this.sharedService.commonData[0].TASKID;
@@ -129,6 +134,7 @@ export class TaskComponent implements OnInit {
           this.project_list = res.project_list;
           this.task_status_list = res.task_status_list;
           this.task_type_list = res.task_type_list;
+          this.setCompany();
           setTimeout(() => {
             $(".selectpicker").selectpicker("refresh").trigger("change");
           }, 100);
@@ -188,11 +194,12 @@ export class TaskComponent implements OnInit {
     );
   }
 
-  searchTask() {
+  searchTask(val:any) {
     if (this.search_task_id != "" || this.search_task_id != undefined) {
-      this.isUpdate = true;
+      if(val == 1){
+        this.isUpdate = true;
+      }
       this.GetTaskDetail();
-      this.onChangeType();
     } else {
       this.isUpdate = false;
       this.f_clearForm();
@@ -207,7 +214,6 @@ export class TaskComponent implements OnInit {
       (res) => {
         if (res.flag) {
           this.project_assign_emp_detail = res.project_assign_emp_detail;
-          this.setCompany();
           this.f_fillFormData(res.task_detail);
           setTimeout(() => {
             $(".selectpicker").selectpicker("refresh").trigger("change");
@@ -238,8 +244,11 @@ export class TaskComponent implements OnInit {
     this.form.get("TASK_TYPE").setValue(data[0].TASK_TYPE);
     this.form.get("TECHNICAL_OWNER").setValue(data[0].TECHNICAL_OWNER);
     this.form.get("QUOTED_MANDAYS").setValue(data[0].QUOTED_MANDAYS);
+    this.form.get("COMPLETION_DATE").setValue(this.datepipe.transform(data[0].COMPLETION_DATE, 'dd-MMM-yyyy'));
+    this.form.get("PLANNED_START_DATE").setValue(this.datepipe.transform(data[0].PLANNED_START_DATE, 'dd-MMM-yyyy'));
     this.form.get("CHARGEABLE").setValue(data[0].CHARGEABLE);
-    // this.setCompany();
+    this.form.get("PRIORITY").setValue(data[0].PRIORITY);
+    this.setCompany();
     setTimeout(() => {
       $(".selectpicker").selectpicker("refresh").trigger("change");
     }, 250);
@@ -253,6 +262,7 @@ export class TaskComponent implements OnInit {
         this.form.get("COMPANY").setValue(data.COMPANY_NAME);
         this.form.get("CUSTOMER").setValue(data.CUST_NAME);
         this.form.get("TECHNICAL_OWNER").setValue(data.TECHNICAL_OWNER);
+        this.isUpdate = true;
         setTimeout(() => {
           $(".selectpicker").selectpicker("refresh").trigger("change");
         }, 150);
@@ -348,7 +358,7 @@ export class TaskComponent implements OnInit {
     for (let i = 0; i < this.uploadingFiles.length; i++) {
       this.uploadedDocument.push(this.uploadingFiles[i]);
     }
-    this.fileInput.nativeElement.value = "";
+    // this.fileInput.nativeElement.value = "";
     this.uploadingFiles = [];
     this.SelectedFileName = "";
     this.NoDocs = 0;
@@ -502,7 +512,7 @@ export class TaskComponent implements OnInit {
 
   f_clearForm() {
     this.form.reset();
-    this.fileInput.nativeElement.value = "";
+    // this.fileInput.nativeElement.value = "";
     this.isSubmited = false;
     this.search_task_id = "";
     this.form.get("TASKID").setValue(0);
@@ -514,7 +524,7 @@ export class TaskComponent implements OnInit {
     }, 100);
   }
 
-  f_H_M(hours: string = ""): any {
+  f_H_M(hours:any): any {
     let col = [];
     let H = 0;
     let M = 0;
@@ -528,7 +538,7 @@ export class TaskComponent implements OnInit {
     return time;
   }
 
-  f_M_H(minutes: any = null): any {
+  f_M_H(minutes:any): any {
     let hour = null;
     if (minutes != "" && minutes != undefined && minutes != null) {
       const H = Math.floor(minutes / 60);
@@ -570,7 +580,7 @@ export class TaskComponent implements OnInit {
     }
   }
 
-  onChangeType(para: string = "") {
+  onChangeType(para:any) {
     if (para == "0") {
       this.textBoxDisabled = true;
       this.form.get("QUOTED_MANDAYS").setValue(0);
@@ -586,6 +596,14 @@ export class TaskComponent implements OnInit {
   CancleForm(){
     this.f_clearForm();
     this.router.navigate(['/taskassign'])
+  }
+
+  ChangeDate(){
+    this.COMPLETION_DATE = this.datepipe.transform(new Date(this.COMPLETION_DATE), 'dd-MMM-yyyy')
+    this.PLANNED_START_DATE = this.datepipe.transform(new Date(this.PLANNED_START_DATE), 'dd-MMM-yyyy')
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh').trigger('change');
+    }, 100);
   }
 
 }

@@ -30,6 +30,7 @@ export class ApiUrlService {
   GetTaskList: string = '/Task/GetTaskList';
   GetTaskDetail: string = '/Task/GetTaskDetail';
   SaveTaskDetail: string = '/Task/SaveTaskDetail';
+  UpdateTaskEmployeeDetails: string = '/Task/UpdateTaskEmployeeDetails';
   SendOTP_ForgotPassword: string = '/Forgot/SendOTP_ForgotPassword';
   CheckOTP_ForgotPassword: string = '/Forgot/CheckOTP_ForgotPassword';
   Check_Attendance: string = '/Attendance/Check_Attendance';
@@ -111,7 +112,6 @@ export class ApiUrlService {
   SaveApproveSalaryProcess : string = '/SalaryProcess/SaveApproveSalaryProcess';
   GetLeaveBalance : string = '/Leave/GetLeaveBalance';
   GetSalaryInformationforEMP : string = '/Employee/GetSalaryInformationforEMP';
-  GetCalendarData : string = '/Dashboard/GetCalendarData';
   GetSalaryInfoCommonList : string = '/SalaryProcess/GetSalaryInfoCommonList';
   GetVendorDetails : string = '/Vendor/GetVendorDetails';
   GetVendorCommonList : string = '/Vendor/GetVendorCommonList';
@@ -163,7 +163,7 @@ UpdateUserRoleDetails: string='/Setting/UpdateUserRoleDetails';
 GetMasterRoleCommonList: string='/Setting/GetMasterRoleCommonList';  
 GETROLELIST: string='/Setting/GetRoleRightList';  
 SaveEmployeeRoleRights: string='/Setting/SaveEmployeeRoleRights';  
-
-
+GetCalendarData : string = '/Dashboard/GetCalendarData';
+GetDashboardDetailsList: string='/Dashboard/GetDashboardDetailsList';
 
 }
