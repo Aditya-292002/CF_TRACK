@@ -20,12 +20,12 @@
                 </button>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                     <label>Company :</label>
                     <div class="floating-input mb-1" [ngClass]="{'invalid-control':isSubmited && form.controls['COMPANY'].errors?.required}">
                         <input type="text" formControlName="COMPANY" placeholder="Company" class="form-control text-uppercase">
                     </div>
-                </div>
+                </div> -->
                 <div class="col-md-4">
                     <label>Customer :</label>
                     <div class="floating-input mb-1" [ngClass]="{'invalid-control':isSubmited && form.controls['CUSTOMER'].errors?.required}">
@@ -36,7 +36,7 @@
                     <label>Staus :</label>
                     <div class="floating-input  list-btn" >
                         <select class="form-control selectpicker show-tick" formControlName="TASK_STATUS" 
-                        (change)="onShowTask();" id="Staus" #Staus data-live-search="true" title="Select">
+                        (change)="onShowTask(this.form.controls['TASK_STATUS'].value);" id="Staus" #Staus data-live-search="true" title="Select">
                             <option *ngFor="let opt of task_status_list; let i=index" [selected]="opt.TASK_STATUS == ''"
                                 [value]="opt.TASK_STATUS">{{ opt.TASK_STATUS_DESC }}</option>
                         </select>
@@ -45,7 +45,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                     <label>Task Type :</label>
                     <div class="floating-input  list-btn" >
                         <select class="form-control selectpicker show-tick" formControlName="TASKTYPE_CODE" id="Task_type"
@@ -57,7 +57,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <!--  -->
@@ -82,12 +82,14 @@
                                 <tr>
                                     <th class="w-5">Task No</th>
                                     <!-- <th class="w-30">Project</th> -->
-                                    <th class="w-30">Task</th>
-                                    <th class="w-10">Priority</th>
+                                    <th class="w-30">Task Desc</th>
+                                    <th class="w-5">Priority</th>
                                     <th class="w-10">Start Date</th>
-                                    <th class="w-10">Completion Date</th>
+                                    <th class="w-10">Compl Date</th>
+                                    <th class="w-10">Total Hours </th>
+                                    <th class="w-10">Act Completion Date</th>
                                     <!-- <th class="w-30">Business Owner</th> -->
-                                    <th class="w-20">Staus</th>
+                                    <th class="w-10">Staus</th>
                                     <th class="w-5">Action</th>
                                 </tr>
                             </thead>
@@ -102,12 +104,16 @@
                                     <td class="w-30">
                                         {{ data.TASK_DESC }}
                                     </td>
-                                    <td class="w-10">{{ data.PRIORITY }}
-                                    </td>
+                                    <td class="w-5" *ngIf="data.PRIORITY == 'H'">High</td>
+                                    <td class="w-5" *ngIf="data.PRIORITY == '' || data.PRIORITY == null"></td>
+                                    <td class="w-5" *ngIf="data.PRIORITY == 'N'">Normal</td>
+                                    <td class="w-5" *ngIf="data.PRIORITY == 'S'">SOS</td>
                                     <td>{{ data.PLANNED_START_DATE }}</td>
                                     <td>{{ data.COMPLETION_DATE }}</td>
+                                    <td>{{ data.TOTAL_MIN }} </td>
+                                    <td>{{ data.ACTUAL_COMPLETION_DATE }}</td>
                                     <!-- <td class="w-30"> {{ data.BUSINESS_OWNERNAME }}</td> -->
-                                    <td class="w-20">
+                                    <td class="w-10">
                                         <select class="form-control selectpicker show-tick" [(ngModel)]="data.TASK_STATUS" data-container="body" data-size="5" (change)="f_openWarning(i,data.TASKID,data.TASK_STATUS)" data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}">
                                             <option value="" disabled></option>
                                             <option *ngFor="let opt of task_status_list; let i=index" 
@@ -116,9 +122,12 @@
                                         </select>
                                     </td>
                                     <td >
-                                    <i  class="fa fa-edit "
+                                    <i  class="fa fa-edit " *ngIf="data.TASK_STATUS != 'C'"
                                     (click)="f_OpenTask(data.TASKID)"
                                     title="Edit"></i>
+                                    <i  class="fa fa-info-circle ml-2" *ngIf="data.TASK_STATUS != 'C'"
+                                    (click)="GetTaskDetail(data.TASKID)"
+                                    title="Update Employee"></i>
                                   </td>
                                 </tr>
                             </tbody>
@@ -148,8 +157,63 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="UpdateTaskStatus(_taskid,_status)">Yes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="GetTaskList();_taskid=null;_status=''">No</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="GetTaskList(0);_taskid=null;_status=''">No</button>
             </div>
         </div>
     </div>
+</div>
+
+
+<div
+  class="modal fade"
+  #UpdateTaskassignEmployee
+  id="UpdateTaskassignEmployee"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content mt-5">
+      <div class="modal-header header-background py-1">
+        <h5 class="modal-title" id="exampleModalLabel">Employee Details</h5>
+      </div>
+      <div class="modal-body">
+        <div class="tableFixHead v_400scroll">
+            <table class="table-theam-1 row-bgcolor_1">
+                <thead>
+                    <tr>
+                        <th class="">Name </th>
+                        <th class="w-5">Active</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of project_assign_emp_detail; let i=index;">
+                        <td class="">
+                            {{ data.EMP_NO }} - {{ data.FULL_NAME }}
+                        </td>
+                        <td class="w-5">
+                            <p-checkbox class=""  [(ngModel)]="data.ACTIVE" [binary]="true" inputId="view" ></p-checkbox>    
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+      <div class="modal-footer py-0">
+        <button
+          type="button"
+          class="btn btn-primary py-1"
+          data-dismiss="modal"
+          (click)="UpdateTaskEmployeeDetails()"
+        >
+          Save
+        </button>
+        <button type="button" class="btn btn-danger py-1" data-dismiss="modal">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

@@ -7,18 +7,18 @@
                     <h5 class="formName " >{{ sharedService.formName }}</h5>
                 </div>
                 <div class="col-md-8 d-flex justify-content-end ">
-                    <div class="col-md-8 mr-2">
-                        <div class="floating-input list-btn">
-                            <select class="form-control selectpicker show-tick dd_size select-width" (change)="searchTask()" [(ngModel)]="search_task_id" data-live-search="true" id="search" #search title="Search Task" [ngModelOptions]="{standalone: true}">
+                    <div class="col-md-8 ">
+                        <!-- <div class="floating-input list-btn">
+                            <select class="form-control selectpicker show-tick dd_size select-width" (change)="searchTask(0)" [(ngModel)]="search_task_id" data-live-search="true" id="search" #search title="Search Task" [ngModelOptions]="{standalone: true}">
                                 <option *ngFor="let opt of task_list; let i=index" [selected]="opt.TASKID == search_task_id"
                                     [value]="opt.TASKID">{{ opt.TASK_DESC }}</option>
                             </select>
                             <button type="button" class="close" onclick="resetDropdown('search')" (click)="search_task_id='';f_clearForm()" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                        </div>
+                        </div> -->
                     </div>
-                    <button class="btn btn-secondary mr-2" *ngIf="isUpdate" (click)="CancleForm()" title="Cancel">Cancel</button>
+                    <button class="btn btn-secondary mr-2" *ngIf="isUpdate" (click)="CancleForm()" title="Back">Back</button>
                     <button class="btn btn-secondary " *ngIf="!isUpdate && ADD_RIGHTS" (click)="saveFormData(0)" title="Save">Save</button>
                     <button class="btn btn-secondary " *ngIf="isUpdate && UPDATE_RIGHTS" (click)="saveFormData(1)" title="Save">Save</button>
 
@@ -32,21 +32,21 @@
                 <div class="col-md-4">
                     <label>Project<span class="validator">*</span> :</label>
                     <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['PROJ_CODE'].errors?.required}">
-                        <select class="form-control selectpicker show-tick" id="project" formControlName="PROJ_CODE" (change)="setCompany();" data-live-search="true" title="Select">
+                        <select class="form-control selectpicker show-tick" id="project" formControlName="PROJ_CODE" (change)="setCompany();" disabled data-live-search="true" title="Select">
                             <option *ngFor="let opt of project_list; let i=index" [selected]="opt.PROJ_CODE == form.controls['PROJ_CODE'].value"
                                 [value]="opt.PROJ_CODE">{{ opt.PROJ_NAME }}</option>
                         </select>
-                        <button type="button" class="close" onclick="resetDropdown('project')" (click)="form.controls['PROJ_CODE'].reset();" aria-label="Close">
+                        <!-- <button type="button" class="close" onclick="resetDropdown('project')" (click)="form.controls['PROJ_CODE'].reset();" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
-                        </button>
+                        </button> -->
                     </div>
                 </div>
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                     <label>Company :</label>
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['COMPANY'].errors?.required}">
                         <input type="text" formControlName="COMPANY" placeholder="Company" Uppercase class="form-control">
                     </div>
-                </div>
+                </div> -->
                 <div class="col-md-4">
                     <label>Customer :</label>
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['CUSTOMER'].errors?.required}">
@@ -85,7 +85,7 @@
                 <div class="col-md-12">
                     <label>Task Description<span class="validator">*</span> :</label>
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['TASK_DESC'].errors?.required}">
-                        <textarea name="" formControlName="TASK_DESC"  id=""  placeholder="Task Description" cols="30" rows="3" class="form-control"></textarea>
+                        <textarea name="" formControlName="TASK_DESC"  id=""  placeholder="Task Description" cols="30" rows="1" class="form-control"></textarea>
                          <!-- <input type="text" formControlName="TASK_DESC" InputType="AlphaNumSpace" placeholder="Task Description" class="form-control"> -->
                     </div>
                 </div>
@@ -94,6 +94,95 @@
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['TASK_DETAILS'].errors?.required}">
                         <textarea name="" formControlName="TASK_DETAILS" placeholder="Detail Description" id="" cols="30" rows="3" class="form-control"></textarea>
                     </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Priority :</label>
+                    <div class="floating-input  list-btn"  [ngClass]="{'invalid-control':isSubmited && form.controls['PRIORITY'].errors?.required}">
+                        <select class="form-control selectpicker show-tick dd_size" id="Priority" formControlName="PRIORITY"   data-live-search="true" title="Select">
+                            <option value="N">Normal</option>
+                            <option value="H">High</option>
+                            <option value="S">SOS</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('Priority')" (click)="form.controls['PRIORITY'].reset();"  aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Planned Start Date  :</label>
+                    <!-- <div class="floating-input "  [ngClass]="{'invalid-control':isSubmited && form.controls['PLANNED_START_DATE'].errors?.required}">
+                        <input type="text"  class="form-control" formControlName="PLANNED_START_DATE"  [(ngModel)]="PLANNED_START_DATE">
+                        <app-date-picker  class="date-input" [(ngModel)]="PLANNED_START_DATE" [maxdate]="" [mindate]="" [isDisable]='false' [ngModelOptions]="{standalone: true}" ></app-date-picker>
+                    </div> -->
+                    <div class="floating-input">
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="PLANNED_START_DATE" 
+                          [(ngModel)]="PLANNED_START_DATE"
+                          readonly
+                        />
+                        <div class="date-input">
+                          <mat-form-field fxFlex="100" appearance="fill">
+                            <mat-datepicker-toggle
+                              matPrefix
+                              [for]="picker1"
+                              id="cal"
+                              #cal
+                            ></mat-datepicker-toggle>
+                            <input
+                              class="form-control"
+                              [value]="PLANNED_START_DATE"
+                              (dateChange)="ChangeDate()"
+                              matInput
+                              [(ngModel)]="PLANNED_START_DATE"
+                              [ngModelOptions]="{ standalone: true }"
+                              [matDatepicker]="picker1"
+                              [min]="min_date"
+                              [disabled]="false"
+                            />
+                            <mat-datepicker #picker1 id="picker1"></mat-datepicker>
+                          </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Completion Date :</label>
+                     <!-- <div class="floating-input "  [ngClass]="{'invalid-control':isSubmited && form.controls['COMPLETION_DATE'].errors?.required}">
+                            <input type="text"  class="form-control" formControlName="COMPLETION_DATE"   [(ngModel)]="COMPLETION_DATE"> 
+                            <app-date-picker  class="date-input" [(ngModel)]="COMPLETION_DATE" [maxdate]="" [mindate]="" [isDisable]='false' [ngModelOptions]="{standalone: true}" ></app-date-picker> 
+                          </div> -->
+                        <div class="floating-input">
+                            <input
+                              type="text"
+                              class="form-control"
+                              formControlName="COMPLETION_DATE" 
+                              [(ngModel)]="COMPLETION_DATE"
+                              readonly
+                            />
+                            <div class="date-input">
+                              <mat-form-field fxFlex="100" appearance="fill">
+                                <mat-datepicker-toggle
+                                  matPrefix
+                                  [for]="picker"
+                                  id="cal1"
+                                  #cal1
+                                ></mat-datepicker-toggle>
+                                <input
+                                  class="form-control"
+                                  [value]="COMPLETION_DATE"
+                                  (dateChange)="ChangeDate()"
+                                  matInput
+                                  [(ngModel)]="COMPLETION_DATE"
+                                  [ngModelOptions]="{ standalone: true }"
+                                  [matDatepicker]="picker"
+                                  [min]="min_date"
+                                  [disabled]="false"
+                                />
+                                <mat-datepicker #picker id="picker"></mat-datepicker>
+                              </mat-form-field>
+                            </div>
+                        </div>
                 </div>
                 <!-- <div class="col-md-12">
                     <label>BRM Point :</label>
@@ -120,7 +209,7 @@
                     <label>Est.Hours<span class="validator">*</span> :</label>
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['ESTIMATED_HOURS'].errors?.required}">
                         <!-- (keyup)="f_setTimeFormat('ESTIMATED_HOURS',$event.keyCode)" (focusout)="f_setTimeFormat('ESTIMATED_HOURS',$event.keyCode,'all')" -->
-                        <input type="text" formControlName="ESTIMATED_HOURS" placeholder="HH:MM" TimeOnly="HH:MM" class="form-control">
+                        <input type="text" formControlName="ESTIMATED_HOURS" placeholder="Est.Hours" maxlength="4" class="form-control">
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -130,6 +219,34 @@
                     </div>
                 </div>
                 <div class="col-md-12">
+                    <label>Client Reporter :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['CLIENT_OWNER'].errors?.required}">
+                        <input type="text" formControlName="CLIENT_OWNER" InputType="AlphaSpace" class="form-control" placeholder="Client Reporter">
+                    </div>
+                </div>
+                <div class="col-md-12" [ngClass]="{'invalid-control':isSubmited && form.controls['QUOTED_MANDAYS'].errors?.required}">
+                    <label>Quoted Mandays <span class="validator">*</span> :</label>
+                    <div class="floating-input " >
+                        <input type="text" placeholder="Quoted Mandays " class="form-control"
+                          formControlName="QUOTED_MANDAYS"  [ngClass]="{'textDisabled':textBoxDisabled == true }">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label>Chargeable <span class="validator">*</span> :</label>
+                    <div class="form-inline mt-1">
+                        <div class="form-group radios mr-3" >
+                            <input id="Yes" type="radio" class="mr-2" formControlName="CHARGEABLE"  value="1" (click)="onChangeType($event.target.value);"  >
+                            <label for="Yes"><span class="span-txt">Yes
+                                </span></label>
+                        </div>
+                        <div class="form-group radios ">
+                            <input id="No" type="radio" class="mr-2" formControlName="CHARGEABLE"   value="0" (click)="onChangeType($event.target.value);"    >
+                            <label for="No"><span class="span-txt">No
+                                </span></label>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-md-12">
                     <label>Business Owner :</label>
                     <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['BUSINESS_OWNER'].errors?.required}">
                         <select class="form-control selectpicker show-tick dd_size" id="businessOwner" formControlName="BUSINESS_OWNER" data-live-search="true" title="Select">
@@ -154,39 +271,12 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
-        <!--  -->
-        <div class="col-md-12 mt-2">
+
+        <!-- <div class="col-md-12 mt-2">
             <div class="row card">
-                <div class="col-md-4">
-                    <label>Priority :</label>
-                    <div class="floating-input  list-btn"  [ngClass]="{'invalid-control':isSubmited && form.controls['PRIORITY'].errors?.required}">
-                        <select class="form-control selectpicker show-tick dd_size" id="Priority" formControlName="PRIORITY"   data-live-search="true" title="Select">
-                            <option value="N">Normal</option>
-                            <option value="H">High</option>
-                            <option value="S">SOS</option>
-                        </select>
-                        <button type="button" class="close" onclick="resetDropdown('Priority')" (click)="form.controls['PRIORITY'].reset();"  aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <label>Planned Start Date  :</label>
-                    <div class="floating-input "  [ngClass]="{'invalid-control':isSubmited && form.controls['PLANNED_START_DATE'].errors?.required}">
-                        <input type="text"  class="form-control" formControlName="PLANNED_START_DATE"  [(ngModel)]="PLANNED_START_DATE">
-                        <app-date-picker  class="date-input" [(ngModel)]="PLANNED_START_DATE" [ngModelOptions]="{standalone: true}" ></app-date-picker>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <label>Completion Date :</label>
-                    <div class="floating-input "  [ngClass]="{'invalid-control':isSubmited && form.controls['COMPLETION_DATE'].errors?.required}">
-                        <input type="text"  class="form-control" formControlName="COMPLETION_DATE"   [(ngModel)]="COMPLETION_DATE">
-                        <app-date-picker  class="date-input" [(ngModel)]="COMPLETION_DATE" [ngModelOptions]="{standalone: true}" ></app-date-picker>
-                    </div>
-                </div>
                 <div class="col-md-4">
                     <label>Chargeable <span class="validator">*</span> :</label>
                     <div class="form-inline mt-1">
@@ -210,8 +300,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <!--  -->
+        </div> -->
+
         <div class="col-md-12 mt-2">
             <div class="row card">
                 <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-2">
@@ -222,8 +312,8 @@
                                 <option *ngFor="let opt of emp_list; let i=index" [value]="opt | json">
                                     {{ opt.EMP_CODE }} - {{ opt.USER_NAME }}</option>
                             </select>
-                                <button type="button" class="btn text-primary " (click)="addRow()">
-                                    <i class='fa fa-plus-square icon-big'></i>
+                                <button type="button" class="btn text-primary" style="margin-top: -5px;margin-left:4px" (click)="addRow()">
+                                    <i class='fa fa-plus-square icon-big '></i>
                                 </button>
                          </div>
                     </div>
@@ -268,7 +358,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+                <!-- <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
                     <div class="">
                         <h6 class="mb-0 col-md-6 p-0">Document Upload</h6>
                         <hr class="m-0 mb-2">
@@ -303,7 +393,7 @@
                             <h6 class="m-0"> No Documents</h6>
                         </li>
                     </ul>
-                </div>
+                </div> -->
             </div>
             <br>
         </div>

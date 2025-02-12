@@ -17,6 +17,13 @@ import {
 } from "ng-apexcharts";
 import { RoutingService } from "src/app/services/routing.service";
 import { log } from 'console';
+import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
+import { ValidationService } from 'src/app/services/validation.service';
+import { ToastrService } from 'ngx-toastr';
+import { FormBuilder } from '@angular/forms';
+import { HttpRequestServiceService } from 'src/app/services/http-request-service.service';
+import { ApiUrlService } from 'src/app/services/api-url.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -39,6 +46,8 @@ export type ChartOptions1 = {
   tooltip: ApexTooltip;
   dataLabels: ApexDataLabels;
 };
+
+declare var $: any;
 
 @Component({
   selector: "app-dashboard",
@@ -158,7 +167,6 @@ export class DashboardComponent implements OnInit {
       COLLECTION_ACHIVE: "7%",
     },
   ];
-
   CURRENT_VENDOR: any = [
     {
       VENDOR_NAME: "Vendor 1",
@@ -275,6 +283,7 @@ export class DashboardComponent implements OnInit {
     { BANK_NAME: "KOTAK", BANK_BAL: "50,00,000" },
     { BANK_NAME: "ICICI", BANK_BAL: "75,00,000" },
   ];
+  DASHBOARD_CARD_DETAILS:any = [];
   login_user: string = "";
   profile_pic: string = "";
   public chartOptions: Partial<ChartOptions>;
@@ -282,10 +291,18 @@ export class DashboardComponent implements OnInit {
   userData: any;
   Username: any;
   Usernames: any;
+  CURRENT_DATE: any;
 
   constructor(
-    private sharedService: SharedServiceService,
-    private route: RoutingService
+    public sharedService: SharedServiceService,
+      private apiUrl: ApiUrlService,
+      private http: HttpRequestServiceService,
+      private formBuilder: FormBuilder,
+      private route: RoutingService,
+      private toast: ToastrService,
+      private validationService: ValidationService,
+      private router:Router,
+      private datepipe:DatePipe
   ) {
     this.chartOptions = {
       series: [
@@ -374,66 +391,9 @@ export class DashboardComponent implements OnInit {
         },
       },
     };
+ }
 
-    // this.chartOptions1 = {
-    //   series: [76, 67, 61, 90],
-    //   chart: {
-    //     height: 390,
-    //     type: "radialBar"
-    //   },
-    //   plotOptions: {
-    //     radialBar: {
-    //       offsetY: 0,
-    //       startAngle: 0,
-    //       endAngle: 270,
-    //       hollow: {
-    //         margin: 5,
-    //         size: "30%",
-    //         background: "transparent",
-    //         image: undefined
-    //       },
-    //       dataLabels: {
-    //         name: {
-    //           show: false
-    //         },
-    //         value: {
-    //           show: false
-    //         }
-    //       }
-    //     }
-    //   },
-    //   colors: ["#1ab7ea", "#0084ff", "#39539E"],
-    //   labels: ["KOTAK", "ICICI", "HDFC"],
-    //   legend: {
-    //     show: true,
-    //     floating: true,
-    //     fontSize: "16px",
-    //     position: "left",
-    //     offsetX: 50,
-    //     offsetY: 10,
-    //     labels: {
-    //       useSeriesColors: true
-    //     },
-    //     formatter: function(seriesName, opts) {
-    //       return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex];
-    //     },
-    //     itemMargin: {
-    //       horizontal: 3
-    //     }
-    //   },
-    //   responsive: [
-    //     {
-    //       breakpoint: 480,
-    //       options: {
-    //         legend: {
-    //           show: false
-    //         }
-    //       }
-    //     }
-    //   ]
-    // };
-  }
-  CURRENT_DATE: any;
+
   ngOnInit() {
     this.sharedService.formName = "Dashboard";
     this.profile_pic = this.sharedService.profile_pic;
@@ -444,9 +404,27 @@ export class DashboardComponent implements OnInit {
     this.Username=this.userData[0].USER_NAME;
     this.Usernames=this.Username.split(" ");
     this.Username=this.Usernames[0];
+    this.GetDashboardDetailsList();
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+
+  }
+
+  GetDashboardDetailsList(){
+    let data = {};
+    this.http.PostRequest(this.apiUrl.GetDashboardDetailsList, data).then(
+      (res:any) => {
+        if (res.flag) {
+          this.DASHBOARD_CARD_DETAILS = res.dashboard_details;
+          setTimeout(() => {
+            $(".selectpicker").selectpicker("refresh").trigger("change");
+          }, 100);
+        } 
+      }
+    );
+  }
+
   onbgcolorchange(para: number) {
     this.bg_color = para;
   }

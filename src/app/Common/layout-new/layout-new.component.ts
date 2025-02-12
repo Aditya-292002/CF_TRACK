@@ -593,6 +593,7 @@ subMenuClick(data:any){
   sessionStorage.setItem('route',this.sharedService.form_rights.URL)   
   this.FUNCTIONCODE = data.FUNCTION_CODE;
   localStorage.setItem('FUNCTION_CODE',this.FUNCTIONCODE)
+  localStorage.removeItem('PROJ_CODE')
   this.router.navigate([data.URL]);
   this.Url = data.URL
 }
@@ -778,8 +779,10 @@ IsSelectedSubMenu(){
 }
 
 getFyear(){
-
-    this.http.PostRequest(this.apiUrl.GetFyearList, {}).then(res => {
+  let data = {
+    "IS_ALL": 0
+  }
+    this.http.PostRequest(this.apiUrl.GetFyearList, data).then(res => {
       if (res) {
         this.fyear_list = res.fyear_list
         this.company_list = res.company_list;

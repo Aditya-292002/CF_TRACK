@@ -106,7 +106,7 @@ constructor(public sharedService: SharedServiceService,
       this.maxdate = this.sharedService.loginUser[0].TO_DATE;
       this.COMPANY_CURRENCY = this.sharedService.loginUser[0].COMPANY_CURRENCY;
      // this.LOCATION_CODE = this.sharedService.loginUser[0].LOCATION_CODE; 
-     console.log('hh');
+    //  console.log('hh');
      
       this.GetJVCommonList();
       this.GetProjectList();
