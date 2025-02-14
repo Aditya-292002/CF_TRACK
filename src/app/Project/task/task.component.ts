@@ -18,6 +18,8 @@ declare var $: any;
 })
 export class TaskComponent implements OnInit {
   @ViewChild("fileInput", { static: false }) fileInput: ElementRef;
+  @ViewChild("Task_Summery_PopUp", { static: false }) Task_Summery_PopUp: ElementRef;
+  @ViewChild("Task_Details_PopUp", { static: false }) Task_Details_PopUp: ElementRef;
   @ViewChild("emp", { static: false }) emp: ElementRef;
 
   spinner: boolean = false;
@@ -52,6 +54,10 @@ export class TaskComponent implements OnInit {
   TASKID:any;
   maxdate = new Date();
   min_date = new Date(new Date().getFullYear(), 0, 1);
+  IS_VIEW:any = 0;
+  IS_ADD:any;
+  EMPLOYEE_TASK_SUMMERY:any = [];
+  EMPLOYEE_TASK_DETAILS:any = [];
 
   constructor(
     public sharedService: SharedServiceService,
@@ -65,7 +71,7 @@ export class TaskComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.sharedService.formName = "Add Task";
+    // this.sharedService.formName = "Add Task";
     this.form = this.formBuilder.group({
       TASKID: [0],
       COMPANY: [{ value: "", disabled: true }],
@@ -94,6 +100,8 @@ export class TaskComponent implements OnInit {
   ngAfterViewInit() {
     setTimeout(() => {
       this.TASKID = localStorage.getItem('TASKID');
+      this.IS_VIEW = localStorage.getItem('IS_VIEW');
+      this.IS_ADD = localStorage.getItem('IS_ADD');
       this.form.get("PROJ_CODE").setValue(localStorage.getItem('PROJ_CODE'));
       this.search_task_id = this.TASKID;
       if (this.sharedService.form_rights.ADD_RIGHTS) {
@@ -215,6 +223,40 @@ export class TaskComponent implements OnInit {
         if (res.flag) {
           this.project_assign_emp_detail = res.project_assign_emp_detail;
           this.f_fillFormData(res.task_detail);
+          setTimeout(() => {
+            $(".selectpicker").selectpicker("refresh").trigger("change");
+          }, 100);
+          this.spinner = false;
+        } else {
+          this.spinner = false;
+        }
+      },
+      (err) => {
+        this.spinner = false;
+      }
+    );
+  }
+
+  GetTaskDetailSummery(val:any){
+    let data = {
+      TASKID: this.search_task_id,
+    };
+    this.http.PostRequest(this.apiUrl.GetTaskDetailSummery, data).then(
+      (res) => {
+        if (res.flag) {
+          this.EMPLOYEE_TASK_DETAILS = res.employee_task_detail;
+          this.EMPLOYEE_TASK_SUMMERY = res.employee_task_summery;
+          this.f_M_H_D(this.EMPLOYEE_TASK_SUMMERY)
+          this.EMPLOYEE_TASK_DETAILS.forEach((element:any)=>{
+             element.ATTN_DATE = this.datepipe.transform(element.ATTN_DATE, 'dd-MMM-yyyy')
+          })
+          if(val == 1){
+            $(this.Task_Summery_PopUp.nativeElement).modal("show");
+          }else if(val == 0){
+            $(this.Task_Details_PopUp.nativeElement).modal("show");
+          }
+          // console.log('EMPLOYEE_TASK_DETAILS ->' , this.EMPLOYEE_TASK_DETAILS)
+          // console.log('EMPLOYEE_TASK_SUMMERY ->' , this.EMPLOYEE_TASK_SUMMERY)
           setTimeout(() => {
             $(".selectpicker").selectpicker("refresh").trigger("change");
           }, 100);
@@ -473,9 +515,11 @@ export class TaskComponent implements OnInit {
             this.GetTaskList();
             this.f_clearForm();
             this.spinner = false;
+            this.router.navigate(['/taskassign'])
           } else {
             this.toast.warning(res.msg);
             this.spinner = false;
+            this.router.navigate(['/taskassign'])
           }
         },
         (err) => {
@@ -543,10 +587,8 @@ export class TaskComponent implements OnInit {
     if (minutes != "" && minutes != undefined && minutes != null) {
       const H = Math.floor(minutes / 60);
       const M = minutes % 60;
-      hour =
-        ("0000" + H.toString()).slice(-4) +
-        ":" +
-        ("00" + M.toString()).slice(-2);
+      // hour = `${H}:${M.toString().padStart(2, "0")}`;
+      hour = `${H}:${M}`;
     }
     return hour;
   }
@@ -560,11 +602,11 @@ export class TaskComponent implements OnInit {
       this.toast.warning("Please select Task Type");
     } else if (this.form.controls["TASK_DESC"].invalid) {
       this.toast.warning("Please enter Task Description");
-    } else if (
-      this.form.controls["ESTIMATED_HOURS"].invalid &&
-      this.form.getRawValue().CHARGEABLE == "1"
-    ) {
-      this.toast.warning("Please enter Est.Hours");
+    // } else if (
+    //   this.form.controls["ESTIMATED_HOURS"].invalid &&
+    //   this.form.getRawValue().CHARGEABLE == "1"
+    // ) {
+    //   this.toast.warning("Please enter Est.Hours");
     } else if (this.form.controls["BUSINESS_OWNER"].invalid) {
       this.toast.warning("Please enter Business Owner");
     } else if (this.form.controls["CLIENT_OWNER"].invalid) {
@@ -604,6 +646,25 @@ export class TaskComponent implements OnInit {
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);
+  }
+
+  f_M_H_D(array: any = []): any {
+    for (let data of array) {
+      const H = Math.floor(data.TOTAL_MIN / 60);
+      const M = data.TOTAL_MIN % 60;
+      data.TOTAL_MIN = `${H}:${M.toString().padStart(2, "0")}`;
+    }
+    setTimeout(() => {
+      $(".selectpicker").selectpicker("refresh").trigger("change");
+    }, 100);
+  }
+  
+  closeModal(val:any){
+    if(val == 1){
+      $(this.Task_Summery_PopUp.nativeElement).modal("hide");
+    }else if(val == 0){
+      $(this.Task_Details_PopUp.nativeElement).modal("hide");
+    }
   }
 
 }
