@@ -4,7 +4,9 @@
         <div class="col-md-12 " >
             <div class="d-flex  justify-content-between">
                 <div>
-                    <h5 class="formName " >{{ sharedService.formName }}</h5>
+                    <h5 class="formName " *ngIf="IS_ADD == 1" >Add Task</h5>
+                    <h5 class="formName " *ngIf="IS_ADD == 2">Update Task</h5>
+                    <h5 class="formName " *ngIf="IS_ADD == 3">View Task</h5>
                 </div>
                 <div class="col-md-8 d-flex justify-content-end ">
                     <div class="col-md-8 ">
@@ -18,9 +20,9 @@
                             </button>
                         </div> -->
                     </div>
-                    <button class="btn btn-secondary mr-2" *ngIf="isUpdate" (click)="CancleForm()" title="Back">Back</button>
-                    <button class="btn btn-secondary " *ngIf="!isUpdate && ADD_RIGHTS" (click)="saveFormData(0)" title="Save">Save</button>
-                    <button class="btn btn-secondary " *ngIf="isUpdate && UPDATE_RIGHTS" (click)="saveFormData(1)" title="Save">Save</button>
+                    <button class="btn btn-secondary mr-2" (click)="CancleForm()" title="Back">Back</button>
+                    <button class="btn btn-secondary " *ngIf="IS_ADD == 1" (click)="saveFormData(0)" title="Save">Save</button>
+                    <button class="btn btn-secondary " *ngIf="IS_ADD == 2" (click)="saveFormData(1)" title="Save">Save</button>
 
                 </div>
             </div>
@@ -302,31 +304,30 @@
             </div>
         </div> -->
 
-        <div class="col-md-12 mt-2">
+        <div class="col-md-12 mt-2 ">
             <div class="row card">
                 <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 mb-2">
-                    <div class="" >
-                        <label>Employee :</label>
-                        <div class="d-flex " >
-                            <select class=" form-control selectpicker show-tick" [(ngModel)]="selected_emp" data-container="body" data-size="5" id="emp" #emp data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}">
-                                <option *ngFor="let opt of emp_list; let i=index" [value]="opt | json">
-                                    {{ opt.EMP_CODE }} - {{ opt.USER_NAME }}</option>
-                            </select>
-                                <button type="button" class="btn text-primary" style="margin-top: -5px;margin-left:4px" (click)="addRow()">
-                                    <i class='fa fa-plus-square icon-big '></i>
-                                </button>
-                         </div>
+                    <div class="d-flex">
+                        <h6 class="">Employee Details</h6>
+                        <div class="col-md-8"  *ngIf="IS_ADD == 1 || IS_ADD == 2 ">
+                            <div class="d-flex " >
+                                <select class=" form-control selectpicker show-tick" [(ngModel)]="selected_emp" data-container="body" data-size="5" id="emp" #emp data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}">
+                                    <option *ngFor="let opt of emp_list; let i=index" [value]="opt | json">
+                                        {{ opt.EMP_CODE }} - {{ opt.USER_NAME }}</option>
+                                </select>
+                                    <button type="button" *ngIf="IS_ADD == 1 || IS_ADD == 2 " class="btn text-primary" style="margin-top: -5px;margin-left:4px" (click)="addRow()">
+                                        <i class='fa fa-plus-square icon-big '></i>
+                                    </button>
+                             </div>
+                        </div>
                     </div>
-                    <div class=" ">
-                        <h6 class="">Task Details</h6>
-                        <hr class="m-0 mb-2 ">
-                    </div>
+                    <hr class="m-0 mb-2 ">
                     <div class="tableFixHead v_400scroll">
                         <table class="table-theam-1 row-bgcolor_1">
                             <thead>
                                 <tr>
                                     <th class="w-20">Employee</th>
-                                    <th class="w-action">Action</th>
+                                    <th class="w-action"   *ngIf="IS_ADD == 1 || IS_ADD == 2 ">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -349,7 +350,7 @@
                                     <td>
                                         {{ data.EMP_NO }} - {{ data.FULL_NAME }}
                                     </td>
-                                    <td class="row-add">
+                                    <td class="row-add"  *ngIf="IS_ADD == 1 || IS_ADD == 2 ">
                                         <button type="button" class="btn text-primary p-0" (click)="removeRow(data)">
                                             <i class='fas fa-trash-alt text-danger mr-2'></i></button>
                                     </td>
@@ -357,6 +358,10 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
+                <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <button class="btn btn-primary mr-2" *ngIf="this.IS_ADD != 1" (click)="GetTaskDetailSummery(0)" title="Task Details">Task Details</button>
+                    <button class="btn btn-primary " *ngIf="this.IS_ADD != 1" (click)="GetTaskDetailSummery(1)" title="Task Summery">Task Summery</button>
                 </div>
                 <!-- <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
                     <div class="">
@@ -399,3 +404,94 @@
         </div>
     </div>
 </form>
+
+
+<div class="modal" tabindex="-1" id="Task_Summery_PopUp" #Task_Summery_PopUp role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        <div class="">
+                            <h6 class="">Task Summery</h6>
+                            <button
+                                type="button" class="close" (click)="closeModal(1)">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <hr class="m-0 mb-2">
+                        <div class="tableFixHead v_400scroll " >
+                            <table class="table-theam-1 row-bgcolor_1">
+                                <thead>
+                                    <tr>
+                                        <th class="w-20">Employee</th>
+                                        <th class="w-5">Total Hours</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let data of EMPLOYEE_TASK_SUMMERY; let i=index;">
+                                        <td>
+                                            {{ data.EMP_CODE }} - {{ data.USER_NAME }}
+                                        </td>
+                                        <td>
+                                            {{ data.TOTAL_MIN }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1"  id="Task_Details_PopUp" #Task_Details_PopUp role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document" >
+        <div class="modal-content" style="width: 500px;">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" *ngIf="this.IS_ADD != 1">
+                        <div class="">
+                            <h6 class="">Task Details</h6>
+                            <button
+                                type="button" class="close" (click)="closeModal(0)">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <hr class="m-0 mb-2">
+                        <div class="tableFixHead v_400scroll" >
+                            <table class="table-theam-1 row-bgcolor_1">
+                                <thead>
+                                    <tr>
+                                        <th class="w-20">Employee</th>
+                                        <th class="w-5">Date</th>
+                                        <th class="w-5">Total Min</th>
+                                        <th class="w-5">Total Hours</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let data of EMPLOYEE_TASK_DETAILS; let i=index;">
+                                        <td>
+                                            {{ data.EMP_CODE }} - {{ data.USER_NAME }}
+                                        </td>
+                                        <td>
+                                            {{ data.ATTN_DATE }}
+                                        </td>
+                                        <td>
+                                            {{ data.TOTAL_MIN }}
+                                        </td>
+                                        <td>
+                                            {{ data.TIME_HRS }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
