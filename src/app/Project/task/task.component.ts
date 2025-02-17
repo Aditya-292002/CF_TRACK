@@ -10,6 +10,8 @@ import { saveAs } from 'file-saver';
 import { Router } from '@angular/router';
 import { element } from 'protractor';
 import { DatePipe } from '@angular/common';
+import * as XLSX from 'xlsx';
+
 declare var $: any;
 @Component({
   selector: "app-task",
@@ -665,6 +667,28 @@ export class TaskComponent implements OnInit {
     }else if(val == 0){
       $(this.Task_Details_PopUp.nativeElement).modal("hide");
     }
+  }
+
+  ExcelDownload(){
+    // console.log(' EMPLOYEE_TASK_DETAILS ->', this.EMPLOYEE_TASK_DETAILS)
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.EMPLOYEE_TASK_DETAILS);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    const wbout: string = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+    const blob: Blob = new Blob([this.s2ab(wbout)], { type: 'application/octet-stream' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'EMPLOYEE_TASK_DETAILS.xlsx';
+    link.click(); 
+  }
+
+  s2ab(s: string): ArrayBuffer {
+    const buf = new ArrayBuffer(s.length);
+    const view = new Uint8Array(buf);
+    for (let i = 0; i < s.length; i++) {
+      view[i] = s.charCodeAt(i) & 0xff;
+    }
+    return buf;
   }
 
 }

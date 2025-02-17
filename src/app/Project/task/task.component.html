@@ -220,12 +220,6 @@
                         <input type="text" formControlName="CLIENT_OWNER" InputType="AlphaSpace" class="form-control" placeholder="Client Reporter">
                     </div>
                 </div>
-                <div class="col-md-12">
-                    <label>Client Reporter :</label>
-                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['CLIENT_OWNER'].errors?.required}">
-                        <input type="text" formControlName="CLIENT_OWNER" InputType="AlphaSpace" class="form-control" placeholder="Client Reporter">
-                    </div>
-                </div>
                 <div class="col-md-12" [ngClass]="{'invalid-control':isSubmited && form.controls['QUOTED_MANDAYS'].errors?.required}">
                     <label>Quoted Mandays <span class="validator">*</span> :</label>
                     <div class="floating-input " >
@@ -412,7 +406,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                        <div class="">
+                        <div class="d-flex justify-content-between">
                             <h6 class="">Task Summery</h6>
                             <button
                                 type="button" class="close" (click)="closeModal(1)">
@@ -449,18 +443,22 @@
 
 <div class="modal" tabindex="-1"  id="Task_Details_PopUp" #Task_Details_PopUp role="dialog" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog" role="document" >
-        <div class="modal-content" style="width: 500px;">
+        <div class="modal-content" style="width: 600px;">
             <div class="modal-body">
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" *ngIf="this.IS_ADD != 1">
-                        <div class="">
+                        <div class="d-flex justify-content-between">
                             <h6 class="">Task Details</h6>
-                            <button
-                                type="button" class="close" (click)="closeModal(0)">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            <div>
+                                <button class="btn btn-secondary mr-2" 
+                                title="Excel Download" (click)="ExcelDownload()">Excel Download</button>
+                               <button
+                                   type="button" class="close" (click)="closeModal(0)">
+                                   <span aria-hidden="true">&times;</span>
+                               </button>
+                            </div>
                         </div>
-                        <hr class="m-0 mb-2">
+                        <hr class="m-0 mb-2 mt-2">
                         <div class="tableFixHead v_400scroll" >
                             <table class="table-theam-1 row-bgcolor_1">
                                 <thead>
