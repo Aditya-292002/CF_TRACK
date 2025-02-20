@@ -111,6 +111,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { SalesOrderCreateComponent } from './Invoice/sales-order-create/sales-order-create.component';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { TooltipModule } from 'primeng/tooltip';
+import { PendingTaskComponent } from './Project/pending-task/pending-task.component';
 
 
 
@@ -218,7 +219,8 @@ export const MY_DATE_FORMATS = {
     UserRoleChangeComponent,
     SalesOrderReleaseComponent,
     SalesOrderCreateComponent,
-    OldInvoiceComponent
+    OldInvoiceComponent,
+    PendingTaskComponent
   ],
   imports: [
     BrowserModule,

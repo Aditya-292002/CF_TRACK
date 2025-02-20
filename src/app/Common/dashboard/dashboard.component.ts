@@ -292,6 +292,8 @@ export class DashboardComponent implements OnInit {
   Username: any;
   Usernames: any;
   CURRENT_DATE: any;
+  EMPLOYEE_TASK_LIST:any = [];
+  ROLE_ID:any;
 
   constructor(
     public sharedService: SharedServiceService,
@@ -401,6 +403,7 @@ export class DashboardComponent implements OnInit {
     this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
     //this.login_user = this.sharedService.loginUser.USER_NAME;
     //this.USER_ID = this.userData[0].USERID;
+    this.ROLE_ID = this.userData[0].ROLE_ID;
     this.Username=this.userData[0].USER_NAME;
     this.Usernames=this.Username.split(" ");
     this.Username=this.Usernames[0];
@@ -417,6 +420,12 @@ export class DashboardComponent implements OnInit {
       (res:any) => {
         if (res.flag) {
           this.DASHBOARD_CARD_DETAILS = res.dashboard_details;
+          this.EMPLOYEE_TASK_LIST= res.employee_task_list;
+          this.EMPLOYEE_TASK_LIST.forEach((element:any)=>{
+            element.PLANNED_START_DATE = this.datepipe.transform(element.PLANNED_START_DATE, 'dd-MMM-yyyy');
+            element.COMPLETION_DATE = this.datepipe.transform(element.COMPLETION_DATE, 'dd-MMM-yyyy');
+            element.ACTUAL_COMPLETION_DATE = this.datepipe.transform(element.ACTUAL_COMPLETION_DATE, 'dd-MMM-yyyy');
+          })
           setTimeout(() => {
             $(".selectpicker").selectpicker("refresh").trigger("change");
           }, 100);

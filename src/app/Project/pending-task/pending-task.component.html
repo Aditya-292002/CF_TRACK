@@ -1,0 +1,166 @@
+<app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
+    <div class="row">
+        <div class="col-md-12">
+            <div>
+                <h5 class="formName " >{{ sharedService.formName }}</h5>
+            </div>
+            <div class="row card">
+                <!-- <div class="col-md-4">
+                    <label>Project:<span class="validator">*</span> </label>
+                    <div class="floating-input list-btn mb-1" >
+                        <select class="form-control selectpicker show-tick" [(ngModel)]="PROJ_CODE" id="proj" #proj data-live-search="true" title="Select">
+                            <option *ngFor="let opt of project_list; let i=index" [selected]="opt.PROJ_CODE == ''"
+                                [value]="opt.PROJ_CODE">{{ opt.PROJ_NAME }}</option>
+                        </select>
+    
+                        <button type="button" class="close" onclick="resetDropdown('proj')" aria-label="Close">
+                           <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div> -->
+                <div class="col-md-6">
+                    <label>Employee:</label>
+                    <div class="floating-input list-btn mb-1" >
+                        <select class="form-control selectpicker show-tick" [(ngModel)]="EMP_CODE" (change)="GetEmployeeTaskList()"
+                            id="emp" #emp  data-live-search="true" title="Select" >
+                            <option *ngFor="let opt of employee_list; let i=index" [selected]="opt.EMP_CODE == this.EMP_CODE"
+                                [value]="opt.EMP_CODE">{{ opt.EMP_CODE }}- {{ opt.USER_NAME }}</option>
+                        </select>
+    
+                        <button type="button" class="close" onclick="resetDropdown('emp')" (click)="this.employee_task_list = []" aria-label="Close">
+                           <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Status :</label>
+                    <div class="floating-input list-btn mb-1" >
+                        <select class="form-control selectpicker show-tick"  [(ngModel)]="TASK_STATUS" (change)="GetChangeStatus()" 
+                         id="Staus" #Staus data-live-search="true" title="Select">
+                            <option *ngFor="let opt of task_status_list; let i=index" [selected]="opt.TASK_STATUS == this.TASK_STATUS"
+                                [value]="opt.TASK_STATUS">{{ opt.TASK_STATUS_DESC }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('Staus')" (click)="GetChangeStatus()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- <div
+                class="col-md-2"
+                >
+                    <button
+                    class="btn btn-secondary mt-2"
+                    title="Show"    
+                    (click)="GetEmployeeTaskList()"
+                    >
+                    Show
+                    </button>
+                </div> -->
+            </div>
+        </div>
+        <div class="col-md-12 mt-2">
+            <div class="row card">
+                    <div class="">
+                        <!-- <table class="">
+                            <thead>
+                                <tr>
+                                    <th class="w-5">Sr No</th>
+                                    <th class="w-20">Project Name</th>
+                                    <th class="w-30">Task Desc</th>
+                                    <th class="w-10">Start Date</th>
+                                    <th class="w-10">Compl Date</th>
+                                    <th class="w-10">Total Hours </th>
+                                    <th class="w-10">Act Completion Date</th>
+                                    <th class="w-10">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of employee_task_list; let i=index;">
+                                    <td class="w-5">
+                                            {{ i + 1 }} 
+                                    </td>
+                                    <td class="w-20">
+                                        {{ data.PROJ_NAME }}
+                                    </td>
+                                    <td class="w-30">
+                                        {{ data.TASK_DESC }}
+                                    </td>
+                                    <td>{{ data.PLANNED_START_DATE }}</td>
+                                    <td>{{ data.COMPLETION_DATE }}</td>
+                                    <td *ngIf="data.TIME_HRS != 0">{{ data.TIME_HRS }} Hr</td>
+                                    <td *ngIf="data.TIME_HRS == 0">{{ data.TIME_MIN }} Min</td>
+                                    <td>{{ data.ACTUAL_COMPLETION_DATE }}</td>
+                                    <td>{{ data.TASK_STATUS_DESC }}</td>
+                                </tr>
+                            </tbody>
+                        </table> -->
+                        <p-table #datatable [value]="employee_task_list" class="table-theam-1 row_bgcolor_1"
+                        [paginator]="true"
+                        [rows]="20"
+                        [rowsPerPageOptions]="[20, 30, 40]"
+                        [scrollable]="true" scrollHeight="400px"
+                        [globalFilterFields]="['PROJ_NAME','TASK_DESC','PLANNED_START_DATE','COMPLETION_DATE','ACTUAL_COMPLETION_DATE','TASK_STATUS_DESC']">
+                        <ng-template pTemplate="caption">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="mb-0">Task Status Details</h6>
+                                    <!-- <div class="form-check form-check-inline">
+                                        <input type="radio" name="status" value="pending" (change)="GetE_Invoice('Pending')"
+                                            [checked]='true'>
+                                        <label class="form-check-label ml-2" for="inlineRadio1">Pending</label>
+                                    </div>
+            
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" name="status" value="Generated" (change)="GetE_Invoice('Generated')">
+                                        <label class="form-check-label ml-2" for="inlineRadio3">Generated</label>
+                                    </div> -->
+                                </div>
+                                <div style="text-align: right">
+                                    <div class="floating-input">
+                                        <input type="text" pInputText class="form-control" size="50" placeholder="Search"
+                                        (input)="datatable.filterGlobal($event.target.value, 'contains')">
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header" let-flight>
+                            <tr>
+                                <th style="width: 50px;">Sr No</th>
+                                <th style="width: 180px;">Project Name</th>
+                                <th style="width: 180px;">Task Desc</th>
+                                <th class="">Start Date</th>
+                                <th class="">Compl Date</th>
+                                <th class="">Total Hours </th>
+                                <th class="">Act Completion Date</th>
+                                <th class="">Status</th>
+                            </tr>
+                        </ng-template>
+        
+                        <ng-template pTemplate="body" let-data let-rowIndex="rowIndex">
+                            <tr>
+                                <td class="" style="width: 50px;" >
+                                    {{ rowIndex + 1 }} 
+                            </td>
+                            <td class="" style="width: 180px;">
+                                {{ data.PROJ_NAME }}
+                            </td>
+                            <td class="" style="width: 180px;">
+                                {{ data.TASK_DESC }}
+                            </td>
+                            <td>{{ data.PLANNED_START_DATE }}</td>
+                            <td>{{ data.COMPLETION_DATE }}</td>
+                            <td *ngIf="data.TIME_HRS != 0">{{ data.TIME_HRS }} Hr</td>
+                            <td *ngIf="data.TIME_HRS == 0">{{ data.TIME_MIN }} Min</td>
+                            <td>{{ data.ACTUAL_COMPLETION_DATE }}</td>
+                            <!-- <td>{{ data.TASK_STATUS_DESC }}</td> -->
+                            <td  >
+                                <p class="mb-0" [ngClass]="[ (data.TASK_STATUS_DESC == 'PENDING') ? 'text-danger' : 
+                                (data.TASK_STATUS_DESC == 'WIP') ? 'text-warning': (data.TASK_STATUS_DESC == 'CLOSED') ? 'text-info' :'' ]"> {{ data.TASK_STATUS_DESC }}</p>
+                               </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    </div>
+            </div>
+        </div>
+    </div>
