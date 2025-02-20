@@ -31,6 +31,7 @@ export class ApiUrlService {
   GetTaskDetail: string = '/Task/GetTaskDetail';
   GetTaskDetailSummery: string = '/Task/GetTaskDetailSummery';
   SaveTaskDetail: string = '/Task/SaveTaskDetail';
+  GetEmployeeTaskList: string = '/Task/GetEmployeeTaskList';
   UpdateTaskEmployeeDetails: string = '/Task/UpdateTaskEmployeeDetails';
   SendOTP_ForgotPassword: string = '/Forgot/SendOTP_ForgotPassword';
   CheckOTP_ForgotPassword: string = '/Forgot/CheckOTP_ForgotPassword';

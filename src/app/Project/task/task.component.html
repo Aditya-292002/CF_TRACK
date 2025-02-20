@@ -355,7 +355,7 @@
                 </div>
                 <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 mb-2">
                     <button class="btn btn-primary mr-2" *ngIf="this.IS_ADD != 1" (click)="GetTaskDetailSummery(0)" title="Task Details">Task Details</button>
-                    <button class="btn btn-primary " *ngIf="this.IS_ADD != 1" (click)="GetTaskDetailSummery(1)" title="Task Summery">Task Summery</button>
+                    <button class="btn btn-primary " *ngIf="this.IS_ADD != 1" (click)="GetTaskDetailSummery(1)" title="Task Summary">Task Summary</button>
                 </div>
                 <!-- <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
                     <div class="">
@@ -407,7 +407,7 @@
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                         <div class="d-flex justify-content-between">
-                            <h6 class="">Task Summery</h6>
+                            <h6 class="">Task Summary</h6>
                             <button
                                 type="button" class="close" (click)="closeModal(1)">
                                 <span aria-hidden="true">&times;</span>
@@ -451,7 +451,8 @@
                             <h6 class="">Task Details</h6>
                             <div>
                                 <button class="btn btn-secondary mr-2" 
-                                title="Excel Download" (click)="ExcelDownload()">Excel Download</button>
+                                title="Excel Download" (click)="ExcelDownload()">
+                                <i class='fa fa-file-excel-o mr-2'></i>Excel Download</button>
                                <button
                                    type="button" class="close" (click)="closeModal(0)">
                                    <span aria-hidden="true">&times;</span>

@@ -116,7 +116,7 @@ export class TaskComponent implements OnInit {
       this.NO_RIGHTS = this.ADD_RIGHTS || this.UPDATE_RIGHTS ? false : true;
       this.GetTaskCommonList();
       this.GetTaskList();
-      this.getEmployee();
+      // this.getEmployee();
       if (this.TASKID != null) {
         this.searchTask(1);
       }
@@ -144,6 +144,9 @@ export class TaskComponent implements OnInit {
           this.project_list = res.project_list;
           this.task_status_list = res.task_status_list;
           this.task_type_list = res.task_type_list;
+          this.all_emp_list = res.employee_list;
+          this.buisness_owner_list = res.employee_list;
+          this.technical_owner_list = res.employee_list;
           this.setCompany();
           setTimeout(() => {
             $(".selectpicker").selectpicker("refresh").trigger("change");
@@ -181,28 +184,28 @@ export class TaskComponent implements OnInit {
     );
   }
 
-  getEmployee() {
-    let data = {
-      LISTTYPE: "",
-    };
+  // getEmployee() {
+  //   let data = {
+  //     LISTTYPE: "",
+  //   };
 
-    this.http.PostRequest(this.apiUrl.GetEmployeeList, data).then(
-      (res) => {
-        if (res.flag) {
-          this.all_emp_list = res.employee_list;
-          this.buisness_owner_list = res.employee_list;
-          this.technical_owner_list = res.employee_list;
-          this.filterEmployee();
-          this.spinner = false;
-        } else {
-          this.spinner = false;
-        }
-      },
-      (err) => {
-        this.spinner = false;
-      }
-    );
-  }
+  //   this.http.PostRequest(this.apiUrl.GetEmployeeList, data).then(
+  //     (res) => {
+  //       if (res.flag) {
+  //         this.all_emp_list = res.employee_list;
+  //         this.buisness_owner_list = res.employee_list;
+  //         this.technical_owner_list = res.employee_list;
+  //         this.filterEmployee();
+  //         this.spinner = false;
+  //       } else {
+  //         this.spinner = false;
+  //       }
+  //     },
+  //     (err) => {
+  //       this.spinner = false;
+  //     }
+  //   );
+  // }
 
   searchTask(val:any) {
     if (this.search_task_id != "" || this.search_task_id != undefined) {

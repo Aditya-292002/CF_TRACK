@@ -25,15 +25,15 @@
                     <div class="floating-input mb-1" [ngClass]="{'invalid-control':isSubmited && form.controls['COMPANY'].errors?.required}">
                         <input type="text" formControlName="COMPANY" placeholder="Company" class="form-control text-uppercase">
                     </div>
-                </div> -->
+                </div>
                 <div class="col-md-4">
                     <label>Customer :</label>
                     <div class="floating-input mb-1" [ngClass]="{'invalid-control':isSubmited && form.controls['CUSTOMER'].errors?.required}">
                         <input type="text" formControlName="CUSTOMER" placeholder="Customer" class="form-control text-uppercase">
                     </div>
-                </div>
+                </div> -->
                 <div class="col-md-4">
-                    <label>Staus :</label>
+                    <label>Status :</label>
                     <div class="floating-input  list-btn" >
                         <select class="form-control selectpicker show-tick" formControlName="TASK_STATUS" 
                         (change)="onShowTask(this.form.controls['TASK_STATUS'].value);" id="Staus" #Staus data-live-search="true" title="Select">
