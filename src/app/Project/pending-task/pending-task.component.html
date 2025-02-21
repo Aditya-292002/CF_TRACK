@@ -126,12 +126,12 @@
                         <ng-template pTemplate="header" let-flight>
                             <tr>
                                 <th style="width: 50px;">Sr No</th>
-                                <th style="width: 180px;">Project Name</th>
-                                <th style="width: 180px;">Task Desc</th>
-                                <th class="">Start Date</th>
-                                <th class="">Compl Date</th>
-                                <th class="">Total Hours </th>
-                                <th class="">Act Completion Date</th>
+                                <th style="width: 220px;">Project Name</th>
+                                <th style="width: 220px;">Task Desc</th>
+                                <th  style="width: 110px;">Start Date</th>
+                                <th  style="width: 110px;">Compl Date</th>
+                                <th >Total Hours </th>
+                                <th  style="width: 110px;">Act Completion Date</th>
                                 <th class="">Status</th>
                             </tr>
                         </ng-template>
@@ -141,17 +141,17 @@
                                 <td class="" style="width: 50px;" >
                                     {{ rowIndex + 1 }} 
                             </td>
-                            <td class="" style="width: 180px;">
+                            <td class="" style="width: 220px;">
                                 {{ data.PROJ_NAME }}
                             </td>
-                            <td class="" style="width: 180px;">
+                            <td class="" style="width: 220px;">
                                 {{ data.TASK_DESC }}
                             </td>
-                            <td>{{ data.PLANNED_START_DATE }}</td>
-                            <td>{{ data.COMPLETION_DATE }}</td>
+                            <td  style="width: 110px;">{{ data.PLANNED_START_DATE }}</td>
+                            <td  style="width: 110px;">{{ data.COMPLETION_DATE }}</td>
                             <td *ngIf="data.TIME_HRS != 0">{{ data.TIME_HRS }} Hr</td>
                             <td *ngIf="data.TIME_HRS == 0">{{ data.TIME_MIN }} Min</td>
-                            <td>{{ data.ACTUAL_COMPLETION_DATE }}</td>
+                            <td  style="width: 110px;">{{ data.ACTUAL_COMPLETION_DATE }}</td>
                             <!-- <td>{{ data.TASK_STATUS_DESC }}</td> -->
                             <td  >
                                 <p class="mb-0" [ngClass]="[ (data.TASK_STATUS_DESC == 'PENDING') ? 'text-danger' : 
