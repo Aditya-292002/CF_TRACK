@@ -26,6 +26,47 @@ export class BankReceiptComponent implements OnInit {
   data: any;
   TRXN_AMT:number;
 dummyCustomerList:any=[];
+ADD_RIGHTS: boolean = false;
+UPDATE_RIGHTS: boolean = false;
+NO_RIGHTS: boolean = false;
+isAdd: boolean = false;
+isUpdate: boolean = false;
+maxdate = new Date();
+  today_date = new Date();
+  today_date_s : any;
+  min_date = new Date(new Date().getFullYear(), 0, 1);
+  radioSelected0:boolean = true
+  radioSelected1:boolean = false
+  radioSelected2:boolean = false
+  radioSelected3:boolean = false
+  radioSelected4:boolean = false
+  VENDOR_NO:string=""
+  EMP_NO:string=""
+  BANK_CODE:string=""
+  GL_NO:string=""
+  CUST_CODE:string=""
+  company_list: Array<any> = [];
+  vendor_list: Array<any> = [];
+  currency_list: Array<any> = [];
+  other_currency_list: Array<any> = [];
+  bank_list: Array<any> = [];
+  gl_list: Array<any> = [];
+  customer_list: Array<any> = [];
+  employee_list: Array<any> = [];
+  location_list: Array<any> = [];
+  _location_list: Array<any> = [];
+  tds_code_list: Array<any> = [];
+  bankreceipt_detail: Array<any> = [];
+RECGRP:string=""
+  PARTY_CODE:string=""
+  isEnabled : boolean= false;
+  TDS_PERCENT:any = 0;
+  _BANK_Detail: Array<any> = [];
+  project_list:any;
+  isSubmited: boolean = false;
+ _DATE1: any = ''
+ _DATE: any = ''
+ 
   constructor(private sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
     private http: HttpRequestServiceService,
@@ -80,16 +121,6 @@ dummyCustomerList:any=[];
     $('.selectpicker').selectpicker('refresh').trigger('change');
   }
 
-  ADD_RIGHTS: boolean = false;
-  UPDATE_RIGHTS: boolean = false;
-  NO_RIGHTS: boolean = false;
-  isAdd: boolean = false;
-  isUpdate: boolean = false;
-
-  maxdate = new Date();
-    today_date = new Date();
-    today_date_s : any;
-    min_date = new Date(new Date().getFullYear(), 0, 1);
   ngAfterViewInit(){    
     setTimeout(() => {
       // if (this.sharedService.form_rights.ADD_RIGHTS) {
@@ -99,17 +130,12 @@ dummyCustomerList:any=[];
       //   this.UPDATE_RIGHTS = this.sharedService.form_rights.UPDATE_RIGHTS
       // } 
       // this.NO_RIGHTS = this.ADD_RIGHTS || this.UPDATE_RIGHTS?false:true;
-
       if(this.sharedService.loginUser[0].FYEAR == undefined){
         this.sharedService.loginUser = sessionStorage.getItem('user_detail') ? JSON.parse(sessionStorage.getItem('user_detail')):[]
-        
        }
-  
        this.form.get('FYEAR').setValue(this.sharedService.loginUser[0].FYEAR);
        this.form.get('COMPANY_CODE').setValue(this.sharedService.loginUser[0].COMPANY_CODE );
        this.form.get('LOCATION_CODE').setValue(this.sharedService.loginUser[0].LOCATION_CODE);
-       
-
        this.today_date_s = this.datepipe.transform(this.today_date, 'yyyy-MM-dd')
      if(this.today_date_s > this.sharedService.loginUser[0].TO_DATE){
      this.min_date = this.sharedService.loginUser[0].FROM_DATE;
@@ -121,11 +147,9 @@ dummyCustomerList:any=[];
     }
        setTimeout(() => {
        $('.selectpicker').selectpicker('refresh').trigger('change');
-    
        this.changeCurrency();
        this.GetProjectList();
        },210);
-
        this.today_date_s = this.datepipe.transform(this.today_date, 'yyyy-MM-dd')
       if(this.today_date_s > this.sharedService.loginUser[0].TO_DATE){
         this.min_date = this.sharedService.loginUser[0].FROM_DATE;
@@ -139,19 +163,8 @@ dummyCustomerList:any=[];
     },150)
   }
 
-  radioSelected0:boolean = true
-  radioSelected1:boolean = false
-  radioSelected2:boolean = false
-  radioSelected3:boolean = false
-  radioSelected4:boolean = false
-  VENDOR_NO:string=""
-  EMP_NO:string=""
-  BANK_CODE:string=""
-  GL_NO:string=""
-  CUST_CODE:string=""
   showContent(para: string = ''){
     if(para == 'C'){
-      console.log(para)
       this.radioSelected0 = true;
       this.radioSelected1 = false;
       this.radioSelected2 = false;
@@ -163,7 +176,6 @@ dummyCustomerList:any=[];
       this.form.get('GL_NO').setValue("0");
     } 
      if(para == 'V'){
-       console.log(para)
       this.radioSelected1 = true;
       this.radioSelected0 = false;
       this.radioSelected2 = false;
@@ -175,7 +187,6 @@ dummyCustomerList:any=[];
       this.form.get('GL_NO').setValue("0");
     } 
     // if(para == 'B'){
-    //      console.log(para)
     //   this.radioSelected2 = true;
     //   this.radioSelected1 = false;
     //   this.radioSelected0 = false;
@@ -187,7 +198,6 @@ dummyCustomerList:any=[];
     //   this.form.get('GL_NO').setValue("0");
     // } 
     if(para == 'E'){
-         console.log(para)
       this.radioSelected3 = true;
       this.radioSelected1 = false;
       this.radioSelected2 = false;
@@ -199,7 +209,6 @@ dummyCustomerList:any=[];
       this.form.get('GL_NO').setValue("0");
     } 
      if(para == 'G'){
-      console.log(para)
       this.radioSelected4 = true;
       this.radioSelected1 = false;
       this.radioSelected2 = false;
@@ -216,20 +225,6 @@ dummyCustomerList:any=[];
     }, 100);
 
   }
-
-  company_list: Array<any> = [];
-  vendor_list: Array<any> = [];
-  currency_list: Array<any> = [];
-  other_currency_list: Array<any> = [];
-  bank_list: Array<any> = [];
-  gl_list: Array<any> = [];
-  customer_list: Array<any> = [];
-  employee_list: Array<any> = [];
-  location_list: Array<any> = [];
-  _location_list: Array<any> = [];
-  tds_code_list: Array<any> = [];
-
-  bankreceipt_detail: Array<any> = [];
 
   GetBankCommonList(){
     this.spinner = true;
@@ -260,12 +255,9 @@ dummyCustomerList:any=[];
     });
   }
 
-  RECGRP:string=""
-  PARTY_CODE:string=""
   ChangeCustomer(){
     this.RECGRP = "C";    
     this.PARTY_CODE=this.form.getRawValue().CUST_CODE;
-   
     this.customer_list.forEach(element => {
       if(element.CUST_CODE == this.form.getRawValue().CUST_CODE){
           this.form.get("CURRENCY_CODE").setValue(element.CUST_CURRENCY); 
@@ -294,7 +286,6 @@ dummyCustomerList:any=[];
   ChangeVendor(){
     this.RECGRP = "V";    
     this.PARTY_CODE=this.form.getRawValue().VENDOR_NO;
-    
     this.form.get("CURRENCY_CODE").setValue("INR"); 
     this.changeCurrency(); 
     this.vendor_list.forEach(element => {
@@ -309,6 +300,7 @@ dummyCustomerList:any=[];
   showbill(){
     this.GetBankReceiptDetail(this.RECGRP,this.PARTY_CODE); 
   }
+
   GetBankReceiptDetail(RECGRP,PARTY_CODE){
     this.spinner = true;
     let data = {
@@ -332,8 +324,6 @@ dummyCustomerList:any=[];
       });
   }
 
-
-  isEnabled : boolean= false;
   CalculateAdjustAmount(){
     this.isEnabled = true;
     var TOTAL_ADJUST = 0;
@@ -458,7 +448,6 @@ dummyCustomerList:any=[];
   changeCurrency(){
     if(this.form.getRawValue().CURRENCY_CODE == "INR"){
       //this.form.getRawValue().EXCHANGE_RATE = "1";
-      
       this.form.get('EXCHANGE_RATE').setValue("1");
       this.form.get('OTH_CURRENCY_CODE1').setValue("INR");
       this.form.get('OTH_CURRENCY_CODE2').setValue("INR");
@@ -491,25 +480,21 @@ dummyCustomerList:any=[];
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);
   }
-  TDS_PERCENT:any = 0;
+
   ChangeTds(){
     this.tds_code_list.forEach(    element =>{
       if(this.form.getRawValue().TDS_CODE == element.TDS_CODE){
         if(element.TDS_PERCENT != null || element.TDS_PERCENT != "" || element.TDS_PERCENT != undefined){
-          
           this.TDS_PERCENT = element.TDS_PERCENT;
         }
         else{
           this.TDS_PERCENT = 0;
         }
       }
-      
-      
     });
-    
     this.CalculateAdjustAmount();
   }
-  _BANK_Detail: Array<any> = [];
+
   f_addRow(){
   //   this.bankreceipt_detail.push({
   //     COMPANY_CODE:"",
@@ -527,7 +512,6 @@ dummyCustomerList:any=[];
   //     BALANCE_AMT:"",
   //     VOUCHER_DATE:"",
   //     REF_PARTY:""
-
   // });
   setTimeout(() => {
     $('.selectpicker').selectpicker('refresh').trigger('change');
@@ -552,10 +536,7 @@ dummyCustomerList:any=[];
       //     //element.ADJUST_AMT += parseFloat(element.BALANCE_AMT);
       //    });
       // }
-      
     }
-
-    
     //element.ADJUST_AMT += parseFloat(element.BALANCE_AMT);
    });
    //this._BANK_Detail = this.bankreceipt_detail.filter(e=> e.ACTIVE == true );
@@ -563,13 +544,11 @@ dummyCustomerList:any=[];
   this.CalculateAdjustAmount();
 }
 
-
   f_validateFormData(){
     this.form.get('BAL_TO_ADJUST').setValue((this.pipeService.removeCommaseprated(this.form.getRawValue().BAL_TO_ADJUST)));
     this.form.get('TRXN_AMT_1').setValue((this.pipeService.removeCommaseprated(this.form.getRawValue().TRXN_AMT_1)));
     this.form.get('TRXN_AMT').setValue((this.pipeService.removeCommaseprated(this.form.getRawValue().TRXN_AMT)));// add a line
     this.form.get('FINAL_AMT').setValue((this.pipeService.removeCommaseprated(this.form.getRawValue().FINAL_AMT)));
-      
     if (this.form.controls['COMPANY_CODE'].invalid) {
       this.toast.warning('Please select company');
       return false;
@@ -618,7 +597,6 @@ dummyCustomerList:any=[];
     //   return false;
     // }
       // 
-     
       // else if (this.form.controls['PAY_REFNO'].invalid) {
       //   this.toast.warning('Please enter pay ref no.');
       //   return false;
@@ -649,16 +627,11 @@ dummyCustomerList:any=[];
         this.toast.warning('Both bank receive amount should be match.');
         return false;
       }
-
       this.form.get('BAL_TO_ADJUST').setValue((this.pipeService.setCommaseprated(this.form.getRawValue().BAL_TO_ADJUST)));
-    
-      
     return true;
       
   }
 
-
-  // clear form 
   f_clearForm(){
     this._BANK_Detail = [];
      this.bank_list=[];
@@ -672,11 +645,9 @@ dummyCustomerList:any=[];
    // this.tds_code_list=[];
    // this.customer_list=[];
     this.form.reset();
-
     this.form.get('FYEAR').setValue(this.sharedService.loginUser[0].FYEAR);
     this.form.get('COMPANY_CODE').setValue(this.sharedService.loginUser[0].COMPANY_CODE);
     this.form.get('LOCATION_CODE').setValue(this.sharedService.loginUser[0].LOCATION_CODE);
-    
     this.form.get('CURRENCY_CODE').setValue("INR");
        this.form.get('EXCHANGE_RATE').setValue(1);
        this.form.get('OTH_CURRENCY_CODE1').setValue("INR");
@@ -708,12 +679,10 @@ dummyCustomerList:any=[];
     }, 100);
   }
 
-  project_list:any;
   GetProjectList() {
     let data = {
       LISTTYPE: "customerwise",
       COMPANY_CODE: this.form.getRawValue().COMPANY_CODE,
-      
     }
     this.http.PostRequest(this.apiUrl.GetProjectList, data).then(res => {
       if (res.flag) {
@@ -729,46 +698,38 @@ dummyCustomerList:any=[];
       this.spinner = false;
     });
   }
-  isSubmited: boolean = false;
+
   bankSave(){
     this.isSubmited = true;
     if(this.f_validateFormData()){
-      
-      
       this.form.get('TRXN_AMT').setValue((this.pipeService.removeCommaseprated(this.form.getRawValue().TRXN_AMT)));
       this.form.get('TRXN_BASE').setValue((this.pipeService.removeCommaseprated(this.form.getRawValue().TRXN_BASE)));
       this.form.get('TDS_AMT').setValue((this.pipeService.removeCommaseprated(this.form.getRawValue().TDS_AMT)));
       this.form.get('FINAL_AMT').setValue((this.pipeService.removeCommaseprated(this.form.getRawValue().FINAL_AMT)));
       this.form.get('ADJUST_TOTAL').setValue((this.pipeService.removeCommaseprated(this.form.getRawValue().ADJUST_TOTAL)));
-      this.form.get('BAL_TO_ADJUST').setValue((this.pipeService.removeCommaseprated(this.form.getRawValue().BAL_TO_ADJUST)));
-      
+      this.form.get('BAL_TO_ADJUST').setValue((this.pipeService.removeCommaseprated(this.form.getRawValue().BAL_TO_ADJUST)));    
       let data = {
         TYPE:"",
+        USERID: this.sharedService.loginUser[0].USERID,
         SaveBankReceipt:this.form.value,
         SaveBankReceiptDetail: this._BANK_Detail,
       }
 
       this.f_clearForm();
       //this.GetBankCommonList();
-
-    console.log(data);
+//     console.log(JSON.stringify(data));
+//  return
       this.spinner = true;
-      console.log('f_clearForm',this.f_clearForm)
-      
       this.http.PostRequest(this.apiUrl.SaveBankReceipt, data).then(res => {
-        console.log(res);
         if (res.flag) {
           this.toast.success(res.msg)
           this.spinner = false;
           this.isSubmited = false;
           this.f_clearForm();
-        
           setTimeout(() => {
             $('.selectpicker').selectpicker('refresh').trigger('change');
           }, 100);
-         
         } else {
-          
           this.toast.warning(res.msg)
           this.spinner = false;
         }
@@ -776,24 +737,20 @@ dummyCustomerList:any=[];
         this.spinner = false;
       });
     }
-    
   }
 
-  
-  _DATE: any = ''
   ChangeDate(){
     this.PAY_DATE = this.datePipe.transform(new Date(this._DATE), 'dd-MMM-yyyy')
-  
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);
   }
-  _DATE1: any = ''
+ 
   ChangeReceiptDate(){
     this.TRXN_DATE = this.datePipe.transform(new Date(this._DATE1), 'dd-MMM-yyyy')
-  
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);
   }
+
 }
