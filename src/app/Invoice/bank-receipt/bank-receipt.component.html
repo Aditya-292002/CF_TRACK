@@ -304,21 +304,22 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-                    <div  class=" mt-2 d-flex ">
-                        <div  class="form-inline">
-                            <label >Adjust Total :</label>
-                            <div  class="floating-input ml-2 ">
-                                <input  class="form-control cost" formControlName="ADJUST_TOTAL" (change)="CalculateAdjustAmount()" disabled costInput placeholder="Adjust Total" type="text" style="width: 108px;" OnlyNumber='true' autocomplete="off" >
+                        <div  class=" mt-2 d-flex ">
+                            <div  class="form-inline">
+                                <label >Adjust Total :</label>
+                                <div  class="floating-input ml-2 ">
+                                    <input  class="form-control cost" formControlName="ADJUST_TOTAL" (change)="CalculateAdjustAmount()" disabled costInput placeholder="Adjust Total" type="text" style="width: 108px;" OnlyNumber='true' autocomplete="off" >
+                                </div>
+                            </div>
+                            <div  class="col-md-5 mt-1 form-inline">
+                                <label >Balance to Adjust :</label>
+                                <div  class="floating-input ml-2">
+                                    <input  class="form-control ml-1 cost"  formControlName="BAL_TO_ADJUST" disabled costInput placeholder="Bal to Adj" type="text" style="width: 108px;" OnlyNumber='true' >
+                                </div>
                             </div>
                         </div>
-                        <div  class="col-md-5 mt-1 form-inline">
-                            <label >Balance to Adjust :</label>
-                            <div  class="floating-input ml-2">
-                                <input  class="form-control ml-1 cost"  formControlName="BAL_TO_ADJUST" disabled costInput placeholder="Bal to Adj" type="text" style="width: 108px;" OnlyNumber='true' >
-                            </div>
-                        </div>
                     </div>
+                   
                 </div>
             </div>
         </div>
