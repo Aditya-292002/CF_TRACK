@@ -149,7 +149,7 @@
 								 <i class="fa fa-check-square text-success mr-2" *ngIf="data.STATUS == 'A' || data.STATUS == 'M'"></i>
 								 <i class="fa fa-times text-danger mr-2" *ngIf="data.STATUS == 'R'"></i>{{data.STATUS_DESC}}</td> 
 								<td class="">									
-									<a *ngIf="data.STATUS == 'P' || data.STATUS == 'M'">
+									<a *ngIf="data.STATUS == 'P' || data.STATUS == 'M' || (data.STATUS == 'A' && this.ROLE_ID== 3)">
 										<i class="fa fa-edit small mr-2"  (click)="editLeave(data)" title="Edit"></i>  
 									</a>
 									<a *ngIf="(data.STATUS == 'P' && this.ROLE_NAME == 'HR USER') || (data.STATUS == 'M' && this.ROLE_NAME == 'HR USER')">

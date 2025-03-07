@@ -717,7 +717,7 @@ RECGRP:string=""
 
       this.f_clearForm();
       //this.GetBankCommonList();
-//     console.log(JSON.stringify(data));
+    // console.log(JSON.stringify(data));
 //  return
       this.spinner = true;
       this.http.PostRequest(this.apiUrl.SaveBankReceipt, data).then(res => {
