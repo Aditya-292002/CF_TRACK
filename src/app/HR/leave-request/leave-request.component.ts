@@ -18,14 +18,12 @@ declare var jQuery: any;
 export class LeaveRequestComponent implements OnInit {
   @ViewChild('attendance', { static: false }) attendance: ElementRef;  
   @ViewChild('SaveConformationPopUp', { static: false }) SaveConformationPopUp: ElementRef;  
-  // public date: Date;
   spinner: boolean = false;
   form: FormGroup
   isReject:boolean = false;
   isViewLeave:boolean = false;
   type: number = 0;
   inboundClick: boolean = false;
-  // maxDate: any ='';
   Annualleave:any = '';
   LeaveUsed:any = '';
   BalanceLeave:any = '';
@@ -42,7 +40,6 @@ export class LeaveRequestComponent implements OnInit {
   NO_RIGHTS: boolean = false;
   isAdd: boolean = false;
   isUpdate: boolean = false;
-  // data: any;
   isAdmin:boolean = false;
   all_leave_list: Array<any> = [];
   Leave_list:Array<any> = [];
@@ -74,8 +71,7 @@ export class LeaveRequestComponent implements OnInit {
     this.sharedService.formName = "Leave Request"
     this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
     this.ROLE_NAME = this.userData[0].ROLE_NAME;
-    // console.log('userData ->' , this.userData)
-    // console.log('ROLE_NAME ->' , this.ROLE_NAME)
+    this.ROLE_ID = this.userData[0].ROLE_ID;
     this.form = this.formBuilder.group({
       EMP_NO: ["",Validators.required],  
       REQUEST_DATE: ["",Validators.required],
@@ -107,7 +103,6 @@ export class LeaveRequestComponent implements OnInit {
       this.NO_RIGHTS = this.ADD_RIGHTS || this.UPDATE_RIGHTS?false:true;
       if(this.sharedService.loginUser[0].FYEAR == undefined){
         this.sharedService.loginUser = sessionStorage.getItem('user_detail') ? JSON.parse(sessionStorage.getItem('user_detail')):[]
-        
        }
        this.form.get('FYEAR').setValue(this.sharedService.loginUser[0].FYEAR);
        this.today_date_s = this.datepipe.transform(this.today_date, 'yyyy-MM-dd')
@@ -208,7 +203,6 @@ export class LeaveRequestComponent implements OnInit {
     this.http.PostRequest(this.apiUrl.GetLeaveList, data).then(res => {
       if (res.flag) {
         this.all_leave_list = res.Leave_list;
-
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh').trigger('change');
         }, 100);
@@ -486,7 +480,7 @@ export class LeaveRequestComponent implements OnInit {
   CheckValidationForLeaveRequest(){
    if(this.f_validateFormData()){
     let data = {
-      USERID: this.userData.USERID,
+      USERID: this.userData[0].USERID,
       LeaveData: [{
         "EMP_NO": this.form.value.EMP_NO,
         "LEAVE_CODE": this.form.value.LEAVE_CODE,
@@ -497,7 +491,7 @@ export class LeaveRequestComponent implements OnInit {
         "REASON": this.form.value.REASON,
       }],
     }
-    // console.log('data 1 ->' , data)
+    // console.log('data 1 ->' , JSON.stringify(data))
     // return
     this.http.PostRequest(this.apiUrl.CheckValidationForLeaveRequest, data ).then((res:any) => {
       this.isSaveReturn = res.flag;

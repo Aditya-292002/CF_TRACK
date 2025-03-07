@@ -67,6 +67,8 @@ export class ApiUrlService {
   GetJVCommonList: string = '/JV/GetJVCommonList';
   SaveJV: string = '/JV/SaveJV';
   GetBankReceiptDetail : string = '/Bank/GetBankReceiptDetail';
+  GetBankReceiptList : string = '/Bank/GetBankReceiptList';
+  ViewBankReceiptPdfBase64 : string = '/Bank/ViewBankReceiptPdfBase64';
   GetEditInvoiceDetail : string = '/Invoice/GetEditInvoiceDetail';
   UpdateEditInvoice : string = '/Invoice/UpdateEditInvoice';
   GetJVList : string = '/JV/GetJVList';

@@ -112,6 +112,7 @@ import { SalesOrderCreateComponent } from './Invoice/sales-order-create/sales-or
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { TooltipModule } from 'primeng/tooltip';
 import { PendingTaskComponent } from './Project/pending-task/pending-task.component';
+import { BankReceiptListComponent } from './Invoice/bank-receipt-list/bank-receipt-list.component';
 
 
 
@@ -220,7 +221,8 @@ export const MY_DATE_FORMATS = {
     SalesOrderReleaseComponent,
     SalesOrderCreateComponent,
     OldInvoiceComponent,
-    PendingTaskComponent
+    PendingTaskComponent,
+    BankReceiptListComponent
   ],
   imports: [
     BrowserModule,
@@ -258,7 +260,8 @@ export const MY_DATE_FORMATS = {
     NgApexchartsModule,
     CheckboxModule,
     ToggleButtonModule, 
-    TooltipModule
+    TooltipModule,
+    PdfViewerModule
   ],
   providers: [
     AuthGuard,

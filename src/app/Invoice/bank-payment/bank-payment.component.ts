@@ -23,6 +23,48 @@ export class BankPaymentComponent implements OnInit {
   task_search_val: string = '';
   data: any;
   TRXN_AMT:number;
+  ADD_RIGHTS: boolean = false;
+  UPDATE_RIGHTS: boolean = false;
+  NO_RIGHTS: boolean = false;
+  isAdd: boolean = false;
+  isUpdate: boolean = false;
+  maxdate = new Date();
+  today_date = new Date();
+  today_date_s : any;
+  min_date = new Date(new Date().getFullYear(), 0, 1);
+  // readioSelected:string = "Customer"
+  radioSelected0:boolean = true
+  radioSelected1:boolean = false
+  radioSelected2:boolean = false
+  radioSelected3:boolean = false
+  radioSelected4:boolean = false
+  VENDOR_NO:string=""
+  EMP_NO:string=""
+  BANK_CODE:string=""
+  GL_NO:string=""
+  CUST_CODE:string=""
+  company_list: Array<any> = [];
+  vendor_list: Array<any> = [];
+  currency_list: Array<any> = [];
+  other_currency_list: Array<any> = [];
+  bank_list: Array<any> = [];
+  gl_list: Array<any> = [];
+  customer_list: Array<any> = [];
+  employee_list: Array<any> = [];
+  location_list: Array<any> = [];
+  _location_list: Array<any> = [];
+  tds_code_list: Array<any> = [];
+  bankreceipt_detail: Array<any> = [];
+  RECGRP:string=""
+  PARTY_CODE:string=""
+  isEnabled : boolean= false;
+  TDS_PERCENT:any = 0;
+  _BANK_Detail: Array<any> = [];
+  project_list:any;
+  isSubmited: boolean = false;
+  _DATE: any = ''
+ _DATE1: any = ''
+
   constructor(private sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
     private http: HttpRequestServiceService,
@@ -71,22 +113,11 @@ export class BankPaymentComponent implements OnInit {
       ADJUST_TOTAL : [""],
       BAL_TO_ADJUST : [""],
       PROJ_CODE : [""]
-
     })
     this.f_addRow();
     $('.selectpicker').selectpicker('refresh').trigger('change');
   }
-  ADD_RIGHTS: boolean = false;
-  UPDATE_RIGHTS: boolean = false;
-  NO_RIGHTS: boolean = false;
-  isAdd: boolean = false;
-  isUpdate: boolean = false;
-
-  maxdate = new Date();
-    today_date = new Date();
-    today_date_s : any;
-    min_date = new Date(new Date().getFullYear(), 0, 1);
-
+ 
     ngAfterViewInit(){    
       setTimeout(() => {
         // if (this.sharedService.form_rights.ADD_RIGHTS) {
@@ -96,17 +127,12 @@ export class BankPaymentComponent implements OnInit {
         //   this.UPDATE_RIGHTS = this.sharedService.form_rights.UPDATE_RIGHTS
         // } 
         // this.NO_RIGHTS = this.ADD_RIGHTS || this.UPDATE_RIGHTS?false:true;
-  
         if(this.sharedService.loginUser[0].FYEAR == undefined){
           this.sharedService.loginUser = sessionStorage.getItem('user_detail') ? JSON.parse(sessionStorage.getItem('user_detail')):[]
-          
          }
-    
          this.form.get('FYEAR').setValue(this.sharedService.loginUser[0].FYEAR);
          this.form.get('COMPANY_CODE').setValue(this.sharedService.loginUser[0].COMPANY_CODE);
          this.form.get('LOCATION_CODE').setValue(this.sharedService.loginUser[0].LOCATION_CODE);
-         
-  
          this.today_date_s = this.datepipe.transform(this.today_date, 'yyyy-MM-dd')
        if(this.today_date_s > this.sharedService.loginUser[0].TO_DATE){
        this.min_date = this.sharedService.loginUser[0].FROM_DATE;
@@ -118,11 +144,9 @@ export class BankPaymentComponent implements OnInit {
       }
          setTimeout(() => {
          $('.selectpicker').selectpicker('refresh').trigger('change');
-      
          this.changeCurrency();
          this.GetProjectList();
          },210);
-  
          this.today_date_s = this.datepipe.transform(this.today_date, 'yyyy-MM-dd')
         if(this.today_date_s > this.sharedService.loginUser[0].TO_DATE){
           this.min_date = this.sharedService.loginUser[0].FROM_DATE;
@@ -137,21 +161,9 @@ export class BankPaymentComponent implements OnInit {
       },150)
     }
 
-  // readioSelected:string = "Customer"
-  radioSelected0:boolean = true
-  radioSelected1:boolean = false
-  radioSelected2:boolean = false
-  radioSelected3:boolean = false
-  radioSelected4:boolean = false
-  VENDOR_NO:string=""
-  EMP_NO:string=""
-  BANK_CODE:string=""
-  GL_NO:string=""
-  CUST_CODE:string=""
-
   showContent(para: string = ''){
     if(para == 'C'){
-      console.log(para)
+      // console.log(para)
       this.radioSelected0 = true;
       this.radioSelected1 = false;
       this.radioSelected2 = false;
@@ -163,7 +175,7 @@ export class BankPaymentComponent implements OnInit {
       this.form.get('GL_NO').setValue("0");
     } 
      if(para == 'V'){
-       console.log(para)
+      //  console.log(para)
       this.radioSelected1 = true;
       this.radioSelected0 = false;
       this.radioSelected2 = false;
@@ -187,7 +199,7 @@ export class BankPaymentComponent implements OnInit {
     //   this.form.get('GL_NO').setValue("0");
     // } 
     if(para == 'E'){
-         console.log(para)
+        //  console.log(para)
       this.radioSelected3 = true;
       this.radioSelected1 = false;
       this.radioSelected2 = false;
@@ -199,7 +211,7 @@ export class BankPaymentComponent implements OnInit {
       this.form.get('GL_NO').setValue("0");
     } 
      if(para == 'G'){
-      console.log(para)
+      // console.log(para)
       this.radioSelected4 = true;
       this.radioSelected1 = false;
       this.radioSelected2 = false;
@@ -210,26 +222,11 @@ export class BankPaymentComponent implements OnInit {
       //this.form.get('BANK_CODE').setValue("");
       this.form.get('EMP_NO').setValue("");
     }
-     
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);
 
   }
-
-  company_list: Array<any> = [];
-  vendor_list: Array<any> = [];
-  currency_list: Array<any> = [];
-  other_currency_list: Array<any> = [];
-  bank_list: Array<any> = [];
-  gl_list: Array<any> = [];
-  customer_list: Array<any> = [];
-  employee_list: Array<any> = [];
-  location_list: Array<any> = [];
-  _location_list: Array<any> = [];
-  tds_code_list: Array<any> = [];
-
-  bankreceipt_detail: Array<any> = [];
 
   GetBankCommonList(){
     this.spinner = true;
@@ -259,12 +256,9 @@ export class BankPaymentComponent implements OnInit {
     });
   }
 
-  RECGRP:string=""
-  PARTY_CODE:string=""
   ChangeCustomer(){
     this.RECGRP = "C";    
     this.PARTY_CODE=this.form.getRawValue().CUST_CODE;
-
     this.customer_list.forEach(element => {
       if(element.CUST_CODE == this.form.getRawValue().CUST_CODE){
           this.form.get("CURRENCY_CODE").setValue(element.CUST_CURRENCY); 
@@ -293,7 +287,6 @@ export class BankPaymentComponent implements OnInit {
   ChangeVendor(){
     this.RECGRP = "V";    
     this.PARTY_CODE=this.form.getRawValue().VENDOR_NO;
-    
     this.form.get("CURRENCY_CODE").setValue("INR"); 
     this.changeCurrency(); 
     this.vendor_list.forEach(element => {
@@ -309,20 +302,17 @@ export class BankPaymentComponent implements OnInit {
     this.GetBankReceiptDetail(this.RECGRP,this.PARTY_CODE); 
   }
 
-  GetBankReceiptDetail(RECGRP,PARTY_CODE){
+  GetBankReceiptDetail(RECGRP:any,PARTY_CODE:any){
     this.spinner = true;
     let data = {
       RECGRP : RECGRP,
       PARTY_CODE:PARTY_CODE,
       COMPANY_CODE:this.form.getRawValue().COMPANY_CODE,
       CURRENCY_CODE:this.form.getRawValue().CURRENCY_CODE,
-      
     }
       this.http.PostRequest(this.apiUrl.GetBankReceiptDetail, data).then(res => {
         if (res.flag) {
           this.bankreceipt_detail = res.bankreceipt_detail;
-
-
           setTimeout(() => {
             $('.selectpicker').selectpicker('refresh').trigger('change');
           }, 100);
@@ -335,14 +325,12 @@ export class BankPaymentComponent implements OnInit {
       });
   }
 
-  isEnabled : boolean= false;
   CalculateAdjustAmount(){
     this.isEnabled = true;
     var TOTAL_ADJUST = 0;
     var TOTAL_BALANCE = 0;
     this._BANK_Detail.forEach(element =>{
       if(element.DR_CR == "D"){
-
         TOTAL_ADJUST = TOTAL_ADJUST - parseFloat(element.ADJUST_AMT);
       }
       else if(element.DR_CR == "C"){        
@@ -351,10 +339,8 @@ export class BankPaymentComponent implements OnInit {
     });
     if(TOTAL_ADJUST != 0){
       this.form.get('TRXN_AMT').setValue(this.pipeService.setCommaseprated((TOTAL_ADJUST).toFixed(2)));
-    
     }
     
-
     var TRXN_AMT_1 = 0;
     if(this.form.getRawValue().TRXN_AMT_1 != "" || this.form.getRawValue().TRXN_AMT_1 != undefined || this.form.getRawValue().TRXN_AMT_1 != null){
       TRXN_AMT_1 = this.form.getRawValue().TRXN_AMT_1;
@@ -467,7 +453,6 @@ export class BankPaymentComponent implements OnInit {
   changeCurrency(){
     if(this.form.getRawValue().CURRENCY_CODE == "INR"){
       this.form.getRawValue().EXCHANGE_RATE = "1";
-      
       this.form.get('OTH_CURRENCY_CODE1').setValue("INR");
       this.form.get('OTH_CURRENCY_CODE2').setValue("INR");
       document.getElementById('EXCHANGE_RATE').setAttribute("disabled","true"); 
@@ -478,14 +463,12 @@ export class BankPaymentComponent implements OnInit {
       this.other_currency_list = [];
       this.currency_list.forEach(element => {
         if(element.CURRENCY_CODE == this.form.getRawValue().CURRENCY_CODE){
-
           this.other_currency_list.push(element);
         }
         if(element.CURRENCY_CODE == "INR"){
 
           this.other_currency_list.push(element);
         }
-
       });
       //this.other_currency_list = res.currency_list;
       document.getElementById('EXCHANGE_RATE').removeAttribute("disabled");
@@ -493,32 +476,25 @@ export class BankPaymentComponent implements OnInit {
       document.getElementById('OTH_CURRENCY_CODE2').removeAttribute("disabled");
     }
     this.CalculateAdjustAmount();
-
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);
   }
 
-  TDS_PERCENT:any = 0;
   ChangeTds(){
     this.tds_code_list.forEach(    element =>{
       if(this.form.getRawValue().TDS_CODE == element.TDS_CODE){
         if(element.TDS_PERCENT != null || element.TDS_PERCENT != "" || element.TDS_PERCENT != undefined){
-          
           this.TDS_PERCENT = element.TDS_PERCENT;
         }
         else{
           this.TDS_PERCENT = 0;
         }
       }
-      
-      
     });
-    
     this.CalculateAdjustAmount();
   }
 
-  _BANK_Detail: Array<any> = [];
   f_addRow(){
   //   this.bankreceipt_detail.push({
   //     COMPANY_CODE:"",
@@ -536,7 +512,6 @@ export class BankPaymentComponent implements OnInit {
   //     BALANCE_AMT:"",
   //     VOUCHER_DATE:"",
   //     REF_PARTY:""
-
   // });
   setTimeout(() => {
     $('.selectpicker').selectpicker('refresh').trigger('change');
@@ -555,16 +530,12 @@ export class BankPaymentComponent implements OnInit {
       //         Number(ele.FYEAR) != Number(element.FYEAR) &&
       //         ele.TRAN_TYPE != element.TRAN_TYPE && Number(ele.FI_ID) != Number(element.FI_ID)
       //         && Number(ele.ITEM_NO) != Number(element.ITEM_NO)){
-      
       //           this._BANK_Detail.push(element);
       //     }
       //     //element.ADJUST_AMT += parseFloat(element.BALANCE_AMT);
       //    });
       // }
-      
     }
-
-    
     //element.ADJUST_AMT += parseFloat(element.BALANCE_AMT);
    });
    //this._BANK_Detail = this.bankreceipt_detail.filter(e=> e.ACTIVE == true );
@@ -577,7 +548,6 @@ f_validateFormData(){
     this.form.get('TRXN_AMT_1').setValue((this.pipeService.removeCommaseprated(this.form.getRawValue().TRXN_AMT_1)));
     this.form.get('TRXN_AMT').setValue((this.pipeService.removeCommaseprated(this.form.getRawValue().TRXN_AMT)));// add a line
     this.form.get('FINAL_AMT').setValue((this.pipeService.removeCommaseprated(this.form.getRawValue().FINAL_AMT)));
-      
   if (this.form.controls['COMPANY_CODE'].invalid) {
     this.toast.warning('Please select company');
     return false;
@@ -625,8 +595,6 @@ f_validateFormData(){
   //   this.toast.warning('Please enter remarks');
   //   return false;
   // }
-    // 
-   
     // else if (this.form.controls['PAY_REFNO'].invalid) {
     //   this.toast.warning('Please enter pay ref no.');
     //   return false;
@@ -657,22 +625,15 @@ f_validateFormData(){
       this.toast.warning('Both bank payment amount should be match.');
       return false;
     }
-
     this.form.get('BAL_TO_ADJUST').setValue((this.pipeService.setCommaseprated(this.form.getRawValue().BAL_TO_ADJUST)));
-  
-    
   return true;
-    
 }
 
-  // clear form 
   f_clearForm(){
     this.form.reset();
-
     this.form.get('FYEAR').setValue(this.sharedService.loginUser[0].FYEAR);
     this.form.get('COMPANY_CODE').setValue(this.sharedService.loginUser[0].COMPANY_CODE);
     this.form.get('LOCATION_CODE').setValue(this.sharedService.loginUser[0].LOCATION_CODE);
-    
     this.form.get('CURRENCY_CODE').setValue("INR");
        this.form.get('EXCHANGE_RATE').setValue(1);
        this.form.get('OTH_CURRENCY_CODE1').setValue("INR");
@@ -692,9 +653,7 @@ f_validateFormData(){
        this.showContent("V");
        this._BANK_Detail = [];
        this.bankreceipt_detail = [];
-       
        this.form.get('TDS_ON').setValue(0);
-      
        this._DATE = "";
        this._DATE1 = "";
        this.changeCurrency();
@@ -703,12 +662,10 @@ f_validateFormData(){
     }, 100);
   }
   
-  project_list:any;
   GetProjectList() {
     let data = {
       LISTTYPE: "customerwise",
       COMPANY_CODE: this.form.getRawValue().COMPANY_CODE,
-      
     }
     this.http.PostRequest(this.apiUrl.GetProjectList, data).then(res => {
       if (res.flag) {
@@ -724,25 +681,22 @@ f_validateFormData(){
       this.spinner = false;
     });
   }
-  isSubmited: boolean = false;
+  
   bankSave(){
     this.isSubmited = true;
     if(this.f_validateFormData()){
-      
       this.form.get('TRXN_AMT').setValue((this.pipeService.removeCommaseprated(this.form.getRawValue().TRXN_AMT)));
       this.form.get('TRXN_BASE').setValue((this.pipeService.removeCommaseprated(this.form.getRawValue().TRXN_BASE)));
       this.form.get('TDS_AMT').setValue((this.pipeService.removeCommaseprated(this.form.getRawValue().TDS_AMT)));
       this.form.get('FINAL_AMT').setValue((this.pipeService.removeCommaseprated(this.form.getRawValue().FINAL_AMT)));
       this.form.get('ADJUST_TOTAL').setValue((this.pipeService.removeCommaseprated(this.form.getRawValue().ADJUST_TOTAL)));
       this.form.get('BAL_TO_ADJUST').setValue((this.pipeService.removeCommaseprated(this.form.getRawValue().BAL_TO_ADJUST)));
-      
       let data = {
         TYPE:"",
         SaveBankPayment:this.form.value,
         SaveBankPaymentDetail: this._BANK_Detail,
       }
-
-    console.log(data);
+    // console.log(data);
       this.spinner = true;
       this.http.PostRequest(this.apiUrl.SaveBankPayment, data).then(res => {
         console.log(res);
@@ -756,7 +710,6 @@ f_validateFormData(){
           this.spinner = false;
         } else {
           this.spinner = false;
-          
           this.toast.warning(res.msg)
         }
       }, err => {
@@ -765,18 +718,15 @@ f_validateFormData(){
     }
   }
 
-  _DATE: any = ''
   ChangeDate(){
     this.PAY_DATE = this.datePipe.transform(new Date(this._DATE), 'dd-MMM-yyyy')
-  
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);
   }
-  _DATE1: any = ''
+ 
   ChangeReceiptDate(){
     this.TRXN_DATE = this.datePipe.transform(new Date(this._DATE1), 'dd-MMM-yyyy')
-  
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);

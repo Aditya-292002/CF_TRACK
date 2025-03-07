@@ -64,6 +64,7 @@ import { SalesOrderCreateComponent } from './Invoice/sales-order-create/sales-or
 import { RoleRightsComponent } from './Setting/role-rights/role-rights.component';
 import { OldInvoiceComponent } from './Invoice/old-invoice/old-invoice.component';
 import { PendingTaskComponent } from './Project/pending-task/pending-task.component';
+import { BankReceiptListComponent } from './Invoice/bank-receipt-list/bank-receipt-list.component';
 
 
 
@@ -134,6 +135,7 @@ const routes: Routes = [
       {path:"salesorderapprove",component:SalesOrderCreateComponent},
       {path:"rolerights",component:RoleRightsComponent},
       {path:"pendingtask",component:PendingTaskComponent},
+      {path:"bankreceiptlist",component:BankReceiptListComponent},
       {path: '**', component:Pnf400Component }
     ]
   },
