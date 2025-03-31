@@ -24,7 +24,7 @@ declare var $: any;
 
 export class InvoiceComponent implements OnInit {
    @ViewChild('CheckValidationForInvoiceCreate', { static: false }) modal: ElementRef;
-  
+   
   spinner: boolean = false;
   form: FormGroup
     BILLING_DATE: any = '';
@@ -82,7 +82,14 @@ export class InvoiceComponent implements OnInit {
     minDate: any = new Date();
     raisedinvoiceonmaxDate:any = new Date();
     VIEW_RAISE_INVOICE_ON: any = new Date();
-    
+    SO_REMARKS:any = '';
+    REQUEST_REMARKS:any = '';
+    isViewDocument:boolean = false;
+    Document_list:any = [];
+    base64Image:any ='';
+    base64Pdf:any ='';
+    ViewDocumentDetailsList:boolean = false;
+
     constructor(public sharedService: SharedServiceService,
       private apiUrl: ApiUrlService,
       private http: HttpRequestServiceService,
@@ -405,7 +412,7 @@ ngAfterViewInit(){
     var ROUNDOFF = 0;
     // console.log(' _invoice_detail 2 ->' , this._invoice_detail)
     this._invoice_detail.forEach((element:any) => {
-      BILL_VALUE += parseFloat(element.DOC_VALUE);      
+      BILL_VALUE += parseFloat(element.DOC_VALUE);   
       element.SGST_VALUE = (parseFloat(element.DOC_VALUE) * parseFloat(element.SGST_RATE)/100).toFixed(2);     
       element.CGST_VALUE = (parseFloat(element.DOC_VALUE) * parseFloat(element.CGST_RATE)/100).toFixed(2);     
       element.IGST_VALUE = (parseFloat(element.DOC_VALUE) * parseFloat(element.IGST_RATE)/100).toFixed(2);       
@@ -783,8 +790,8 @@ ngAfterViewInit(){
       if (res.flag == 1) {
         // console.log(' res ->' , res)
         this.SO_Detail_list = res.SO_Detail_list;
-        // this.SO_MILESTONE_T = res.SO_Milestone_list;
-        // this.uploadedDocument = res.SO_Document_list;
+        // this._invoice_detail = res.SO_Milestone_list;
+        this.Document_list = res.SO_Document_list;
         // for (let i = 0; i < this.SO_Detail_list.length; i++) {
         //   this.TOTAL_AMOUNT_VALUE = this.SO_Detail_list[i].TOTAL_AMOUNT_VALUE;
         // }
@@ -812,9 +819,11 @@ ngAfterViewInit(){
         this.form.get("COMPANY_CODE").setValue(this.SO_Detail_list[0].COMPANY_CODE)
         this.form.get("CUST_CODE").setValue(this.SO_Detail_list[0].CUST_CODE)
         this.form.get("TEMPLATE_CODE").setValue(this.SO_Detail_list[0].TEMPLATE_CODE)
+        this.REQUEST_REMARKS = this.SO_Detail_list[0].REQUEST_REMARKS
+        this.SO_REMARKS = this.SO_Detail_list[0].SO_REMARKS
         this._invoice_detail[0].SERVICE_CODE = this.SO_Detail_list[0].SERVICE_CODE
-        this._invoice_detail[0].REMARKS = this.SO_Detail_list[0].REQUEST_REMARKS
         this._invoice_detail[0].DOC_VALUE = this.SO_Detail_list[0].TOTAL_AMOUNT_VALUE.toString();
+        this.isViewDocument = true;
         this.GetGSTRate();
         this.filterProject();
         this.spinner = false;
@@ -846,6 +855,72 @@ ngAfterViewInit(){
       modalElement.style.display = 'none';
     }
     this.f_clearForm();
+  }
+
+  ViewDocumentDetails(){
+this.ViewDocumentDetailsList = true;
+  }
+
+  ViewDocument(file:any){
+    if(file.DOCUMENT_TYPE == ".pdf"){
+     this.base64Pdf = file.BASE64
+     this.openPdfInNewTab();
+    }else {
+     this.base64Image = file.BASE64
+     const imageWindow = window.open();
+     if (imageWindow) {
+       imageWindow.document.write(
+         `<img src="${this.base64Image}" width="100%" height="auto" />`
+       );
+     }
+    }
+   }
+
+   openPdfInNewTab(): void {
+    const byteCharacters = atob(this.base64Pdf.split(',')[1]); // Decode base64 string
+  const byteArrays = [];
+
+  for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+    const slice = byteCharacters.slice(offset, offset + 1024);
+    const byteNumbers = new Array(slice.length);
+
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
+  }
+
+  const blob = new Blob(byteArrays, { type: 'application/pdf' });
+
+  // Create a Blob URL
+  const blobUrl = URL.createObjectURL(blob);
+
+  // Open the Blob URL in a new tab
+  const pdfWindow = window.open(blobUrl, '_blank');
+  if (!pdfWindow) {
+    alert('Failed to open the PDF in a new tab.');
+  }
+  }
+
+  f_downloadDocument(file: any) {
+    if (file != undefined && file != null && file != "") {
+      this.spinner = true;
+      this.http.PostRequest(this.apiUrl.GetFile, { DOCUMENT_SYSFILENAME: file.DOCUMENT_SYSFILENAME }).then(res => {
+        if (res.flag) {
+          const byteString = atob(res.b64);
+          const arrayBuffer = new ArrayBuffer(byteString.length);
+          const int8Array = new Uint8Array(arrayBuffer);
+          for (let i = 0; i < byteString.length; i++) {
+            int8Array[i] = byteString.charCodeAt(i);
+          }
+          const data: Blob = new Blob([int8Array]);
+          saveAs(data, file.DOCUMENT_FILENAME);
+        }
+        this.spinner = false;
+      })
+    }
   }
 
   }

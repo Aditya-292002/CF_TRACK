@@ -73,6 +73,7 @@ isExchangeRate:boolean = false;
 SelectedFileName: string = "";
 uploadingFiles: Array<any> = []
 uploadedDocument:any = []
+LISTTYPE:any = 'P';
 
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
@@ -255,7 +256,7 @@ uploadedDocument:any = []
         EXPENSE_DOCUMENT: this.uploadedDocument
       }
       // console.log('uploadedDocument ->' , this.uploadedDocument)
-      // console.log('data 2->' , JSON.stringify(data))
+      // console.log('data ->' , JSON.stringify(data))
       // return
       this.http.PostRequest(this.apiUrl.SaveExpense, data ).then((res:any) => {
         if (res.flag) {
@@ -500,8 +501,9 @@ uploadedDocument:any = []
   }
 
   GetExpenseList(val:any){
+    this.LISTTYPE = val;
     let data = {
-      LISTTYPE:val
+      LISTTYPE:this.LISTTYPE
     }
     this.spinner = true;
     this.http.PostRequest(this.apiUrl.GetExpenseList, data).then(res => {
@@ -583,6 +585,8 @@ uploadedDocument:any = []
     this.filterLocations();
     this.form.get("EXPENSE_NO").setValue(this.expense_header[0].EXPENSE_NO)
     this.form.get("EXPENSE_DATE").setValue(this.expense_header[0].EXPENSE_DATE)
+    this.form.get("VENDOR_NO").setValue(this.expense_header[0].VENDOR_NO)
+    this.form.get("EMP_NO").setValue(this.expense_header[0].EMP_NO)
     this.form.get("PAY_TO").setValue(this.expense_header[0].PAY_TO)
     this.showContent(this.expense_header[0].PAY_TO);
     this.form.get("PO_ID").setValue(this.expense_header[0].PO_ID)
@@ -608,8 +612,6 @@ uploadedDocument:any = []
     this.form.get("FYEAR").setValue(this.expense_header[0].FYEAR)
     this.form.get("EXP_TYPE").setValue(this.expense_header[0].EXP_TYPE)
     this.form.get("TDS_CODE").setValue(this.expense_header[0].TDS_CODE)
-    this.form.get("VENDOR_NO").setValue(this.expense_header[0].VENDOR_NO)
-    this.form.get("EMP_NO").setValue(this.expense_header[0].EMP_NO)
     this.form.get("COMPANY_CODE").setValue(this.expense_header[0].COMPANY_CODE)
         setTimeout(() => {
     this.form.get("LOCATION_CODE").setValue(Number(this.expense_header[0].LOCATION_CODE))

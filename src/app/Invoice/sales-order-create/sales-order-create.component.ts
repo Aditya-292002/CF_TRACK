@@ -613,6 +613,7 @@ this.raisedinvoiceonmaxDate = currentDate.toISOString().split('T')[0];
         this.TOTAL_BILLED_VALUE = this.SO_list[0].TOTAL_BILLED_VALUE;
         this.f_fillFormData();
         this.editing = true;
+        this.CANCEL_IND = true;
         this.IS_UPDATE = 0;
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh').trigger('change');
@@ -638,8 +639,6 @@ this.raisedinvoiceonmaxDate = currentDate.toISOString().split('T')[0];
     this.form.get("SO_NO").setValue(this.SO_list[0].SO_NO)
     this.form.get("CUST_CODE").setValue(this.SO_list[0].CUST_CODE)
     this.form.get("PO_NO").setValue(this.SO_list[0].PO_NO)
-    this.form.get("SO_DATE").setValue(this.datepipe.transform(this.SO_list[0].SO_DATE, 'dd-MMM-yyyy'))
-    this.form.get("PO_DATE").setValue(this.datepipe.transform(this.SO_list[0].PO_DATE, 'dd-MMM-yyyy'))
     // this.form.get("RAISE_INVOICE_ON").setValue(this.datepipe.transform(this.SO_list[0].RAISE_INVOICE_ON, 'dd-MMM-yyyy'))
     this.RAISE_INVOICE_ON = new Date(this.SO_list[0].RAISE_INVOICE_ON)
     this.form.get("KIND_ATTN").setValue(this.SO_list[0].KIND_ATTN)
@@ -657,6 +656,8 @@ this.raisedinvoiceonmaxDate = currentDate.toISOString().split('T')[0];
       this.form.get("COMPANY_CODE").setValue(this.SO_list[0].COMPANY_CODE)
       this.form.get("LOCATION_CODE").setValue(Number(this.SO_list[0].LOCATION_CODE))
     this.form.get("CUST_CODE").setValue(this.SO_list[0].CUST_CODE)
+    this.form.get("SO_DATE").setValue(this.datepipe.transform(this.SO_list[0].SO_DATE, 'dd-MMM-yyyy'))
+    this.form.get("PO_DATE").setValue(this.datepipe.transform(this.SO_list[0].PO_DATE, 'dd-MMM-yyyy'))
     this.form.get("SERVICE_CODE").setValue(this.SO_list[0].SERVICE_CODE)
     this.form.get("TEMPLATE_CODE").setValue(this.SO_list[0].TEMPLATE_CODE)
     this.form.get("DOCTYPE_CODE").setValue(this.SO_list[0].DOCTYPE_CODE)

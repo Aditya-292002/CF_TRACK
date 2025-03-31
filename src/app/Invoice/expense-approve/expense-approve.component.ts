@@ -69,7 +69,6 @@ export class ExpenseApproveComponent implements OnInit {
   _DATE: any = ''
   _DATE1: any = ''
   isCancel: boolean = false;
-  IS_UPDATE: any = 0;
   isExchangeRate: boolean = false;
   COMPANY_CURRENCY: any;
   uploadedDocument: any = [];
@@ -78,6 +77,7 @@ export class ExpenseApproveComponent implements OnInit {
   sampel_exphead_list: any = [];
   private _expense_detail_copy: any[];
   expenseHeader: any;
+  LISTTYPE:any;
 
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
@@ -207,7 +207,6 @@ export class ExpenseApproveComponent implements OnInit {
     this.spinner = true;
     this.http.PostRequest(this.apiUrl.GetExpenseCommonList, {}).then(res => {
       if (res.flag) {
-
         this.company_list = res.company_list;
         this.currency_list = res.currency_list;
         this.customer_list = res.customer_list;
@@ -249,7 +248,6 @@ export class ExpenseApproveComponent implements OnInit {
       this._location_list = this.location_list
     }
     this.GetProjectList();
-
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);
@@ -277,13 +275,11 @@ export class ExpenseApproveComponent implements OnInit {
         TYPE: TYPE,
         Expense: this.form.value,
         expense_detail: this._expense_detail_copy,
-        IS_UPDATE: this.IS_UPDATE,
+        IS_CANCLE: val,
         EXPENSE_DOCUMENT: this.uploadedDocument
       }
-      // console.log('data 2->' , JSON.stringify(data))
-      console.log('data',  data);
-      
-     //  return
+      // console.log('data ->' , JSON.stringify(data))
+      // return
       this.http.PostRequest(this.apiUrl.SaveExpense, data).then(res => {
         if (res.flag) {
           this.toast.success(res.msg)
@@ -312,10 +308,6 @@ export class ExpenseApproveComponent implements OnInit {
     this.http.PostRequest(this.apiUrl.GetProjectList, data).then(res => {
       if (res.flag) {
         this.project_list = res.project_list
-        console.log('1', res);
-        // setTimeout(() => {
-        //   $('.selectpicker').selectpicker('refresh').trigger('change');
-        // }, 100);
         this.spinner = false;
       } else {
         this.spinner = false;
@@ -438,11 +430,9 @@ export class ExpenseApproveComponent implements OnInit {
       CGST_VALUE += parseFloat(element.CGST_AMOUNT);
       IGST_VALUE += parseFloat(element.IGST_AMOUNT);
       TOT_VALUE += parseFloat(element.TOTAL_AMOUNT);
-
       element.EXPENSE_AMOUNT=this.pipeService.setCommaseprated((+ element.EXPENSE_AMOUNT).toFixed(2));
       //element.PRICE=this.pipeService.setCommaseprated((+ element.PRICE).toFixed(2));
     });
-
     this.form.get('EXPENSE_AMT').setValue(this.pipeService.setCommaseprated((+EXPENSE_AMOUNT).toFixed(2)));
     this.form.get('TDS_APPLICABLE').setValue((this.pipeService.setCommaseprated((+EXPENSE_AMOUNT).toFixed(2))));
     this.form.get('SGST_AMT').setValue(this.pipeService.setCommaseprated((SGST_VALUE).toFixed(2)));
@@ -453,62 +443,46 @@ export class ExpenseApproveComponent implements OnInit {
     if (Number(ROUNDOFF) == 0) {
       this.form.get('ROUNDOFF').setValue((ROUNDOFF).toFixed(2));
     }
-
-    console.log('final amount',FINAL_TOTAL_ROUND);
-    
     this.form.get('TOTAL_BILL').setValue(this.pipeService.setCommaseprated((+FINAL_TOTAL_ROUND).toFixed(2)));
-
     var FINAL_BASE_VALUE = (FINAL_TOTAL_ROUND * this.form.getRawValue().EXCHANGE_RATE);
     this.form.get('BASE_BILL').setValue(this.pipeService.setCommaseprated((+FINAL_BASE_VALUE).toFixed(2)));
 
   }
 
   ChangeExpenseHead() {
-
     var i = 0;
     this._expense_detail.forEach((ele: any) => {
-
       ele.SGST_RATE = 0;
       ele.CGST_RATE = 0;
       ele.IGST_RATE = 0;
       ele.PROJ_CODE = ele.PROJ_CODE;
-
       document.getElementById('sgst_val_' + i).setAttribute("disabled", "true");
       document.getElementById('cgst_val_' + i).setAttribute("disabled", "true");
       document.getElementById('igst_val_' + i).setAttribute("disabled", "true");
       this.exphead_list.forEach((element: any) => {
         if (ele.EXPENSE_HEAD == element.EXPENSE_HEAD) {
-
           //console.log(element.DEFAULT_PROJECT);
           // ele.PROJ_CODE = element.DEFAULT_PROJECT;
           ele.HSN_CODE = element.HSN_CODE;
           ele.EXPENSE_GL = element.EXPENSE_GL;
         }
-
-
         if (this.GST_CLASS == true) {
-
           if (this.LOCATION_COUNTRY == this.VENDOR_COUNTRY) {
             if (element.EXPENSE_HEAD == ele.EXPENSE_HEAD) {
-
               if (this.LOCATION_STATE == this.VENDOR_STATE) {
                 ele.SGST_RATE = element.SGST_RATE;
                 ele.CGST_RATE = element.CGST_RATE;
-
                 document.getElementById('sgst_val_' + i).removeAttribute("disabled")
                 document.getElementById('cgst_val_' + i).removeAttribute("disabled")
               } else {
                 ele.IGST_RATE = element.IGST_RATE;
-
                 document.getElementById('igst_val_' + i).removeAttribute("disabled")
               }
             }
           }
         }
       });
-
     });
-
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 200);
@@ -517,7 +491,6 @@ export class ExpenseApproveComponent implements OnInit {
 
   SelectState() {
     if (this.form.getRawValue().LOCATION_CODE != "" && this.form.getRawValue().LOCATION_CODE != null) {
-
       this.location_list.forEach(element => {
         if (Number(element.LOCATION_CODE) == Number(this.form.getRawValue().LOCATION_CODE)) {
           this.LOCATION_COUNTRY = element.LOCATION_COUNTRY;
@@ -532,7 +505,6 @@ export class ExpenseApproveComponent implements OnInit {
 
   SelectVendor() {
     if (this.form.getRawValue().VENDOR_NO != "" && this.form.getRawValue().VENDOR_NO != null) {
-
       this.vendor_list.forEach(element => {
         if (Number(element.VENDOR_NO) == Number(this.form.getRawValue().VENDOR_NO)) {
           this.VENDOR_STATE = element.VENDOR_STATE;
@@ -540,7 +512,6 @@ export class ExpenseApproveComponent implements OnInit {
           this.GST_CLASS = element.GST_CLASS;
           this.TDS_CODE = element.TDS_CODE;
           this.TDSAPPLICABLE = element.TDSAPPLICABLE;
-          // this.form.getRawValue().TDS_CODE = element.TDS_CODE;
           this.form.get('TDS_CODE').setValue(element.TDS_CODE);
           this.ChangeExpenseHead();
           this.ChangeTDS();
@@ -553,15 +524,10 @@ export class ExpenseApproveComponent implements OnInit {
   }
 
   ChangeTDS() {
-    console.log(' this.tds_code_list', this.tds_code_list);
-    
     if (this.form.getRawValue().TDS_CODE != "" && this.form.getRawValue().TDS_CODE != null) {
       this.tds_code_list.forEach(element => {
         if (element.TDS_CODE == this.form.getRawValue().TDS_CODE) {
-          // this.form.getRawValue().TDS_RATE = element.TDS_PERCENT;
           this.form.get('TDS_RATE').setValue(element.TDS_PERCENT);
-          console.log('1-->',this.form.getRawValue().TDS_AMT,'2-->',this.form.getRawValue().TOTAL_BILL);
-          
           var TDS_AMT = (Math.ceil((parseFloat(this.form.getRawValue().TDS_RATE) * this.pipeService.removeCommaseprated(this.form.getRawValue().TDS_APPLICABLE) / 100))).toFixed(2);
           this.form.get('TDS_AMT').setValue(TDS_AMT);
           var BASE_BILL =  this.pipeService.removeCommaseprated(this.form.getRawValue().TOTAL_BILL) - this.pipeService.removeCommaseprated(this.form.getRawValue().TDS_AMT);
@@ -572,8 +538,9 @@ export class ExpenseApproveComponent implements OnInit {
   }
 
   GetExpenseList(val: any) {
+    this.LISTTYPE = val;
     let data = {
-      LISTTYPE: val,
+      LISTTYPE: this.LISTTYPE,
     }
 
     this.spinner = true;
@@ -602,13 +569,11 @@ export class ExpenseApproveComponent implements OnInit {
   }
 
   editExpence(data: any) {
-    console.log('data ->', data)
+    // console.log('data ->', data)
     this.GetProjectList();
     this.isViewExpense = true;
     this.isCancel = true;
-    this.IS_UPDATE = 1;
     this.GetExpenseDetail(data.EXP_ID);
-    
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);
@@ -621,33 +586,23 @@ export class ExpenseApproveComponent implements OnInit {
 
     this.spinner = true;
     this.http.PostRequest(this.apiUrl.GetExpenseDetail, data).then(res => {
-      console.log('inside this GetExpenseDetail 1', res.flag, res);
-      //  if (res.flag) {
       this.spinner = false;
-      console.log('inside this GetExpenseDetail 2', res.flag);
-
       this._expense_detail = res.expense_detail;
       this._expense_detail.forEach(element => {
        // element.PRICE=this.pipeService.setCommaseprated((+element.PRICE).toFixed(2));
         element.PRICE =this.pipeService.setCommaseprated((+element.PRICE).toFixed(2))
      //   element.TOTAL_AMOUNT=this.pipeService.setCommaseprated((+element.TOTAL_AMOUNT).toFixed(2));
         element.EXPENSE_AMOUNT =this.pipeService.setCommaseprated((+element.EXPENSE_AMOUNT).toFixed(2))
-
       });
       this.expense_header = res.expense_header;
       this.uploadedDocument = res.expense_document_detail;
-      // console.log('_expense_detail ->' , this._expense_detail)
-      // console.log('expense_header ->' , this.expense_header)
       this.f_fillFormData();
       setTimeout(() => {
         $('.selectpicker').selectpicker('refresh').trigger('change');
         this.spinner = false;
-        // this.showContent();
         this.ChangeTDS();
       }, 100);
-      // } else {
       this.spinner = false;
-      // } 
     }, err => {
       this.spinner = false;
     });
@@ -655,7 +610,7 @@ export class ExpenseApproveComponent implements OnInit {
   }
 
   f_fillFormData() {
-    console.log('INSIDE f_fillFormData ');
+    // console.log('INSIDE f_fillFormData ');
 
     this.spinner = true;
     this.form.get("EXP_ID").setValue(this.expense_header[0].EXP_ID)
