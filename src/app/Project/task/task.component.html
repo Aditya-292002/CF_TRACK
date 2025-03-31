@@ -306,7 +306,7 @@
                         <div class="col-md-8"  *ngIf="IS_ADD == 1 || IS_ADD == 2 ">
                             <div class="d-flex " >
                                 <select class=" form-control selectpicker show-tick" [(ngModel)]="selected_emp" data-container="body" data-size="5" id="emp" #emp data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}">
-                                    <option *ngFor="let opt of emp_list; let i=index" [value]="opt | json">
+                                    <option *ngFor="let opt of all_emp_list; let i=index" [value]="opt | json">
                                         {{ opt.EMP_CODE }} - {{ opt.USER_NAME }}</option>
                                 </select>
                                     <button type="button" *ngIf="IS_ADD == 1 || IS_ADD == 2 " class="btn text-primary" style="margin-top: -5px;margin-left:4px" (click)="addRow()">

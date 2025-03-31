@@ -40,7 +40,7 @@
             class="btn btn-secondary"
             (click)="addNew()"
             title="Add New"
-            *ngIf="isViewExpense"
+            *ngIf="isViewExpense && this.LISTTYPE == 'P'"
           >
             Add New
           </button>
@@ -52,20 +52,20 @@
           >
             List
           </button>
-          <button
+          <!-- <button
             class="btn btn-secondary mr-1"
             data-toggle="modal"
             data-target="#cancleexpense"
             title="Cancel"
-            *ngIf="isCancel"
+            *ngIf="isCancel && this.LISTTYPE == 'P'"
           >
             Cancel
-          </button>
+          </button> -->
           <button
             class="btn btn-secondary mr-1"
             (click)="SaveExpense(0)"
             title="Save"
-            *ngIf="!isViewExpense"
+            *ngIf="!isViewExpense && this.LISTTYPE == 'P'"
           >
             Save
           </button>

@@ -524,7 +524,6 @@ export class InvoiceRequestChangeComponent implements OnInit {
   //     }
   // }
   ViewDocumnet(data: any) {
-    console.log("ganesh", data);
     this.displayBasic = true;
     // this.GetSODetail(dSata)
     // this.SO_DOCUMENT_LIST=[];

@@ -29,8 +29,8 @@
                     </button>
                     <button class="btn btn-secondary mr-1" data-toggle="modal" 
                     data-target="#cancleexpense" title="Cancel" 
-                    *ngIf="isCancel">Cancel</button>
-                    <button class="btn btn-secondary "  (click)="SaveExpense(0)" 
+                    *ngIf="isCancel && this.LISTTYPE == 'P'">Cancel</button>
+                    <button class="btn btn-secondary " *ngIf="this.LISTTYPE == 'P'"  (click)="SaveExpense(0)" 
                     title="Save">Save</button>
                 </div>
             </div>

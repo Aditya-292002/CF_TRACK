@@ -18,6 +18,7 @@ export class ApiUrlService {
   Check_EmpNo_Email: string = '/Employee/Check_EmpNo_Email';
   SaveFile: string = '/File/SaveFile';
   GetFile: string = '/File/GetFile';
+  GetSalesOrderFile: string = '/File/GetSalesOrderFile';
   GetCustCommonList: string = '/Customer/GetCustCommonList';
   GetCustomerList: string = '/Customer/GetCustomerList';
   GetCustomerDetail: string = '/Customer/GetCustomerDetail';
