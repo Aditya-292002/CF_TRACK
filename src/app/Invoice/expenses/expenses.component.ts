@@ -609,12 +609,16 @@ LISTTYPE:any = 'P';
     this.form.get("TDS_RATE").setValue(this.expense_header[0].TDS_RATE)
     this.form.get("TDS_AMT").setValue(this.expense_header[0].TDS_AMT)
     this.form.get("BASE_BILL").setValue(this.expense_header[0].BASE_BILL)
-    this.form.get("FYEAR").setValue(this.expense_header[0].FYEAR)
+    this.form.get("FYEAR").setValue(this.expense_header[0].FYEAR) 
     this.form.get("EXP_TYPE").setValue(this.expense_header[0].EXP_TYPE)
     this.form.get("TDS_CODE").setValue(this.expense_header[0].TDS_CODE)
     this.form.get("COMPANY_CODE").setValue(this.expense_header[0].COMPANY_CODE)
         setTimeout(() => {
     this.form.get("LOCATION_CODE").setValue(Number(this.expense_header[0].LOCATION_CODE))
+      this.form.get("EXP_TYPE").setValue(this.expense_header[0].EXP_TYPE)
+      this.form.get("TDS_CODE").setValue(this.expense_header[0].TDS_CODE)
+      this.form.get("VENDOR_NO").setValue(this.expense_header[0].VENDOR_NO)
+      this.form.get("EMP_NO").setValue(this.expense_header[0].EMP_NO)
     this.SelectState();
     this.GetProjectList();
           $('.selectpicker').selectpicker('refresh').trigger('change');
