@@ -733,11 +733,12 @@
         </ng-template>
         <ng-template pTemplate="body" let-data>
           <tr>
-            <td class="width-2">{{ data.SO_NO }}</td>
+            <td class="width-2">{{ data.SO_NO }}</td> 
             <td class="width-20">{{ data.CUST_NAME }}</td>
             <td class="width-20">{{ data.PROJ_NAME }}</td>
-            <td class="width-20">{{ data.SO_REMARKS }}</td>
-            <td class="width-10">{{ data.SO_VALUE | costFilter }}</td>
+            <td class="width-20">
+              <i class="fas fa-eye text-info mr-3" pTooltip="{{data.SO_REMARKS}}"></i></td>
+            <td class="width-10">{{ data.SO_VALUE }}</td>
             <td class="width-1">
               <!-- <i class="fa fa-print small mr-2" (click)="PrintInvoice(data);" title="Print"></i> -->
               <i
