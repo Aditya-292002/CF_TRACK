@@ -103,7 +103,7 @@ export class CompanyFyearComponent implements OnInit {
       });
       this.SaveUserFyear();
       sessionStorage.setItem('user_detail', JSON.stringify(this.sharedService.loginUser))
-      this.route.changeRoute('')
+      this.route.changeRoute('/dashboard')
     }
   }
 
@@ -128,7 +128,7 @@ export class CompanyFyearComponent implements OnInit {
 
   
   onDashboard(){
-    this.route.changeRoute('')
+    this.route.changeRoute('/dashboard')
   }
 
 }

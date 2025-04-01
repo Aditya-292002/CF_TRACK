@@ -520,11 +520,15 @@
                     <td class="width-2" *ngIf="SoRelease">{{data.REQ_NO}}</td>
                     <td class="width-20">{{data.CUST_NAME}}</td>
                     <td class="width-20">{{data.PROJ_NAME}}</td>
-                    <td class="width-10" *ngIf="!SoRelease">{{data.SO_REMARKS}}</td>
-                    <td class="width-10" *ngIf="SoRelease">{{data.REJECT_REMARKS}}</td>
+                    <td class="width-10" *ngIf="!SoRelease">
+                        <i class="fas fa-eye text-info mr-3" pTooltip="{{data.SO_REMARKS}}"></i>
+                    </td>
+                    <td class="width-10" *ngIf="SoRelease">
+                        <i class="fas fa-eye text-info mr-3" pTooltip="{{data.REJECT_REMARKS}}"></i>
+                    </td>
                     <td class="width-10" *ngIf="SoRelease">{{data.SO_STATUS}}</td>
-                    <td class="width-10" *ngIf="!SoRelease"> {{data.SO_VALUE | costFilter }}</td>
-                    <td class="width-10" *ngIf="SoRelease"> {{data.TOTAL_AMOUNT_VALUE | costFilter }}</td>
+                    <td class="width-10" *ngIf="!SoRelease"> {{data.SO_VALUE}}</td>
+                    <td class="width-10" *ngIf="SoRelease"> {{data.TOTAL_AMOUNT_VALUE}}</td>
                     <td class="width-1" *ngIf="!SoRelease">
                          <i class="fa fa-plus-square" (click)="editInvoice(data,SoRelease)" title="Create"></i>
                     </td>

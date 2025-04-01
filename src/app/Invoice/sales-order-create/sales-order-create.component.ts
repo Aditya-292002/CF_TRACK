@@ -51,7 +51,7 @@ export class SalesOrderCreateComponent implements OnInit {
   INVOICE_ID: string = '';
   cost: any = '';
   credit_days: number = 0;
-  RAISE_INVOICE_ON:any;
+  RAISE_INVOICE_ON = new Date();;
   _selected_index: number = null;
   _selected_service_code: string = "";
   _DATE: any = '';
@@ -636,11 +636,11 @@ this.raisedinvoiceonmaxDate = currentDate.toISOString().split('T')[0];
     this.form.get("LOCATION_CODE").setValue(this.SO_list[0].LOCATION_CODE)
     this.form.get("FYEAR").setValue(this.SO_list[0].FYEAR)
     this.form.get("DOCTYPE_CODE").setValue(this.SO_list[0].DOCTYPE_CODE)
-    this.form.get("SO_NO").setValue(this.SO_list[0].SO_NO)
+    this.form.get("SO_NO").setValue(this.SO_list[0].SO_NO) 
     this.form.get("CUST_CODE").setValue(this.SO_list[0].CUST_CODE)
     this.form.get("PO_NO").setValue(this.SO_list[0].PO_NO)
     // this.form.get("RAISE_INVOICE_ON").setValue(this.datepipe.transform(this.SO_list[0].RAISE_INVOICE_ON, 'dd-MMM-yyyy'))
-    this.RAISE_INVOICE_ON = new Date(this.SO_list[0].RAISE_INVOICE_ON)
+    // this.RAISE_INVOICE_ON = new Date(this.SO_list[0].RAISE_INVOICE_ON)
     this.form.get("KIND_ATTN").setValue(this.SO_list[0].KIND_ATTN)
     this.form.get("CURRENCY_CODE").setValue(this.SO_list[0].CURRENCY_CODE)
     this.form.get("EXCHANGE_RATE").setValue(this.SO_list[0].EXCHANGE_RATE)
