@@ -481,7 +481,7 @@
     
     <div class=" mt-2" *ngIf="isViewSO">
         <div class="col-md-12 card" >
-            <p-table #datatable [value]="SO_list"   [scrollable]="true" scrollHeight="400px"
+            <p-table #datatable [value]="SO_list"   
             [globalFilterFields]="['SO_NO','CUST_NAME','PROJ_NAME','SO_REMARKS','SO_VALUE']">
             <ng-template pTemplate="caption">
                 <div   style="display: flex;justify-content: space-between;align-items: center;margin-bottom: 5px;">

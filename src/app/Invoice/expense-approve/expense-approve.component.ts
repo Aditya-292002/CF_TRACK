@@ -78,6 +78,7 @@ export class ExpenseApproveComponent implements OnInit {
   private _expense_detail_copy: any[];
   expenseHeader: any;
   LISTTYPE:any;
+  IS_UPDATE:any = 0;
 
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
@@ -276,6 +277,7 @@ export class ExpenseApproveComponent implements OnInit {
         Expense: this.form.value,
         expense_detail: this._expense_detail_copy,
         IS_CANCLE: val,
+        IS_UPDATE: this.IS_UPDATE,
         EXPENSE_DOCUMENT: this.uploadedDocument
       }
       // console.log('data ->' , JSON.stringify(data))
@@ -574,6 +576,11 @@ export class ExpenseApproveComponent implements OnInit {
     this.isViewExpense = true;
     this.isCancel = true;
     this.GetExpenseDetail(data.EXP_ID);
+    if(this.LISTTYPE == 'A'){
+      this.IS_UPDATE = 1;
+    }else if(this.LISTTYPE == 'P'){
+      this.IS_UPDATE = 0;
+    }
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);
