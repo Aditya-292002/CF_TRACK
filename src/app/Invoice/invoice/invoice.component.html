@@ -7,7 +7,7 @@
         <div class="floating-input mr-1">
           <button
             class="btn btn-secondary"
-            *ngIf="isViewDocument"
+            *ngIf="isViewDocument && !isViewInvoice"
             (click)="ViewDocumentDetails()"
             title="view Document Details"
           >View Document
@@ -584,6 +584,35 @@
              placeholder="Request Remarks"
              [ngModelOptions]="{standalone: true}"
           />
+        </div>
+      </div>
+      <div class="col-md-2">
+        <label>Expected Pay Date:</label>
+        <div
+          class="floating-input"
+          [ngClass]="{
+            'invalid-control':
+              isSubmited && form.controls['EXPECTED_PAYMENT_DATE'].errors?.required
+          }"
+        >
+          <input
+            type="text"
+            class="form-control"
+            formControlName="EXPECTED_PAYMENT_DATE"
+            [(ngModel)]="EXPECTED_PAYMENT_DATE"
+            disabled
+            readonly
+          />
+          <app-date-picker
+            [(ngModel)]="EXPECTED_PAYMENT_DATE"
+            id="excpaydate"
+            #excpaydate
+            class="date-input"
+            [maxdate]="DUE_DATE"
+            [mindate]="today_date"
+            [isDisable]="false"
+            [ngModelOptions]="{ standalone: true }"
+          ></app-date-picker>
         </div>
       </div>
     </div>
