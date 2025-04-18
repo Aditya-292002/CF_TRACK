@@ -55,7 +55,7 @@ VOUCHER_DATE: any = '';
 max_date = new Date();
 journal_voucher_detail: Array<any>=[];
 Jv_detail: Array<any> = [];
-JV_DATE: any= this.datepipe.transform(new Date(), 'dd-MMM-yyyy');
+JV_DATE: any;
 jv_header : Array<any> = [];
 COMPANY_CODE:any;
 LOCATION_CODE:any;
@@ -76,6 +76,7 @@ COMPANY_NAME:any;
 GET_GL_NO:any;
 isExchangeRate:boolean = false;
 COMPANY_CURRENCY:any;
+fyear_list:any = [];
 
 constructor(public sharedService: SharedServiceService,
   private apiUrl: ApiUrlService,
@@ -105,14 +106,39 @@ constructor(public sharedService: SharedServiceService,
       this.min_date = this.sharedService.loginUser[0].FROM_DATE;
       this.maxdate = this.sharedService.loginUser[0].TO_DATE;
       this.COMPANY_CURRENCY = this.sharedService.loginUser[0].COMPANY_CURRENCY;
-     // this.LOCATION_CODE = this.sharedService.loginUser[0].LOCATION_CODE; 
-    //  console.log('hh');
-     
+     // this.LOCATION_CODE = this.sharedService.loginUser[0].LOCATION_CODE;
+      this.GetFyearList();
       this.GetJVCommonList();
       this.GetProjectList();
     $('.selectpicker').selectpicker('refresh').trigger('change');
   }, 150);
   }
+
+  
+GetFyearList(){
+  let data = {
+    "IS_ALL": 1
+  }
+  this.http.PostRequest(this.apiUrl.GetFyearList, data).then(res => {
+    if (res) {
+      this.fyear_list = res.fyear_list
+      this.fyear_list.forEach((element:any)=>{
+        if(this.FYEAR == element.FYEAR){
+          this.JV_DATE = this.datepipe.transform(new Date(element.TO_DATE), 'dd-MMM-yyyy');
+        }
+      });
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh').trigger('change');
+      }, 100);
+      this.spinner = false;
+    } else {  
+      this.spinner = false;
+    }
+  }, err => {
+    this.spinner = false;
+  });
+
+}
 
   GetJVCommonList(){
      this.spinner = true;
@@ -353,7 +379,6 @@ constructor(public sharedService: SharedServiceService,
         this.all_list.forEach(ele => {
           if(element.RECGRP == ele.RECGRP && element.GL_NO == ele.GL_NO ){
             this._JV_Detail[index].PARTY.push(ele)
-            console.log('ele',ele);
           }
         });
       }

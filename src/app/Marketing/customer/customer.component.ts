@@ -18,7 +18,6 @@ export class CustomerComponent implements OnInit {
   
   spinner: boolean = false;
   form: FormGroup
-
   country_list: Array<any> = [];
   cust_status_list: Array<any> = [];
   cust_group_list: Array<any> = [];
@@ -27,8 +26,8 @@ export class CustomerComponent implements OnInit {
   currency_list: Array<any> = [];
   template_list: Array<any> = [];
   cust_type_list: Array<any> = [];
-
   customer_list: Array<any> = [];
+  isPanANDGstInNotMandatory:boolean = false;
 
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
@@ -314,7 +313,7 @@ export class CustomerComponent implements OnInit {
         customer_detail: this.form.getRawValue(),
         customer_contact_detail: _contact_detail
       }
-  
+      // return
       this.http.PostRequest(this.apiUrl.SaveCustomerDetail, data).then(res => {
         if (res.flag) {
           this.toast.success(res.msg)
@@ -374,7 +373,7 @@ export class CustomerComponent implements OnInit {
     }
     else if(this.form.controls["CUST_CITY"].invalid){
       this.toast.warning("Please enter city");
-    } else if(this.form.controls["CUST_PIN"].invalid){
+    } else if(this.form.controls["CUST_PIN"].invalid ){
       this.toast.warning("Please enter valid 6 digit PIN");
     } else if(this.form.controls["CUST_COUNTRY"].invalid){
       this.toast.warning("Please select Country");
@@ -384,10 +383,10 @@ export class CustomerComponent implements OnInit {
       this.toast.warning("Please enter customer phone");
     } else if(this.form.controls["CUST_EMAIL"].invalid){
       this.toast.warning("Please enter customer email");
-    } else if(this.form.controls["CUST_PAN"].invalid){
+    } else if(this.form.controls["CUST_PAN"].invalid && this.isPanANDGstInNotMandatory){
       this.toast.warning("Please enter PAN No");
     }
-      else if(this.form.controls["CUST_GSTIN"].invalid){
+      else if(this.form.controls["CUST_GSTIN"].invalid && this.isPanANDGstInNotMandatory){
       this.toast.warning("Please enter valid 15 digit GSTIN");
     } else if(this.form.controls["CUST_CURRENCY"].invalid){
       this.toast.warning("Please select Currency");
@@ -405,6 +404,15 @@ export class CustomerComponent implements OnInit {
       this.toast.warning("Please select Status");
     }
     
+  }
+
+  ChangeCountry(){
+    if(this.form.controls['CUST_COUNTRY'].value == 'IND'){
+       this.isPanANDGstInNotMandatory = true;
+    }else {
+      this.isPanANDGstInNotMandatory = false;
+    }
+  // console.log('CUST_COUNTRY ->' , this.form.controls['CUST_COUNTRY'].value)
   }
 
 }

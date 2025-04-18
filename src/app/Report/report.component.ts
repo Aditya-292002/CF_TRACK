@@ -126,7 +126,6 @@ user_detail:any = {};
       this.min_date = this.sharedService.loginUser[0].FROM_DATE;
       this.maxdate = this.today_date;
     }
-    
     setTimeout(() => {
       this.form.get('COMPANY_CODE').setValue(this.sharedService.loginUser[0].COMPANY_CODE);
       this.form.get('LOCATION_CODE').setValue(this.sharedService.loginUser[0].LOCATION_CODE);
@@ -134,6 +133,8 @@ user_detail:any = {};
       this.para4 =  this.datepipe.transform(new Date(this.min_date), 'dd-MMM-yyyy')
       this.form.get('para5').setValue(this.datepipe.transform(new Date(this.maxdate), 'dd-MMM-yyyy'))
       this.para5 = this.datepipe.transform(new Date(this.maxdate), 'dd-MMM-yyyy')
+      this._DATE = this.min_date;
+      this.TO_DATE = this.maxdate;
       this.GetReportList();
       this.GetFyearList();
       this.GetReportFilterList();
@@ -225,7 +226,12 @@ changeReport(val:any,year:any){
             });
           }
         } 
-
+        const dateObject = new Date(this.para4);
+        const dateObject2 = new Date(this.para5);
+        this._DATE = this.datepipe.transform(dateObject, 'yyyy-MM-ddTHH:mm:ss')!; 
+        this.TO_DATE = this.datepipe.transform(dateObject2, 'yyyy-MM-ddTHH:mm:ss')!; 
+        this.min_date = this._DATE
+        this.maxdate = this.TO_DATE
         this.showFilterSelection();
         this.GetReportFilterList();
       }
@@ -267,16 +273,12 @@ GetFyearList(){
 }
 
 ExcelDownload(){
-
   let data = {
     data: this.detail
   }
   this.spinner = true;
   this.http.PostRequest(this.apiUrl.DownloadInExcelFromJSON, data).then(res => {
-    
     this.spinner = false;
-      console.log(res.data);
-      console.log(res.filename);
       if(res.data != ""){
           const byteString = atob(res.data);
           const arrayBuffer = new ArrayBuffer(byteString.length);
@@ -285,12 +287,8 @@ ExcelDownload(){
             int8Array[i] = byteString.charCodeAt(i);
           }
           const data: Blob = new Blob([int8Array]);
-  
           saveAs(data, this.Report_Name + ".xlsx");
         }
-      
-      
-
       setTimeout(() => {
         $('.selectpicker').selectpicker('refresh').trigger('change');
       }, 100);
@@ -313,7 +311,6 @@ filterLocations(){
   } else {
     this._location_list = this.location_list
   }
-   
   setTimeout(() => {
     $('.selectpicker').selectpicker('refresh').trigger('change');
   }, 100);
@@ -395,14 +392,10 @@ GetFetchReportData(){
     // console.log(data)
     this.http.PostRequest(this.apiUrl.GetFetchReportData, data).then(res => {
     if (res) {
-      console.log(res)
       this.BackCount =0;
-
       this.detail = res.detail
       this.header = res.header
-
       if(this.BackCount == 0){
-
         this.arrayPara[this.BackCount].para1 = this.form.getRawValue().para1;
         this.arrayPara[this.BackCount].para2 = this.form.getRawValue().para2;
         this.arrayPara[this.BackCount].para3 = this.form.getRawValue().para3;
@@ -412,10 +405,6 @@ GetFetchReportData(){
         this.arrayPara[this.BackCount].last_Report_ID = 0;
         this.arrayPara[this.BackCount].current_Report_ID = this.form.getRawValue().Report_ID;
       }
-
-      
-      
-
       setTimeout(() => {
         $('.selectpicker').selectpicker('refresh').trigger('change');
       }, 100);

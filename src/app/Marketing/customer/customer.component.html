@@ -102,7 +102,9 @@
                 <div class="col-md-6">
                     <label>Country<span class="validator">*</span> :</label>
                     <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['CUST_COUNTRY'].errors?.required}">
-                        <select class="form-control selectpicker show-tick" id="custCountry" formControlName="CUST_COUNTRY" data-live-search="true" title="Select">
+                        <select class="form-control selectpicker show-tick" id="custCountry"
+                         formControlName="CUST_COUNTRY" (change)="ChangeCountry()"  data-live-search="true"
+                          title="Select">
                             <option *ngFor="let opt of country_list; let i=index" 
                             [selected]="opt.COUNTRY_CODE == form.controls['CUST_COUNTRY'].value"
                              [value]="opt.COUNTRY_CODE" >{{ opt.COUNTRY_NAME }}</option>
@@ -142,14 +144,14 @@
         <div class="col-md-4 mt-2 ">
             <div class="row card">
                 <div class="col-md-12">
-                    <label>PAN No.<span class="validator">*</span> :</label>
-                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['CUST_PAN'].errors?.required}">
+                    <label>PAN No.<span class="validator" *ngIf="this.isPanANDGstInNotMandatory">*</span> :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['CUST_PAN'].errors?.required && this.isPanANDGstInNotMandatory} ">
                         <input type="text" formControlName="CUST_PAN" InputType="AlphaNum" Uppercase maxlength="10" (focusout)="f_validatePAN()" id="panno" #panno placeholder="PAN No." autocomplete="false" class="form-control">
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <label>GSTIN<span class="validator">*</span> :</label>
-                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['CUST_GSTIN'].errors?.required}">
+                    <label>GSTIN<span class="validator" *ngIf="this.isPanANDGstInNotMandatory">*</span> :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['CUST_GSTIN'].errors?.required && this.isPanANDGstInNotMandatory}">
                         <input type="text" formControlName="CUST_GSTIN" InputType="AlphaNum" Uppercase placeholder="GSTIN" id="gstno" #gstno (focusout)="f_validateGSTNO()" maxlength="15" autocomplete="false" class="form-control">
                     </div>
                 </div>

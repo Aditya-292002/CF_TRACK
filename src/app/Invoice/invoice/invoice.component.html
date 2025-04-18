@@ -592,19 +592,19 @@
           class="floating-input"
           [ngClass]="{
             'invalid-control':
-              isSubmited && form.controls['EXPECTED_PAYMENT_DATE'].errors?.required
+              isSubmited && form.controls['EXPECTED_DATE'].errors?.required
           }"
         >
           <input
             type="text"
             class="form-control"
-            formControlName="EXPECTED_PAYMENT_DATE"
-            [(ngModel)]="EXPECTED_PAYMENT_DATE"
+            formControlName="EXPECTED_DATE"
+            [(ngModel)]="EXPECTED_DATE"
             disabled
             readonly
           />
           <app-date-picker
-            [(ngModel)]="EXPECTED_PAYMENT_DATE"
+            [(ngModel)]="EXPECTED_DATE"
             id="excpaydate"
             #excpaydate
             class="date-input"

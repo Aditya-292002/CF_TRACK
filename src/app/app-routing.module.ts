@@ -65,10 +65,8 @@ import { RoleRightsComponent } from './Setting/role-rights/role-rights.component
 import { OldInvoiceComponent } from './Invoice/old-invoice/old-invoice.component';
 import { PendingTaskComponent } from './Project/pending-task/pending-task.component';
 import { BankReceiptListComponent } from './Invoice/bank-receipt-list/bank-receipt-list.component';
-import { SelfAppraisalComponent } from './self-appraisal/self-appraisal.component';
-
-
-
+import { SelfAppraisalListComponent } from './Marketing/self-appraisal-list/self-appraisal-list.component';
+import { SelfAppraisalComponent } from './Marketing/self-appraisal/self-appraisal.component';
 
 const routes: Routes = [
   {path: 'ForgotPasswordReset', component: ResetPasswordComponent },
@@ -138,6 +136,7 @@ const routes: Routes = [
       {path:"pendingtask",component:PendingTaskComponent},
       {path:"bankreceiptlist",component:BankReceiptListComponent},
       {path:"SelfAppraisal",component:SelfAppraisalComponent},
+      {path:"SelfAppraisalList",component:SelfAppraisalListComponent},
       {path: '**', component:Pnf400Component }
     ]
   },
