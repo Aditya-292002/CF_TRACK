@@ -142,6 +142,17 @@
             <h6 class="mb-0">{{ this.COMPANY_NAME }} : {{this.LOCATION_NAME}} ({{this.FYEAR_DESC}})</h6>
           </div>
           <ul class="navbar-nav ">
+            
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+              <button
+              *ngIf="this.SUBMITION_LAST_DATE != this.TODATE"
+              class="btn btn-primary mt-1 mr-3 SelfAppraisalBtn "
+              title="Self Appraisal"
+              (click)="RedirectSelfAppraisal()"
+            >
+            Self Appraisal
+            </button>
+          </li>
             <li class="nav-item navbar-dropdown dropdown-timesheet dropdown">
               <a class="nav-link p-0" (click)="CheckAttendance(0)">
                 <div class="avatar mr-2">

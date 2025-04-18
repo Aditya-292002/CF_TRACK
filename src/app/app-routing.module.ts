@@ -65,6 +65,7 @@ import { RoleRightsComponent } from './Setting/role-rights/role-rights.component
 import { OldInvoiceComponent } from './Invoice/old-invoice/old-invoice.component';
 import { PendingTaskComponent } from './Project/pending-task/pending-task.component';
 import { BankReceiptListComponent } from './Invoice/bank-receipt-list/bank-receipt-list.component';
+import { SelfAppraisalComponent } from './self-appraisal/self-appraisal.component';
 
 
 
@@ -136,6 +137,7 @@ const routes: Routes = [
       {path:"rolerights",component:RoleRightsComponent},
       {path:"pendingtask",component:PendingTaskComponent},
       {path:"bankreceiptlist",component:BankReceiptListComponent},
+      {path:"SelfAppraisal",component:SelfAppraisalComponent},
       {path: '**', component:Pnf400Component }
     ]
   },

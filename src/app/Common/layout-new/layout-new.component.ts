@@ -63,339 +63,8 @@ export class LayoutNewComponent implements OnInit {
   _temp :any = 0;
   istopBar:boolean = false;
   mergedData:any = [];
-
-// MenuRightList=[
-//   {
-//     "FUNCTION_CODE": "DH",
-//     "FUNCTION_DESC": "Dashboard",
-//     "URL": "",
-//     "ICON":"pi pi-home",
-//     "DETAIL": []
-// },
-//   {
-//       "FUNCTION_CODE": "HR",
-//       "FUNCTION_DESC": "HR & Self Service",
-//       "URL": "",
-//       "ICON":"pi pi-sitemap",
-//       "DETAIL": [
-//           {
-//               "MODULE_CODE": "HR",
-//               "FUNCTION_CODE": "HR001",
-//               "FUNCTION_DESC": "Employee",
-//               "URL": "/employeeinfo",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           },
-//           {
-//               "MODULE_CODE": "HR",
-//               "FUNCTION_CODE": "HR004",
-//               "FUNCTION_DESC": "Attendance By Admin",
-//               "URL": "/attendancebyadmin",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           },
-//           {
-//               "MODULE_CODE": "HR",
-//               "FUNCTION_CODE": "HR005",
-//               "FUNCTION_DESC": "Timesheet Allow Extend",
-//               "URL": "/timesheetallowextend",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           },
-//           {
-//               "MODULE_CODE": "HR",
-//               "FUNCTION_CODE": "L0001",
-//               "FUNCTION_DESC": "Leave Request",
-//               "URL": "/leaverequest",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           },
-//           {
-//               "MODULE_CODE": "HR",
-//               "FUNCTION_CODE": "L0002",
-//               "FUNCTION_DESC": "HR Leave Approval",
-//               "URL": "/leaveapproval",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           },
-//           {
-//               "MODULE_CODE": "HR",
-//               "FUNCTION_CODE": "HR006",
-//               "FUNCTION_DESC": "Salary Information",
-//               "URL": "/salaryinformation",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           }
-//       ]
-//   },
-//   {
-//       "FUNCTION_CODE": "MK",
-//       "FUNCTION_DESC": "Marketing",
-//       "URL": "",
-//       "ICON":"pi pi-shop",
-//       "DETAIL": [
-//           {
-//               "MODULE_CODE": "MK",
-//               "FUNCTION_CODE": "MK001",
-//               "FUNCTION_DESC": "Customer",
-//               "URL": "/customer",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           },
-//           {
-//               "MODULE_CODE": "MK",
-//               "FUNCTION_CODE": "MK002",
-//               "FUNCTION_DESC": "Project",
-//               "URL": "/project",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           }
-//       ]
-//   },
-//   {
-//       "FUNCTION_CODE": "FI",
-//       "FUNCTION_DESC": "Finance",
-//       "URL": "",
-//       "ICON":"pi pi-wallet",
-//       "DETAIL": [
-//           {
-//               "MODULE_CODE": "FI",
-//               "FUNCTION_CODE": "FI001",
-//               "FUNCTION_DESC": "Invoice Request",
-//               "URL": "/invoicerequest",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           },
-//           {
-//               "MODULE_CODE": "FI",
-//               "FUNCTION_CODE": "FI003",
-//               "FUNCTION_DESC": "Invoice",
-//               "URL": "/invoice",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           },
-//           {
-//               "MODULE_CODE": "FI",
-//               "FUNCTION_CODE": "FI004",
-//               "FUNCTION_DESC": "Vendor",
-//               "URL": "/vendor",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           },
-//           {
-//               "MODULE_CODE": "FI",
-//               "FUNCTION_CODE": "FI005",
-//               "FUNCTION_DESC": "Purchase Order",
-//               "URL": "/po",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           },
-//           {
-//               "MODULE_CODE": "FI",
-//               "FUNCTION_CODE": "FI006",
-//               "FUNCTION_DESC": "Journal Voucher",
-//               "URL": "/jv",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           },
-//           {
-//               "MODULE_CODE": "FI",
-//               "FUNCTION_CODE": "FI007",
-//               "FUNCTION_DESC": "Expense",
-//               "URL": "/expense",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           },
-//           {
-//               "MODULE_CODE": "FI",
-//               "FUNCTION_CODE": "FI008",
-//               "FUNCTION_DESC": "Bank Receipt",
-//               "URL": "/bankreceipt",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           },
-//           {
-//               "MODULE_CODE": "FI",
-//               "FUNCTION_CODE": "FI009",
-//               "FUNCTION_DESC": "Bank Payment",
-//               "URL": "/bankpayment",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           },
-//           {
-//               "MODULE_CODE": "FI",
-//               "FUNCTION_CODE": "FI011",
-//               "FUNCTION_DESC": "Bank Multi Payment",
-//               "URL": "/bankmultipayment",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           },
-//           {
-//               "MODULE_CODE": "FI",
-//               "FUNCTION_CODE": "FI012",
-//               "FUNCTION_DESC": "E-Invoice",
-//               "URL": "/e-invoice",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           },
-//           {
-//               "MODULE_CODE": "FI",
-//               "FUNCTION_CODE": "FI013",
-//               "FUNCTION_DESC": "Credit Note",
-//               "URL": "/invoicecancel",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           }
-//       ]
-//   },
-//   {
-//       "FUNCTION_CODE": "PY",
-//       "FUNCTION_DESC": "Payroll",
-//       "URL": "",
-//       "ICON":"pi pi-receipt",
-//       "DETAIL": [
-//           {
-//               "MODULE_CODE": "PY",
-//               "FUNCTION_CODE": "PY001",
-//               "FUNCTION_DESC": "Employee Fixed",
-//               "URL": "/empfixed",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           },
-//           {
-//               "MODULE_CODE": "PY",
-//               "FUNCTION_CODE": "PY002",
-//               "FUNCTION_DESC": "Employee Month",
-//               "URL": "/empmonth",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           },
-//           {
-//               "MODULE_CODE": "PY",
-//               "FUNCTION_CODE": "PY003",
-//               "FUNCTION_DESC": "Attendance Process",
-//               "URL": "/attendanceprocess",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           },
-//           {
-//               "MODULE_CODE": "PY",
-//               "FUNCTION_CODE": "PY004",
-//               "FUNCTION_DESC": "Salary Process",
-//               "URL": "/salaryprocess",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           }
-//       ]
-//   },
-//   {
-//       "FUNCTION_CODE": "RP",
-//       "FUNCTION_DESC": "Reports",
-//       "URL": "",
-//       "ICON":"pi pi-receipt",
-//       "DETAIL": [
-//           {
-//               "MODULE_CODE": "RP",
-//               "FUNCTION_CODE": "RP001",
-//               "FUNCTION_DESC": "General Reports",
-//               "URL": "/reports",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           }
-//       ]
-//   },
-//   {
-//       "FUNCTION_CODE": "PT",
-//       "FUNCTION_DESC": "Print",
-//       "URL": "",
-//       "ICON":"pi pi-print",
-//       "DETAIL": [
-//           {
-//               "MODULE_CODE": "PT",
-//               "FUNCTION_CODE": "PT001",
-//               "FUNCTION_DESC": "EXPENSE PRINT",
-//               "URL": "/expenseprint",
-//               "VIEW_RIGHTS": 1,
-//               "ADD_RIGHTS": 1,
-//               "UPDATE_RIGHTS": 1,
-//               "DELETE_RIGHTS": 1,
-//               "NO_ACCESS": 0
-//           }
-//       ]
-//   }
-// ];
+  TODATE:any = new Date();
+  SUBMITION_LAST_DATE:any;
 
 constructor(
   private route: RoutingService,
@@ -500,6 +169,7 @@ ngAfterViewInit(){
       this.authService.logout();
     }   
     this.sharedService.form_rights = JSON.parse(sessionStorage.getItem('form_rights'))  
+    this.TODATE = this.datePipe.transform(new Date(), 'dd-MMM-yyyy')
     if(this.sharedService.loginUser[0].EMP_CODE == undefined){
       this.sharedService.loginUser = sessionStorage.getItem('user_detail') ? JSON.parse(sessionStorage.getItem('user_detail')):[]
       this.sharedService.profile_pic = sessionStorage.getItem('profile_pic') ? sessionStorage.getItem('profile_pic'):""
@@ -514,6 +184,7 @@ ngAfterViewInit(){
       this.getUserMenu();
       this.getFyear();
       this.onLoadCheckAttendance();
+      this.GetAppriasalDetails();
     }   else{ 
       this.profile_pic = this.sharedService.profile_pic
       this.login_user = this.sharedService.loginUser[0].EMP_CODE +" - "+this.sharedService.loginUser[0].USER_NAME
@@ -525,6 +196,7 @@ ngAfterViewInit(){
       this.getUserMenu();
       this.getFyear();
       this.onLoadCheckAttendance();
+      this.GetAppriasalDetails();
     }   
     $(document).ready(function() {
       $("#addNewRow").click(function() {
@@ -859,6 +531,21 @@ OnChangePassword(){
 showToggleFun(){
   this.isShowToggle = !this.isShowToggle;
 }
+
+RedirectSelfAppraisal(){
+  this.router.navigate(['/SelfAppraisal'])
+}
+
+GetAppriasalDetails(){
+  let data = {
+    "USERID":this.sharedService.loginUser[0].USERID
+  };
+  this.http.PostRequest(this.apiUrl.GetAppriasalDetails,data).then((res:any) =>{
+   if(res.flag == 1){
+    this.SUBMITION_LAST_DATE = res.Appriasal_detail[0].SUBMITION_LAST_DATE
+   }
+  })  
+  }
 
 
 }

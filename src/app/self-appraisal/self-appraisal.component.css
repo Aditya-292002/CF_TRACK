@@ -1,0 +1,33 @@
+.StartBtn,
+.StartBtn:hover{ 
+  width: auto; 
+  font-size: 14px;
+  background-color: #3c92f5;
+  color: #fff; 
+  border: 0;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+.text_header{
+  font-size: 21px;
+  text-align: left;
+  color: #000;
+  font-weight: 500;
+  letter-spacing: 0.15px; 
+}
+.text_header2{
+  font-size: 18px;
+  text-align: left;
+  color: #000;
+  font-weight: 500;
+  letter-spacing: 0.15px; 
+}
+.text_subheader{
+  font-size: 13px;
+  letter-spacing: 0.15px;
+  color: #898585; 
+}  
+.width-1{
+width: 150px !important; 
+} 
+
