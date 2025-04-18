@@ -89,7 +89,7 @@ export class InvoiceComponent implements OnInit {
     base64Image:any ='';
     base64Pdf:any ='';
     ViewDocumentDetailsList:boolean = false;
-    EXPECTED_PAYMENT_DATE:any = new Date();
+    EXPECTED_DATE:any = new Date();
 
     constructor(public sharedService: SharedServiceService,
       private apiUrl: ApiUrlService,
@@ -137,7 +137,7 @@ export class InvoiceComponent implements OnInit {
       CANCEL_IND: "",
       TEMPLATE_CODE:["",Validators.required],
       BILL_IND:"",
-      EXPECTED_PAYMENT_DATE: ["",Validators.required],
+      EXPECTED_DATE: ["",Validators.required],
     })
       $('.selectpicker').selectpicker('refresh').trigger('change');
       this.userData = JSON.parse(sessionStorage.getItem('user_detail'))
@@ -375,13 +375,18 @@ ngAfterViewInit(){
             else {
               document.getElementById('EXCHANGE_RATE').removeAttribute("disabled")
             }
+            
+            var due_date_new = new Date(this.form.getRawValue().BILLING_DATE);
+                this.credit_days = Number(element.CUST_CREDITDAYS);    
+                var new_date  = moment(new Date(due_date_new)).add(this.credit_days,'d');          
+                this.form.get('DUE_DATE').setValue(new_date);
+                this.DUE_DATE = new_date
       }
      })
      this.form.get("PROJ_CODE").setValue(this.SO_Detail_list[0].PROJ_CODE)
     setTimeout(() => {
     this.CalculateFinalAmount();
       $('.selectpicker').selectpicker('refresh').trigger('change');
-
       // this._service_list = [];
       // this.service_list.forEach((element:any)=>{
       //   if(element.SERVICE_CODE == this.SO_Detail_list[0].SERVICE_CODE){
@@ -597,11 +602,11 @@ ngAfterViewInit(){
     this.form.get('BILLING_DATE').setValue(this.sharedService.getTodayDate())        
     this.form.get('DUE_DATE').setValue(this.sharedService.getTodayDate())      
     this.form.get('PO_DATE').setValue(this.sharedService.getTodayDate())
-    this.form.get('EXPECTED_PAYMENT_DATE').setValue(this.sharedService.getTodayDate())
+    this.form.get('EXPECTED_DATE').setValue(this.sharedService.getTodayDate())
     this.BILLING_DATE = new Date();
     this.DUE_DATE = new Date();
     this.PO_DATE = new Date();
-    this.EXPECTED_PAYMENT_DATE = new Date();
+    this.EXPECTED_DATE = new Date();
     if(this.sharedService.loginUser[0].FYEAR == undefined){
       this.sharedService.loginUser = sessionStorage.getItem('user_detail') ? JSON.parse(sessionStorage.getItem('user_detail')):[]
      }
@@ -696,11 +701,11 @@ ngAfterViewInit(){
     this.form.get("BILLING_NO").setValue(this.invoice_header[0].BILLING_NO)
     this.form.get("BILLING_DATE").setValue(this.invoice_header[0].BILLING_DATE)
     this.form.get("DUE_DATE").setValue(this.invoice_header[0].DUE_DATE)
-    this.form.get("EXPECTED_PAYMENT_DATE").setValue(this.invoice_header[0].EXPECTED_PAYMENT_DATE)
+    this.form.get("EXPECTED_DATE").setValue(this.invoice_header[0].EXPECTED_DATE)
     this.form.get("PO_DATE").setValue(this.invoice_header[0].PO_DATE)
     this.PO_DATE = this.datePipe.transform(this.invoice_header[0].PO_DATE,'dd-MMM-yyyy')
     this.BILLING_DATE = this.datePipe.transform(this.invoice_header[0].BILLING_DATE,'dd-MMM-yyyy')
-    this.EXPECTED_PAYMENT_DATE = this.datePipe.transform(this.invoice_header[0].EXPECTED_PAYMENT_DATE,'dd-MMM-yyyy')
+    this.EXPECTED_DATE = this.datePipe.transform(this.invoice_header[0].EXPECTED_DATE,'dd-MMM-yyyy')
     this.DUE_DATE = this.datePipe.transform(this.invoice_header[0].DUE_DATE,'dd-MMM-yyyy')
     this.DUE_DATE = this.datePipe.transform(this.invoice_header[0].DUE_DATE,'dd-MMM-yyyy')
     this.form.get("CUST_CODE").setValue(this.invoice_header[0].CUST_CODE)
@@ -757,7 +762,7 @@ ngAfterViewInit(){
       "PO_DATE":this.PO_DATE,
       "PO_NO":this.form.getRawValue().PO_NO,
       "KIND_ATTN": this.form.getRawValue().KIND_ATTN,
-      "EXPECTED_PAYMENT_DATE": this.form.getRawValue().EXPECTED_PAYMENT_DATE,
+      "EXPECTED_DATE": this.form.getRawValue().EXPECTED_DATE,
       "REMARKS":this._invoice_detail
     }
     // console.log('update data',data)

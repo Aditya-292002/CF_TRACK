@@ -595,6 +595,10 @@ select.form-control {
     margin-left: -22px;
     margin-bottom: 5px;
 }
+.JVDropDown .filter-option-inner .filter-option-inner-inner {
+    font-size: 0.9rem;
+    width: 150px;
+}
 
 .list-btn .close {
     margin-top: 5px;

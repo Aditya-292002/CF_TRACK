@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { CostFilterPipe } from '../resources/filter.pipe';
 import { DatePipe } from '@angular/common';
-import { PipeService } from '../services/pipe.service';
-import { ValidationService } from '../services/validation.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder } from '@angular/forms';
-import { HttpRequestServiceService } from '../services/http-request-service.service';
-import { ApiUrlService } from '../services/api-url.service';
-import { SharedServiceService } from '../services/shared-service.service';
 import { noUndefined } from '@angular/compiler/src/util';
+import { SharedServiceService } from 'src/app/services/shared-service.service';
+import { ApiUrlService } from 'src/app/services/api-url.service';
+import { HttpRequestServiceService } from 'src/app/services/http-request-service.service';
+import { ValidationService } from 'src/app/services/validation.service';
+import { PipeService } from 'src/app/services/pipe.service';
+import { CostFilterPipe } from 'src/app/resources/filter.pipe';
 
 declare var $: any;
 
@@ -63,7 +63,7 @@ export class SelfAppraisalComponent implements OnInit {
 
   GetAppriasalDetails(){
   let data = {
-    "USERID":this.sharedService.loginUser[0].USERID
+    "USERID":this.USER_ID
   };
   this.spinner = true;
   this.http.PostRequest(this.apiUrl.GetAppriasalDetails,data).then((res:any) =>{

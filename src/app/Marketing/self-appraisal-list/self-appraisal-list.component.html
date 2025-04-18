@@ -1,0 +1,82 @@
+<app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
+<div class="row"> 
+<div class="col-md-12" > 
+    <div class="card1 d-flex  justify-content-between">
+        <div class="" >
+            <h5 class="formName ">{{ sharedService.formName }}</h5>
+        </div>
+        <div>
+            <button class="btn btn-secondary mr-1 mb-2"
+                title="Back"
+                *ngIf="!this.isViewList"
+                (click)="BackToList()">
+            Back
+            </button>
+        </div>
+    </div>
+</div> 
+
+<div class="mt-2 col-md-12  " >
+        <div class="card p-3" *ngIf="this.isViewList">
+            <p-table #datatable [value]="SELF_APPRIASAL_LIST"   
+            [globalFilterFields]="['SO_NO','CUST_NAME','PROJ_NAME','SO_REMARKS','SO_VALUE']">
+            <ng-template pTemplate="caption">
+                <div   style="display: flex;justify-content: space-between;align-items: center;margin-bottom: 5px;">
+                    <div class="row text-center ">
+                        <!-- <label class="ml-2">
+                            <input type="radio" name="status" (click)="GetSOList('')" value="solist" [checked]='true'> SO List
+                        </label>
+                        <label class="ml-2">
+                            <input type="radio" name="status" value="all" (click)="GetSOList('RELEASE')" > Request List
+                        </label> -->
+                        </div>
+                <div class="floating-input  " style="width: 20%;" >
+                    <input type="text" pInputText  placeholder="Search"  class="form-control"
+                    (input)="datatable.filterGlobal($event.target.value, 'contains')">
+                </div>
+            </div>
+            </ng-template>
+            <ng-template pTemplate="header" let-flight>
+                <tr>
+                    <th class="width-2">Sq No</th>
+                    <th class="">Usre Name</th>
+                    <th class="">Action</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-data let-rowIndex="rowIndex">
+                <tr>
+                    <td class="width-2">{{ rowIndex + 1 }}</td>
+                    <td class="">{{data.USER_NAME}}</td>
+                    <td class="" >
+                        <i class="fa fa-eye" (click)="GetAppriasalDetailsByUserId(data)"  title="View"></i>
+                   </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        </div>
+        <div class="card p-3" *ngIf="!this.isViewList"> 
+                    <div class="row text-center ">
+                        <span class="ml-4" >
+                            Name: {{USERNAME}}
+                        </span>
+                        <span class="ml-2">
+                            Appraisal Fyear: {{this.FYEAR}}
+                        </span>
+                    </div>
+            <div class="mt-2" *ngFor="let data of this.SELF_APPRIASAL_DETAILS">
+                    <p-panel header="{{data?.SR_NO}} . {{data?.QUERY_DESC}}" >
+                      <div class="floating-input m-0 ">
+                        <textarea
+                          rows="5"
+                          class="form-control"
+                          [(ngModel)]="data.APPRAISAL_ANS"
+                          [disabled]="true"
+                          placeholder="Please Enter"
+                        ></textarea>
+                      </div>
+                    </p-panel>
+            </div>
+        </div> 
+</div>
+
+</div>

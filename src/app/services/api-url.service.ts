@@ -172,6 +172,8 @@ GetCalendarData : string = '/Dashboard/GetCalendarData';
 GetDashboardDetailsList: string='/Dashboard/GetDashboardDetailsList';
 GetAppriasalDetails: string='/Setting/GetAppriasalDetails';  
 SaveAppriasalDetailsByUserId: string='/Setting/SaveAppriasalDetailsByUserId';  
+GetSaveAppriasalList: string='/Setting/GetSaveAppriasalList';  
+GetAppriasalDetailsByUserId: string='/Setting/GetAppriasalDetailsByUserId';  
 
 
 }
