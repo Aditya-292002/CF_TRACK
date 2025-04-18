@@ -113,7 +113,8 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { TooltipModule } from 'primeng/tooltip';
 import { PendingTaskComponent } from './Project/pending-task/pending-task.component';
 import { BankReceiptListComponent } from './Invoice/bank-receipt-list/bank-receipt-list.component';
-
+import { SelfAppraisalComponent } from './self-appraisal/self-appraisal.component';
+import { PanelModule } from 'primeng/panel';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -222,7 +223,8 @@ export const MY_DATE_FORMATS = {
     SalesOrderCreateComponent,
     OldInvoiceComponent,
     PendingTaskComponent,
-    BankReceiptListComponent
+    BankReceiptListComponent,
+    SelfAppraisalComponent
   ],
   imports: [
     BrowserModule,
@@ -261,7 +263,8 @@ export const MY_DATE_FORMATS = {
     CheckboxModule,
     ToggleButtonModule, 
     TooltipModule,
-    PdfViewerModule
+    PdfViewerModule,
+    PanelModule
   ],
   providers: [
     AuthGuard,

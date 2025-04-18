@@ -170,5 +170,8 @@ GETROLELIST: string='/Setting/GetRoleRightList';
 SaveEmployeeRoleRights: string='/Setting/SaveEmployeeRoleRights';  
 GetCalendarData : string = '/Dashboard/GetCalendarData';
 GetDashboardDetailsList: string='/Dashboard/GetDashboardDetailsList';
+GetAppriasalDetails: string='/Setting/GetAppriasalDetails';  
+SaveAppriasalDetailsByUserId: string='/Setting/SaveAppriasalDetailsByUserId';  
+
 
 }

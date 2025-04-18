@@ -260,6 +260,7 @@
     flex-basis: 100%; 
     display: flex;
     align-items: center;
+    gap: 5px;
     justify-content: space-between;
 }
 .bg-navbar-theme .navbar-nav .show>.nav-link, .bg-navbar-theme .navbar-nav .active>.nav-link, .bg-navbar-theme .navbar-nav .nav-link.show, .bg-navbar-theme .navbar-nav .nav-link.active {
@@ -458,3 +459,14 @@
     transform: rotate(180deg);
     right: 25px;
 } 
+
+.SelfAppraisalBtn,
+.SelfAppraisalBtn:hover{
+    width: auto;
+    font-size: 14px;
+    background-color: #da281b;
+    color: #fff; 
+    border: 0;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}

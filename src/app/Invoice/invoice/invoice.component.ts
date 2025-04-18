@@ -89,6 +89,7 @@ export class InvoiceComponent implements OnInit {
     base64Image:any ='';
     base64Pdf:any ='';
     ViewDocumentDetailsList:boolean = false;
+    EXPECTED_PAYMENT_DATE:any = new Date();
 
     constructor(public sharedService: SharedServiceService,
       private apiUrl: ApiUrlService,
@@ -136,6 +137,7 @@ export class InvoiceComponent implements OnInit {
       CANCEL_IND: "",
       TEMPLATE_CODE:["",Validators.required],
       BILL_IND:"",
+      EXPECTED_PAYMENT_DATE: ["",Validators.required],
     })
       $('.selectpicker').selectpicker('refresh').trigger('change');
       this.userData = JSON.parse(sessionStorage.getItem('user_detail'))
@@ -164,7 +166,7 @@ ngAfterViewInit(){
      this.form.get('FYEAR').setValue(this.sharedService.loginUser[0].FYEAR);
      this.form.get('COMPANY_CODE').setValue(this.sharedService.loginUser[0].COMPANY_CODE);
      this.form.get('LOCATION_CODE').setValue(this.sharedService.loginUser[0].LOCATION_CODE);
-     this.filterLocations();
+    //  this.filterLocations();
      this.SelectState();
      $('.selectpicker').selectpicker('refresh').trigger('change');
      },210);
@@ -486,6 +488,7 @@ ngAfterViewInit(){
         this.isSubmited = false;
         this.f_clearForm();
         this.f_fillFormData();
+        this.isViewInvoice = !this.isViewInvoice;
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh').trigger('change');
         }, 100);
@@ -535,43 +538,6 @@ ngAfterViewInit(){
     return true;
   }
 
-  f_clearForm(){
-    this.isSubmited = false;
-    this.INVOICE_ID = '';
-    this.form.reset();
-    this.invoice_detail = [];
-    this.BILLING_DATE = '';
-    this.DUE_DATE = '';
-    this.PO_DATE = '';
-    this._invoice_detail = []; 
-    this._invoice_detail = []; 
-    this.form.get('EXCHANGE_RATE').setValue(1);        
-    this.form.get('TEMPLATE_CODE').setValue("LOCAL"); 
-    //this.form.get('FYEAR').setValue(this.fyear_list[0].FYEAR);
-    this.form.get('BILLING_DATE').setValue(this.sharedService.getTodayDate())        
-    this.form.get('DUE_DATE').setValue(this.sharedService.getTodayDate())      
-    this.form.get('PO_DATE').setValue(this.sharedService.getTodayDate())
-
-    if(this.sharedService.loginUser[0].FYEAR == undefined){
-      this.sharedService.loginUser = sessionStorage.getItem('user_detail') ? JSON.parse(sessionStorage.getItem('user_detail')):[]
-      
-     }
-
-     this.form.get('CURRENCY_CODE').setValue("INR");
-     this.form.get('FYEAR').setValue(this.sharedService.loginUser[0].FYEAR);
-     this.form.get('COMPANY_CODE').setValue(this.sharedService.loginUser[0].COMPANY_CODE);
-     this.form.get('LOCATION_CODE').setValue(this.sharedService.loginUser[0].LOCATION_CODE);
-     this.filterLocations();
-     this.SelectState();
-    this.GetInvoiceList();
-    // this.f_addRow();    
-    this.GetInvoiceCommonList();
-    this._DATE = "";
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh').trigger('change');
-    }, 210);
-  }
-
   GetBilledInvoiceList(){
     let useDetail = JSON.parse(sessionStorage.getItem('user_detail'))
     let data = {
@@ -606,12 +572,53 @@ ngAfterViewInit(){
 
   backToForm(){
     this.isViewInvoice = !this.isViewInvoice;
-    this.UpdateDisable =!this.UpdateDisable
     this.UpdateDisable=false 
+    this.IsInvoiedteailDisable = false;
+    this.isViewDocument = false;
     this.f_clearForm();
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);
+  }
+  
+  f_clearForm(){
+    this.isSubmited = false;
+    this.INVOICE_ID = '';
+    this.form.reset();
+    this.invoice_detail = [];
+    this.BILLING_DATE = '';
+    this.DUE_DATE = '';
+    this.PO_DATE = '';
+    this._invoice_detail = []; 
+    this._invoice_detail = []; 
+    this.form.get('EXCHANGE_RATE').setValue(1);        
+    this.form.get('TEMPLATE_CODE').setValue("LOCAL"); 
+    //this.form.get('FYEAR').setValue(this.fyear_list[0].FYEAR);
+    this.form.get('BILLING_DATE').setValue(this.sharedService.getTodayDate())        
+    this.form.get('DUE_DATE').setValue(this.sharedService.getTodayDate())      
+    this.form.get('PO_DATE').setValue(this.sharedService.getTodayDate())
+    this.form.get('EXPECTED_PAYMENT_DATE').setValue(this.sharedService.getTodayDate())
+    this.BILLING_DATE = new Date();
+    this.DUE_DATE = new Date();
+    this.PO_DATE = new Date();
+    this.EXPECTED_PAYMENT_DATE = new Date();
+    if(this.sharedService.loginUser[0].FYEAR == undefined){
+      this.sharedService.loginUser = sessionStorage.getItem('user_detail') ? JSON.parse(sessionStorage.getItem('user_detail')):[]
+     }
+
+     this.form.get('CURRENCY_CODE').setValue("INR");
+     this.form.get('FYEAR').setValue(this.sharedService.loginUser[0].FYEAR);
+     this.form.get('COMPANY_CODE').setValue(this.sharedService.loginUser[0].COMPANY_CODE);
+     this.form.get('LOCATION_CODE').setValue(this.sharedService.loginUser[0].LOCATION_CODE);
+    //  this.filterLocations();
+     this.SelectState();
+    this.GetInvoiceList();
+    // this.f_addRow();    
+    this.GetInvoiceCommonList();
+    this._DATE = "";
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh').trigger('change');
+    }, 210);
   }
   
   PrintInvoice(p_data:any){
@@ -670,16 +677,14 @@ ngAfterViewInit(){
       } else {
         this.spinner = false;
       } 
-    }, err => {
-      this.spinner = false;
     });
   }
 
   f_fillFormData() {
     this.spinner = true;
-    this.filterLocations();
-    // this.form.get("BILL_ID").setValue(this.invoice_header[0].BILL_ID)
-    this.form.get("REQ_ID").setValue(this.invoice_header[0].REQ_ID)
+    // this.filterLocations();
+    this.form.get("BILL_ID").setValue(this.invoice_header[0].BILL_ID)
+    // this.form.get("REQ_ID").setValue(this.invoice_header[0].REQ_ID)
     this.form.get("LOCATION_STATE").setValue(this.invoice_header[0].LOCATION_STATE)
     this.form.get("STATE_CODE").setValue(this.invoice_header[0].STATE_CODE)
    // this.showContent(this.invoice_header[0].PAY_TO);
@@ -691,10 +696,16 @@ ngAfterViewInit(){
     this.form.get("BILLING_NO").setValue(this.invoice_header[0].BILLING_NO)
     this.form.get("BILLING_DATE").setValue(this.invoice_header[0].BILLING_DATE)
     this.form.get("DUE_DATE").setValue(this.invoice_header[0].DUE_DATE)
+    this.form.get("EXPECTED_PAYMENT_DATE").setValue(this.invoice_header[0].EXPECTED_PAYMENT_DATE)
+    this.form.get("PO_DATE").setValue(this.invoice_header[0].PO_DATE)
+    this.PO_DATE = this.datePipe.transform(this.invoice_header[0].PO_DATE,'dd-MMM-yyyy')
+    this.BILLING_DATE = this.datePipe.transform(this.invoice_header[0].BILLING_DATE,'dd-MMM-yyyy')
+    this.EXPECTED_PAYMENT_DATE = this.datePipe.transform(this.invoice_header[0].EXPECTED_PAYMENT_DATE,'dd-MMM-yyyy')
+    this.DUE_DATE = this.datePipe.transform(this.invoice_header[0].DUE_DATE,'dd-MMM-yyyy')
+    this.DUE_DATE = this.datePipe.transform(this.invoice_header[0].DUE_DATE,'dd-MMM-yyyy')
     this.form.get("CUST_CODE").setValue(this.invoice_header[0].CUST_CODE)
     this.form.get("PROJ_CODE").setValue(this.invoice_header[0].PROJ_CODE)
     this.form.get("PO_NO").setValue(this.invoice_header[0].PO_NO)
-    this.form.get("PO_DATE").setValue(this.invoice_header[0].PO_DATE)
     this.form.get("KIND_ATTN").setValue(this.invoice_header[0].KIND_ATTN)
     this.form.get("CURRENCY_CODE").setValue(this.invoice_header[0].CURRENCY_CODE)
     this.form.get("EXCHANGE_RATE").setValue(this.invoice_header[0].EXCHANGE_RATE)
@@ -716,7 +727,7 @@ ngAfterViewInit(){
           this.form.get("COMPANY_CODE").setValue(this.invoice_header[0].COMPANY_CODE)
  //         this.GetProjectList();
           this.form.get("LOCATION_CODE").setValue(Number(this.invoice_header[0].LOCATION_CODE))
-          this.form.get("EXP_TYPE").setValue(this.invoice_header[0].EXP_TYPE)
+          // this.form.get("EXP_TYPE").setValue(this.invoice_header[0].EXP_TYPE)
           this.form.get("TDS_CODE").setValue(this.invoice_header[0].TDS_CODE)
           // this.showContent();
           this.form.get("VENDOR_NO").setValue(this.invoice_header[0].VENDOR_NO)
@@ -746,6 +757,7 @@ ngAfterViewInit(){
       "PO_DATE":this.PO_DATE,
       "PO_NO":this.form.getRawValue().PO_NO,
       "KIND_ATTN": this.form.getRawValue().KIND_ATTN,
+      "EXPECTED_PAYMENT_DATE": this.form.getRawValue().EXPECTED_PAYMENT_DATE,
       "REMARKS":this._invoice_detail
     }
     // console.log('update data',data)
@@ -760,7 +772,8 @@ ngAfterViewInit(){
         this.UpdateDisable =!this.UpdateDisable
         this.IsInvoiedteailDisable = false;
         this.UpdateDisable=false;
-
+        this.isViewDocument =false;
+        this.isViewInvoice = !this.isViewInvoice;
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh').trigger('change');
         }, 100);
