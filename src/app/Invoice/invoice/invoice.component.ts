@@ -702,13 +702,12 @@ ngAfterViewInit(){
     this.form.get("BILLING_DATE").setValue(this.invoice_header[0].BILLING_DATE)
     this.form.get("DUE_DATE").setValue(this.invoice_header[0].DUE_DATE)
     this.form.get("EXPECTED_DATE").setValue(this.invoice_header[0].EXPECTED_DATE)
+    this.form.get("CUST_CODE").setValue(this.invoice_header[0].CUST_CODE)
     this.form.get("PO_DATE").setValue(this.invoice_header[0].PO_DATE)
     this.PO_DATE = this.datePipe.transform(this.invoice_header[0].PO_DATE,'dd-MMM-yyyy')
     this.BILLING_DATE = this.datePipe.transform(this.invoice_header[0].BILLING_DATE,'dd-MMM-yyyy')
     this.EXPECTED_DATE = this.datePipe.transform(this.invoice_header[0].EXPECTED_DATE,'dd-MMM-yyyy')
     this.DUE_DATE = this.datePipe.transform(this.invoice_header[0].DUE_DATE,'dd-MMM-yyyy')
-    this.DUE_DATE = this.datePipe.transform(this.invoice_header[0].DUE_DATE,'dd-MMM-yyyy')
-    this.form.get("CUST_CODE").setValue(this.invoice_header[0].CUST_CODE)
     this.form.get("PROJ_CODE").setValue(this.invoice_header[0].PROJ_CODE)
     this.form.get("PO_NO").setValue(this.invoice_header[0].PO_NO)
     this.form.get("KIND_ATTN").setValue(this.invoice_header[0].KIND_ATTN)
@@ -725,7 +724,6 @@ ngAfterViewInit(){
     this.form.get("CANCEL_IND").setValue(this.invoice_header[0].CANCEL_IND)
     this.form.get("TEMPLATE_CODE").setValue(this.invoice_header[0].TEMPLATE_CODE)
     this.form.get("BILL_IND").setValue(this.invoice_header[0].BILL_IND)
-      
     this.SelectState();
         setTimeout(() => {
     this.form.get("REQ_ID").setValue(this.invoice_header[0].REQ_ID)
@@ -733,7 +731,6 @@ ngAfterViewInit(){
  //         this.GetProjectList();
           this.form.get("LOCATION_CODE").setValue(Number(this.invoice_header[0].LOCATION_CODE))
           // this.form.get("EXP_TYPE").setValue(this.invoice_header[0].EXP_TYPE)
-          this.form.get("TDS_CODE").setValue(this.invoice_header[0].TDS_CODE)
           // this.showContent();
           this.form.get("VENDOR_NO").setValue(this.invoice_header[0].VENDOR_NO)
           this.form.get("EMP_NO").setValue(this.invoice_header[0].EMP_NO)

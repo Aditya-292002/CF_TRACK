@@ -40,7 +40,7 @@ export class SelfAppraisalListComponent implements OnInit {
        private currencyPipe: CostFilterPipe) { }
  
    ngOnInit() {
-      this.sharedService.formName = "Self Appraisal List";
+      this.sharedService.formName = "Appraisal List";
       this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
       this.USERID = this.userData[0].USERID;
       this.FYEAR = this.userData[0].FYEAR;
@@ -82,6 +82,7 @@ export class SelfAppraisalListComponent implements OnInit {
     this.http.PostRequest(this.apiUrl.GetAppriasalDetailsByUserId,data).then((res:any)=>{
       if(res.flag == 1){
         this.SELF_APPRIASAL_DETAILS = res.Appriasal_Details;
+        this.sharedService.formName = "Appraisal Details";
         this.isViewList = false;
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh').trigger('change');
@@ -94,6 +95,7 @@ export class SelfAppraisalListComponent implements OnInit {
    }
 
    BackToList(){
+    this.sharedService.formName = "Appraisal List";
     this.GetSaveAppriasalList();
    }
 
