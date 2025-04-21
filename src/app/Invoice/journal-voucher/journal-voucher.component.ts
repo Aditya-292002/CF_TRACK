@@ -123,9 +123,16 @@ GetFyearList(){
     if (res) {
       this.fyear_list = res.fyear_list
       this.fyear_list.forEach((element:any)=>{
-        if(this.FYEAR == element.FYEAR){
-          this.JV_DATE = this.datepipe.transform(new Date(element.TO_DATE), 'dd-MMM-yyyy');
-        }
+          if(this.FYEAR == element.FYEAR){
+          let TO_DATE = new Date(this.datepipe.transform(new Date(element.TO_DATE), 'dd-MMM-yyyy'));
+          let CURRENT_DATE = new Date();
+          if(CURRENT_DATE < TO_DATE){
+            this.JV_DATE = this.datepipe.transform(new Date(CURRENT_DATE), 'dd-MMM-yyyy') 
+            return
+          }else {
+            this.JV_DATE = this.datepipe.transform(new Date(element.TO_DATE), 'dd-MMM-yyyy');
+          }
+          }
       });
       setTimeout(() => {
         $('.selectpicker').selectpicker('refresh').trigger('change');
