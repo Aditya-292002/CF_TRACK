@@ -50,12 +50,12 @@ export class SelfAppraisalComponent implements OnInit {
 
   ngOnInit() {
      this.sharedService.formName = "Self Appraisal";
-     this.GetAppriasalDetails();
      this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
       this.USER_ID = this.userData[0].USERID;
       this.Username=this.userData[0].USER_NAME;
       this.Usernames=this.Username.split(" ");
       this.Username=this.Usernames[0];
+      this.GetAppriasalDetails();
      setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);

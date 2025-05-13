@@ -32,7 +32,6 @@ export class InvoiceRequestComponent implements OnInit {
     task_search_val: string = '';
   ngOnInit() {
     this.sharedService.formName = "Invoice Request"
-
     this.form = this.formBuilder.group({
       REQ_NO: [""],
       COMPANY_CODE:  ["",Validators.required],
@@ -52,11 +51,13 @@ export class InvoiceRequestComponent implements OnInit {
 
     
   }
+
   ADD_RIGHTS: boolean = false;
   UPDATE_RIGHTS: boolean = false;
   NO_RIGHTS: boolean = false;
   isAdd: boolean = false;
   isUpdate: boolean = false;
+
 ngAfterViewInit(){    
   setTimeout(() => {
     // if (this.sharedService.form_rights.ADD_RIGHTS) {
@@ -71,9 +72,9 @@ ngAfterViewInit(){
     this.form.get('REQ_DATE').setValue(this.sharedService.getTodayDate())
     this.REQ_DATE = this.sharedService.getTodayDate()
     this.GetInvoiceCommonList();
-    
   },150)
 }
+
   company_list: Array<any> = [];
   fyear_list: Array<any> = [];
   invoice_type_list: Array<any> = [];
