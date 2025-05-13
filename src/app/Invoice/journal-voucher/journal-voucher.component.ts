@@ -88,7 +88,6 @@ constructor(public sharedService: SharedServiceService,
    
   ngOnInit() {
     this.sharedService.formName = "Journal Voucher"
-    setTimeout(() => {
       if (this.sharedService.form_rights.ADD_RIGHTS) {
         this.ADD_RIGHTS = this.sharedService.form_rights.ADD_RIGHTS
       }
@@ -99,20 +98,23 @@ constructor(public sharedService: SharedServiceService,
       if(this.sharedService.loginUser[0].FYEAR == undefined){
         this.sharedService.loginUser = sessionStorage.getItem('user_detail') ? JSON.parse(sessionStorage.getItem('user_detail')):[]
        }
-      this.FYEAR = this.sharedService.loginUser[0].FYEAR;
+    $('.selectpicker').selectpicker('refresh').trigger('change');
+  }
+
+  ngAfterViewInit(){    
+  setTimeout(() => {
+     this.FYEAR = this.sharedService.loginUser[0].FYEAR;
       this.COMPANY_CODE = this.sharedService.loginUser[0].COMPANY_CODE;
-      this.LOCATION_CODE = this.sharedService.loginUser[0].LOCATION_CODE; 
       this.today_date_s = this.datepipe.transform(this.today_date, 'yyyy-MM-dd')
       this.min_date = this.sharedService.loginUser[0].FROM_DATE;
       this.maxdate = this.sharedService.loginUser[0].TO_DATE;
+      this.LOCATION_CODE = this.sharedService.loginUser[0].LOCATION_CODE;
       this.COMPANY_CURRENCY = this.sharedService.loginUser[0].COMPANY_CURRENCY;
-     // this.LOCATION_CODE = this.sharedService.loginUser[0].LOCATION_CODE;
-      this.GetFyearList();
-      this.GetJVCommonList();
+     this.GetFyearList();
+      this.GetJVCommonList(1);
       this.GetProjectList();
-    $('.selectpicker').selectpicker('refresh').trigger('change');
-  }, 150);
-  }
+  },100)
+}
 
   
 GetFyearList(){
@@ -147,7 +149,7 @@ GetFyearList(){
 
 }
 
-  GetJVCommonList(){
+  GetJVCommonList(val:any){
      this.spinner = true;
      this.http.PostRequest(this.apiUrl.GetJVCommonList,{}).then(res =>{
     if(res.flag){
@@ -164,7 +166,9 @@ GetFyearList(){
       if(this.CURRENCY_CODE == this.COMPANY_CURRENCY){
         this.isExchangeRate = true;
       }
-      this.f_addRow();
+      if(val == 1){
+       this.f_addRow();
+      }
       setTimeout(() => {
         $('.selectpicker').selectpicker('refresh').trigger('change');
       }, 100);
@@ -178,8 +182,29 @@ GetFyearList(){
 
   }
 
+   GetProjectList() {
+    let data = {
+      LISTTYPE: "customerwise",
+      COMPANY_CODE: this.COMPANY_CODE,
+      
+    }
+    this.http.PostRequest(this.apiUrl.GetProjectList, data).then(res => {
+      if (res.flag) {
+        this.project_list = res.project_list;
+        setTimeout(() => {
+          $('.selectpicker').selectpicker('refresh').trigger('change');
+        }, 100);
+        this.spinner = false;
+      } else {
+        this.spinner = false;
+      }
+    }, err => {
+      this.spinner = false;
+    });
+  }
+
   f_addRow(){
-    this._JV_Detail.push({
+      this._JV_Detail.push({
       SRNO: this._JV_Detail.length + 1,
       GL_NO:"",
       RECGRP:null,
@@ -356,27 +381,6 @@ GetFyearList(){
     }, 100);
   }
 
-  GetProjectList() {
-    let data = {
-      LISTTYPE: "customerwise",
-      COMPANY_CODE: this.COMPANY_CODE,
-      
-    }
-    this.http.PostRequest(this.apiUrl.GetProjectList, data).then(res => {
-      if (res.flag) {
-        this.project_list = res.project_list
-        setTimeout(() => {
-          $('.selectpicker').selectpicker('refresh').trigger('change');
-        }, 100);
-        this.spinner = false;
-      } else {
-        this.spinner = false;
-      }
-    }, err => {
-      this.spinner = false;
-    });
-  }
-
   ChangeGL(GL_NO: any,index: any){
     this.data = null;
     this._JV_Detail[index].PARTY=[];
@@ -479,8 +483,6 @@ GetFyearList(){
     this.spinner = true;
     this.http.PostRequest(this.apiUrl.GetJVList, data).then(res => {
       if (res.flag) {
-        console.log('res',res);
-        
         this.all_jv_list = res.jv_list;
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh').trigger('change');
@@ -542,12 +544,12 @@ GetFyearList(){
           if(element.DEBIT_AMT == 0 || element.DEBIT_AMT == null){
               element.disabled1 = true;
           }else{
-            element.DEBIT_AMT=this.pipeService.setCommaseprated((+element.DEBIT_AMT).toFixed());
+            element.DEBIT_AMT=this.pipeService.setCommaseprated((+element.DEBIT_AMT));
           }
           if(element.CREDIT_AMT == 0 || element.CREDIT_AMT == null){
             element.disabled2 = true;
         }else{
-          element.CREDIT_AMT=this.pipeService.setCommaseprated((+element.CREDIT_AMT).toFixed());
+          element.CREDIT_AMT=this.pipeService.setCommaseprated((+element.CREDIT_AMT));
         }
         element.PARTY=[]; 
         if(element.RECGRP != null || element.RECGRP != "" || element.RECGRP != undefined){
@@ -588,7 +590,6 @@ GetFyearList(){
         this.Debit_VALUE = this.pipeService.setCommaseprated((+TOTAL_DEBIT).toFixed(2));
         this.Credit_VALUE =  this.pipeService.setCommaseprated((+TOTAL_CREDIT).toFixed(2));
         this.isViewJV = !this.isViewJV;
-        // console.log('_JV_Detail 2 -> ' , this._JV_Detail)
         setTimeout(() => {
           this.doc_type_list.forEach((element:any)=>{
             if(DOCTYPE_CODE == element.DOCTYPE_CODE){
@@ -606,6 +607,7 @@ GetFyearList(){
             this.isExchangeRate = false;
           }
           this.GetProjectList();
+          this.GetJVCommonList(0);
           $('.selectpicker').selectpicker('refresh').trigger('change');
         }, 100);
         this.spinner = false;
@@ -680,7 +682,7 @@ GetFyearList(){
     this.GET_GL_NO = '';
     this.GetJVList();
   }
-  
+
 }
 
 

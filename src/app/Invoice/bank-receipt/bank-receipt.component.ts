@@ -714,8 +714,6 @@ RECGRP:string=""
         SaveBankReceipt:this.form.value,
         SaveBankReceiptDetail: this._BANK_Detail,
       }
-
-      this.f_clearForm();
       //this.GetBankCommonList();
     // console.log(JSON.stringify(data));
 //  return
@@ -726,6 +724,9 @@ RECGRP:string=""
           this.spinner = false;
           this.isSubmited = false;
           this.f_clearForm();
+          this.changeCurrency();
+          this.GetProjectList();
+          this.GetBankCommonList();
           setTimeout(() => {
             $('.selectpicker').selectpicker('refresh').trigger('change');
           }, 100);
@@ -734,6 +735,7 @@ RECGRP:string=""
           this.spinner = false;
         }
       }, err => {
+        this.f_clearForm();
         this.spinner = false;
       });
     }

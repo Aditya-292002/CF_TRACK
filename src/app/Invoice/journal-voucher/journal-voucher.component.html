@@ -230,7 +230,7 @@
                       <div class="floating-input JVDropDown list-btn">
                         <select class="form-control  selectpicker show-tick"  [(ngModel)]="data.GL_NO" id="group" 
                         (change)="ChangeGL(data.GL_NO, index)" name="GL_NAME{{ index }}" data-live-search="true" title="Select">
-                                <option  *ngFor="let opt of gl_list; let i = index" 
+                                <option  *ngFor="let opt of this.gl_list; let i = index" 
                                 [selected]="opt.GL_NO == data.GL_NO"
                                  [value]="opt.GL_NO" >{{ opt.GL_DESCRIPTION }}</option>
                             </select>
@@ -290,8 +290,9 @@
                     <div class="floating-input JVDropDown list-btn">
                     <select class="form-control  selectpicker show-tick"   [(ngModel)]="data.PROJ_CODE" 
                     id="Project{{ index }}" 
-                     data-live-search="true" title="Select">
-                              <option *ngFor="let opt of project_list; let i = index"
+                     data-live-search="true" title="Select"
+                     >
+                              <option *ngFor="let opt of this.project_list; let i = index"
                               [selected]="opt.PROJ_CODE == data.PROJ_CODE"
                               [value]="opt.PROJ_CODE"
                             >{{ opt.PROJ_NAME }}</option>
@@ -321,10 +322,11 @@
                   </td>
                   <td class="w-2 pb-0">
                     <div class="floating-input JVDropDown list-btn">
-                    <select class="form-control  selectpicker show-tick" [(ngModel)]="data.LOCATION_CODE" 
-                    name="Location{{ index }}"
-                     data-live-search="true" title="Select">
-                              <option  *ngFor="let opt of location_list; let i = index"
+                    <select class="form-control   show-tick" 
+                      [(ngModel)]="data.LOCATION_CODE" 
+                    id="Location" 
+                     data-live-search="true" title="Select" >
+                              <option  *ngFor="let opt of this.location_list; let i = index"
                               [selected]="opt.LOCATION_CODE == data.LOCATION_CODE"
                               [value]="opt.LOCATION_CODE"
                             >{{ opt.LOCATION_NAME }}</option>
