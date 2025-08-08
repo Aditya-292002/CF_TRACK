@@ -378,7 +378,8 @@
                           class="form-control cost"
                           [disabled]="data.disabled1"
                           (change)="CalculateTotalAmount(index)"
-                          [(ngModel)]="data.DEBIT_AMT"
+                          costInput
+                          [(ngModel)]="data.DEBIT_AMT "
                           [ngModelOptions]="{ standalone: true }"
                           id="DEBIT_AMT{{ index }}"
                           OnlyNumber="true"

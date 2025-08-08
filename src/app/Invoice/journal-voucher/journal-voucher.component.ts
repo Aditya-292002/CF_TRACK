@@ -87,7 +87,7 @@ constructor(public sharedService: SharedServiceService,
   public datepipe: DatePipe) { }
    
   ngOnInit() {
-    this.sharedService.formName = "Journal Voucher"
+    this.sharedService.formName = "Journal Voucher";
       if (this.sharedService.form_rights.ADD_RIGHTS) {
         this.ADD_RIGHTS = this.sharedService.form_rights.ADD_RIGHTS
       }
