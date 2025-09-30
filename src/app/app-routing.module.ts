@@ -84,7 +84,7 @@ const routes: Routes = [
     children: [
       // {path: '', component:DashboardComponent },
       // {path: '', component:CalendarComponent},
-      {path: 'dashboard', component:DashboardComponent },
+      {path: 'dashboard', component:IssueRequestMasterComponent },
       {path: 'calendar', component:CalendarComponent},
       {path: 'employeeinfo', component:EmployeeComponent },
       {path: 'customer', component:CustomerComponent },

@@ -345,10 +345,10 @@ input4: string = '';
           console.log('inside flag');
           
           //this.isForgetSceen = false;
-          // this.geToken();
+          this.geToken();
           this.spinner = false;
           this.login_userId = "";
-           this.route.changeRoute('/dashboard'); 
+           this.route.changeRoute('/issuerequestmaster'); 
           this.toast.success(res.msg)
         } else {
         //  this.isForgetSceen = false;
@@ -451,33 +451,33 @@ getOtp(): string {
         if (res.flag) {
           console.log('inside token ',res);
           
-          // this.http.PostRequest(this.apiurl.GetUserDetail, data).then((res:any) => {
-          //   if (res.flag) {
-          //     this.sharedService.loginUser = res.user_detail;
-          //     this.sharedService.profile_pic = res.b64;
-          //     sessionStorage.setItem('user_detail', JSON.stringify(res.user_detail))
-          //     sessionStorage.setItem('profile_pic', res.b64)
-          //     this.sharedService.formName = "";
-          //     this.login_user = this.sharedService.loginUser[0].EMP_CODE 
-          //       setTimeout(() => {
-          //         // this.route.changeRoute('');
-          //         if(this.login_user === '1001'){
-          //           this.route.changeRoute('/dashboard');
-          //         }else{
-          //           this.route.changeRoute('/calendar');
-          //         }
+          this.http.PostRequest(this.apiurl.GetUserDetail, data).then((res:any) => {
+            if (res.flag) {
+              this.sharedService.loginUser = res.user_detail;
+              this.sharedService.profile_pic = res.b64;
+              sessionStorage.setItem('user_detail', JSON.stringify(res.user_detail))
+              sessionStorage.setItem('profile_pic', res.b64)
+              this.sharedService.formName = "";
+              this.login_user = this.sharedService.loginUser[0].EMP_CODE 
+                setTimeout(() => {
+                  // this.route.changeRoute('');
+                  if(this.login_user === '1001'){
+                    this.route.changeRoute('/dashboard');
+                  }else{
+                    this.route.changeRoute('/calendar');
+                  }
                  
-          //       }, 150);
-          //   } else {
-          //     this.loginForm.reset()
-          //     this.toast.error(res.msg)
-          //     this.spinner = false;
-          //   }
-          // }, err => {
-          //   this.spinner = false;
-          // }).catch(e => {
-          //   console.log(e)
-          // })
+                }, 150);
+            } else {
+              this.loginForm.reset()
+              this.toast.error(res.msg)
+              this.spinner = false;
+            }
+          }, err => {
+            this.spinner = false;
+          }).catch(e => {
+            console.log(e)
+          })
 
           this.sharedService.formName = "";
         } else {

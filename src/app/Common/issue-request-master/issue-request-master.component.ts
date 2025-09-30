@@ -41,7 +41,7 @@ export class IssueRequestMasterComponent implements OnInit {
  FILENAME:any;
  DOCUMENT_ATTECHED_LIST:any=[];
  SRNO:any;
- DatePipe = inject(DatePipe);
+
  ImageData:any;
  isReasonofErrorCR:boolean = true;
  isDescofErrorCR:boolean = true;
@@ -265,15 +265,15 @@ this.DOCUMENT_ATTECHED_LIST.forEach((element:any)=>{
 const keyToCheck = 'DATE';
 if((keyToCheck in element)){
   const dateObj = this.convertToDate(element.DATE);
-  let DATE = this.DatePipe.transform(dateObj,'yyyy-MM-dd');
-  element.DATE = DATE;
+///  let DATE = this.DatePipe.transform(dateObj,'yyyy-MM-dd');
+// element.DATE = DATE;
 }
 })
 
 
   let data = {
     "ISSUE_NO": this.ISSUE_NO,
-    "DATE": this.DatePipe.transform(this.REQUEST_DATE,'yyyy-MM-dd'),
+  //  "DATE": this.DatePipe.transform(this.REQUEST_DATE,'yyyy-MM-dd'),
     "REQUESTER": this.USER_ID,
     "USERID": this.USERID,
     "ISSUE_TYPE_CODE": this.ISSUE_TYPE_CODE,
