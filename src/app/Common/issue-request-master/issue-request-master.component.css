@@ -1,0 +1,84 @@
+.width-1{
+    width: 200px;
+}
+.width-2{
+    width: 150px;
+}
+/* .fileUpload-icon {
+    background-image: url("../../../assets/Images/Common-Image/DocumentUpload.png");
+    background-repeat: no-repeat;
+    height: 50px;
+    width: 100px;
+    background-position: center center;
+} */
+.text-header{
+    font-size: 1rem !important;
+    margin-bottom: 0rem !important;
+    font-weight: 600 !important;
+    font-family: "Roboto", sans-serif !important;
+}
+.view-text{
+    background: #c13d3d12;
+    color: #c13d3d;
+    padding: 2px 5px;
+    border-radius: 6px;
+    box-shadow: 0 .1875rem .5rem 0 rgba(34, 48, 62, .1);
+}
+.w-40{
+    width: 160px !important;
+}
+
+    
+.status_container{
+    display: inline-flex;
+    padding: 1px 10px;
+    font-size: 13px;
+    align-items: center;
+    color: rgb(18 85 141);
+    /* border-radius: 32px; */
+    /* border: 1px solid #1ea97c; */
+    /* background: #75bfff1f; */
+    background: rgba(228, 248, 240, 0.7);
+
+    }
+.history_container{
+    display: inline-flex;
+    padding: 1px 10px;
+    font-size: 13px;
+    align-items: center;
+    background: #c13d3d12;
+    color: #c13d3d;
+    }
+ 
+    
+.Approved{
+    font-size: 0.75rem; /* 12px */
+line-height: 1rem;
+    color: #198155;
+}
+.Reject{
+   font-size: 0.75rem; /* 12px */
+line-height: 1rem;
+    color: #D3180C;
+}
+.Raised{
+    font-size: 0.75rem; /* 12px */
+line-height: 1rem;
+    color: #A05E03;
+}
+.Revert{
+    font-size: 0.75rem; /* 12px */
+line-height: 1rem;
+    color: #0065D0;
+}
+/* .p-icon-wrapper{
+    display: block;
+    width: 0;
+    height: 0;
+} */
+
+/* .p-element  {
+    display: block;
+    width: 0;
+    height: 0;
+} */

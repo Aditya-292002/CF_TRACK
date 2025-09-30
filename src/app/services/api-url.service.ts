@@ -174,6 +174,7 @@ GetAppriasalDetails: string='/Setting/GetAppriasalDetails';
 SaveAppriasalDetailsByUserId: string='/Setting/SaveAppriasalDetailsByUserId';  
 GetSaveAppriasalList: string='/Setting/GetSaveAppriasalList';  
 GetAppriasalDetailsByUserId: string='/Setting/GetAppriasalDetailsByUserId';  
-
-
+SendOTP_getOTPassword: string='/TicketSystem/SendOTP_getOTPassword';  
+public VERIFYCLIENTDETAILS: string='/TicketSystem/VERIFYCLIENTDETAILS';  
+ public VERIFYOTP: string='/TicketSystem/VERIFYOTP';  
 }

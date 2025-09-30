@@ -67,10 +67,14 @@ import { PendingTaskComponent } from './Project/pending-task/pending-task.compon
 import { BankReceiptListComponent } from './Invoice/bank-receipt-list/bank-receipt-list.component';
 import { SelfAppraisalListComponent } from './Marketing/self-appraisal-list/self-appraisal-list.component';
 import { SelfAppraisalComponent } from './Marketing/self-appraisal/self-appraisal.component';
+import { TicketLoginComponent } from './Common/ticket-login/ticket-login.component';
+import { IssueRequestMasterComponent } from './Common/issue-request-master/issue-request-master.component';
 
 const routes: Routes = [
   {path: 'ForgotPasswordReset', component: ResetPasswordComponent },
   { path: 'login',component: LoginComponent },
+  
+  { path: 'clientlogin',component: TicketLoginComponent },
   {path: 'companyfyear', component:CompanyFyearComponent},
   {
     path: '',
@@ -137,6 +141,7 @@ const routes: Routes = [
       {path:"bankreceiptlist",component:BankReceiptListComponent},
       {path:"SelfAppraisal",component:SelfAppraisalComponent},
       {path:"SelfAppraisalList",component:SelfAppraisalListComponent},
+      { path: "issuerequestmaster", component: IssueRequestMasterComponent },
       {path: '**', component:Pnf400Component }
     ]
   },

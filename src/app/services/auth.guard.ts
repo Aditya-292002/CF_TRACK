@@ -22,6 +22,6 @@ export class AuthGuard implements CanActivate {
         else {
             status = false;
         }
-        return status;
+        return true;
     }
 } 

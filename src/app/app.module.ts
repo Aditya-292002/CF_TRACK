@@ -116,6 +116,8 @@ import { BankReceiptListComponent } from './Invoice/bank-receipt-list/bank-recei
 import { PanelModule } from 'primeng/panel';
 import { SelfAppraisalListComponent } from './Marketing/self-appraisal-list/self-appraisal-list.component';
 import { SelfAppraisalComponent } from './Marketing/self-appraisal/self-appraisal.component';
+import { TicketLoginComponent } from './Common/ticket-login/ticket-login.component';
+import { IssueRequestMasterComponent } from './Common/issue-request-master/issue-request-master.component';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -226,7 +228,9 @@ export const MY_DATE_FORMATS = {
     PendingTaskComponent,
     BankReceiptListComponent,
     SelfAppraisalComponent,
-    SelfAppraisalListComponent
+    SelfAppraisalListComponent,
+    TicketLoginComponent,
+    IssueRequestMasterComponent
   ],
   imports: [
     BrowserModule,
@@ -266,7 +270,7 @@ export const MY_DATE_FORMATS = {
     ToggleButtonModule, 
     TooltipModule,
     PdfViewerModule,
-    PanelModule
+    PanelModule,
   ],
   providers: [
     AuthGuard,
