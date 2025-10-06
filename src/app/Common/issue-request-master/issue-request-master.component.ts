@@ -1,6 +1,6 @@
-import { DatePipe } from '@angular/common';
+
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiUrlService } from 'src/app/services/api-url.service';
@@ -10,6 +10,7 @@ import { HttpRequestServiceService } from 'src/app/services/http-request-service
 import { RoutingService } from 'src/app/services/routing.service';
 import { SharedServiceService } from 'src/app/services/shared-service.service';
 import { ValidationService } from 'src/app/services/validation.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-issue-request-master',
@@ -86,6 +87,10 @@ export class IssueRequestMasterComponent implements OnInit {
  SaveConfirmationPopUp:boolean = false;
  minDate:any =new Date()
  maxDate:any = new Date()
+DatePipe: any;
+selectedOption: string = '';
+PRIORITY:any
+  dropdownList: { Value: string; Text: string; }[];
   // constructor(private router: Router, private urlService: UrlService, private Cmmon: CommonService,
   //   private apiService: ApiService,private sharedservice: SharedService,private route:ActivatedRoute
   //   ,private Toastr:ToastrService,private MessageService:MessageService) { }
@@ -100,7 +105,8 @@ export class IssueRequestMasterComponent implements OnInit {
         private apiurl: ApiUrlService,
         private validationService: ValidationService,
         private encr: EncryptionService,
-        private router: Router
+        private router: Router,
+        private datepipe:DatePipe
       ) { }
    
    ngOnInit(): void {
@@ -114,6 +120,12 @@ export class IssueRequestMasterComponent implements OnInit {
     this.GET_STATUS_CODE = localStorage.getItem('STATUS_CODE'); 
     this.IS_REVERT = localStorage.getItem('IS_REVERT');
     this.GETISSUEREQUESTMASTER();
+
+    this.dropdownList = [
+    { Value: 'A', Text: 'Option A' },
+    { Value: 'B', Text: 'Option B' },
+    { Value: 'C', Text: 'Option C' }
+  ];
     if(this.MODE == 'A'){
        this.IS_UPDATE = true;
     }
@@ -123,7 +135,8 @@ export class IssueRequestMasterComponent implements OnInit {
       this.GETISSUERAISEDHISTORY(0);
     }
   }
- 
+  
+
   GETISSUEREQUESTMASTER() {
    let data = {
      "USER_ID": (+this.USER_ID),
@@ -273,7 +286,7 @@ if((keyToCheck in element)){
 
   let data = {
     "ISSUE_NO": this.ISSUE_NO,
-  //  "DATE": this.DatePipe.transform(this.REQUEST_DATE,'yyyy-MM-dd'),
+    "DATE": this.datepipe.transform(this.REQUEST_DATE,'yyyy-MM-dd'),
     "REQUESTER": this.USER_ID,
     "USERID": this.USERID,
     "ISSUE_TYPE_CODE": this.ISSUE_TYPE_CODE,
@@ -544,6 +557,10 @@ if((keyToCheck in element)){
       document.body.removeChild(modal);
     });
   }
-
+getvalue(){
+  console.log(this.PRIORITY,'getvalue');
+  
+}
 
 }
+
