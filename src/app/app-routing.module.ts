@@ -84,7 +84,7 @@ const routes: Routes = [
     children: [
       // {path: '', component:DashboardComponent },
       // {path: '', component:CalendarComponent},
-      {path: 'dashboard', component:IssueRequestMasterComponent },
+      {path: 'dashboard', component:DashboardComponent },
       {path: 'calendar', component:CalendarComponent},
       {path: 'employeeinfo', component:EmployeeComponent },
       {path: 'customer', component:CustomerComponent },
@@ -141,7 +141,7 @@ const routes: Routes = [
       {path:"bankreceiptlist",component:BankReceiptListComponent},
       {path:"SelfAppraisal",component:SelfAppraisalComponent},
       {path:"SelfAppraisalList",component:SelfAppraisalListComponent},
-      { path: "issuerequestmaster", component: IssueRequestMasterComponent },
+      {path: "issuerequestmaster", component: IssueRequestMasterComponent },
       {path: '**', component:Pnf400Component }
     ]
   },

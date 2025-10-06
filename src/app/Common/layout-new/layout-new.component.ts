@@ -65,6 +65,7 @@ export class LayoutNewComponent implements OnInit {
   mergedData:any = [];
   TODATE:any = new Date();
   SUBMITION_LAST_DATE:any;
+  role_id: number;
 
 constructor(
   private route: RoutingService,
@@ -278,6 +279,9 @@ onLoadCheckAttendance() {
     this.SYS_DATE_TIME = this.datePipe.transform(new Date(), 'dd-MMM-yyyy hh:mm:ss')
     let data = {  }
     this.http.PostRequest(this.apiUrl.Check_Attendance, data).then(res => {
+      if(this.role_id==10){
+        this.isAttendance = false;        
+      }
       if(this.role_name == "MANAGEMENT"){
         this.isAttendance = true; 
       }
@@ -285,7 +289,12 @@ onLoadCheckAttendance() {
         this.attendance_type = res.attendance_type
         this.ATT_DATE = res.Date;
         this.EMP_NAME = this.sharedService.loginUser[0].EMP_CODE +" - "+this.sharedService.loginUser[0].USER_NAME
-        jQuery(this.attendance.nativeElement).modal('show')
+        console.log(' EMP_NAME -> ',this.EMP_NAME)
+         if(this.EMP_NAME!='1234'){
+          jQuery(this.attendance.nativeElement).modal('hide')
+        }else{
+          jQuery(this.attendance.nativeElement).modal('show')
+        }
         this.isAttendance = false;
       } else {
         this.isAttendance = true; 
@@ -302,7 +311,10 @@ CheckAttendance(para:any) {
         this.attendance_type = res.attendance_type
         this.ATT_DATE = res.Date;
         this.EMP_NAME = this.sharedService.loginUser[0].EMP_CODE +" - "+this.sharedService.loginUser[0].USER_NAME
-        jQuery(this.attendance.nativeElement).modal('show')
+         if(this.EMP_NAME!='1234'){
+
+          jQuery(this.attendance.nativeElement).modal('show')
+        }
         this.isAttendance = false;
       } else {
         this.isAttendance = true;
@@ -364,7 +376,12 @@ f_clearPopup() {
 }
 
 f_logout(){
-    this.authService.logout();
+  if(this.role_id==10){
+
+    this.authService.clientLogout();
+  }else{
+this.authService.logout();
+  }
     this.sharedService.loginUser =[{}]
 }
 

@@ -38,6 +38,7 @@ input4: string = '';
   @ViewChild('inputRef2', { static: false }) inputRef2!: ElementRef;
   @ViewChild('inputRef3', { static: false }) inputRef3!: ElementRef;
   @ViewChild('inputRef4', { static: false }) inputRef4!: ElementRef;
+  OTPASS: string='';
   constructor(
     private authService: AuthServiceService,
     private route: RoutingService,
@@ -70,18 +71,21 @@ input4: string = '';
   }
 
   onSubmitLogin() {
-    if (this.loginForm.valid) {
+    // if (this.loginForm.valid) {
       this.spinner = true;
-      let _username = this.encr.JS_ENCRYPT_STRING(this.loginForm.getRawValue().username)
-      // let _password = this.encr.JS_ENCRYPT_STRING(this.loginForm.getRawValue().password)
+        console.log('data1',this.OTPASS);
+      let _username = this.encr.JS_ENCRYPT_STRING(this.login_userId)
+      let _password = this.encr.JS_ENCRYPT_STRING(this.getOtp())
       let data = {
         grant_type: "password",
         UserName: _username,
-        // Password: _password
+        Password: _password
       }
-  
+  console.log('data1',data);
        let _data = "grant_type=password&password=" + "&username=" + encodeURIComponent(_username)
       this.OTPFLAG=false;
+      console.log('data',_data);
+      
       this.http.getToken(_data).then((res:any) => {
         if (res.flag) {
           this.http.PostRequest(this.apiurl.GetUserDetail, data).then((res:any) => {
@@ -96,7 +100,11 @@ input4: string = '';
                   // this.route.changeRoute('');
                   if(this.login_user === '1001'){
                     this.route.changeRoute('/dashboard');
-                  }else{
+                  }
+                  else if(this.login_user === '1234'){
+                    this.route.changeRoute('/issuerequestmaster');
+                  }
+                  else{
                     this.route.changeRoute('/calendar');
                   }
                  
@@ -125,10 +133,10 @@ input4: string = '';
       })
 
 
-    } else {
-      this.f_loginFormValidations();
+    // } else {
+     // this.f_loginFormValidations();
       this.spinner = false;
-    }
+    // }
   }
 
   f_loginFormValidations(){
@@ -156,13 +164,14 @@ input4: string = '';
       this.forgotPass_email.nativeElement.focus();
       return;
     }
-    this.spinner = true;
+   // this.spinner = true;
 
     let data = {
       EMAIL: this.login_userId,
       TYPE: "forgot"
     }
-
+    this.OTPFLAG=true
+    return
       this.http.PostRequest(this.apiurl.VERIFYCLIENTDETAILS, data).then(res => {
         if (res.flag==1) {
           //this.isForgetSceen = false;
@@ -247,10 +256,11 @@ input4: string = '';
       this.http.PostRequest(this.apiurl.SendOTP_getOTPassword, data).then(res => {
         if (res.flag) {
           this.isForgetSceen = false;
-          this.spinner = false;
+          this.spinner = false;``
           // this.login_userId = "";
           this.OTPFLAG=true
           this.toast.success(res.msg)
+          this.otpExpired=false
         } else {
           this.isForgetSceen = false;
           this.spinner = false;
@@ -340,15 +350,15 @@ input4: string = '';
       console.log('data',data);
       
     
-      this.http.PostRequest(this.apiurl.VERIFYOTP, data).then(res => {
+      this.http.PostRequest(this.apiurl.VERIFYOTP, data).then(async res => {
         if (res.flag) {
           console.log('inside flag');
           
           //this.isForgetSceen = false;
-          this.geToken();
+         // await this.geToken();
           this.spinner = false;
           this.login_userId = "";
-           this.route.changeRoute('/issuerequestmaster'); 
+           this.route.changeRoute('/dasboard'); 
           this.toast.success(res.msg)
         } else {
         //  this.isForgetSceen = false;
@@ -431,14 +441,18 @@ get seconds(): string {
   }
 
 getOtp(): string {
+  this.OTPASS="";
+    this.OTPASS= (this.input1 || '') + (this.input2 || '') + (this.input3 || '') + (this.input4 || '');
   return (this.input1 || '') + (this.input2 || '') + (this.input3 || '') + (this.input4 || '');
 }
 
-  geToken() {
-    if (this.loginForm.valid) {
+  async geToken() {
+    // if (this.loginForm.valid) {
+      console.log('this.OTPASS',this.OTPASS);
       this.spinner = true;
       let _username = this.encr.JS_ENCRYPT_STRING(this.login_userId)
-      let _password = this.encr.JS_ENCRYPT_STRING(this.getOtp())
+      let _password = this.encr.JS_ENCRYPT_STRING(this.OTPASS)
+      
       let data = {
         grant_type: "password",
         UserName: _username,
@@ -446,19 +460,20 @@ getOtp(): string {
       }
   
       let _data = "grant_type=password&password=" + encodeURIComponent(_password) + "&username=" + encodeURIComponent(_username)
+      console.log('data geToken',data);
       
       this.http.getToken(_data).then((res:any) => {
         if (res.flag) {
           console.log('inside token ',res);
-          
+          this.submitOTP();
           this.http.PostRequest(this.apiurl.GetUserDetail, data).then((res:any) => {
             if (res.flag) {
-              this.sharedService.loginUser = res.user_detail;
-              this.sharedService.profile_pic = res.b64;
-              sessionStorage.setItem('user_detail', JSON.stringify(res.user_detail))
-              sessionStorage.setItem('profile_pic', res.b64)
-              this.sharedService.formName = "";
-              this.login_user = this.sharedService.loginUser[0].EMP_CODE 
+             this.sharedService.loginUser = res.user_detail;
+             this.sharedService.profile_pic = res.b64;
+             sessionStorage.setItem('user_detail', JSON.stringify(res.user_detail))
+             sessionStorage.setItem('profile_pic', res.b64)
+             this.sharedService.formName = "";
+             this.login_user = this.sharedService.loginUser[0].EMP_CODE 
                 setTimeout(() => {
                   // this.route.changeRoute('');
                   if(this.login_user === '1001'){
@@ -492,9 +507,9 @@ getOtp(): string {
       })
 
 
-    } else {
-      this.f_loginFormValidations();
-      this.spinner = false;
-    }
+    // } else {
+      // this.f_loginFormValidations();
+      // this.spinner = false;
+    // }
   }
 }

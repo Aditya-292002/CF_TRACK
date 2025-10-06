@@ -25,7 +25,7 @@
                             (e.g. john.doe@comflextech.com ).</label>
 
                         <div class="px-2">
-                            <form (ngSubmit)="onSubmitForgot()" class="forms justify-content-center">
+                            <form  class="forms justify-content-center">
                                 <div class="form-group">
                                     <label class="sr-only">Email Id</label>
                                     <input type="text" [(ngModel)]="login_userId" class="form-control"
@@ -33,7 +33,7 @@
                                         [ngModelOptions]="{ standalone: true }" required />
                                 </div>
                                 <div>
-                                    <button type="submit" class="btn btn-primary btn-lg loginBtn">
+                                    <button type="submit" (click)="onSubmitForgot()" class="btn btn-primary btn-lg loginBtn">
                                         Send OTP
                                     </button>
                                 </div>
@@ -52,45 +52,51 @@
                         </div>
                         <h6 class="text-truncate text_header px-2">Enter OTP</h6>
                         <div class="px-2">
-                            <form (ngSubmit)="submitOTP()" class="forms justify-content-center">
+                            <form (ngSubmit)="onSubmitLogin()" class="forms justify-content-center">
                                 <div class="form-group">
-<div class="otp-container">
-  <input type="text" maxlength="1" class="otp-input"  [(ngModel)]="input1" name="input1"
-         (input)="onInput($event, 1)" (keydown)="onKeyDown($event, 1)"  #inputRef1 />
-  <input type="text" maxlength="1" class="otp-input" [(ngModel)]="input2" name="input2"
-         (input)="onInput($event, 2)" (keydown)="onKeyDown($event, 2)" #inputRef2 />
-  <input type="text" maxlength="1" class="otp-input" [(ngModel)]="input3" name="input3"
-         (input)="onInput($event, 3)" (keydown)="onKeyDown($event, 3)" #inputRef3 />
-  <input type="text" maxlength="1" class="otp-input" [(ngModel)]="input4" name="input4"
-         (input)="onInput($event, 4)" (keydown)="onKeyDown($event, 4)" #inputRef4 />
-</div>
+                                    <div class="otp-container">
+                                        <input type="text" maxlength="1" class="otp-input" [(ngModel)]="input1"
+                                            name="input1" (input)="onInput($event, 1)" (keydown)="onKeyDown($event, 1)"
+                                            #inputRef1 />
+                                        <input type="text" maxlength="1" class="otp-input" [(ngModel)]="input2"
+                                            name="input2" (input)="onInput($event, 2)" (keydown)="onKeyDown($event, 2)"
+                                            #inputRef2 />
+                                        <input type="text" maxlength="1" class="otp-input" [(ngModel)]="input3"
+                                            name="input3" (input)="onInput($event, 3)" (keydown)="onKeyDown($event, 3)"
+                                            #inputRef3 />
+                                        <input type="text" maxlength="1" class="otp-input" [(ngModel)]="input4"
+                                            name="input4" (input)="onInput($event, 4)" (keydown)="onKeyDown($event, 4)"
+                                            #inputRef4 />
+                                    </div>
 
                                     <div *ngIf="!otpExpired">
                                         <p>OTP expires in: {{ minutes }}:{{ seconds }}</p>
                                     </div>
-                                    <div *ngIf="otpExpired">
-                                        <p style="color: red;">OTP expired.</p>
-                                        <button (click)="sendOTPassword()">Resend OTP</button>
-                                    </div>
-                               
-                                <!-- <button (click)="submitOTP()">Submit OTP</button> -->
 
-                        </div>
-                        <div>
-                            <button *ngIf="!otpExpired" type="submit" class="btn btn-primary btn-lg loginBtn">
-                                Submit
-                            </button>
-                        </div>
-                        <!-- <a
+
+                                    <!-- <button (click)="submitOTP()">Submit OTP</button> -->
+
+                                </div>
+                                <div>
+                                    <button *ngIf="!otpExpired" type="submit" class="btn btn-primary btn-lg loginBtn">
+                                        Submit
+                                    </button>
+                                </div>
+                                <!-- <a
                   class="forget-text float-right"
                   (click)="isForgetSceen = !isForgetSceen; login_userId = ''"
                   >Back to Login</a
                 > -->
-                        </form>
+                            </form>
+
+                            <div *ngIf="otpExpired">
+                                <p style="color: red;">OTP expired.</p>
+                                <button (click)="sendOTPassword()">Resend OTP</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
