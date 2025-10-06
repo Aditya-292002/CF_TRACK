@@ -23,7 +23,7 @@ export class LayoutNewComponent implements OnInit {
   @ViewChild('chagefyear', { static: false }) chagefyear: ElementRef;
   @HostListener('click', ['$event.target'])
 
-  UserId:any;
+  UserId:any="";
   login_user:any = "";
   role_name:any = "";
   designation:any = "";

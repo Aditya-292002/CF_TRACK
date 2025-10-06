@@ -99,16 +99,15 @@
           </option>
           </select> -->
           <!-- <input pInputText type="text" id="issue_no" class="pInputText " [(ngModel)]="PRIORITY_CODE" > -->
-        
-          <select class="form-control selectpicker show-tick"  id="CODE"  data-live-search="true" title="Select">
+          <div class="floating-input list-btn">
+          <select class="form-control selectpicker show-tick"  id="PRIORITY"  [ngModelOptions]="{ standalone: true }" data-live-search="true" title="Select priority"  [(ngModel)]="this.PRIORITY">
 									<option *ngFor = "let opt of dropdownList; let i = index"
 									[selected]="opt.Value == this.PRIORITY"
-                  [ngModelOptions]="{ standalone: true }"
-                  [(ngModel)]="this.PRIORITY"
-                  (select)="getvalue()"
-									[value]="opt.Value">{{ opt.Value }}</option>                     
+                 
+                  (onchange)="getvalue()"
+									[value]="opt.Value">{{ opt.Text }}</option>                     
 								</select>
-         
+         </div>
         </div>
 
         <div class="col-6">

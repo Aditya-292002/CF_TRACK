@@ -37,7 +37,7 @@ export class IssueRequestMasterComponent implements OnInit {
  ISSUE_LIST:any=[];
  FUNCTION_LIST:any=[];
  USER_NAME:any;
- USERID:any;
+ USERID:any="";
  Image:any;
  FILENAME:any;
  DOCUMENT_ATTECHED_LIST:any=[];
@@ -561,6 +561,7 @@ getvalue(){
   console.log(this.PRIORITY,'getvalue');
   
 }
+UserId() {}
 
 }
 
