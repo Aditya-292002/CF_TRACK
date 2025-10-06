@@ -5,7 +5,8 @@
         <h5 class="text-xl" *ngIf="this.MODE == 'A'">Create Issue Raised</h5>
         <h5 class="text-xl" *ngIf="this.MODE == 'E'">Update Issue Raised</h5>
         <p class="Text_Primary Helper_Text status_container" *ngIf="this.MODE == 'E'">{{ STATUS_NAME }}</p>
-        <p class="Text_Primary Helper_Text history_container" *ngIf="this.MODE == 'E' && this.COMMENT_HISTORY.length > 0">
+        <p class="Text_Primary Helper_Text history_container"
+          *ngIf="this.MODE == 'E' && this.COMMENT_HISTORY.length > 0">
           ( Please Check History)
         </p>
       </div>
@@ -39,225 +40,139 @@
     </div>
   </div>
 
+  <!-- Ithun start -->
   <div class="card">
-    <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-4">
-      <div class="">
-        <label for="issue_no" class="w-full surface-800 font-semibold text-sm">Issue No.</label>
-        <input
-          pInputText
-          type="text"
-          id="issue_no"
-          class="pInputText w-full"
-          [(ngModel)]="ISSUE_NO"
-          disabled>
-      </div>
 
-      <div class="">
-        <label for="date" class="w-full surface-800 font-semibold text-sm">
-          Date <span class="text-red-600">*</span>
-        </label>
-        <!-- <p-calendar
-          [(ngModel)]="REQUEST_DATE"
-          [iconDisplay]="'input'"
-          [showIcon]="true"
-          class="w-full"
-          [minDate]="minDate"
-          [maxDate]="maxDate"
-          dateFormat="dd/mm/yy"
-          inputId="icondisplay"
-          [disabled]="this.IS_UPDATE == false || this.IS_CANCEL == 1">
-        </p-calendar> -->
-      </div>
+    <div class="container">
 
-      <div class="md:col-span-2 lg:col-span-2">
-        <label for="requester" class="w-full surface-800 font-semibold text-sm">Created By</label>
-        <input
-          pInputText
-          type="text"
-          id="requester"
-          class="pInputText w-full"
-          [(ngModel)]="REQUESTER"
-          disabled>
-      </div>
-    </div>
+      <div class="row">
 
-    <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-4 mt-2">
-      <div class="md:col-span-2 lg:col-span-2">
-        <label for="raisedby" class="w-full surface-800 font-semibold text-sm">
-          Raised By <span class="text-red-600">*</span>
-        </label>
-        <!-- <p-dropdown
-          [options]="USER_LIST"
-          [(ngModel)]="USERID"
-          optionLabel="USERNAME"
-          [filter]="true"
-          class="w-full"
-          filterBy="USERNAME"
-          [showClear]="true"
-          placeholder="Please Select"
-          [disabled]="this.IS_UPDATE == false || this.IS_CANCEL == 1">
-          <ng-template pTemplate="selectedItem" let-selectedOption>
-            <div class="flex align-items-center">
-              <div>{{ selectedOption.USERNAME }}</div>
+        <div class="col-3">
+          <label for="issue_no" class="w-50">Issue No.</label>
+          <input pInputText type="text" id="issue_no" class="pInputText form-control form-control-sm"[(ngModel)]="ISSUE_NO" disabled>
+        </div>
+
+        <div class="col-3">
+          <label for="Date" class=" w-50">Date</label>
+          <input pInputText type="date" id="issue_no" class="pInputText " [(ngModel)]="REQUEST_DATE">
+        </div>
+
+        <div class="col-6">
+          <label for="Product Code" class="w-50">Product Code</label>
+          <input pInputText type="text" id="issue_no" class="pInputText " [(ngModel)]="ISSUE_NO">
+        </div>
+         
+
+        <div class="col-3 d-flex flex-column">
+          <div>
+            <label for="issue_no" class="w-50 ">Raised By</label>
+          </div>
+
+          <div class="d-flex justify-content-between ">
+
+            <div class="d-flex align-items-center ">
+              <label for="Self" class="mr-2">Self</label>
+              <input type="radio" id="issue_no" class="pInputText" [(ngModel)]="ISSUE_NO">
             </div>
-          </ng-template>
-          <ng-template let-country pTemplate="item">
-            <div class="flex align-items-center">
-              <div>{{ country.USERNAME }}</div>
+
+            <div class="d-flex align-items-center ">
+              <label for="Other" class="mr-2">Other</label>
+              <input type="radio" id="issue_no" class="pInputText" [(ngModel)]="ISSUE_NO">
             </div>
-          </ng-template>
-        </p-dropdown> -->
-      </div>
 
-      <div class="">
-        <label for="issuetype" class="w-full surface-800 font-semibold text-sm">
-          Issue Type <span class="text-red-600">*</span>
-        </label>
-        <!-- <p-dropdown
-          [options]="ISSUE_LIST"
-          [(ngModel)]="ISSUE_TYPE_CODE"
-          class="w-full"
-          optionValue="ISSUE_TYPE_CODE"
-          (ngModelChange)="GetissueSelect(ISSUE_TYPE_CODE)"
-          optionLabel="ISSUE_TYPE_DESC"
-          placeholder="Please Select"
-          [disabled]="this.IS_UPDATE == false || this.IS_CANCEL == 1">
-        </p-dropdown> -->
-      </div>
+            <div class="">
+            </div>
+          </div>
+        </div>
+      
+        <div class="col-5">
+          <label for="issue_no" class="w-50">Issue Type</label>
+          <input pInputText type="text" id="issue_no" class="pInputText " [(ngModel)]="ISSUE_TYPE_CODE" >
+        </div>
 
-      <div class="">
-        <label for="priority" class="w-full surface-800 font-semibold text-sm">
-          Priority <span class="text-red-600">*</span>
-        </label>
-        <!-- <p-dropdown
-          [options]="PRIORITY_LIST"
-          [(ngModel)]="PRIORITY_CODE"
-          class="w-full"
-          optionValue="PRIORITY_CODE"
-          optionLabel="PRIORITY_DESC"
-          placeholder="Please Select"
-          [disabled]="this.IS_UPDATE == false || this.IS_CANCEL == 1">
-        </p-dropdown> -->
-      </div>
+        <div class="col-4">
+          <label for="issue_no" class="w-50">Priority</label>
+          <!-- <select class="" id="dropdown" [(ngModel)]="selectedOption">
+          <option value="">-- Choose Option --</option>
+          <option *ngFor="let item of dropdownList" [value]="item.Value">
+          {{ item.Text }}
+          </option>
+          </select> -->
+          <!-- <input pInputText type="text" id="issue_no" class="pInputText " [(ngModel)]="PRIORITY_CODE" > -->
+        
+          <select class="form-control selectpicker show-tick"  id="CODE"  data-live-search="true" title="Select">
+									<option *ngFor = "let opt of dropdownList; let i = index"
+									[selected]="opt.Value == this.PRIORITY"
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="this.PRIORITY"
+                  (select)="getvalue()"
+									[value]="opt.Value">{{ opt.Value }}</option>                     
+								</select>
+         
+        </div>
+
+        <div class="col-6">
+          <label for="issue_no" class="w-50">Issue Subject</label>
+          
+          <input pInputText type="text" id="issue_no" class="pInputText " [(ngModel)]="ISSUE_SUBJECT"  >
+        </div>
+
+        <div class="col-3">
+          <label for="issue_no" class="w-50">Module</label>
+          <input pInputText type="text" id="issue_no" class="pInputText " [(ngModel)]="MODULE_CODE" disabled >
+        </div>
+
+         <div class="col-3">
+          <label for="issue_no" class="w-50">Function</label>
+          <input pInputText type="text" id="issue_no" class="pInputText " [(ngModel)]="FUNCTION_CODE" disabled >
+        </div>
+       
+
+       
+       <div class="col-6 ">
+          <label for="issue_no" class="">Reason of CR </label>
+           <div>
+            <textarea  id="Reason of CR" class="pInputText w-100 " rows="4" [(ngModel)]="REASON_ISSUE" ></textarea> 
+           </div>
+        
+          <!-- <input pInputText type="text" id="issue_no" class="pInputText " [(ngModel)]="ISSUE_NO"  >  -->
+        </div>
+
+        <div class="col-6">
+          <label for="issue_no" >Description of CR</label>
+           <div>
+            <textarea  id="Reason of CR" class="pInputText w-100 " rows="4"  [(ngModel)]="DESC_ISSUE" ></textarea> 
+           </div>
+        </div>   
+
+
+
+
+      
+    
+
+      
+
+      
+
+   
+
+
+     
+
+
+
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-4 mt-2">
-      <div class="w-full">
-        <div
-          class="flex justify-between"
-          *ngIf="(this.IS_CANCEL == null && this.IS_UPDATE == true) || this.MODE == 'A'">
-          <label
-            for="Module"
-            class="mr-2 cursor-pointer font-semibold text-sm underline text-sky-800"
-            (keypress)="onKeyPressModule($event)"
-            (click)="showModuleDialog()"
-            tabindex="0">Module</label>
-        </div>
-        <div
-          *ngIf="this.IS_CANCEL == 1 || (this.IS_UPDATE == false && this.MODE == 'E')">
-          <label for="Module" class="mr-2 surface-800 font-semibold text-sm">Module</label>
-        </div>
-        <div>
-          <input
-            pInputText
-            type="text"
-            class="pInputText w-full"
-            [(ngModel)]="MODULE_DESC"
-            disabled>
-        </div>
-      </div>
 
-      <div class="">
-        <div
-          class="flex justify-between"
-          *ngIf="(this.IS_CANCEL == null && this.IS_UPDATE == true) || this.MODE == 'A'">
-          <label
-            for="function"
-            class="mr-2 cursor-pointer font-semibold text-sm underline text-sky-800"
-            (keypress)="onKeyPressFunction($event)"
-            (click)="showFunctionDialog()"
-            tabindex="0">Function</label>
-        </div>
-        <div
-          *ngIf="this.IS_CANCEL == 1 || (this.IS_UPDATE == false && this.MODE == 'E')">
-          <label for="function" class="mr-2 surface-800 font-semibold text-sm">Function</label>
-        </div>
-        <div>
-          <input
-            pInputText
-            type="text"
-            class="pInputText w-full"
-            [(ngModel)]="FUNCTION_DESC"
-            disabled>
-        </div>
-      </div>
 
-      <div class="md:col-span-2 lg:col-span-2">
-        <label for="issuesubject" class="w-full surface-800 font-semibold text-sm">
-          Issue Subject <span class="text-red-600">*</span>
-        </label>
-        <input
-          pInputText
-          type="text"
-          id="issuesubject"
-          class="pInputText w-full"
-          [(ngModel)]="ISSUE_SUBJECT"
-          placeholder="Enter Subject"
-          [disabled]="this.IS_UPDATE == false || this.IS_CANCEL == 1">
-      </div>
-    </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-2 gap-4 mt-2">
-      <div *ngIf="this.isReasonofErrorCR == true">
-        <label
-          for="reasonissue"
-          class="w-full surface-800 font-semibold text-sm"
-          *ngIf="!isReasonofErrorCR">Reason of Issue <span class="text-red-600">*</span></label>
-        <label
-          for="reasonissue"
-          class="w-full surface-800 font-semibold text-sm"
-          *ngIf="isDescofErrorCR">Reason of CR <span class="text-red-600">*</span></label>
-        <textarea
-          rows="5"
-          pInputTextarea
-          id="reasonissue"
-          style="resize: none;"
-          class="pInputText w-full"
-          [(ngModel)]="REASON_ISSUE"
-          placeholder="Enter Reason"
-          [disabled]="this.IS_UPDATE == false || this.IS_CANCEL == 1">
-        </textarea>
-      </div>
-      <div *ngIf="this.isDescofErrorCR == true">
-        <label
-          for="descissue"
-          class="w-full surface-800 font-semibold text-sm"
-          *ngIf="!isReasonofErrorCR">Description of Issue <span class="text-red-600">*</span></label>
-        <label
-          for="descissue"
-          class="w-full surface-800 font-semibold text-sm"
-          *ngIf="isReasonofErrorCR">Description of CR <span class="text-red-600">*</span></label>
-        <textarea
-          rows="5"
-          pInputTextarea
-          id="descissue"
-          class="pInputText w-full"
-          placeholder="Enter Description"
-          [(ngModel)]="DESC_ISSUE"
-          [disabled]="this.IS_UPDATE == false || this.IS_CANCEL == 1">
-        </textarea>
-      </div>
-    </div>
+
   </div>
-
+  <!-- Ithun Khali -->
   <div header="" class="">
     <div>
-      <input
-        type="file"
-        (change)="onFileSelected($event)"
-        accept=".jpg,.png,.jpeg,.pdf,.xlsx,.docx"
-        multiple
-        hidden
+      <input type="file" (change)="onFileSelected($event)" accept=".jpg,.png,.jpeg,.pdf,.xlsx,.docx" multiple hidden
         #fileInput>
       <!-- <p-button
         label="Add"
@@ -267,9 +182,7 @@
         (click)="fileInput.click()">
       </p-button> -->
     </div>
-    <div
-      class="mt-2"
-      [ngClass]="this.MODE == 'E' ? 'md:w-2/3 lg:w-2/3' : 'md:w-2/4 lg:w-2/4'">
+    <div class="mt-2" [ngClass]="this.MODE == 'E' ? 'md:w-2/3 lg:w-2/3' : 'md:w-2/4 lg:w-2/4'">
       <p-table [value]="DOCUMENT_ATTECHED_LIST">
         <ng-template pTemplate="header">
           <tr>
@@ -287,23 +200,13 @@
             <td [ngClass]="this.MODE == 'E' ? 'w-40' : 'w-50'">
               <button
                 *ngIf="data.FILE_EXTENSION == 'png' || data.FILE_EXTENSION == 'jpg' || data.FILE_EXTENSION == 'jpeg'"
-                pButton
-                (click)="openImageInNewWindow(data.DOC_BASE64)"
-                icon="pi pi-eye"
+                pButton (click)="openImageInNewWindow(data.DOC_BASE64)" icon="pi pi-eye" class="p-button-danger">
+              </button>
+              <button pButton (click)="DownloadDocument(data.DOC_BASE64, data.FILE_NAME)" icon="pi pi-download"
                 class="p-button-danger">
               </button>
-              <button
-                pButton
-                (click)="DownloadDocument(data.DOC_BASE64, data.FILE_NAME)"
-                icon="pi pi-download"
-                class="p-button-danger">
-              </button>
-              <button
-                *ngIf="this.IS_UPDATE == true && (this.IS_CANCEL == 0 || this.IS_CANCEL == null)"
-                pButton
-                (click)="removeImage(data)"
-                icon="pi pi-trash"
-                class="p-button-danger">
+              <button *ngIf="this.IS_UPDATE == true && (this.IS_CANCEL == 0 || this.IS_CANCEL == null)" pButton
+                (click)="removeImage(data)" icon="pi pi-trash" class="p-button-danger">
               </button>
             </td>
             <!-- <p-overlayPanel #op>
@@ -318,42 +221,22 @@
 
     <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-4">
       <div class="md:col-span-2 lg:col-span-2" *ngIf="this.IS_REVERT == 1">
-        <label
-          for="REVERT_COMMENT"
-          class="Text_Primary Helper_Text font-bold">Comment <span class="text-red-600">*</span></label>
-        <textarea
-          rows="2"
-          pInputTextarea
-          id="REVERT_COMMENT"
-          class="pInputText w-full"
-          style="resize: none;"
-          placeholder="Enter Comment"
-          [(ngModel)]="REVERT_COMMENT">
+        <label for="REVERT_COMMENT" class="Text_Primary Helper_Text font-bold">Comment <span
+            class="text-red-600">*</span></label>
+        <textarea rows="2" pInputTextarea id="REVERT_COMMENT" class="pInputText w-full" style="resize: none;"
+          placeholder="Enter Comment" [(ngModel)]="REVERT_COMMENT">
         </textarea>
       </div>
     </div>
   </div>
 </div>
 
-<p-dialog
-  header="Module Detail list"
-  [(visible)]="visibleModule"
-  [modal]="true"
-  [style]="{ width: '50rem' }">
-  <p-table
-    #dt1
-    [value]="MODULE_LIST"
-    [scrollable]="true"
-    scrollHeight="400px"
-    dataKey="CODE"
+<p-dialog header="Module Detail list" [(visible)]="visibleModule" [modal]="true" [style]="{ width: '50rem' }">
+  <p-table #dt1 [value]="MODULE_LIST" [scrollable]="true" scrollHeight="400px" dataKey="CODE"
     [globalFilterFields]="['CODE', 'DESCRIPTION']">
     <ng-template pTemplate="caption">
       <div class="flex justify-end w-full">
-        <input
-          pInputText
-          [ngModel]="SearchVlaue"
-          class="w-full"
-          (input)="onGlobalFilter(dt1, $event)"
+        <input pInputText [ngModel]="SearchVlaue" class="w-full" (input)="onGlobalFilter(dt1, $event)"
           placeholder="Keyboard Search">
       </div>
     </ng-template>
@@ -372,25 +255,12 @@
   </p-table>
 </p-dialog>
 
-<p-dialog
-  header="Function Detail list"
-  [(visible)]="visibleFunction"
-  [modal]="true"
-  [style]="{ width: '50rem' }">
-  <p-table
-    #dt
-    [value]="FUNCTION_LIST"
-    [scrollable]="true"
-    scrollHeight="400px"
-    dataKey="FUNCTION_CODE"
+<p-dialog header="Function Detail list" [(visible)]="visibleFunction" [modal]="true" [style]="{ width: '50rem' }">
+  <p-table #dt [value]="FUNCTION_LIST" [scrollable]="true" scrollHeight="400px" dataKey="FUNCTION_CODE"
     [globalFilterFields]="['FUNCTION_NAME', 'FUNCTION_CODE']">
     <ng-template pTemplate="caption">
       <div class="flex w-full justify-end">
-        <input
-          pInputText
-          class="w-full"
-          [ngModel]="SearchVlaue"
-          (input)="onGlobalFilter(dt, $event)"
+        <input pInputText class="w-full" [ngModel]="SearchVlaue" (input)="onGlobalFilter(dt, $event)"
           placeholder="Keyboard Search">
       </div>
     </ng-template>
@@ -404,20 +274,14 @@
     <ng-template pTemplate="body" let-list let-rowIndex="rowIndex">
       <tr>
         <td>{{ rowIndex + 1 }}</td>
-        <td
-          class="text-color-primary cursor-pointer"
-          (click)="AddFunCode(list)">{{ list.FUNCTION_CODE }}</td>
+        <td class="text-color-primary cursor-pointer" (click)="AddFunCode(list)">{{ list.FUNCTION_CODE }}</td>
         <td (click)="AddFunCode(list)">{{ list.FUNCTION_NAME }}</td>
       </tr>
     </ng-template>
   </p-table>
 </p-dialog>
 
-<p-dialog
-  header="History Details"
-  [(visible)]="visibleHistoryFun"
-  [modal]="true"
-  [style]="{ width: '50rem' }">
+<p-dialog header="History Details" [(visible)]="visibleHistoryFun" [modal]="true" [style]="{ width: '50rem' }">
   <div>
     <div>
       <!-- <p-accordion [activeIndex]="0">
@@ -460,12 +324,7 @@
   </div>
 </p-dialog>
 
-<p-dialog
-  header=""
-  [modal]="true"
-  [closable]="false"
-  [(visible)]="SaveConfirmationPopUp"
-  [style]="{ width: '25rem' }">
+<p-dialog header="" [modal]="true" [closable]="false" [(visible)]="SaveConfirmationPopUp" [style]="{ width: '25rem' }">
   <span class="p-text-secondary mb-5">Are you sure you want to save?</span>
   <div class="flex justify-end gap-2">
     <!-- <p-button
@@ -479,4 +338,3 @@
       (click)="SaveConfirmationPopUp = false">
     </p-button> -->
   </div>
-
