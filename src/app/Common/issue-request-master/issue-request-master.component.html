@@ -49,17 +49,23 @@
 
         <div class="col-3">
           <label for="issue_no" class="w-50">Issue No.</label>
+        <div class="floating-input">
           <input pInputText type="text" id="issue_no" class="pInputText form-control form-control-sm"[(ngModel)]="ISSUE_NO" disabled>
+        </div>
         </div>
 
         <div class="col-3">
+          <div class="floating-input">
           <label for="Date" class=" w-50">Date</label>
-          <input pInputText type="date" id="issue_no" class="pInputText " [(ngModel)]="REQUEST_DATE">
+          <input pInputText type="date" id="issue_no" class="pInputText form-control " [(ngModel)]="REQUEST_DATE">
+        </div>
         </div>
 
         <div class="col-6">
+           <div class="floating-input">
           <label for="Product Code" class="w-50">Product Code</label>
-          <input pInputText type="text" id="issue_no" class="pInputText " [(ngModel)]="ISSUE_NO">
+          <input pInputText type="text" id="issue_no" class="pInputText form-control  " [(ngModel)]="ISSUE_NO">
+        </div>
         </div>
          
 
@@ -72,12 +78,12 @@
 
             <div class="d-flex align-items-center ">
               <label for="Self" class="mr-2">Self</label>
-              <input type="radio" id="issue_no" class="pInputText" [(ngModel)]="ISSUE_NO">
+              <input type="radio" id="issue_no" class="pInputText" value="SELF">
             </div>
 
             <div class="d-flex align-items-center ">
               <label for="Other" class="mr-2">Other</label>
-              <input type="radio" id="issue_no" class="pInputText" [(ngModel)]="ISSUE_NO">
+              <input type="radio" id="issue_no" class="pInputText" value="OTHER">
             </div>
 
             <div class="">
@@ -86,24 +92,19 @@
         </div>
       
         <div class="col-5">
+      
           <label for="issue_no" class="w-50">Issue Type</label>
-          <input pInputText type="text" id="issue_no" class="pInputText " [(ngModel)]="ISSUE_TYPE_CODE" >
+           <div class="floating-input">
+          <input pInputText type="text" id="issue_no" class="pInputText form-control  " [(ngModel)]="ISSUE_TYPE_CODE" >
+        </div>
         </div>
 
         <div class="col-4">
           <label for="issue_no" class="w-50">Priority</label>
-          <!-- <select class="" id="dropdown" [(ngModel)]="selectedOption">
-          <option value="">-- Choose Option --</option>
-          <option *ngFor="let item of dropdownList" [value]="item.Value">
-          {{ item.Text }}
-          </option>
-          </select> -->
-          <!-- <input pInputText type="text" id="issue_no" class="pInputText " [(ngModel)]="PRIORITY_CODE" > -->
           <div class="floating-input list-btn">
           <select class="form-control selectpicker show-tick"  id="PRIORITY"  [ngModelOptions]="{ standalone: true }" data-live-search="true" title="Select priority"  [(ngModel)]="this.PRIORITY">
 									<option *ngFor = "let opt of dropdownList; let i = index"
 									[selected]="opt.Value == this.PRIORITY"
-                 
                   (onchange)="getvalue()"
 									[value]="opt.Value">{{ opt.Text }}</option>                     
 								</select>
@@ -111,27 +112,33 @@
         </div>
 
         <div class="col-6">
-          <label for="issue_no" class="w-50">Issue Subject</label>
           
-          <input pInputText type="text" id="issue_no" class="pInputText " [(ngModel)]="ISSUE_SUBJECT"  >
+          <label for="issue_no" class="w-50">Issue Subject</label>
+           <div class="floating-input">
+          <input pInputText type="text" id="issue_no" class="pInputText form-control " [(ngModel)]="ISSUE_SUBJECT"  >
+        </div>
         </div>
 
         <div class="col-3">
           <label for="issue_no" class="w-50">Module</label>
-          <input pInputText type="text" id="issue_no" class="pInputText " [(ngModel)]="MODULE_CODE" disabled >
+          <div class="floating-input">
+          <input pInputText type="text" id="issue_no" class="pInputText form-control " [(ngModel)]="MODULE_CODE" disabled >
         </div>
-
+        </div>
+  
          <div class="col-3">
           <label for="issue_no" class="w-50">Function</label>
-          <input pInputText type="text" id="issue_no" class="pInputText " [(ngModel)]="FUNCTION_CODE" disabled >
+          <div class="floating-input">
+          <input pInputText type="text" id="issue_no" class="pInputText form-control " [(ngModel)]="FUNCTION_CODE" disabled >
+        </div>
         </div>
        
 
        
        <div class="col-6 ">
           <label for="issue_no" class="">Reason of CR </label>
-           <div>
-            <textarea  id="Reason of CR" class="pInputText w-100 " rows="4" [(ngModel)]="REASON_ISSUE" ></textarea> 
+            <div class="floating-input">
+            <textarea  id="Reason of CR" class="pInputText w-100 form-control " rows="4" [(ngModel)]="REASON_ISSUE" ></textarea> 
            </div>
         
           <!-- <input pInputText type="text" id="issue_no" class="pInputText " [(ngModel)]="ISSUE_NO"  >  -->
@@ -139,8 +146,8 @@
 
         <div class="col-6">
           <label for="issue_no" >Description of CR</label>
-           <div>
-            <textarea  id="Reason of CR" class="pInputText w-100 " rows="4"  [(ngModel)]="DESC_ISSUE" ></textarea> 
+           <div class="floating-input">
+            <textarea  id="Reason of CR" class="pInputText w-100 form-control " rows="4"  [(ngModel)]="DESC_ISSUE" ></textarea> 
            </div>
         </div>   
 

@@ -90,6 +90,8 @@ export class IssueRequestMasterComponent implements OnInit {
 DatePipe: any;
 selectedOption: string = '';
 PRIORITY:any
+SELF:boolean = false;
+OTHER:boolean = false;
   dropdownList: { Value: string; Text: string; }[];
   // constructor(private router: Router, private urlService: UrlService, private Cmmon: CommonService,
   //   private apiService: ApiService,private sharedservice: SharedService,private route:ActivatedRoute
