@@ -81,7 +81,7 @@ input4: string = '';
         UserName: _username,
         Password: _password
       }
-  console.log('data1',data);
+      console.log('data1',data);
        let _data = "grant_type=password&password=" + "&username=" + encodeURIComponent(_username)
       this.OTPFLAG=false;
       console.log('data',_data);
@@ -170,11 +170,12 @@ input4: string = '';
       EMAIL: this.login_userId,
       TYPE: "forgot"
     }
-    this.OTPFLAG=true
-    return
+    
+    //return
       this.http.PostRequest(this.apiurl.VERIFYCLIENTDETAILS, data).then(res => {
         if (res.flag==1) {
           //this.isForgetSceen = false;
+          this.OTPFLAG=true
           this.spinner = false;
           //this.login_userId = "";
           this.sendOTPassword();
@@ -355,10 +356,10 @@ input4: string = '';
           console.log('inside flag');
           
           //this.isForgetSceen = false;
-         // await this.geToken();
+           this.geToken();
           this.spinner = false;
-          this.login_userId = "";
-           this.route.changeRoute('/dasboard'); 
+        //  this.login_userId = "";
+         // this.route.changeRoute('/issuerequestmaster'); 
           this.toast.success(res.msg)
         } else {
         //  this.isForgetSceen = false;
@@ -446,7 +447,7 @@ getOtp(): string {
   return (this.input1 || '') + (this.input2 || '') + (this.input3 || '') + (this.input4 || '');
 }
 
-  async geToken() {
+   geToken() {
     // if (this.loginForm.valid) {
       console.log('this.OTPASS',this.OTPASS);
       this.spinner = true;
@@ -461,24 +462,26 @@ getOtp(): string {
   
       let _data = "grant_type=password&password=" + encodeURIComponent(_password) + "&username=" + encodeURIComponent(_username)
       console.log('data geToken',data);
-      
+     //  this.submitOTP();
       this.http.getToken(_data).then((res:any) => {
         if (res.flag) {
-          console.log('inside token ',res);
-          this.submitOTP();
           this.http.PostRequest(this.apiurl.GetUserDetail, data).then((res:any) => {
             if (res.flag) {
-             this.sharedService.loginUser = res.user_detail;
-             this.sharedService.profile_pic = res.b64;
-             sessionStorage.setItem('user_detail', JSON.stringify(res.user_detail))
-             sessionStorage.setItem('profile_pic', res.b64)
-             this.sharedService.formName = "";
-             this.login_user = this.sharedService.loginUser[0].EMP_CODE 
+              this.sharedService.loginUser = res.user_detail;
+              this.sharedService.profile_pic = res.b64;
+              sessionStorage.setItem('user_detail', JSON.stringify(res.user_detail))
+              sessionStorage.setItem('profile_pic', res.b64)
+              this.sharedService.formName = "";
+              this.login_user = this.sharedService.loginUser[0].EMP_CODE 
                 setTimeout(() => {
                   // this.route.changeRoute('');
                   if(this.login_user === '1001'){
                     this.route.changeRoute('/dashboard');
-                  }else{
+                  }
+                  else if(this.login_user === '1234'){
+                    this.route.changeRoute('/issuerequestmaster');
+                  }
+                  else{
                     this.route.changeRoute('/calendar');
                   }
                  
@@ -505,7 +508,6 @@ getOtp(): string {
       }).catch(e => {
         console.log(e)
       })
-
 
     // } else {
       // this.f_loginFormValidations();

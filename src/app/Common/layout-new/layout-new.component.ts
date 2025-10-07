@@ -141,6 +141,7 @@ ngOnInit() {
     this.FYEAR = this.sharedService.loginUser[0].FYEAR
     this.FYEAR_DESC = this.sharedService.loginUser[0].FYEAR_DESC
     this.COMPANY_CODE = this.sharedService.loginUser[0].COMPANY_CODE
+    this.role_id=this.sharedService.loginUser[0].ROLE_ID
     this.getUserMenu();
     this.getFyear();
     this.onLoadCheckAttendance();
@@ -152,6 +153,7 @@ ngOnInit() {
     this.designation = this.sharedService.loginUser[0].DESIGNATION
     this.FYEAR = this.sharedService.loginUser[0].FYEAR
     this.COMPANY_CODE = this.sharedService.loginUser[0].COMPANY_CODE
+   this.role_id=this.sharedService.loginUser[0].ROLE_ID
     this.getUserMenu();
     this.getFyear();
     this.onLoadCheckAttendance();
@@ -376,6 +378,8 @@ f_clearPopup() {
 }
 
 f_logout(){
+  console.log('this.role_id',this.role_id);
+  
   if(this.role_id==10){
 
     this.authService.clientLogout();
@@ -433,6 +437,8 @@ menuClick(para: any, index:any){
 }
 
 getUserMenu(){
+  console.log('INSIDE MENURIGHTD');
+  
     this.http.PostRequest(this.apiUrl.GetMenuItems, {}).then(res => {
       if (res) {
         this.menu_list = res.menu_list;
