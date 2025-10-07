@@ -103,7 +103,7 @@ input4: string = '';
                     this.route.changeRoute('/dashboard');
                   }
                   else if(this.login_user === '1234'){
-                    this.route.changeRoute('/issuerequestmaster');
+                    this.route.changeRoute('/issuerequestlist');
                   }
                   else{
                     this.route.changeRoute('/calendar');
@@ -481,7 +481,7 @@ getOtp(): string {
                     this.route.changeRoute('/dashboard');
                   }
                   else if(this.login_user === '1234'){
-                    this.route.changeRoute('/issuerequestmaster');
+                    this.route.changeRoute('/issuerequestlist');
                   }
                   else{
                     this.route.changeRoute('/calendar');

@@ -1,0 +1,53 @@
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+/* Text and layout helpers */
+.Text_Primary {
+  color: #333;
+  font-weight: 500;
+}
+
+.Helper_Text {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+/* Status colors */
+.Approved {
+  color: #28a745; /* green */
+}
+
+.Reject {
+  color: #dc3545; /* red */
+}
+
+.Revert {
+  color: #ffc107; /* yellow/orange */
+}
+
+.Hold {
+  color: #17a2b8; /* cyan/blue */
+}
+
+.Cancel {
+  color: #6c757d; /* gray */
+}
+
+/* Layout for the container */
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.gap-2 > * {
+  margin-right: 8px;
+}
+
+.mt-1 {
+  margin-top: 4px;
+}

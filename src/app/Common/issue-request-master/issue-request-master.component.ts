@@ -624,5 +624,9 @@ selectedFileName: string | null = null;
   //     this.convertFilesToBase64(filesArray);
   //   }
   // }
+
+  goToList(){
+   this.route.changeRoute('/issuerequestlist');
+  }
 }
 

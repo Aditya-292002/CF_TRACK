@@ -1,0 +1,123 @@
+
+<div class="flex flex-wrap flex-wrap justify-between mb-2">
+  <div class="flex gap-3 ">
+  <h5 class="text-xl">Ticket Raised List</h5>
+   
+  </div>
+<div class="gap-2 flex mt-1">
+  <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Approved"></i>Approved</p>
+  <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Revert"></i>Revert</p>
+  <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Reject"></i>Reject</p>
+  <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Hold"></i>Hold</p>
+  <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Cancel"></i>Cancel</p>
+</div>
+
+  <div class="flex gap-2 justify-end">
+    <div >
+    <!-- <p-dropdown
+      [options]="STATUS_LIST"
+      [(ngModel)]="STATUS_CODE"
+      class="w-full"
+      optionValue="STATUS_CODE"
+      optionLabel="STATUS_NAME"
+      (onChange)="GetFilteSelectStatusType(STATUS_CODE)"
+      placeholder="Status Type"
+    /> -->
+  </div>
+    <div>
+      <input
+        pInputText
+        type="text"
+        class="pInputText w-full"
+        [(ngModel)]="SearchValue"
+        (ngModelChange)="GetInputFilter(SearchValue)"
+        placeholder="Search"
+      />
+    </div>
+    <!-- <p-button label="Add" class="prime-button save-button"  (click)="AddIssueRequest()" /> -->
+  </div>
+  
+</div>
+		<div class="mt-2 col-md-12 ">
+			<div class="card">
+				<div class="tableFixHead   ">
+					<table class="table-theam-1 row_bgcolor_1">
+						<thead>
+							<tr>
+								<th class="">Leave Code</th>
+								<th class="">From Date</th>
+								<th class="">To Date</th>
+								<th class="">No. of Days</th>
+								<th class="">Status</th>
+								<th class="">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let data of all_leave_list;let i=index;" >
+								<td class="">{{data.LEAVE_NAME}}</td>
+								<td class="">{{data.FROM_DATE}}</td>
+								<td class="">{{data.TO_DATE}}</td>
+								<td class="">{{data.NO_OF_DAYS}}</td>
+								<td class=""  (dblclick)="openPopup(data, 'Status')">							
+								 <i class="fa fa-ban text-warning mr-2" *ngIf="data.STATUS == 'P'"></i> 
+								 <i class="fa fa-check-square text-success mr-2" *ngIf="data.STATUS == 'A' || data.STATUS == 'M'"></i>
+								 <i class="fa fa-times text-danger mr-2" *ngIf="data.STATUS == 'R'"></i>{{data.STATUS_DESC}}</td> 
+								<td class="">									
+									<a *ngIf="data.STATUS == 'P' || data.STATUS == 'M' || (data.STATUS == 'A' && this.ROLE_ID== 3)">
+										<i class="fa fa-edit small mr-2"  (click)="editLeave(data)" title="Edit"></i>  
+									</a>
+									<a *ngIf="(data.STATUS == 'P' && this.ROLE_NAME == 'HR USER') || (data.STATUS == 'M' && this.ROLE_NAME == 'HR USER')">
+										<i class="fa fa-trash  small"  (click)="editLeave(data)" title="Delete"></i>  
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+<!-- 
+<div class="mt-4" >
+  <p  *ngIf="this.ISSUE_REQUEST_LIST_DATA.length == 0">No Records Found</p>
+  <div *ngIf="this.ISSUE_REQUEST_LIST_DATA.length > 0">
+    <table [value]="ISSUE_REQUEST_LIST_DATA" [scrollable]="true" scrollHeight="500px"   >
+      <ng-template pTemplate="header">
+        <tr>
+          <th  *ngFor="let col of this.ISSUE_REQUEST_COLUMN_LIST"  
+          [style.width]="col.Col_Size"
+         
+          > 
+          {{ col.Col_Name }}
+        </th>
+        <th  >Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData>
+        <tr [ngClass]="{
+          'bg-red-100': (rowData.STATUS_CODE_COLOR === 'bg-red-100' || rowData.CANCEL_IND === 'true'),
+          'bg-lime-100': rowData.STATUS_CODE_COLOR === 'bg-lime-100',
+          'bg-cyan-100': rowData.STATUS_CODE_COLOR === 'bg-cyan-100',
+          'bg-orange-100': rowData.STATUS_CODE_COLOR === 'bg-orange-100',
+          'bg-red-300': rowData.STATUS_CODE_COLOR === 'bg-red-400'
+        }">
+          <td class="width-1" *ngFor="let col of this.ISSUE_REQUEST_COLUMN_LIST" >
+            <p  
+            [ngClass]="{
+              'cursor-pointer hover:underline text-sky-700': col.Col_Filed === 'ISSSUE_NO',
+            }"
+            (click)="GetEditRequestRaised(col,rowData)" 
+          > {{ rowData[col.Col_Filed] }}</p>
+         </td>
+         <td class="width-1"  
+        >
+          <button pButton *ngIf="rowData.STATUS_CODE == '00' && rowData.CANCEL_IND === false"  (click)="CancleRequestRaised(rowData)"
+          label="" icon="pi pi-times" class="p-button-danger"></button>
+        </td>
+        </tr>
+      </ng-template>
+    </p-table>  
+  </div>
+</div> -->
+
+
