@@ -39,6 +39,7 @@ input4: string = '';
   @ViewChild('inputRef3', { static: false }) inputRef3!: ElementRef;
   @ViewChild('inputRef4', { static: false }) inputRef4!: ElementRef;
   OTPASS: string='';
+  role_id: any;
   constructor(
     private authService: AuthServiceService,
     private route: RoutingService,
@@ -473,6 +474,7 @@ getOtp(): string {
               sessionStorage.setItem('profile_pic', res.b64)
               this.sharedService.formName = "";
               this.login_user = this.sharedService.loginUser[0].EMP_CODE 
+               this.role_id=this.sharedService.loginUser[0].ROLE_ID
                 setTimeout(() => {
                   // this.route.changeRoute('');
                   if(this.login_user === '1001'){

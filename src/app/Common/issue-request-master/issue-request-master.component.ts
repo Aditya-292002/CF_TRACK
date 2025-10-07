@@ -11,7 +11,8 @@ import { RoutingService } from 'src/app/services/routing.service';
 import { SharedServiceService } from 'src/app/services/shared-service.service';
 import { ValidationService } from 'src/app/services/validation.service';
 import { DatePipe } from '@angular/common';
-
+declare var $: any;
+declare var jQuery: any;
 @Component({
   selector: 'app-issue-request-master',
   templateUrl: './issue-request-master.component.html',
@@ -131,6 +132,7 @@ dropdownList: { Value: string; Text: string; }[];
     { Value: 'C', Text: 'High' },
     { Value: 'D', Text: 'Emergency'}
   ];
+
     if(this.MODE == 'A'){
        this.IS_UPDATE = true;
     }
@@ -139,6 +141,9 @@ dropdownList: { Value: string; Text: string; }[];
       this.GETISSUERAISEDDETAILSBYISSUENO();
       this.GETISSUERAISEDHISTORY(0);
     }
+     setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh').trigger('change');
+    }, 100);
   }
   
 

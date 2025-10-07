@@ -129,7 +129,7 @@ ngOnInit() {
     });
   this.SYS_DATE_TIME = this.datePipe.transform(new Date(), 'dd-MMM-yyyy hh:mm:ss')
   this.ATT_DATE = this.datePipe.transform(new Date(), 'dd-MMM-yyyy')
-  //$$('.selectpicker').selectpicker('refresh').trigger('change');
+  // $$('.selectpicker').selectpicker('refresh').trigger('change');
   if(this.sharedService.loginUser[0].EMP_CODE == undefined){
     this.sharedService.loginUser = sessionStorage.getItem('user_detail') ? JSON.parse(sessionStorage.getItem('user_detail')):[]
     this.sharedService.profile_pic = sessionStorage.getItem('profile_pic') ? sessionStorage.getItem('profile_pic'):""
@@ -184,6 +184,7 @@ ngAfterViewInit(){
       this.FYEAR = this.sharedService.loginUser[0].FYEAR
       this.FYEAR_DESC = this.sharedService.loginUser[0].FYEAR_DESC
       this.COMPANY_CODE = this.sharedService.loginUser[0].COMPANY_CODE
+          this.role_id=this.sharedService.loginUser[0].ROLE_ID
       this.getUserMenu();
       this.getFyear();
       this.onLoadCheckAttendance();
@@ -196,6 +197,7 @@ ngAfterViewInit(){
       this.designation = this.sharedService.loginUser[0].DESIGNATION
       this.FYEAR = this.sharedService.loginUser[0].FYEAR
       this.COMPANY_CODE = this.sharedService.loginUser[0].COMPANY_CODE
+          this.role_id=this.sharedService.loginUser[0].ROLE_ID
       this.getUserMenu();
       this.getFyear();
       this.onLoadCheckAttendance();
