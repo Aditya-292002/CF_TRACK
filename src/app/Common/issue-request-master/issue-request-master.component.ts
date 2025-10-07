@@ -93,8 +93,18 @@ PRIORITY:any
 SELF:boolean = true;
 OTHER:boolean = false;
 raisedBy:any;
+product_code:any;
 otherName: string = '';
 dropdownList: { Value: string; Text: string; }[];
+dropdownList1: { Value: string; Text: string; }[];
+
+uploadedFiles: any[] = [];
+
+ 
+
+  deleteFile(index: number) {
+    this.uploadedFiles.splice(index, 1);
+  }
   // constructor(private router: Router, private urlService: UrlService, private Cmmon: CommonService,
   //   private apiService: ApiService,private sharedservice: SharedService,private route:ActivatedRoute
   //   ,private Toastr:ToastrService,private MessageService:MessageService) { }
@@ -123,6 +133,9 @@ dropdownList: { Value: string; Text: string; }[];
     this.FUNCTION_CODE = localStorage.getItem('FUNCTION_CODE');
     this.GET_STATUS_CODE = localStorage.getItem('STATUS_CODE'); 
     this.IS_REVERT = localStorage.getItem('IS_REVERT');
+    const today = new Date();
+  // Format as yyyy-MM-dd because HTML date input requires this format
+  this.REQUEST_DATE = today.toISOString().substring(0, 10);
     this.GETISSUEREQUESTMASTER();
 
     this.dropdownList = [
@@ -130,6 +143,13 @@ dropdownList: { Value: string; Text: string; }[];
     { Value: 'B', Text: 'Medium' },
     { Value: 'C', Text: 'High' },
     { Value: 'D', Text: 'Emergency'}
+  ];
+
+   this.dropdownList1 = [
+    { Value: 'A', Text: 'Product A' },
+    { Value: 'B', Text: 'Product B' },
+    { Value: 'C', Text: 'Product B' },
+    { Value: 'D', Text: 'Product B'}
   ];
     if(this.MODE == 'A'){
        this.IS_UPDATE = true;
@@ -387,13 +407,7 @@ if((keyToCheck in element)){
   table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
  
-  onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files) {
-      const filesArray = Array.from(input.files);
-      this.convertFilesToBase64(filesArray);
-    }
-  }
+
   
   convertFilesToBase64(files: File[]) {
     files.forEach((file, index) => {
@@ -581,6 +595,30 @@ onRaisedByChange(type: string) {
   }
 }
 
+selectedFileName: string | null = null;
 
+// onFileSelected(event: Event): void {
+//   const input = event.target as HTMLInputElement;
+//   if (input.files && input.files.length > 0) {
+//     this.selectedFileName = input.files[0].name;
+//     // You can also store the file object itself if needed:
+//     // this.selectedFile = input.files[0];
+//   }
+// }
+
+ onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.uploadedFiles.push(file);
+    }
+  }
+
+  // onFileSelected(event: Event) {
+  //   const input = event.target as HTMLInputElement;
+  //   if (input.files) {
+  //     const filesArray = Array.from(input.files);
+  //     this.convertFilesToBase64(filesArray);
+  //   }
+  // }
 }
 
