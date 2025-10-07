@@ -94,7 +94,7 @@ PRIORITY:any
 SELF:boolean = true;
 OTHER:boolean = false;
 raisedBy:any;
-product_code:any;
+product_code:any='';
 otherName: string = '';
 dropdownList: { Value: string; Text: string; }[];
 dropdownList1: { Value: string; Text: string; }[];
@@ -149,8 +149,8 @@ uploadedFiles: any[] = [];
    this.dropdownList1 = [
     { Value: 'A', Text: 'Product A' },
     { Value: 'B', Text: 'Product B' },
-    { Value: 'C', Text: 'Product B' },
-    { Value: 'D', Text: 'Product B'}
+    { Value: 'C', Text: 'Product C' },
+    { Value: 'D', Text: 'Product D'}
   ];
     if(this.MODE == 'A'){
        this.IS_UPDATE = true;
