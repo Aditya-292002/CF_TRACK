@@ -90,7 +90,11 @@ export class IssueRequestMasterComponent implements OnInit {
 DatePipe: any;
 selectedOption: string = '';
 PRIORITY:any
-  dropdownList: { Value: string; Text: string; }[];
+SELF:boolean = true;
+OTHER:boolean = false;
+raisedBy:any;
+otherName: string = '';
+dropdownList: { Value: string; Text: string; }[];
   // constructor(private router: Router, private urlService: UrlService, private Cmmon: CommonService,
   //   private apiService: ApiService,private sharedservice: SharedService,private route:ActivatedRoute
   //   ,private Toastr:ToastrService,private MessageService:MessageService) { }
@@ -122,9 +126,10 @@ PRIORITY:any
     this.GETISSUEREQUESTMASTER();
 
     this.dropdownList = [
-    { Value: 'A', Text: 'Option A' },
-    { Value: 'B', Text: 'Option B' },
-    { Value: 'C', Text: 'Option C' }
+    { Value: 'A', Text: 'Low' },
+    { Value: 'B', Text: 'Medium' },
+    { Value: 'C', Text: 'High' },
+    { Value: 'D', Text: 'Emergency'}
   ];
     if(this.MODE == 'A'){
        this.IS_UPDATE = true;
@@ -562,6 +567,20 @@ getvalue(){
   
 }
 UserId() {}
+
+onRaisedByChange(type: string) {
+  if (type === 'SELF') {
+    this.SELF = true;
+    this.OTHER = false;
+    this.raisedBy = 'SELF';
+       this.otherName = ''; // Clear input when switching to SELF
+  } else {
+    this.SELF = false;
+    this.OTHER = true;
+    this.raisedBy = 'OTHER';
+  }
+}
+
 
 }
 
