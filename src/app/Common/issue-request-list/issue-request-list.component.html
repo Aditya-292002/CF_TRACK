@@ -58,8 +58,9 @@
 								<td class="">{{data.FROM_DATE}}</td>
 								<td class="">{{data.TO_DATE}}</td>
 								<td class="">{{data.NO_OF_DAYS}}</td>
-								<td class=""  (dblclick)="openPopup(data, 'Status')">							
-								 <i class="fa fa-ban text-warning mr-2" *ngIf="data.STATUS == 'P'"></i> 
+                 <!-- (dblclick)="openPopup(data, 'Status')" -->
+								<td class="" >							
+								 <!-- <i class="fa fa-ban text-warning mr-2" *ngIf="data.STATUS == 'P'"></i> 
 								 <i class="fa fa-check-square text-success mr-2" *ngIf="data.STATUS == 'A' || data.STATUS == 'M'"></i>
 								 <i class="fa fa-times text-danger mr-2" *ngIf="data.STATUS == 'R'"></i>{{data.STATUS_DESC}}</td> 
 								<td class="">									
@@ -68,7 +69,7 @@
 									</a>
 									<a *ngIf="(data.STATUS == 'P' && this.ROLE_NAME == 'HR USER') || (data.STATUS == 'M' && this.ROLE_NAME == 'HR USER')">
 										<i class="fa fa-trash  small"  (click)="editLeave(data)" title="Delete"></i>  
-									</a>
+									</a> -->
 								</td>
 							</tr>
 						</tbody>

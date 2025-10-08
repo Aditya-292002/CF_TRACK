@@ -171,21 +171,21 @@ uploadedFiles: any[] = [];
      "USER_ID": (+this.USER_ID),
      "FUNCTION_CODE": ((this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE),
    }
-  //  this.apiurl.post(this.urlService.GETISSUEREQUESTMASTER, data).then((res: any) => {
-  //      this.FUNCTION_LIST =res.Functioncodelist;
-  //      this.SAMPEL_FUNCTION_LIST = this.FUNCTION_LIST;
-  //      this.MODULE_LIST =res.Moduleslist;
-  //      this.ISSUE_LIST= res.Issuelist;
-  //      this.USER_LIST = res.Userlist;
-  //      this.STATUS_CODE_LIST = res.Statuscodelist;
-  //      this.PRIORITY_LIST = res.Prioritylist;
-  //      this.REQUESTER= this.USER_NAME;
-  //      this.USER_LIST.forEach((user:any)=>{
-  //       if(user.USERID == this.USER_ID){
-  //       this.USERID = (+user.USERID);
-  //       }
-  //      });
-  //  });
+   this.http.PostRequest(this.apiurl.GetIssueCommonList, data).then((res: any) => {
+       this.FUNCTION_LIST =res.Functioncodelist;
+       this.SAMPEL_FUNCTION_LIST = this.FUNCTION_LIST;
+       this.MODULE_LIST =res.Moduleslist;
+       this.ISSUE_LIST= res.Issuelist;
+       this.USER_LIST = res.Userlist;
+       this.STATUS_CODE_LIST = res.Statuscodelist;
+       this.PRIORITY_LIST = res.Prioritylist;
+       this.REQUESTER= this.USER_NAME;
+       this.USER_LIST.forEach((user:any)=>{
+        if(user.USERID == this.USER_ID){
+        this.USERID = (+user.USERID);
+        }
+       });
+   });
  }
 
  GETISSUERAISEDDETAILSBYISSUENO(){
@@ -332,16 +332,16 @@ if((keyToCheck in element)){
   }
   //  console.log('data ->' , JSON.stringify(data))
   // return 
-//    this.apiService.post(this.urlService.SAVEISSUEREQUEST, data).then((res: any) => {
-//     if (res.Resultlist[0].FLAG == 1) {
-// this.SaveConfirmationPopUp = false;
+    this.http.PostRequest(this.apiurl.SaveIssueDetails, data).then((res: any) => {
+    if (res.Resultlist[0].FLAG == 1) {
+this.SaveConfirmationPopUp = false;
 
-//        this.Toastr.success(res.Resultlist[0].MSG)
-//        this.router.navigate([`/issuerequestlist`]);
-//     } else if (res.Resultlist[0].FLAG == 0) {
-//       this.Toastr.error(res.Resultlist[0].MSG);
-//     }
-//   });
+       this.toast.success(res.Resultlist[0].MSG)
+       this.router.navigate([`/issuerequestlist`]);
+    } else if (res.Resultlist[0].FLAG == 0) {
+      this.toast.error(res.Resultlist[0].MSG);
+    }
+  });
  }
  
  showFunctionDialog(){

@@ -174,7 +174,10 @@ GetAppriasalDetails: string='/Setting/GetAppriasalDetails';
 SaveAppriasalDetailsByUserId: string='/Setting/SaveAppriasalDetailsByUserId';  
 GetSaveAppriasalList: string='/Setting/GetSaveAppriasalList';  
 GetAppriasalDetailsByUserId: string='/Setting/GetAppriasalDetailsByUserId';  
+// addded by hemant 01_oct_2025
 SendOTP_getOTPassword: string='/TicketSystem/SendOTP_getOTPassword';  
 public VERIFYCLIENTDETAILS: string='/TicketSystem/VERIFYCLIENTDETAILS';  
- public VERIFYOTP: string='/TicketSystem/VERIFYOTP';  
+ public VERIFYOTP: string='/TicketSystem/VERIFYOTP'; 
+public GetIssueCommonList: string='/TicketSystem/GetIssueCommonList';  
+public SaveIssueDetails: string='/TicketSystem/SaveIssueDetails';  
 }
