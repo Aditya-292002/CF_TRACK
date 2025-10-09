@@ -180,4 +180,5 @@ public VERIFYCLIENTDETAILS: string='/TicketSystem/VERIFYCLIENTDETAILS';
  public VERIFYOTP: string='/TicketSystem/VERIFYOTP'; 
 public GetIssueCommonList: string='/TicketSystem/GetIssueCommonList';  
 public SaveIssueDetails: string='/TicketSystem/SaveIssueDetails';  
+public GetIssueRequestList: string='/TicketSystem/GetIssueRequestList';  
 }

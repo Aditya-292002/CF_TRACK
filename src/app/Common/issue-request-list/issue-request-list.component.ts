@@ -36,6 +36,7 @@ export class IssueRequestListComponent implements OnInit {
   ISSUE_ID:any;
   apiService: any;
  all_leave_list:any=[];
+  userData: any;
  constructor(
         private authService: AuthServiceService,
         private route: RoutingService,
@@ -56,11 +57,20 @@ export class IssueRequestListComponent implements OnInit {
     localStorage.removeItem('STATUS_CODE')
     localStorage.removeItem('IS_REVERT')
     localStorage.removeItem('ISSUE_ID')
-    this.USER_ID =this.sharedService.loginUser[0].USER_ID;
-    this.USER_NAME= this.sharedService.loginUser[0].USER_NAME;
+    this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
+    this.USER_ID = this.userData[0].LOGIN_ID;
     this.FUNCTION_CODE = localStorage.getItem('FUNCTION_CODE');
-    this.GETISSUEREQUESTMASTER();
+   // this.GETISSUEREQUESTMASTER();
    }
+     ngAfterViewInit(): void {
+    console.log('ngAfterViewInit called');
+    this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
+    this.USER_ID = this.userData[0].LOGIN_ID;
+    console.log(' this.USER_ID', this.USER_ID);
+    
+    // You can now safely access the DOM element
+   this.GETISSUEREQUESTLIST()
+  }
    
    GETISSUEREQUESTMASTER() {
     let data = {
@@ -79,13 +89,13 @@ export class IssueRequestListComponent implements OnInit {
       "FUNCTION_CODE": ((this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE),
     }
    
-    // this.apiService.post(this.apiurl.GETISSUEREQUESTLIST, data).then((res: any) => {
-    //    this.ISSUE_REQUEST_COLUMN_LIST = res.Columnlist;
-    //    this.ISSUE_REQUEST_LIST_DATA = res.Datalist;
-    //    this.SAMPEL_ISSUE_REQUEST_LIST_DATA = this.ISSUE_REQUEST_LIST_DATA;
-    //   //  this.GetFilteSelectStatusType('00')
-    //   // console.log('ISSUE_REQUEST_LIST_DATA ->' , this.ISSUE_REQUEST_LIST_DATA)
-    // });
+    this.http.PostRequest(this.apiurl.GetIssueRequestList, data).then((res: any) => {
+       this.ISSUE_REQUEST_COLUMN_LIST = res.Columnlist;
+       this.ISSUE_REQUEST_LIST_DATA = res.Datalist;
+       this.SAMPEL_ISSUE_REQUEST_LIST_DATA = this.ISSUE_REQUEST_LIST_DATA;
+      //  this.GetFilteSelectStatusType('00')
+      // console.log('ISSUE_REQUEST_LIST_DATA ->' , this.ISSUE_REQUEST_LIST_DATA)
+    });
    }
 
    AddIssueRequest(){
