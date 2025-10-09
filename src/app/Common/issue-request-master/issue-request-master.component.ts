@@ -23,7 +23,7 @@ export class IssueRequestMasterComponent implements OnInit {
   REQUEST_DATE:any = new Date();
   REQUESTER:any;
   ISSUE_TYPE_CODE:any = '02';
-  PRIORITY_CODE:any = '03';
+  PRIORITY_CODE:any="01";
   CODE:any;
   FUNCTION_DESC:any;
   ISSUE_SUBJECT:any;
@@ -96,10 +96,11 @@ OTHER:boolean = false;
 raisedBy:any;
 product_code:any='';
 otherName: string = '';
-dropdownList: { Value: string; Text: string; }[];
+dropdownList: { PRIORITY_CODE: string; PRIORITY_DESC: string; }[];
 dropdownList1: { Value: string; Text: string; }[];
 
 uploadedFiles: any[] = [];
+  userData: any;
 
  
 
@@ -125,7 +126,10 @@ uploadedFiles: any[] = [];
       ) { }
    
    ngOnInit(): void {
-    this.USER_ID =""//this.sharedservice.get_USER_ID();
+
+    this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
+    this.USERID = this.userData[0].LOGIN_ID;
+    this.REQUESTER = this.userData[0].LOGIN_ID;
     this.USER_NAME="" //this.sharedservice.get_USER_NAME();
     this.CANCEL_IND = localStorage.getItem('CANCEL_IND');
     this.ISSUE_NO = localStorage.getItem('ISSUE_NO');
@@ -140,10 +144,8 @@ uploadedFiles: any[] = [];
     this.GETISSUEREQUESTMASTER();
 
     this.dropdownList = [
-    { Value: 'A', Text: 'Low' },
-    { Value: 'B', Text: 'Medium' },
-    { Value: 'C', Text: 'High' },
-    { Value: 'D', Text: 'Emergency'}
+    { PRIORITY_CODE: 'A', PRIORITY_DESC: 'Low' },
+    { PRIORITY_CODE: 'B', PRIORITY_DESC: 'Medium'}
   ];
 
    this.dropdownList1 = [
@@ -178,13 +180,15 @@ uploadedFiles: any[] = [];
        this.ISSUE_LIST= res.Issuelist;
        this.USER_LIST = res.Userlist;
        this.STATUS_CODE_LIST = res.Statuscodelist;
-       this.PRIORITY_LIST = res.Prioritylist;
+       this.PRIORITY_LIST = res.prioritylist;
        this.REQUESTER= this.USER_NAME;
-       this.USER_LIST.forEach((user:any)=>{
-        if(user.USERID == this.USER_ID){
-        this.USERID = (+user.USERID);
-        }
-       });
+       console.log('THIS.PRIOTIY_LIST',this.PRIORITY_LIST, res.prioritylist);
+       
+      //  this.USER_LIST.forEach((user:any)=>{
+      //   if(user.USERID == this.USER_ID){
+      //   this.USERID = (+user.USERID);
+      //   }
+      //  });
    });
  }
 
@@ -258,45 +262,48 @@ removeImage(data:any){
 }
 
 SaveConfirmationPopUpOpen(){
-  // if(!this.Cmmon.isValid(this.REQUEST_DATE)){
-  //   this.Toastr.error('Select a Request Date');
-  //   return
-  // }
-  // if(!this.Cmmon.isValid(this.USERID)){
-  //   this.Toastr.error('Select a Raised By');
-  //   return
-  // }
-//   if(!this.Cmmon.isValid(this.ISSUE_TYPE_CODE)){
-//     this.Toastr.error('Select a Issue Type');
-//     return
-//   }
-//   if(!this.Cmmon.isValid(this.PRIORITY_CODE)){
-//     this.Toastr.error('Select a Priority');
-//     return
-//   }
-//   if(!this.Cmmon.isValid(this.ISSUE_SUBJECT)){
-//     this.Toastr.error('Enter a Issue Subject');
-//     return
-//   }
+  this.SaveConfirmationPopUp = true;
+  console.log('SaveConfirmationPopUp',this.SaveConfirmationPopUp);
   
-// if(this.isReasonofErrorCR == true){
-//   if(!this.Cmmon.isValid(this.REASON_ISSUE)){
-//     this.Toastr.error('Enter a Reason Issue');
-//     return
-//   }
-// }
-// if(this.isDescofErrorCR == true){
-//   if(!this.Cmmon.isValid(this.DESC_ISSUE)){
-//     this.Toastr.error('Enter a Desc Issue');
-//     return
-//   }
-// }
-// if(this.IS_REVERT == 1){
-//   if(!this.Cmmon.isValid(this.REVERT_COMMENT)){
-//     this.Toastr.error('Enter a Comment');
-//     return
-//   }
-// }
+  if(!this.sharedService.isValid(this.REQUEST_DATE)){
+    this.toast.error('Select a Request Date');
+    return
+  }
+  if(!this.sharedService.isValid(this.USERID)){
+    this.toast.error('Select a Raised By');
+    return
+  }
+  if(!this.sharedService.isValid(this.ISSUE_TYPE_CODE)){
+    this.toast.error('Select a Issue Type');
+    return
+  }
+  if(!this.sharedService.isValid(this.PRIORITY_CODE)){
+    this.toast.error('Select a Priority');
+    return
+  }
+  if(!this.sharedService.isValid(this.ISSUE_SUBJECT)){
+    this.toast.error('Enter a Issue Subject');
+    return
+  }
+  
+if(this.isReasonofErrorCR == true){
+  if(!this.sharedService.isValid(this.REASON_ISSUE)){
+    this.toast.error('Enter a Reason Issue');
+    return
+  }
+}
+if(this.isDescofErrorCR == true){
+  if(!this.sharedService.isValid(this.DESC_ISSUE)){
+    this.toast.error('Enter a Desc Issue');
+    return
+  }
+}
+if(this.IS_REVERT == 1){
+  if(!this.sharedService.isValid(this.REVERT_COMMENT)){
+    this.toast.error('Enter a Comment');
+    return
+  }
+}
 this.SaveConfirmationPopUp = true;
 }
 
@@ -317,6 +324,7 @@ if((keyToCheck in element)){
     "ISSUE_NO": this.ISSUE_NO,
     "DATE": this.datepipe.transform(this.REQUEST_DATE,'yyyy-MM-dd'),
     "REQUESTER": this.USER_ID,
+    "PRODUCT_CODE":this.product_code,
     "USERID": this.USERID,
     "ISSUE_TYPE_CODE": this.ISSUE_TYPE_CODE,
     "PRIORITY_CODE": this.PRIORITY_CODE,
@@ -328,10 +336,10 @@ if((keyToCheck in element)){
     "MODE": this.MODE,
     "STATUS_CODE": this.STATUS_CODE,
     "REVERT_COMMENT": this.REVERT_COMMENT,
-    DOCUMENT_ATTECHED_LIST: this.DOCUMENT_ATTECHED_LIST,
+    "DOCUMENT_ATTECHED_LIST": this.DOCUMENT_ATTECHED_LIST,
   }
-  //  console.log('data ->' , JSON.stringify(data))
-  // return 
+    console.log('data ->' , data)
+    
     this.http.PostRequest(this.apiurl.SaveIssueDetails, data).then((res: any) => {
     if (res.Resultlist[0].FLAG == 1) {
 this.SaveConfirmationPopUp = false;
@@ -613,7 +621,7 @@ selectedFileName: string | null = null;
  onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
-      this.uploadedFiles.push(file);
+      this.DOCUMENT_ATTECHED_LIST.push(file);
     }
   }
 
@@ -627,6 +635,9 @@ selectedFileName: string | null = null;
 
   goToList(){
    this.route.changeRoute('/issuerequestlist');
+  }
+  closeModel(){
+    this.SaveConfirmationPopUp=false;
   }
 }
 

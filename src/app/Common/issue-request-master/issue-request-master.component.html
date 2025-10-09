@@ -2,8 +2,8 @@
   <div class="card mb-2">
     <div class=" d-flex flex-row  flex flex-wrap justify-content-between mx-2 ">
       <div class="d-flex align-content-center flex-wrap">
-         <h5 class="formName"  *ngIf="this.MODE == 'A'">Create Issue Raised</h5>
-           <!-- <p class="text-xl " *ngIf="this.MODE == 'A'"></p> -->
+        <h5 class="formName" *ngIf="this.MODE == 'A'">Create Issue Raised</h5>
+        <!-- <p class="text-xl " *ngIf="this.MODE == 'A'"></p> -->
         <h5 class="text-xl" *ngIf="this.MODE == 'E'">Update Issue Raised</h5>
         <p class="Text_Primary Helper_Text status_container" *ngIf="this.MODE == 'E'">{{ STATUS_NAME }}</p>
         <p class="Text_Primary Helper_Text history_container"
@@ -12,207 +12,226 @@
         </p>
       </div>
       <div class="justify-content-end">
-                <button class="p-element prime-button save-button" (click)="goToList()">List</button>
-        <button class="p-element prime-button save-button">Save</button>
+        <button class="p-element prime-button save-button" (click)="goToList()">List</button>
+        <button class="p-element prime-button save-button"  data-target="#saveissue" data-toggle="modal" (click)="SaveConfirmationPopUpOpen()">Save</button>
       </div>
       <!-- </div> -->
 
       <!-- <div>
-        <div class="d-flex flex-row flex-wrap gap-2">
-           <p-button
-            *ngIf="this.IS_HISTORY == true && this.COMMENT_HISTORY.length > 0"
-            label="History"
-            class="prime-button save-button"
-            (click)="GETISSUERAISEDHISTORY(1)">
+        <div class=" d-flex flex-row flex-wrap gap-2">
+          <p-button *ngIf="this.IS_HISTORY == true && this.COMMENT_HISTORY.length > 0" label="History"
+            class="prime-button save-button" (click)="GETISSUERAISEDHISTORY(1)">
           </p-button>
           <p-button
             *ngIf="(this.IS_UPDATE == true || this.MODE == 'A') && (this.IS_CANCEL == 0 || this.IS_CANCEL == null)"
-            label="Save"
-            class="prime-button save-button"
-            (click)="SaveConfirmationPopUpOpen()">
+            label="Save" class="prime-button save-button" (click)="SaveConfirmationPopUpOpen()">
           </p-button>
-          <p-button
-            *ngIf="this.IS_CANCEL == 1"
-            label="Cancel"
-            class="prime-button save-button"
+          <p-button *ngIf="this.IS_CANCEL == 1" label="Cancel" class="prime-button save-button"
             (click)="CANCELISSUERAISED()">
           </p-button>
-          <p-button
-            label="List"
-            class="prime-button upload-button"
-            (click)="BackToList()">
-          </p-button> 
-        </div>
-      
+          <p-button label="List" class="prime-button upload-button" (click)="BackToList()">
+          </p-button>
+      </div>
+
     </div> -->
-    </div>
   </div>
-  <!-- Ithun start -->
-  <div class="card">
+</div>
+<!-- Ithun start -->
+<div class="card">
 
-    <div class="card-body">
+  <div class="card-body">
 
-      <div class="row">
+    <div class="row">
 
-        <div class="col-3">
-          <label for="issue_no" class="w-50">Issue No.</label>
-          <div class="floating-input">
-            <input pInputText type="text" id="issue_no" placeholder="Enter Issue No"
-              class="pInputText form-control form-control-sm" [(ngModel)]="ISSUE_NO" disabled>
+      <div class="col-3">
+        <label for="issue_no" class="w-50">Issue No.</label>
+        <div class="floating-input">
+          <input pInputText type="text" id="issue_no" placeholder="Enter Issue No"
+            class="pInputText form-control form-control-sm" [(ngModel)]="ISSUE_NO" disabled>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="floating-input">
+          <label for="Date" class=" w-50">Date</label>
+          <input pInputText type="date" id="issue_no" class="pInputText form-control " [(ngModel)]="REQUEST_DATE">
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="floating-input">
+          <label for="Product Code" class="w-50">Product Code</label>
+          <div class="floating-input list-btn">
+            <select class="form-control selectpicker show-tick" id="PRIORITY" [ngModelOptions]="{ standalone: true }"
+              data-live-search="true" title="Select product code" [(ngModel)]="product_code">
+              <option *ngFor="let opt of dropdownList1; let i = index" [selected]="opt.Value == this.product_code"
+                (onchange)="getvalue()" [value]="opt.Value">{{ opt.Text }}</option>
+            </select>
           </div>
         </div>
+      </div>
 
-        <div class="col-3">
-          <div class="floating-input">
-            <label for="Date" class=" w-50">Date</label>
-            <input pInputText type="date" id="issue_no" class="pInputText form-control " [(ngModel)]="REQUEST_DATE">
-          </div>
+
+      <div class="col-3 d-flex flex-column">
+        <div>
+          <label for="issue_no" class="w-50 ">Raised By</label>
         </div>
 
-        <div class="col-6">
-          <div class="floating-input">
-            <label for="Product Code" class="w-50">Product Code</label>
-            <div class="floating-input list-btn">
-              <select class="form-control selectpicker show-tick" id="PRIORITY" [ngModelOptions]="{ standalone: true }"
-                data-live-search="true" title="Select product code" [(ngModel)]="this.product_code">
-                <option *ngFor="let opt of dropdownList1; let i = index" [selected]="opt.Value == this.product_code"
-                  (onchange)="getvalue()" [value]="opt.Value">{{ opt.Text }}</option>
-              </select>
-            </div>
+        <div class="d-flex justify-content-between ">
+
+          <div class="d-flex align-items-center ">
+            <label for="Self" class="mr-1">Self</label>
+            <input type="radio" id="SELF" class="pInputText" (change)="onRaisedByChange('SELF')" [checked]="SELF">
           </div>
+
+          <div class="d-flex align-items-center ">
+            <label for="Other" class="mr-1">Other</label>
+            <input type="radio" id="OTHER" class="pInputText" (change)="onRaisedByChange('OTHER')" [checked]="OTHER">
+          </div>
+
+          <div class="">
+          </div>
+
+
         </div>
+      </div>
 
-
-        <div class="col-3 d-flex flex-column">
-          <div>
-            <label for="issue_no" class="w-50 ">Raised By</label>
-          </div>
-
-          <div class="d-flex justify-content-between ">
-
-            <div class="d-flex align-items-center ">
-              <label for="Self" class="mr-1">Self</label>
-              <input type="radio" id="SELF" class="pInputText" (change)="onRaisedByChange('SELF')" [checked]="SELF">
-            </div>
-
-            <div class="d-flex align-items-center ">
-              <label for="Other" class="mr-1">Other</label>
-              <input type="radio" id="OTHER" class="pInputText" (change)="onRaisedByChange('OTHER')" [checked]="OTHER">
-            </div>
-
-            <div class="">
-            </div>
-
-
-          </div>
+      <div *ngIf="OTHER" class="col-3">
+        <label for="OtherName" class="small">Enter Name:</label>
+        <div class="floating-input">
+          <input type="text" id="OtherName" class="form-control form-control-sm" placeholder="Enter Name"
+            [(ngModel)]="otherName" />
         </div>
+      </div>
 
-        <div *ngIf="OTHER" class="col-3">
-          <label for="OtherName" class="small">Enter Name:</label>
-          <div class="floating-input">
-            <input type="text" id="OtherName" class="form-control form-control-sm" placeholder="Enter Name"
-              [(ngModel)]="otherName" />
-          </div>
+
+      <div [ngClass]="OTHER ? 'col-3' : 'col-5'">
+        <label for="issue_no" class="w-50">Issue Type</label>
+        <div class="floating-input">
+          <input pInputText type="text" id="issue_no" class="pInputText form-control " placeholder="Enter Issue Type"
+            [(ngModel)]="ISSUE_TYPE_CODE">
         </div>
+      </div>
 
-
-        <div [ngClass]="OTHER ? 'col-3' : 'col-5'">
-          <label for="issue_no" class="w-50">Issue Type</label>
-          <div class="floating-input">
-            <input pInputText type="text" id="issue_no" class="pInputText form-control " placeholder="Enter Issue Type"
-              [(ngModel)]="ISSUE_TYPE_CODE">
-          </div>
+      <div [ngClass]="OTHER ? 'col-3' : 'col-4'">
+        <label for="issue_no" class="w-50">Issue Subject</label>
+        <div class="floating-input">
+          <input pInputText type="text" id="issue_no" class="pInputText form-control " placeholder="Issue Subject"
+            [(ngModel)]="ISSUE_SUBJECT">
         </div>
+      </div>
 
-        <div [ngClass]="OTHER ? 'col-3' : 'col-4'">
-          <label for="issue_no" class="w-50">Issue Subject</label>
-          <div class="floating-input">
-            <input pInputText type="text" id="issue_no" class="pInputText form-control " placeholder="Issue Subject"
-              [(ngModel)]="ISSUE_SUBJECT">
-          </div>
+
+
+      <div class="col-3">
+
+        <label for="issue_no" class="w-50">Module</label>
+        <div class="floating-input">
+          <input pInputText type="text" id="issue_no" class="pInputText form-control " placeholder="Enter Module"
+            [(ngModel)]="MODULE_CODE">
         </div>
+      </div>
 
-
-
-        <div class="col-3">
-
-          <label for="issue_no" class="w-50">Module</label>
-          <div class="floating-input">
-            <input pInputText type="text" id="issue_no" class="pInputText form-control " placeholder="Enter Module"
-              [(ngModel)]="MODULE_CODE">
-          </div>
+      <div class="col-3">
+        <label for="issue_no" class="w-50">Function</label>
+        <div class="floating-input">
+          <input pInputText type="text" id="issue_no" class="pInputText form-control " placeholder="Enter Function"
+            [(ngModel)]="FUNCTION_CODE">
         </div>
-
-        <div class="col-3">
-          <label for="issue_no" class="w-50">Function</label>
-          <div class="floating-input">
-            <input pInputText type="text" id="issue_no" class="pInputText form-control " placeholder="Enter Function"
-              [(ngModel)]="FUNCTION_CODE">
-          </div>
-        </div>
+      </div>
 
         <div class="col-6">
           <label for="Priority" class="w-50">Priority</label>
           <div class="floating-input list-btn">
             <select class="form-control selectpicker show-tick" id="PRIORITY" [ngModelOptions]="{ standalone: true }"
               data-live-search="true" title="Select priority" [(ngModel)]="this.PRIORITY">
-              <option *ngFor="let opt of dropdownList; let i = index" [selected]="opt.Value == this.PRIORITY"
-                (onchange)="getvalue()" [value]="opt.Value">{{ opt.Text }}</option>
+              <option *ngFor="let opt of dropdownList; let i = index" [selected]="opt.PRIORITY_DESC == this.PRIORITY"
+                (onchange)="getvalue()" [value]="opt.PRIORITY_CODE">{{ opt.PRIORITY_DESC }}</option>
             </select>
           </div>
         </div>
 
 
 
-        <div class="col-6 ">
-          <label for="issue_no" class="">CR Strock Issue</label>
-          <div class="floating-input">
-            <textarea id="Reason of CR" class="pInputText w-100 form-control " rows="4" placeholder="Enter Strock Issue"
-              [(ngModel)]="REASON_ISSUE"></textarea>
-          </div>
-
-
+      <div class="col-6 ">
+        <label for="issue_no" class="">CR Strock Issue</label>
+        <div class="floating-input">
+          <textarea id="Reason of CR" class="pInputText w-100 form-control " rows="4" placeholder="Enter Strock Issue"
+            [(ngModel)]="REASON_ISSUE"></textarea>
         </div>
 
-        <div class="col-6">
-          <label for="issue_no">Description of CR</label>
-          <div class="floating-input">
-            <textarea id="Reason of CR" class="pInputText w-100 form-control " rows="4" placeholder="Enter Description"
-              [(ngModel)]="DESC_ISSUE"></textarea>
-          </div>
+
+      </div>
+
+      <div class="col-6">
+        <label for="issue_no">Description of CR</label>
+        <div class="floating-input">
+          <textarea id="Reason of CR" class="pInputText w-100 form-control " rows="4" placeholder="Enter Description"
+            [(ngModel)]="DESC_ISSUE"></textarea>
         </div>
       </div>
     </div>
   </div>
-
-
-  <div class="card mt-2">
-
-    <div class="card-body mt-3">
-
-  <!-- Add File Button -->
-  <button class="btn btn-primary mb-2" (click)="fileInput.click()">Add File</button>
-  <input type="file" #fileInput hidden (change)="onFileSelected($event)" />
-
-  <!-- Uploaded Files Table -->
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>File Name</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let file of uploadedFiles; let i = index">
-        <td>{{ file.name }}</td>
-        <td>
-          <button class="btn btn-sm" (click)="deleteFile(i)">
-            <i class="pi pi-trash"></i> 
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
 </div>
+
+
+<div class="card mt-2">
+
+  <div class="card-body mt-3">
+
+    <!-- Add File Button -->
+    <button class="btn btn-primary mb-2" (click)="fileInput.click()">Add File</button>
+    <input type="file" #fileInput hidden (change)="onFileSelected($event)" />
+
+    <!-- Uploaded Files Table -->
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>File Name</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let file of DOCUMENT_ATTECHED_LIST; let i = index">
+          <td>{{ file.name }}</td>
+          <td>
+            <button class="btn btn-sm" (click)="deleteFile(i)">
+              <i class="pi pi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
   </div>
+</div>
+
+<div class="modal fade" *ngIf="SaveConfirmationPopUp" #saveissue id="saveissue" tabindex="-1"
+  role="dialog" data-keyboard="false" data-backdrop="static" aria-labelledby="saveissue">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <!-- <div class="modal-header">
+        <h5 class="modal-title" >Confirmation</h5>
+        </div> -->
+      <div class="modal-body">
+        <div class="form-header text-center">
+          <h5>Confirmation</h5>
+          <p style="text-align: left;margin-left: 15px;">Are you sure you want to save ?</p>
+        </div>
+        <!-- <div class="col-md-12" *ngIf="differenceOfreqAndApp">
+          <label> Reason to reduce requested amount:<span class="text-danger">*</span></label>
+          <div class="floating-input mb-2">
+            <textarea name="" id="" cols="2" class="form-control" placeholder="Approve Reason"  [(ngModel)]="REJECT_REASON"
+              ></textarea>
+          </div>
+        </div> -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="SAVEISSUEREQUESTMASTER()">Yes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+      </div>
+
+    </div>
+  </div>
+</div> 

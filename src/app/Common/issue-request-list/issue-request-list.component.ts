@@ -78,7 +78,7 @@ export class IssueRequestListComponent implements OnInit {
       "USER_ID": (+this.USER_ID),
       "FUNCTION_CODE": ((this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE),
     }
-    return;
+   
     // this.apiService.post(this.apiurl.GETISSUEREQUESTLIST, data).then((res: any) => {
     //    this.ISSUE_REQUEST_COLUMN_LIST = res.Columnlist;
     //    this.ISSUE_REQUEST_LIST_DATA = res.Datalist;
