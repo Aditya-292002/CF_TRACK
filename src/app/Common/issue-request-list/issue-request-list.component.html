@@ -1,20 +1,19 @@
-
-<div class="flex flex-wrap flex-wrap justify-between mb-2">
+<!-- <div class="flex flex-wrap flex-wrap justify-between mb-2">
   <div class="flex gap-3 ">
-  <h5 class="text-xl">Ticket Raised List</h5>
-   
+    <h5 class="text-xl">Ticket Raised List</h5>
+
   </div>
-<div class="gap-2 flex mt-1">
-  <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Approved"></i>Approved</p>
-  <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Revert"></i>Revert</p>
-  <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Reject"></i>Reject</p>
-  <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Hold"></i>Hold</p>
-  <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Cancel"></i>Cancel</p>
-</div>
+  <div class="gap-2 flex mt-1">
+    <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Approved"></i>Approved</p>
+    <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Revert"></i>Revert</p>
+    <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Reject"></i>Reject</p>
+    <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Hold"></i>Hold</p>
+    <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Cancel"></i>Cancel</p>
+  </div>
 
   <div class="flex gap-2 justify-end">
-    <div >
-    <!-- <p-dropdown
+    <div>
+      <!-- <p-dropdown
       [options]="STATUS_LIST"
       [(ngModel)]="STATUS_CODE"
       class="w-full"
@@ -23,44 +22,82 @@
       (onChange)="GetFilteSelectStatusType(STATUS_CODE)"
       placeholder="Status Type"
     /> -->
-  </div>
+    <!-- </div>
     <div>
-      <input
-        pInputText
-        type="text"
-        class="pInputText w-full"
-        [(ngModel)]="SearchValue"
-        (ngModelChange)="GetInputFilter(SearchValue)"
-        placeholder="Search"
-      />
-    </div>
+      <input pInputText type="text" class="pInputText w-full" [(ngModel)]="SearchValue"
+        (ngModelChange)="GetInputFilter(SearchValue)" placeholder="Search" />
+    </div> -->
     <!-- <p-button label="Add" class="prime-button save-button"  (click)="AddIssueRequest()" /> -->
+  <!-- </div>
+
+</div> -->
+<div class="d-flex flex-row justify-content-between align-items-center card p-2">
+  <div class="flex gap-3 ">
+    <h5 class="text-xl">Ticket Raised List</h5>
+ 
   </div>
-  
+  <!-- <div class="gap-2 flex mt-2">
+    <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Approved"></i>Approved</p>
+    <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Revert"></i>Revert</p>
+    <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Reject"></i>Reject</p>
+    <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Hold"></i>Hold</p>
+    <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Cancel"></i>Cancel</p>
+  </div> -->
+ 
+  <div class="flex gap-2 justify-end">
+    <div>
+      <!-- <p-dropdown
+      [options]="STATUS_LIST"
+      [(ngModel)]="STATUS_CODE"
+      class="w-full"
+      optionValue="STATUS_CODE"
+      optionLabel="STATUS_NAME"
+      (onChange)="GetFilteSelectStatusType(STATUS_CODE)"
+      placeholder="Status Type"
+    /> -->
+    </div>
+    <div class="input-group" style="max-width: 259px;">
+      <div class="input-group-prepend">
+        <span class="input-group-text bg-white border-right-0">
+          <i class="fa fa-search"></i>
+        </span>
+      </div>
+      <input type="text" class="form-control border-left-0" placeholder="Search" [(ngModel)]="SearchValue"
+        (ngModelChange)="GetInputFilter(SearchValue)" style="box-shadow: none;" />
+    </div>
+    <div>
+      <button class="btn btn-primary d-flex align-items-center" (click)="AddIssueRequest()">
+        <i class="fa fa-plus mr-2"></i> Add New
+      </button>
+    </div>
+ 
+  </div>
+ 
 </div>
-		<div class="mt-2 col-md-12 ">
-			<div class="card">
-				<div class="tableFixHead   ">
-					<table class="table-theam-1 row_bgcolor_1">
-						<thead>
-							<tr>
-								<th class="">Leave Code</th>
-								<th class="">From Date</th>
-								<th class="">To Date</th>
-								<th class="">No. of Days</th>
-								<th class="">Status</th>
-								<th class="">Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr *ngFor="let data of all_leave_list;let i=index;" >
-								<td class="">{{data.LEAVE_NAME}}</td>
-								<td class="">{{data.FROM_DATE}}</td>
-								<td class="">{{data.TO_DATE}}</td>
-								<td class="">{{data.NO_OF_DAYS}}</td>
-                 <!-- (dblclick)="openPopup(data, 'Status')" -->
-								<td class="" >							
-								 <!-- <i class="fa fa-ban text-warning mr-2" *ngIf="data.STATUS == 'P'"></i> 
+<div class="mt-2 col-md-12 ">
+  <div class="card">
+    <p  *ngIf="this.ISSUE_REQUEST_LIST_DATA.length == 0">No Records Found</p>
+    <div class="tableFixHead"  *ngIf="this.ISSUE_REQUEST_LIST_DATA.length > 0">
+      <table class="table-theam-1 row_bgcolor_1">
+        <thead>
+          <tr>
+            <th *ngFor="let column of ISSUE_REQUEST_COLUMN_LIST">{{ column.Col_Name }}</th>
+            <th class="">Action</th> <!-- For Action column -->
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of ISSUE_REQUEST_LIST_DATA">
+            <td *ngFor="let column of ISSUE_REQUEST_COLUMN_LIST">
+              {{ data[column.Col_Filed] }}
+            </td>
+            <td class="">
+              <!-- Add your action buttons here -->
+             <span> <i class="far fa-eye mr-1" (click)="viewIssue(data)"></i></span>
+            </td>
+            <!-- (dblclick)="openPopup(data, 'Status')" -->
+            <!-- <td class=""> -->
+              <!-- <i class="fa fa-ban text-warning mr-2" *ngIf="data.STATUS == 'P'"></i> 
 								 <i class="fa fa-check-square text-success mr-2" *ngIf="data.STATUS == 'A' || data.STATUS == 'M'"></i>
 								 <i class="fa fa-times text-danger mr-2" *ngIf="data.STATUS == 'R'"></i>{{data.STATUS_DESC}}</td> 
 								<td class="">									
@@ -70,13 +107,13 @@
 									<a *ngIf="(data.STATUS == 'P' && this.ROLE_NAME == 'HR USER') || (data.STATUS == 'M' && this.ROLE_NAME == 'HR USER')">
 										<i class="fa fa-trash  small"  (click)="editLeave(data)" title="Delete"></i>  
 									</a> -->
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
+            <!-- </td> -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
 <!-- 
 <div class="mt-4" >
@@ -120,5 +157,3 @@
     </p-table>  
   </div>
 </div> -->
-
-

@@ -51,6 +51,10 @@ export class IssueRequestListComponent implements OnInit {
         private datepipe:DatePipe
       ) { }
    ngOnInit(): void {
+     console.log('ngAfterViewInit called');
+    this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
+    this.USER_ID = this.userData[0].LOGIN_ID;
+    console.log(' this.USER_ID', this.USER_ID);
     localStorage.removeItem('ISSUE_NO')
     localStorage.removeItem('IS_CANCEL')
     localStorage.removeItem('CANCEL_IND')
@@ -169,7 +173,14 @@ export class IssueRequestListComponent implements OnInit {
     });
   } 
 
-   
+   viewIssue(data:any){
+    console.log('viewIssue');
+  localStorage.setItem('MODE', 'E');
+    localStorage.setItem('ISSUE_NO', data.ISSSUE_NO);
+   // this.router.navigate([`/issuerequestmaster`]);
+    this.route.changeRoute('/issuerequestmaster');
+    this.toast.info('This feature is coming soon','Info')
+   }
 
 
 }

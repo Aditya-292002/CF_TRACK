@@ -20,7 +20,7 @@ declare var jQuery: any;
 })
 export class IssueRequestMasterComponent implements OnInit {
   ISSUE_NO:any;
-  REQUEST_DATE:any = new Date();
+  REQUEST_DATE:any= '';
   REQUESTER:any;
   ISSUE_TYPE_CODE:any = '02';
   PRIORITY_CODE:any="01";
@@ -128,6 +128,12 @@ uploadedFiles: any[] = [];
    ngOnInit(): void {
 
     this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
+    this.MODE=localStorage.getItem('MODE');
+    console.log(' this.MODE', this.MODE);
+   this.ISSUE_NO=sessionStorage.getItem('ISSUE_NO');
+    console.log(' this.ISSUE_NO', this.ISSUE_NO);
+  
+    // this.USER_ID = this.sharedservice.get_USER_ID();
     this.USERID = this.userData[0].LOGIN_ID;
     this.REQUESTER = this.userData[0].LOGIN_ID;
     this.USER_NAME="" //this.sharedservice.get_USER_NAME();
@@ -140,37 +146,40 @@ uploadedFiles: any[] = [];
     this.IS_REVERT = localStorage.getItem('IS_REVERT');
     const today = new Date();
   // Format as yyyy-MM-dd because HTML date input requires this format
-  this.REQUEST_DATE = today.toISOString().substring(0, 10);
+  this.REQUEST_DATE = new Date()
     this.GETISSUEREQUESTMASTER();
 
     this.dropdownList = [
-    { PRIORITY_CODE: 'A', PRIORITY_DESC: 'Low' },
-    { PRIORITY_CODE: 'B', PRIORITY_DESC: 'Medium'}
+    { PRIORITY_CODE: '01', PRIORITY_DESC: 'Low' },
+    { PRIORITY_CODE: '02', PRIORITY_DESC: 'Medium'}
   ];
 
-   this.dropdownList1 = [
-    { Value: 'A', Text: 'Product A' },
-    { Value: 'B', Text: 'Product B' },
-    { Value: 'C', Text: 'Product C' },
-    { Value: 'D', Text: 'Product D'}
-  ];
+
     if(this.MODE == 'A'){
        this.IS_UPDATE = true;
     }
-    if(this.ISSUE_NO !== null){
-      this.MODE = 'E';
+    if(this.ISSUE_NO !== null && this.MODE==='E'){
+      
       this.GETISSUERAISEDDETAILSBYISSUENO();
-      this.GETISSUERAISEDHISTORY(0);
+     // this.GETISSUERAISEDHISTORY(0);
     }
      setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);
   }
+       ngAfterViewInit(): void {
+    console.log('ngAfterViewInit called');
+ 
   
+  
+      
+     // this.GETISSUERAISEDHISTORY(0);
+   
+  }
 
   GETISSUEREQUESTMASTER() {
    let data = {
-     "USER_ID": (+this.USER_ID),
+     "USER_ID": (+this.USERID),
      "FUNCTION_CODE": ((this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE),
    }
    this.http.PostRequest(this.apiurl.GetIssueCommonList, data).then((res: any) => {
@@ -193,50 +202,53 @@ uploadedFiles: any[] = [];
  }
 
  GETISSUERAISEDDETAILSBYISSUENO(){
+  console.log('GETISSUERAISEDDETAILSBYISSUENO inside');
+  
   let data = {
-    "USER_ID": (+this.USER_ID),
+    "USER_ID": (+this.USERID),
     "FUNCTION_CODE": ((this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE),
-    "ISSUE_NO": this.ISSUE_NO
+    "ISSUE_NO":this.ISSUE_NO,
+     "MODE":this.MODE,
   }
   // console.log('data ->' , JSON.stringify(data))
-  // this.apiService.post(this.urlService.GETISSUERAISEDDETAILSBYISSUENO, data).then((res: any) => {
-  //   // console.log('res ->' , res )
-  //    this.IS_HISTORY = res.datalist[0].IS_HISTORY;
-  //    this.ISSUE_NO = res.datalist[0].ISSSUE_NO;
-  //    this.ISSUE_ID = res.datalist[0].ISSUE_ID;
-  //    this.IS_UPDATE = res.datalist[0].IS_UPDATE;
-  //    this.USERID = res.datalist[0].RAISED_BY;
-  //    this.PRIORITY_CODE = res.datalist[0].PRIORITY_CODE;
-  //    this.REQUESTER_NAME = res.datalist[0].REQUESTER_NAME;
-  //    this.REQUESTER = res.datalist[0].REQUESTER_NAME;
-  //    this.ISSUE_TYPE_CODE = res.datalist[0].ISSUE_TYPE_CODE;
-  //    let request_date = res.datalist[0].REQUEST_DATE;
-  //    this.MODULE_CODE = res.datalist[0].MODULE_CODE;
-  //    this.MODULE_DESC = res.datalist[0].MODULE_DESC;
-  //    this.ISSUE_FUNCTION_CODE = res.datalist[0].FUNCTION_CODE;
-  //    this.FUNCTION_DESC = res.datalist[0].FUNCTION_DESC;
-  //    this.REQUEST_DATE = new Date(request_date);
-  //    this.ISSUE_SUBJECT = res.datalist[0].ISSUE_SUBJECT;
-  //    this.REASON_ISSUE = res.datalist[0].ASREASON_OF_ISSUE_CR;
-  //    this.DESC_ISSUE = res.datalist[0].DESC_OF_ISSUE_CR;
-  //    this.ISSUE_ID = res.datalist[0].ISSUE_ID;
-  //    this.STATUS_CODE = res.datalist[0].STATUS_CODE;
-  //    this.STATUS_NAME = res.datalist[0].STATUS_NAME;
-  //    if(this.ISSUE_TYPE_CODE == '02'){
-  //      this.isReasonofErrorCR = true;
-  //      this.isErrorLableChange = true;
-  //    }else if(this.ISSUE_TYPE_CODE == '01'){
-  //      this.isErrorLableChange = false;
-  //      this.isReasonofErrorCR = false;
-  //    }
-  //      this.GET_DOCUMENT_LIST = res.iteamlist;
-  //    if(this.GET_DOCUMENT_LIST.length > 0){
-  //      this.isUploadDocument = true;
-  //      this.DOCUMENT_ATTECHED_LIST = this.GET_DOCUMENT_LIST;
-  //    }
-  // //this.MessageService.add({severity:'warn', summary:'If you want to see current Status ',detail:"Please Check a History"});
+  this.http.PostRequest(this.apiurl.GETISSUERAISEDDETAILSBYISSUENO, data).then((res: any) => {
+    // console.log('res ->' , res )
+     this.IS_HISTORY = res.datalist[0].IS_HISTORY;
+     this.ISSUE_NO = res.datalist[0].ISSSUE_NO;
+     this.ISSUE_ID = res.datalist[0].ISSUE_ID;
+     this.IS_UPDATE = res.datalist[0].IS_UPDATE;
+     this.USERID = res.datalist[0].RAISED_BY;
+     this.PRIORITY_CODE = res.datalist[0].PRIORITY_CODE;
+     this.REQUESTER_NAME = res.datalist[0].REQUESTER_NAME;
+     this.REQUESTER = res.datalist[0].REQUESTER_NAME;
+     this.ISSUE_TYPE_CODE = res.datalist[0].ISSUE_TYPE_CODE;
+     let request_date = res.datalist[0].REQUEST_DATE;
+     this.REQUEST_DATE = new Date(request_date);
+     this.MODULE_CODE = res.datalist[0].MODULE_CODE;
+     this.MODULE_DESC = res.datalist[0].MODULE_DESC;
+     this.ISSUE_FUNCTION_CODE = res.datalist[0].FUNCTION_CODE;
+     this.FUNCTION_DESC = res.datalist[0].FUNCTION_DESC;
+     this.ISSUE_SUBJECT = res.datalist[0].ISSUE_SUBJECT;
+     this.REASON_ISSUE = res.datalist[0].ASREASON_OF_ISSUE_CR;
+     this.DESC_ISSUE = res.datalist[0].DESC_OF_ISSUE_CR;
+     this.ISSUE_ID = res.datalist[0].ISSUE_ID;
+     this.STATUS_CODE = res.datalist[0].STATUS_CODE;
+     this.STATUS_NAME = res.datalist[0].STATUS_NAME;
+     if(this.ISSUE_TYPE_CODE == '02'){
+       this.isReasonofErrorCR = true;
+       this.isErrorLableChange = true;
+     }else if(this.ISSUE_TYPE_CODE == '01'){
+       this.isErrorLableChange = false;
+       this.isReasonofErrorCR = false;
+     }
+       this.GET_DOCUMENT_LIST = res.iteamlist;
+     if(this.GET_DOCUMENT_LIST.length > 0){
+       this.isUploadDocument = true;
+       this.DOCUMENT_ATTECHED_LIST = this.GET_DOCUMENT_LIST;
+     }
+  //this.MessageService.add({severity:'warn', summary:'If you want to see current Status ',detail:"Please Check a History"});
 
-  // });
+  });
 
  }
 
@@ -332,7 +344,7 @@ if((keyToCheck in element)){
     "FUNCTION_CODE": this.ISSUE_FUNCTION_CODE,
     "ISSUE_SUBJECT": this.ISSUE_SUBJECT,
     "REASON_ISSUE": this.REASON_ISSUE,
-    "DESC_ISSUE": this.DESC_ISSUE,
+    // "DESC_ISSUE": this.DESC_ISSUE,
     "MODE": this.MODE,
     "STATUS_CODE": this.STATUS_CODE,
     "REVERT_COMMENT": this.REVERT_COMMENT,
@@ -634,6 +646,9 @@ selectedFileName: string | null = null;
   // }
 
   goToList(){
+    localStorage.setItem('MODE' , 'A')
+    localStorage.setItem('FUNCTION_CODE' , '')
+    localStorage.setItem('ISSUE_NO' , '')
    this.route.changeRoute('/issuerequestlist');
   }
   closeModel(){
