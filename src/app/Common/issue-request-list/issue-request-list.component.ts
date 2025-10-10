@@ -180,7 +180,7 @@ export class IssueRequestListComponent implements OnInit {
     localStorage.setItem('ISSUE_NO', data.ISSSUE_NO);
    // this.router.navigate([`/issuerequestmaster`]);
     this.route.changeRoute('/issuerequestmaster');
-    this.toast.info('This feature is coming soon','Info')
+    // this.toast.info('This feature is coming soon','Info')
    }
 
  changeViewList(){

@@ -129,3 +129,195 @@ line-height: 1rem;
   gap: 0.5rem;
   word-break: break-all;
 }
+/* test */
+.width-1 {
+    width: 200px;
+}
+
+.width-2 {
+    width: 150px;
+}
+
+/* .fileUpload-icon {
+    background-image: url("../../../assets/Images/Common-Image/DocumentUpload.png");
+    background-repeat: no-repeat;
+    height: 50px;
+    width: 100px;
+    background-position: center center;
+} */
+.text-header {
+    font-size: 1rem !important;
+    margin-bottom: 0rem !important;
+    font-weight: 600 !important;
+    font-family: "Roboto", sans-serif !important;
+}
+
+.view-text {
+    background: #c13d3d12;
+    color: #c13d3d;
+    padding: 2px 5px;
+    border-radius: 6px;
+    box-shadow: 0 .1875rem .5rem 0 rgba(34, 48, 62, .1);
+}
+
+.w-40 {
+    width: 160px !important;
+}
+
+
+.status_container {
+    display: inline-flex;
+    padding: 1px 10px;
+    font-size: 13px;
+    align-items: center;
+    color: rgb(18 85 141);
+    /* border-radius: 32px; */
+    /* border: 1px solid #1ea97c; */
+    /* background: #75bfff1f; */
+    background: rgba(228, 248, 240, 0.7);
+
+}
+
+.history_container {
+    display: inline-flex;
+    padding: 1px 10px;
+    font-size: 13px;
+    align-items: center;
+    background: #c13d3d12;
+    color: #c13d3d;
+}
+
+
+.Approved {
+    font-size: 0.75rem;
+    /* 12px */
+    line-height: 1rem;
+    color: #198155;
+}
+
+.Reject {
+    font-size: 0.75rem;
+    /* 12px */
+    line-height: 1rem;
+    color: #D3180C;
+}
+
+.Raised {
+    font-size: 0.75rem;
+    /* 12px */
+    line-height: 1rem;
+    color: #A05E03;
+}
+
+.Revert {
+    font-size: 0.75rem;
+    /* 12px */
+    line-height: 1rem;
+    color: #0065D0;
+}
+
+/* .p-icon-wrapper{
+    display: block;
+    width: 0;
+    height: 0;
+} */
+
+/* .p-element  {
+    display: block;
+    width: 0;
+    height: 0;
+} */
+
+.save-button {
+    background: #12558d;
+    color: #fff;
+    border: 4px solid #12558d;
+    border-radius: 4px;
+    padding: 4px 15px;
+}
+
+.secondary-button {
+    background-color: white;
+    color: #12558d;
+    border: 2px solid #12558d;
+    border-radius: 4px;
+    padding: 4px 15px;
+}
+
+/* added by hemant  */
+/* PrimeIcons */
+@import "~primeicons/primeicons.css";
+
+.upload-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Styled button */
+.upload-btn {
+    display: flex;
+    align-items: center;
+    background-color: #007ad9;
+    border: none;
+    padding: 0.5rem 1rem;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    gap: 0.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.upload-btn:hover {
+    background-color: #005fa3;
+}
+
+.file-name {
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    word-break: break-all;
+}
+
+.file-table {
+    width: 48.5% !important;
+}
+
+.file-table-th {
+    width: 400px;
+    background-color: #dee2e6;
+    border: 1px solid #aaaaaa;
+}
+
+.file-table-action {
+    background-color: #dee2e6;
+    border: 1px solid #aaaaaa;
+}
+
+.form-header {
+    height: 100%;
+    align-items: center;
+    display: flex;
+    margin-bottom: 0px;
+}
+
+.card-padding-none {
+    padding: 0px;
+}
+
+.radio-btn-gap {
+    gap: 20%;
+}
+
+.label-13px {
+    font-size: 13px;
+}
+
+.row-gap {
+    row-gap: 10px
+}
