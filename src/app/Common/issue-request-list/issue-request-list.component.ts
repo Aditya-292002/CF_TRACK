@@ -11,7 +11,8 @@ import { RoutingService } from 'src/app/services/routing.service';
 import { SharedServiceService } from 'src/app/services/shared-service.service';
 import { ValidationService } from 'src/app/services/validation.service';
 import { DatePipe } from '@angular/common';
-
+declare var $: any;
+declare var jQuery: any;
 @Component({
   selector: 'app-issue-request-list',
   templateUrl: './issue-request-list.component.html',
@@ -182,5 +183,13 @@ export class IssueRequestListComponent implements OnInit {
     this.toast.info('This feature is coming soon','Info')
    }
 
+ changeViewList(){
+
+//  this.GetLeaveCommonList();
+  setTimeout(() => {
+    $('.selectpicker').selectpicker('refresh').trigger('change');
+  }, 
+  100);
+ }
 
 }
