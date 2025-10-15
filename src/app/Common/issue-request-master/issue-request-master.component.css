@@ -285,11 +285,11 @@ line-height: 1rem;
 }
 
 .file-table {
-    width: 48.5% !important;
+    width: 100% !important;
 }
 
 .file-table-th {
-    width: 400px;
+    /* width: 400px; */
     background-color: #dee2e6;
     border: 1px solid #aaaaaa;
 }
@@ -320,4 +320,12 @@ line-height: 1rem;
 
 .row-gap {
     row-gap: 10px
+}
+
+.custom-file-uploader {
+    padding: 3px !important;
+    border: 2px dashed #c3dbf6 !important;
+    background: #ebf3fc !important;
+    width: 100px !important;
+    font-size: 11px !important;
 }

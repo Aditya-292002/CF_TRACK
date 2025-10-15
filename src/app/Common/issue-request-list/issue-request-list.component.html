@@ -36,13 +36,52 @@
     <h5 class="text-xl">Ticket Raised List</h5>
  
   </div>
-  <!-- <div class="gap-2 flex mt-2">
-    <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Approved"></i>Approved</p>
+ <div class="flex gap-3 mt-2">
+  <label class="Text_Primary Helper_Text">
+    <input
+      type="radio"
+      name="status"
+      [(ngModel)]="liststatus"
+      value="Pending"
+      (change)="setStatus('Pending')"
+      class="mr-1"
+    />
+    Pending
+  </label>
+
+  <label class="Text_Primary Helper_Text ">
+    <input
+    class="mr-1"
+      type="radio"
+      name="status"
+      [(ngModel)]="liststatus"
+      value="Closed"
+      (change)="setStatus('Closed')"
+    />
+    Closed
+  </label>
+</div>
+
+      <!-- <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Approved"></i>Approved</p>
     <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Revert"></i>Revert</p>
     <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Reject"></i>Reject</p>
     <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Hold"></i>Hold</p>
-    <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Cancel"></i>Cancel</p>
-  </div> -->
+    <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Cancel"></i>Cancel</p> -->
+  <!-- <div class="header-toggle">
+  <button 
+    class="toggle-btn" 
+    [class.active]="status === 'Pending'"
+    (click)="setStatus('Pending')">
+    Pending
+  </button>
+  <button 
+    class="toggle-btn" 
+    [class.active]="status === 'Closed'"
+    (click)="setStatus('Closed')">
+    Closed
+  </button>
+</div> -->
+
  
   <div class="flex gap-2 justify-end">
     <div>
@@ -65,18 +104,27 @@
       <input type="text" class="form-control border-left-0" placeholder="Search" [(ngModel)]="SearchValue"
         (ngModelChange)="GetInputFilter(SearchValue)" style="box-shadow: none;" />
     </div>
-    <div>
-      <button class="btn  prime-button save-button d-flex align-items-center" (click)="AddIssueRequest()">
-        <i class="fa fa-plus mr-2"></i> Add New
-      </button>
-    </div>
- 
+<div>
+  <div class="d-flex align-items-center mt-1">
+
+
+  <button class="btn prime-button save-button d-flex align-items-center mr-2" (click)="AddIssueRequest()">
+    <i class="fa fa-plus mr-2"></i> Add New
+  </button>
+  
+  <button class="btn p-element   prime-button secondary-button d-flex align-items-center" (click)="exportToExcel()">
+    <i class="fa fa-download mr-2"></i>Excel
+  </button>
+</div>
+  </div>
   </div>
  
 </div>
 <div class="mt-2 ">
   <div class="card">
+    <div  class="p-3" *ngIf="this.ISSUE_REQUEST_LIST_DATA.length == 0">
     <p *ngIf="this.ISSUE_REQUEST_LIST_DATA.length == 0">No Records Found</p>
+    </div>
     <div class="tableFixHead" *ngIf="this.ISSUE_REQUEST_LIST_DATA.length > 0">
       <table class="table-theam-1 row_bgcolor_1">
         <thead>

@@ -121,7 +121,8 @@ export class IssueRequestMasterComponent implements OnInit {
   form: FormGroup;
   viewflag: boolean = false;
   historyData: { status: string; userName: string; time: string; comment: string; }[] = [];
-
+Cust_REF_NO: any;
+  PROJECT_LIST: any;
 
 
   deleteFile(index: number) {
@@ -155,6 +156,7 @@ export class IssueRequestMasterComponent implements OnInit {
 
     this.form = this.formBuilder.group({
       ISSUE_NO: [{ value: '', disabled: true }],
+      Cust_REF_NO: [{ value: '', disabled: true }],
       REQUEST_DATE: [{ value: today1, disabled: this.viewflag }],
       PRODUCT_CODE: [{ value: '', disabled: this.viewflag }, Validators.required],
       RAISED_BY: ['SELF'],  // either SELF or OTHER
@@ -235,8 +237,9 @@ export class IssueRequestMasterComponent implements OnInit {
       this.FUNCTION_LIST = res.Functioncodelist;
       this.SAMPEL_FUNCTION_LIST = this.FUNCTION_LIST;
       this.MODULE_LIST = res.Moduleslist;
-      this.ISSUE_LIST = res.Issuelist;
+      this.ISSUE_LIST = res.issuelist;
       this.USER_LIST = res.Userlist;
+      this.PROJECT_LIST = res.projectlist;
       this.STATUS_CODE_LIST = res.Statuscodelist;
       this.PRIORITY_LIST = res.prioritylist;
       this.REQUESTER = this.USER_NAME;
@@ -379,6 +382,7 @@ export class IssueRequestMasterComponent implements OnInit {
       setTimeout(() => {
         this.form.get('PRODUCT_CODE').setValue(response.PRODUCT_CODE);
         this.form.get('PRIORITY_CODE').setValue(response.PRIORITY_CODE);
+            this.form.get('ISSUE_TYPE_CODE').setValue(response.ISSUE_TYPE_CODE);
         $('.selectpicker').selectpicker('refresh').trigger('change');
       }, 100);
     });
@@ -468,10 +472,10 @@ export class IssueRequestMasterComponent implements OnInit {
       return;
     }
 
-    if (this.isDescofErrorCR && !this.form.get('DESC_ISSUE').value) {
-      this.toast.error('Enter a Desc Issue');
-      return;
-    }
+    // if (this.isDescofErrorCR && !this.form.get('DESC_ISSUE').value) {
+    //   this.toast.error('Enter a Desc Issue');
+    //   return;
+    // }
 
     // Conditional validation for revert comment
     if (this.IS_REVERT === 1 && !this.form.get('REVERT_COMMENT').value) {
@@ -937,7 +941,7 @@ convertFilesToBase64(fileList: FileList) {
   }
   showHistoryDialog() {
     console.log("calling")
-    this.displayHistory = true;
+    // this.displayHistory = true;
   }
 
   goToList() {

@@ -378,7 +378,10 @@ input4: string = '';
   }
 
     startCountdown() {
+      console.log('startCountdown called');
+      
     this.timerSubscription = interval(1000).subscribe(() => {
+      console.log('startCountdown called inside');
       if (this.timeLeft > 0) {
         this.timeLeft--;
       } else {
@@ -515,5 +518,10 @@ getOtp(): string {
       // this.f_loginFormValidations();
       // this.spinner = false;
     // }
+  }
+  backToLogin(){
+    this.OTPFLAG=false;
+    this.timeLeft=600;
+    // this.otpExpired=false;
   }
 }

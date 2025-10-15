@@ -11,6 +11,8 @@ import { RoutingService } from 'src/app/services/routing.service';
 import { SharedServiceService } from 'src/app/services/shared-service.service';
 import { ValidationService } from 'src/app/services/validation.service';
 import { DatePipe } from '@angular/common';
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 declare var $: any;
 declare var jQuery: any;
 @Component({
@@ -38,6 +40,7 @@ export class IssueRequestListComponent implements OnInit {
   apiService: any;
  all_leave_list:any=[];
   userData: any;
+  liststatus: string = 'Pending'; // default view
  constructor(
         private authService: AuthServiceService,
         private route: RoutingService,
@@ -66,6 +69,7 @@ export class IssueRequestListComponent implements OnInit {
     this.USER_ID = this.userData[0].LOGIN_ID;
     this.FUNCTION_CODE = localStorage.getItem('FUNCTION_CODE');
    // this.GETISSUEREQUESTMASTER();
+    this.GETISSUEREQUESTLIST();
    }
      ngAfterViewInit(): void {
     console.log('ngAfterViewInit called');
@@ -74,7 +78,7 @@ export class IssueRequestListComponent implements OnInit {
     console.log(' this.USER_ID', this.USER_ID);
     
     // You can now safely access the DOM element
-   this.GETISSUEREQUESTLIST()
+
   }
    
    GETISSUEREQUESTMASTER() {
@@ -92,6 +96,7 @@ export class IssueRequestListComponent implements OnInit {
     let data = {
       "USER_ID": (+this.USER_ID),
       "FUNCTION_CODE": ((this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE),
+      "LISTSTATUS": ( this.liststatus == "Pending") ? "P" : "C",
     }
    
     this.http.PostRequest(this.apiurl.GetIssueRequestList, data).then((res: any) => {
@@ -192,4 +197,32 @@ export class IssueRequestListComponent implements OnInit {
   100);
  }
 
+exportToExcel(): void {
+  const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.ISSUE_REQUEST_LIST_DATA);
+  const workbook: XLSX.WorkBook = {
+    Sheets: { 'Data': worksheet },
+    SheetNames: ['Data']
+  };
+
+  const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  this.saveAsExcelFile(excelBuffer, 'exported-data');
 }
+
+private saveAsExcelFile(buffer: any, fileName: string): void {
+  const data: Blob = new Blob([buffer], { type: 'application/octet-stream' });
+  FileSaver.saveAs(data, `${fileName}_export.xlsx`);
+}
+
+
+
+
+setStatus(value: string) {
+  this.liststatus = value;
+  // you can also filter your data or call API here
+  console.log('Selected Status:', this.liststatus);
+
+  this.GETISSUEREQUESTLIST();
+}
+}
+
+

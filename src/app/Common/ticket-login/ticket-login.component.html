@@ -81,6 +81,9 @@
                                     <button *ngIf="!otpExpired" type="submit" class="btn btn-primary btn-lg loginBtn">
                                         Submit
                                     </button>
+                                      <button *ngIf="otpExpired" (click)="backToLogin()" class="btn btn-primary btn-lg loginBtn">
+                                        Back to Login
+                                    </button>
                                 </div>
                                 <!-- <a
                   class="forget-text float-right"
@@ -89,10 +92,10 @@
                 > -->
                             </form>
 
-                            <div *ngIf="otpExpired">
+                            <!-- <div *ngIf="otpExpired">
                                 <p style="color: red;">OTP expired.</p>
                                 <button (click)="sendOTPassword()">Resend OTP</button>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
