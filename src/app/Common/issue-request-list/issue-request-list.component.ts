@@ -71,11 +71,11 @@ export class IssueRequestListComponent implements OnInit {
    // this.GETISSUEREQUESTMASTER();
     this.GETISSUEREQUESTLIST();
    }
-     ngAfterViewInit(): void {
-    console.log('ngAfterViewInit called');
-    this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
-    this.USER_ID = this.userData[0].LOGIN_ID;
-    console.log(' this.USER_ID', this.USER_ID);
+    ngAfterViewInit(): void {
+      console.log('ngAfterViewInit called');
+      this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
+      this.USER_ID = this.userData[0].LOGIN_ID;
+      console.log(' this.USER_ID', this.USER_ID);
     
     // You can now safely access the DOM element
 

@@ -1,0 +1,56 @@
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
+  <h5 class="h5 mb-0">Developer Confirm List</h5>
+
+  <div class="form-inline">
+    <input
+      type="text"
+      class="form-control"
+    formControlName="SearchValue"
+      (ngModelChange)="GetInputFilter(SearchValue)"
+      placeholder="Search"
+    />
+  </div>
+</div>
+
+<div class="card mt-4">
+  <div class="card-body p-3">
+
+    <!-- When no records -->
+    <p *ngIf="ISSUE_REQUEST_LIST_DATA.length === 0" class="text-muted mb-0">
+      No Records Found
+    </p>
+
+    <!-- When records exist -->
+     <div *ngIf="ISSUE_REQUEST_LIST_DATA.length > 0" class="table-responsive">
+      <table class="table table-bordered table-hover  scrollable-table table-sm mb-0"  scrollHeight="500px">
+        <thead class="thead-light">
+          <tr>
+            <th *ngFor="let col of ISSUE_REQUEST_COLUMN_LIST" [style.width]="col.Col_Size">
+              {{ col.Col_Name }}
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+  <tr *ngFor="let rowData of ISSUE_REQUEST_LIST_DATA">
+    <td *ngFor="let col of ISSUE_REQUEST_COLUMN_LIST">
+      <span
+        *ngIf="col.Col_Filed === 'ISSSUE_NO'; else normalCell"
+        class="issue-no"
+        (click)="GetDeveloperRequestRaised(col, rowData)"
+      >
+        {{ rowData[col.Col_Filed] }}
+      </span>
+
+      <ng-template #normalCell>
+        {{ rowData[col.Col_Filed] }}
+      </ng-template>
+    </td>
+  </tr>
+</tbody>
+
+      </table>
+    </div>
+
+  </div>
+</div>

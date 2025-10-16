@@ -120,6 +120,7 @@ import { TicketLoginComponent } from './Common/ticket-login/ticket-login.compone
 import { IssueRequestMasterComponent } from './Common/issue-request-master/issue-request-master.component';
 import { IssueRequestListComponent } from './Common/issue-request-list/issue-request-list.component';
 import { PmConfirmationComponent } from './Common/pm-confirmation/pm-confirmation.component';
+import { PmConfirmationListComponent } from './Common/pm-confirmation-list/pm-confirmation-list.component';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -234,7 +235,9 @@ export const MY_DATE_FORMATS = {
     TicketLoginComponent,
     IssueRequestMasterComponent,
     IssueRequestListComponent,
-    PmConfirmationComponent
+    PmConfirmationComponent,
+    PmConfirmationListComponent
+    
   ],
   imports: [
     BrowserModule,

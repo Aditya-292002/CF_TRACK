@@ -71,6 +71,7 @@ import { TicketLoginComponent } from './Common/ticket-login/ticket-login.compone
 import { IssueRequestMasterComponent } from './Common/issue-request-master/issue-request-master.component';
 import { IssueRequestListComponent } from './Common/issue-request-list/issue-request-list.component';
 import { PmConfirmationComponent } from './Common/pm-confirmation/pm-confirmation.component';
+import { PmConfirmationListComponent } from './Common/pm-confirmation-list/pm-confirmation-list.component';
 
 const routes: Routes = [
   {path: 'ForgotPasswordReset', component: ResetPasswordComponent },
@@ -144,8 +145,10 @@ const routes: Routes = [
       {path:"SelfAppraisal",component:SelfAppraisalComponent},
       {path:"SelfAppraisalList",component:SelfAppraisalListComponent},
       {path: "issuerequestmaster", component: IssueRequestMasterComponent },
-      //  {path: "issuerequestlist", component: IssueRequestListComponent },
-      {path: "issuerequestlist", component: PmConfirmationComponent },
+      {path: "issuerequestlist", component: IssueRequestListComponent },
+      // {path: "issuerequestlist", component: PmConfirmationComponent },
+      {path: "pmconfirmationmaster", component: PmConfirmationComponent },
+      {path: "pmconfirmation", component: PmConfirmationListComponent },
       {path: '**', component:Pnf400Component }
     ]
   },

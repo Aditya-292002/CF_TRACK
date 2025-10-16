@@ -1,0 +1,12 @@
+.issue-no {
+  color: #0d6efd; /* Bootstrap primary color */
+  font-weight: 700; /* bold */
+  cursor: pointer;
+  text-decoration: none; /* remove default underline */
+
+  /* Hover effect */
+  transition: all 0.2s ease;
+}
+.issue-no:hover {
+  text-decoration: underline;
+}

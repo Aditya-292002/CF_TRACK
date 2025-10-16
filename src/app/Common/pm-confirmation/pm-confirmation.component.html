@@ -5,32 +5,16 @@
     <div class="d-flex flex-wrap align-items-center">
       <h5 class="card-title mr-3">PM Confirmation</h5>
     
-      <p class="text-primary small mb-0 ml-2" *ngIf="this.COMMENT_HISTORY.length > 0">
+      <p class="text-primary small mb-0 ml-2">
         (Please Check History)
       </p>
     </div>
     
     <!-- Right section: Buttons -->
     <div class="d-flex flex-wrap gap-2">
-      <button 
-      
-        type="button" 
-        class="btn btn-primary btn-sm mr-2"
-        >
-        History
-      </button>
-      <button 
-        type="button" 
-        class="btn btn-success btn-sm mr-2"
-        >
-        Save
-      </button>
-      <button 
-        type="button" 
-        class="btn  btn-outline-primary btn-sm"
-       >
-        List
-      </button>
+      <button type="button" class="btn btn-primary btn-sm mr-2">History</button>
+      <button type="button" class="btn btn-success btn-sm mr-2">Save</button>
+      <button type="button" class="btn  btn-outline-primary btn-sm" (click)="goToList()">List</button>
     </div>
 
   </div>
@@ -46,7 +30,7 @@
         <!-- {{ "ISSUE_NO" }} -->
 12344
       </p>
-      <p class="text-secondary small" *ngIf="ISSUE_NO == undefined || ISSUE_NO == '' || ISSUE_NO == null">
+      <p class="text-secondary small" >
         NA
       </p>
     </div>
@@ -58,7 +42,7 @@
         <!-- {{ "REQUEST_DATE" }} -->
           16/10/2025
       </p>
-      <p class="text-secondary small" *ngIf="REQUEST_DATE == undefined || REQUEST_DATE == '' || REQUEST_DATE == null">
+      <p class="text-secondary small" >
         NA
       </p>
     </div>
@@ -70,7 +54,7 @@
         <!-- {{ "REQUESTER_NAME" }} -->
           Hemant
       </p>
-      <p class="text-secondary small" *ngIf="REQUESTER_NAME == undefined || REQUESTER_NAME == '' || REQUESTER_NAME == null">
+      <p class="text-secondary small" >
         NA
       </p>
     </div>
@@ -82,7 +66,7 @@
         <!-- {{ "USERNAME" }} -->
           Anand Verma
       </p>
-      <p class="text-secondary small" *ngIf="USERNAME == undefined || USERNAME == '' || USERNAME == null">
+      <p class="text-secondary small" >
         NA
       </p>
     </div>
@@ -94,7 +78,7 @@
         <!-- {{ "ISSUE_TYPE_DESC" }} -->
           Test Issue Description
       </p>
-      <p class="text-secondary small" *ngIf="ISSUE_TYPE_DESC == undefined || ISSUE_TYPE_DESC == '' || ISSUE_TYPE_DESC == null">
+      <p class="text-secondary small" >
         NA
       </p>
     </div>
@@ -106,7 +90,7 @@
         <!-- {{ "PRIORITY_DESC" }} -->
           Critical
       </p>
-      <p class="text-secondary small" *ngIf="PRIORITY_DESC == undefined || PRIORITY_DESC == '' || PRIORITY_DESC == null">
+      <p class="text-secondary small" >
         NA
       </p>
     </div>
@@ -118,7 +102,7 @@
         <!-- {{ "MODULE_DESC" }} -->
           Test Module Description
       </p>
-      <p class="text-secondary small" *ngIf="MODULE_DESC == undefined || MODULE_DESC == '' || MODULE_DESC == null">
+      <p class="text-secondary small" >
         NA
       </p>
     </div>
@@ -130,7 +114,7 @@
         <!-- {{ "FUNCTION_DESC" }} -->
           Test Function Description
       </p>
-      <p class="text-secondary small" *ngIf="FUNCTION_DESC == undefined || FUNCTION_DESC == '' || FUNCTION_DESC == null">
+      <p class="text-secondary small">
         NA
       </p>
     </div>
@@ -142,7 +126,7 @@
         <!-- {{ "ISSUE_SUBJECT" }} -->
           Test Issue Subject
       </p>
-      <p class="text-secondary small" *ngIf="ISSUE_SUBJECT == undefined || ISSUE_SUBJECT == '' || ISSUE_SUBJECT == null">
+      <p class="text-secondary small" >
         NA
       </p>
     </div>
@@ -157,27 +141,27 @@
         <!-- {{ "REASON_ISSUE" }} -->
           Reason of Issue
       </p>
-      <p class="text-secondary small" *ngIf="REASON_ISSUE == undefined || REASON_ISSUE == '' || REASON_ISSUE == null">NA</p>
+      <p class="text-secondary small" >NA</p>
 
       <p class="text-secondary small" >
         <!-- {{ "DESC_ISSUE" }} -->
             Description of Issue
       </p>
-      <p class="text-secondary small" *ngIf="DESC_ISSUE == undefined || DESC_ISSUE == '' || DESC_ISSUE == null">NA</p>
+      <p class="text-secondary small" >NA</p>
     </div>
 
     <!-- Propose Delivery & Est Hours -->
-    <div class="col-md-3 mb-2" *ngIf="PROPOSE_DELIVERY_BY != ''">
+    <div class="col-md-3 mb-2" >
       <label class="font-weight-bold  small">Propose New</label>
       <p class="text-secondary small">{{ "PROPOSE_DELIVERY_BY" }}</p>
     </div>
-    <div class="col-md-3 mb-2" *ngIf="PROPOSE_HOURS != ''">
+    <div class="col-md-3 mb-2" >
       <label class="font-weight-bold  small">Est. Hours</label>
       <p class="text-secondary small">{{ "PROPOSE_HOURS" }} Hr</p>
     </div>
 
     <!-- Uploaded Document List -->
-    <div class="col-md-9 mb-2" *ngIf="DOCUMENT_ATTECHED_LIST.length > 0">
+    <div class="col-md-9 mb-2">
       <label class="font-weight-bold  small">Uploaded Document List</label>
       <table class="table table-sm table-bordered">
         <thead class="thead-light">
@@ -194,7 +178,7 @@
             <td>{{ data.UPLOADEDBY }}</td>
             <td>{{ data.DATE }}</td>
             <td>
-              <button *ngIf="['png','jpg','jpeg'].includes(data.EXTENSION)"
+              <button 
                       type="button"
                       class="btn btn-danger btn-sm mr-1"
                     >
@@ -236,7 +220,7 @@
     <label class="font-weight-bold small">Reason</label>
     <textarea class="form-control" rows="2" formControlName="DEVELOPER_COMMENT" placeholder="Enter Reason"></textarea>
   </div> -->
-  <div class="form-group mt-3" *ngIf="form.get('DEVELOPER_STATUS').value === 'OK'">
+  <div class="form-group mt-3" >
   <label class="font-weight-bold small">Reason</label>
   <textarea
     class="form-control"
@@ -248,7 +232,7 @@
 
 
   <!-- All Other Fields (Only visible when REJECT is selected) -->
-  <div *ngIf="DEVELOPER_STATUS_SELECTED === 'REJECT'">
+  <div >
 
     <!-- Delivery By, Est Hours, Resolution -->
     <div class="form-row mb-3">
@@ -295,7 +279,7 @@
             <tr *ngFor="let data of DEVELOPER_DOCUMENT_LIST; let i = index">
               <td>{{ data.FILE_NAME }}</td>
               <td>
-                <button *ngIf="['png','jpg','jpeg'].includes(data.FILE_EXTENSION)" type="button" class="btn btn-info btn-sm mr-1">
+                <button  type="button" class="btn btn-info btn-sm mr-1">
                   <i class="pi pi-eye"></i>
                 </button>
                 <button type="button" class="btn btn-danger btn-sm" (click)="removeUploadDoc(data)">

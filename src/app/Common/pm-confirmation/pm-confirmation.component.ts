@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { RoutingService } from 'src/app/services/routing.service';
 
 @Component({
   selector: 'app-pm-confirmation',
@@ -17,7 +18,10 @@ export class PmConfirmationComponent implements OnInit {
   // Uploaded document list
   DEVELOPER_DOCUMENT_LIST: { FILE_NAME: string, FILE_EXTENSION: string, DOC_BASE64: string }[] = [];
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private route: RoutingService,
+  ) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -73,5 +77,11 @@ if(this.DEVELOPER_STATUS_SELECTED=='OK'){
   viewDocument(file: any) {
     console.log('View document', file);
   }
+
+  goToList() {
+    this.route.changeRoute('/pmconfirmation');
+  }
+
+
 
 }
