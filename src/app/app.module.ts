@@ -119,6 +119,7 @@ import { SelfAppraisalComponent } from './Marketing/self-appraisal/self-appraisa
 import { TicketLoginComponent } from './Common/ticket-login/ticket-login.component';
 import { IssueRequestMasterComponent } from './Common/issue-request-master/issue-request-master.component';
 import { IssueRequestListComponent } from './Common/issue-request-list/issue-request-list.component';
+import { PmConfirmationComponent } from './Common/pm-confirmation/pm-confirmation.component';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -232,7 +233,8 @@ export const MY_DATE_FORMATS = {
     SelfAppraisalListComponent,
     TicketLoginComponent,
     IssueRequestMasterComponent,
-    IssueRequestListComponent
+    IssueRequestListComponent,
+    PmConfirmationComponent
   ],
   imports: [
     BrowserModule,

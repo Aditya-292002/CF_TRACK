@@ -70,6 +70,7 @@ import { SelfAppraisalComponent } from './Marketing/self-appraisal/self-appraisa
 import { TicketLoginComponent } from './Common/ticket-login/ticket-login.component';
 import { IssueRequestMasterComponent } from './Common/issue-request-master/issue-request-master.component';
 import { IssueRequestListComponent } from './Common/issue-request-list/issue-request-list.component';
+import { PmConfirmationComponent } from './Common/pm-confirmation/pm-confirmation.component';
 
 const routes: Routes = [
   {path: 'ForgotPasswordReset', component: ResetPasswordComponent },
@@ -143,7 +144,8 @@ const routes: Routes = [
       {path:"SelfAppraisal",component:SelfAppraisalComponent},
       {path:"SelfAppraisalList",component:SelfAppraisalListComponent},
       {path: "issuerequestmaster", component: IssueRequestMasterComponent },
-       {path: "issuerequestlist", component: IssueRequestListComponent },
+      //  {path: "issuerequestlist", component: IssueRequestListComponent },
+      {path: "issuerequestlist", component: PmConfirmationComponent },
       {path: '**', component:Pnf400Component }
     ]
   },
