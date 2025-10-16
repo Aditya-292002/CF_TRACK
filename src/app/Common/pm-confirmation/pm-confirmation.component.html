@@ -26,11 +26,10 @@
     <!-- Issue No -->
     <div class="col-md-3 mb-2">
       <label class="font-weight-bold  small">Issue No.</label>
-      <p class="text-secondary small" >
-        <!-- {{ "ISSUE_NO" }} -->
-12344
+      <p class="text-secondary small" *ngIf = "ISSSUE_NO !== null || ISSSUE_NO !== '' || ISSSUE_NO !== undefined">
+        {{ISSSUE_NO }}
       </p>
-      <p class="text-secondary small" >
+      <p class="text-secondary small" *ngIf = "ISSSUE_NO === null || ISSSUE_NO === '' || ISSSUE_NO === undefined">
         NA
       </p>
     </div>
@@ -38,11 +37,10 @@
     <!-- Date -->
     <div class="col-md-3 mb-2">
       <label class="font-weight-bold  small">Date</label>
-      <p class="text-secondary small" >
-        <!-- {{ "REQUEST_DATE" }} -->
-          16/10/2025
+      <p class="text-secondary small" *ngIf = "REQUEST_DATE !== null || REQUEST_DATE !== '' || REQUEST_DATE !== undefined">
+        {{ REQUEST_DATE }}
       </p>
-      <p class="text-secondary small" >
+      <p class="text-secondary small" *ngIf = "REQUEST_DATE === null || REQUEST_DATE === '' || REQUEST_DATE === undefined">
         NA
       </p>
     </div>
@@ -50,11 +48,10 @@
     <!-- Created By -->
     <div class="col-md-3 mb-2">
       <label class="font-weight-bold  small">Created By</label>
-      <p class="text-secondary small">
-        <!-- {{ "REQUESTER_NAME" }} -->
-          Hemant
+      <p class="text-secondary small" *ngIf = "REQUESTER_NAME !== null || REQUESTER_NAME !== '' || REQUESTER_NAME !== undefined">
+        {{ REQUESTER_NAME }}
       </p>
-      <p class="text-secondary small" >
+      <p class="text-secondary small" *ngIf = "REQUESTER_NAME === null || REQUESTER_NAME === '' || REQUESTER_NAME === undefined">
         NA
       </p>
     </div>
@@ -62,11 +59,10 @@
     <!-- Raised By -->
     <div class="col-md-3 mb-2">
       <label class="font-weight-bold  small">Raised By</label>
-      <p class="text-secondary small">
-        <!-- {{ "USERNAME" }} -->
-          Anand Verma
+      <p class="text-secondary small" *ngIf = "RAISED_BY_NAME !== null || RAISED_BY_NAME !== '' || RAISED_BY_NAME !== undefined">
+        {{ RAISED_BY_NAME }}
       </p>
-      <p class="text-secondary small" >
+      <p class="text-secondary small" *ngIf = "RAISED_BY_NAME === null || RAISED_BY_NAME === '' || RAISED_BY_NAME === undefined">
         NA
       </p>
     </div>
@@ -74,11 +70,10 @@
     <!-- Issue Type -->
     <div class="col-md-3 mb-2">
       <label class="font-weight-bold  small">Issue Type</label>
-      <p class="text-secondary small">
-        <!-- {{ "ISSUE_TYPE_DESC" }} -->
-          Test Issue Description
+      <p class="text-secondary small" *ngIf = "ISSUE_TYPE_DESC !== null || ISSUE_TYPE_DESC !== '' || ISSUE_TYPE_DESC !== undefined">
+        {{ISSUE_TYPE_DESC }}
       </p>
-      <p class="text-secondary small" >
+      <p class="text-secondary small" *ngIf = "ISSUE_TYPE_DESC === null || ISSUE_TYPE_DESC === '' || ISSUE_TYPE_DESC === undefined">
         NA
       </p>
     </div>
@@ -86,11 +81,10 @@
     <!-- Priority -->
     <div class="col-md-3 mb-2">
       <label class="font-weight-bold  small">Priority</label>
-      <p class="text-secondary small" >
-        <!-- {{ "PRIORITY_DESC" }} -->
-          Critical
+      <p class="text-secondary small" *ngIf = "PRIORITY_DESC !== null || PRIORITY_DESC !== '' || PRIORITY_DESC !== undefined">
+        {{ PRIORITY_DESC }}
       </p>
-      <p class="text-secondary small" >
+      <p class="text-secondary small" *ngIf = "PRIORITY_DESC === null || PRIORITY_DESC === '' || PRIORITY_DESC === undefined">
         NA
       </p>
     </div>
@@ -98,11 +92,10 @@
     <!-- Module -->
     <div class="col-md-3 mb-2">
       <label class="font-weight-bold  small">Module</label>
-      <p class="text-secondary small" >
-        <!-- {{ "MODULE_DESC" }} -->
-          Test Module Description
+      <p class="text-secondary small" *ngIf = "MODULE_CODE !== null || MODULE_CODE !== '' || MODULE_CODE !== undefined">
+        {{MODULE_CODE }}
       </p>
-      <p class="text-secondary small" >
+      <p class="text-secondary small" *ngIf = "MODULE_CODE === null || MODULE_CODE === '' || MODULE_CODE === undefined">
         NA
       </p>
     </div>
@@ -110,11 +103,10 @@
     <!-- Function -->
     <div class="col-md-3 mb-2">
       <label class="font-weight-bold  small">Function</label>
-      <p class="text-secondary small">
-        <!-- {{ "FUNCTION_DESC" }} -->
-          Test Function Description
+      <p class="text-secondary small" *ngIf = "FUNCTION_CODE !== null || FUNCTION_CODE !== '' || FUNCTION_CODE !== undefined">
+        {{ FUNCTION_CODE }}
       </p>
-      <p class="text-secondary small">
+      <p class="text-secondary small" *ngIf = "FUNCTION_CODE === null || FUNCTION_CODE === '' || FUNCTION_CODE === undefined">
         NA
       </p>
     </div>
@@ -122,43 +114,42 @@
     <!-- Issue Subject -->
     <div class="col-md-3 mb-2">
       <label class="font-weight-bold  small">Issue Subject</label>
-      <p class="text-secondary small" >
-        <!-- {{ "ISSUE_SUBJECT" }} -->
-          Test Issue Subject
+      <p class="text-secondary small" *ngIf = "ISSUE_SUBJECT !== null || ISSUE_SUBJECT !== '' || ISSUE_SUBJECT !== undefined">
+        {{ ISSUE_SUBJECT }}
       </p>
-      <p class="text-secondary small" >
+      <p class="text-secondary small" *ngIf = "ISSUE_SUBJECT === null || ISSUE_SUBJECT === '' || ISSUE_SUBJECT === undefined">
         NA
       </p>
     </div>
 
     <!-- Reason / Description of Issue/CR -->
-    <div class="col-12 mb-2" >
+    <!-- <div class="col-12 mb-2" >
       <label class="font-weight-bold  small" >Reason of CR</label>
       <label class="font-weight-bold  small">Reason of Issue</label>
       <label class="font-weight-bold  small">Description of CR</label>
 
       <p class="text-secondary small" >
-        <!-- {{ "REASON_ISSUE" }} -->
+       
           Reason of Issue
       </p>
       <p class="text-secondary small" >NA</p>
 
       <p class="text-secondary small" >
-        <!-- {{ "DESC_ISSUE" }} -->
+  
             Description of Issue
       </p>
       <p class="text-secondary small" >NA</p>
-    </div>
+    </div> -->
 
     <!-- Propose Delivery & Est Hours -->
-    <div class="col-md-3 mb-2" >
+    <!-- <div class="col-md-3 mb-2" >
       <label class="font-weight-bold  small">Propose New</label>
       <p class="text-secondary small">{{ "PROPOSE_DELIVERY_BY" }}</p>
-    </div>
-    <div class="col-md-3 mb-2" >
+    </div> -->
+    <!-- <div class="col-md-3 mb-2" >
       <label class="font-weight-bold  small">Est. Hours</label>
       <p class="text-secondary small">{{ "PROPOSE_HOURS" }} Hr</p>
-    </div>
+    </div> -->
 
     <!-- Uploaded Document List -->
     <div class="col-md-9 mb-2">
@@ -205,94 +196,151 @@
 
 <form [formGroup]="form">
 
-  <!-- Radio Buttons -->
-<div class="form-check form-check-inline">
-    <input class="form-check-input" type="radio" formControlName="DEVELOPER_STATUS" [value]="'OK'" id="statusOk" name="developerStatus">
-    <label class="form-check-label" for="statusOk">Ok</label>
-</div>
-<div class="form-check form-check-inline">
-    <input class="form-check-input" type="radio" formControlName="DEVELOPER_STATUS" [value]="'REJECT'" id="statusReject" name="developerStatus">
-    <label class="form-check-label" for="statusReject">Reject</label>
-</div>
+<div class="card p-2 mb-2">
+  <div class="card-body">
 
-  <!-- Reason Field (Only visible when OK is selected) -->
-  <!-- <div class="form-group mt-3" *ngIf="statusflag">
-    <label class="font-weight-bold small">Reason</label>
-    <textarea class="form-control" rows="2" formControlName="DEVELOPER_COMMENT" placeholder="Enter Reason"></textarea>
-  </div> -->
-  <div class="form-group mt-3" >
-  <label class="font-weight-bold small">Reason</label>
-  <textarea
-    class="form-control"
-    rows="2"
-    formControlName="DEVELOPER_COMMENT"
-    placeholder="Enter Reason"
-  ></textarea>
-</div>
-
-
-  <!-- All Other Fields (Only visible when REJECT is selected) -->
-  <div >
-
-    <!-- Delivery By, Est Hours, Resolution -->
-    <div class="form-row mb-3">
-      <div class="col-md-4">
-        <label class="font-weight-bold small">Delivery By</label>
-        <input type="date" class="form-control" formControlName="DELIVERY_BY">
+    <!-- Row 1: Radio Buttons -->
+    <div class="d-flex align-items-center mb-3">
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          id="statusOk"
+          name="developerStatus"
+          formControlName="DEVELOPER_STATUS"
+          value="OK"
+          (change)="developerStatus = 'OK'"
+        />
+        <label class="form-check-label" for="statusOk">OK</label>
       </div>
 
-      <div class="col-md-4">
-        <label class="font-weight-bold small">Est. Hours <span class="text-danger">*</span></label>
-        <input type="number" class="form-control" formControlName="EST_HOURS" placeholder="Enter Est. Hours" maxlength="3">
-      </div>
-
-      <div class="col-md-4">
-        <label class="font-weight-bold small">Resolution <span class="text-danger">*</span></label>
-        <select class="form-control" formControlName="RESOLUTION_CODE">
-          <option *ngFor="let res of RESOLUTION_LIST" [value]="res.RESOLUTION_CODE">{{ res.RESOLUTION_NAME }}</option>
-        </select>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          id="statusClose"
+          name="developerStatus"
+          formControlName="DEVELOPER_STATUS"
+          value="CLOSE"
+          (change)="developerStatus = 'CLOSE'"
+        />
+        <label class="form-check-label" for="statusClose">Close</label>
       </div>
     </div>
 
-    <!-- Developer Explanation & File Upload -->
-    <div class="form-row">
-      <div class="col-md-6 mb-3">
-        <label class="font-weight-bold small">Developer Explanation <span class="text-danger">*</span></label>
-        <textarea class="form-control" rows="4" formControlName="DEVELOPER_COMMENT" placeholder="Enter Developer Explanation"></textarea>
-      </div>
-
-      <div class="col-md-6 mb-3">
-        <input type="file" #fileInput2 hidden (change)="onFileSelectedUploadDocument($event)" accept=".jpg,.png,.jpeg,.pdf,.xlsx,.docx" multiple>
-        <button type="button" class="btn btn-primary mb-2" (click)="fileInput2.click()">
-          <i class="pi pi-paperclip mr-2"></i>Add
-        </button>
-
-        <!-- Uploaded Documents Table -->
-        <table class="table table-sm table-bordered">
-          <thead>
-            <tr>
-              <th>File Name</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let data of DEVELOPER_DOCUMENT_LIST; let i = index">
-              <td>{{ data.FILE_NAME }}</td>
-              <td>
-                <button  type="button" class="btn btn-info btn-sm mr-1">
-                  <i class="pi pi-eye"></i>
-                </button>
-                <button type="button" class="btn btn-danger btn-sm" (click)="removeUploadDoc(data)">
-                  <i class="pi pi-trash"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <!-- Row 2: Reason Field (Visible only when CLOSE is selected) -->
+    <div class="form-group mt-2" *ngIf="developerStatus === 'CLOSE'">
+      <label class="font-weight-bold small">Reason</label>
+      <textarea
+        class="form-control"
+        rows="2"
+        formControlName="DEVELOPER_COMMENT"
+        placeholder="Enter Reason"
+      ></textarea>
     </div>
 
+    <!-- Row 3: Other Fields (Visible only when OK is selected) -->
+    <div *ngIf="developerStatus === 'OK'">
+
+      <div class="form-row mb-3">
+        <div class="col-md-4">
+          <label class="font-weight-bold small">Delivery By</label>
+          <input
+            type="date"
+            class="form-control"
+            formControlName="DELIVERY_BY"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="font-weight-bold small">
+            Est. Hours <span class="text-danger">*</span>
+          </label>
+          <input
+            type="number"
+            class="form-control"
+            formControlName="EST_HOURS"
+            placeholder="Enter Est. Hours"
+            maxlength="3"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="font-weight-bold small">
+            Resolution <span class="text-danger">*</span>
+          </label>
+          <select class="form-control" formControlName="RESOLUTION_CODE">
+            <option
+              *ngFor="let res of RESOLUTION_LIST"
+              [value]="res.RESOLUTION_CODE"
+            >
+              {{ res.RESOLUTION_NAME }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col-md-6 mb-3">
+          <label class="font-weight-bold small">
+            Developer Explanation <span class="text-danger">*</span>
+          </label>
+          <textarea
+            class="form-control"
+            rows="4"
+            formControlName="DEVELOPER_COMMENT"
+            placeholder="Enter Developer Explanation"
+          ></textarea>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <input
+            type="file"
+            #fileInput2
+            hidden
+            (change)="onFileSelectedUploadDocument($event)"
+            accept=".jpg,.png,.jpeg,.pdf,.xlsx,.docx"
+            multiple
+          />
+          <button
+            type="button"
+            class="btn btn-primary mb-2"
+            (click)="fileInput2.click()"
+          >
+            <i class="pi pi-paperclip mr-2"></i>Add
+          </button>
+
+          <table class="table table-sm table-bordered">
+            <thead>
+              <tr>
+                <th>File Name</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of DEVELOPER_DOCUMENT_LIST; let i = index">
+                <td>{{ data.FILE_NAME }}</td>
+                <td>
+                  <button type="button" class="btn btn-info btn-sm mr-1">
+                    <i class="pi pi-eye"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger btn-sm"
+                    (click)="removeUploadDoc(data)"
+                  >
+                    <i class="pi pi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
   </div>
+</div>
+
 
 </form>
-

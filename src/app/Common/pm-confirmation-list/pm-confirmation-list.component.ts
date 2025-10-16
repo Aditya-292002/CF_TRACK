@@ -80,6 +80,7 @@ export class PmConfirmationListComponent implements OnInit {
 
   GetDeveloperRequestRaised(col:any,rowData:any){
     if(col.Col_Filed == "ISSSUE_NO"){
+        localStorage.setItem('MODE', 'E');
       this.ISSUE_NO = rowData.ISSSUE_NO;
       this.ISSUE_ID = rowData.ISSUE_ID;
       localStorage.setItem('ISSUE_NO' , this.ISSUE_NO)
