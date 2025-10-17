@@ -123,7 +123,7 @@ export class IssueRequestMasterComponent implements OnInit {
   historyData: { status: string; userName: string; time: string; comment: string; }[] = [];
 Cust_REF_NO: any;
   PROJECT_LIST: any;
-
+RAISED_BY_NAME:any;
 
   deleteFile(index: number) {
     this.DOCUMENT_ATTECHED_LIST.splice(index, 1);
@@ -160,6 +160,7 @@ Cust_REF_NO: any;
       REQUEST_DATE: [{ value: today1, disabled: this.viewflag }],
       PRODUCT_CODE: [{ value: '', disabled: this.viewflag }, Validators.required],
       RAISED_BY: ['SELF'],  // either SELF or OTHER
+      SELF_NAME: [{ value: '', disabled: this.viewflag }],
       OTHER_NAME: [{ value: '', disabled: this.viewflag }],
       ISSUE_TYPE_CODE: [{ value: '02', disabled: this.viewflag }, Validators.required],
       ISSUE_SUBJECT: [{ value: '', disabled: this.viewflag }],
@@ -171,15 +172,22 @@ Cust_REF_NO: any;
     });
     this.form.get('RAISED_BY').valueChanges.subscribe(value => {
       if (value === 'SELF') {
+
         this.form.get('OTHER_NAME').reset();  // Clear the name when "Self" is selected
+      } 
+      if (value === 'OTHER') {
+        this.form.get('OTHER_NAME').setValue(this.RAISED_BY_NAME);
       }
     });
     this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
+    this.RAISED_BY_NAME = this.userData[0].USER_NAME;
+    console.log('TEST', this.RAISED_BY_NAME);
+    
     this.MODE = localStorage.getItem('MODE');
     console.log(' this.MODE', this.MODE);
     this.ISSUE_NO = sessionStorage.getItem('ISSUE_NO');
     console.log(' this.ISSUE_NO', this.ISSUE_NO);
-
+    this.form.get('OTHER_NAME').setValue(this.RAISED_BY_NAME);
     // this.USER_ID = this.sharedservice.get_USER_ID();
     this.USER_ID = this.userData[0].LOGIN_ID;
     this.USERID = this.userData[0].LOGIN_ID;
@@ -383,6 +391,7 @@ Cust_REF_NO: any;
         this.form.get('PRODUCT_CODE').setValue(response.PRODUCT_CODE);
         this.form.get('PRIORITY_CODE').setValue(response.PRIORITY_CODE);
             this.form.get('ISSUE_TYPE_CODE').setValue(response.ISSUE_TYPE_CODE);
+                // this.form.get('OTHER_NAME').setValue(this.RAISED_BY_NAME);
         $('.selectpicker').selectpicker('refresh').trigger('change');
       }, 100);
     });
@@ -562,12 +571,13 @@ Cust_REF_NO: any;
       // REQUESTER: this.USER_ID, // Can also come from login context
       REQUESTER: formValues.RAISED_BY === 'SELF' ? this.USER_ID : formValues.OTHER_NAME,
       PRODUCT_CODE: formValues.PRODUCT_CODE,
-      // USERID: formValues.RAISED_BY === 'SELF' ? this.USER_ID : formValues.OTHER_NAME,
+     //  USERID: formValues.RAISED_BY === 'SELF' ? this.USER_ID : formValues.OTHER_NAME,
       USERID: this.USERID,
+      OTHER_NAME: formValues.OTHER_NAME,
       ISSUE_TYPE_CODE: formValues.ISSUE_TYPE_CODE,
       PRIORITY_CODE: formValues.PRIORITY_CODE,
       MODULE_CODE: formValues.MODULE_CODE,
-      FUNCTION_CODE: formValues.ISSUE_FUNCTION_CODE,
+      FUNCTION_CODE: formValues.ISSUE_FUNCTION_CODE,  
       ISSUE_SUBJECT: formValues.ISSUE_SUBJECT,
       REASON_ISSUE: formValues.REASON_ISSUE,
       DESC_ISSUE: formValues.DESC_ISSUE,

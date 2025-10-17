@@ -182,4 +182,5 @@ public GetIssueCommonList: string='/TicketSystem/GetIssueCommonList';
 public SaveIssueDetails: string='/TicketSystem/SaveIssueDetails';  
 public GetIssueRequestList: string='/TicketSystem/GetIssueRequestList';  
 public GETISSUERAISEDDETAILSBYISSUENO: string='/TicketSystem/GETISSUERAISEDDETAILSBYISSUENO';  
+public SaveIssueDeveloperConfirmation: string='/TicketSystem/SaveIssueDeveloperConfirmation';  
 }

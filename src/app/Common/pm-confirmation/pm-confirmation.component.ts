@@ -392,7 +392,7 @@ const formValues = this.form.value;
     console.log('data', data);
 
     // 📤 API call
-    this.http.PostRequest(this.apiurl.SaveIssueDetails, data).then((res: any) => {
+    this.http.PostRequest(this.apiurl.SaveIssueDeveloperConfirmation, data).then((res: any) => {
       if (res.Resultlist[0].FLAG === 1) {
         this.toast.success(res.Resultlist[0].MSG);
         this.router.navigate([`/pmconfirmation`]);
