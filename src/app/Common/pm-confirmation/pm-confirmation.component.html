@@ -57,7 +57,7 @@
     <!-- Created By -->
     <div class="col-md-3 mb-2">
       <label class="font-weight-bold  small">Created By</label>
-      <p class="text-secondary small" *ngIf = "REQUESTER_NAME !== null || REQUESTER_NAME !== '' || REQUESTER_NAME !== undefined">
+      <p class="text-secondary small" *ngIf =  "REQUESTER_NAME !== ''">
         {{ REQUESTER_NAME }}
       </p>
       <p class="text-secondary small" *ngIf = "REQUESTER_NAME === null || REQUESTER_NAME === '' || REQUESTER_NAME === undefined">
@@ -68,7 +68,7 @@
     <!-- Raised By -->
     <div class="col-md-3 mb-2">
       <label class="font-weight-bold  small">Raised By</label>
-      <p class="text-secondary small" *ngIf = "RAISED_BY_NAME !== null || RAISED_BY_NAME !== '' || RAISED_BY_NAME !== undefined">
+      <p class="text-secondary small" *ngIf = " RAISED_BY_NAME !== ''">
         {{ RAISED_BY_NAME }}
       </p>
       <p class="text-secondary small" *ngIf = "RAISED_BY_NAME === null || RAISED_BY_NAME === '' || RAISED_BY_NAME === undefined">
