@@ -123,3 +123,11 @@
 .gap-2 {
   gap: 0.5rem;
 }
+
+.custom-file-uploader {
+    padding: 3px !important;
+    border: 2px dashed #c3dbf6 !important;
+    background: #ebf3fc !important;
+    width: 100px !important;
+    font-size: 11px !important;
+}

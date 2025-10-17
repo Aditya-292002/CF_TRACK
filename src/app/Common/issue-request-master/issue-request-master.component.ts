@@ -705,6 +705,7 @@ Cust_REF_NO: any;
   //   });
   // }
 convertFilesToBase64(fileList: FileList) {
+  
   const files = Array.from(fileList); // Convert FileList to actual array
 
   const fileReadPromises = files.map((file, index) => {
