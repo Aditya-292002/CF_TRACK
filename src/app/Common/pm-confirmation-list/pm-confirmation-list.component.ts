@@ -23,6 +23,7 @@ export class PmConfirmationListComponent implements OnInit {
   SearchValue:any;
   ISSUE_ID:any;
   userData: any;
+  liststatus:any="Pending"; // Default status
   constructor(
     private apiurl: ApiUrlService,
     private http: HttpRequestServiceService,
@@ -45,7 +46,7 @@ export class PmConfirmationListComponent implements OnInit {
       let data = {
         "USER_ID": (+this.USER_ID),
         "FUNCTION_CODE": ((this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE),
-        "LISTSTATUS": "P"
+         "LISTSTATUS": ( this.liststatus == "Pending") ? "P" : "C",
       }
        this.http.PostRequest(this.apiurl.GetIssueRequestList, data).then((res: any) => {
        this.ISSUE_REQUEST_COLUMN_LIST = res.Columnlist;
@@ -54,29 +55,7 @@ export class PmConfirmationListComponent implements OnInit {
      
     });
      }
-  GetInputFilter(val:any){
-      const lowerSearchText = val.toLowerCase();
-      let result: any[] = [];
-      this.FILTER_ISSUE_REQUEST_LIST_DATA.forEach((element:any) => {
-        if(lowerSearchText.length == 0 || lowerSearchText == '' || lowerSearchText == null || lowerSearchText == undefined || lowerSearchText == 'undefined'){
-          this.ISSUE_REQUEST_LIST_DATA = [];
-          this.ISSUE_REQUEST_LIST_DATA  = this.FILTER_ISSUE_REQUEST_LIST_DATA;
-          return
-        }else if (element.ISSUE_TYPE_DESC.toLowerCase() == lowerSearchText) {
-          result.push(element); 
-      this.ISSUE_REQUEST_LIST_DATA = [];
-      this.ISSUE_REQUEST_LIST_DATA = result; 
-        }else if(element.MODULE_DESC.toLowerCase() == lowerSearchText){
-          result.push(element); 
-      this.ISSUE_REQUEST_LIST_DATA = [];
-      this.ISSUE_REQUEST_LIST_DATA = result; 
-        }else if(element.FUNCTION_CODE.toLowerCase() == lowerSearchText){
-          result.push(element); 
-      this.ISSUE_REQUEST_LIST_DATA = [];
-      this.ISSUE_REQUEST_LIST_DATA = result; 
-        }
-      });
-    } 
+
 
   GetDeveloperRequestRaised(col:any,rowData:any){
     if(col.Col_Filed == "ISSSUE_NO"){
@@ -91,6 +70,37 @@ export class PmConfirmationListComponent implements OnInit {
     }
   }
 
- 
+
+   GetInputFilter(val:any){
+    const lowerSearchText = val.toLowerCase();
+    let result: any[] = [];
+    this.FILTER_ISSUE_REQUEST_LIST_DATA.forEach((element:any) => {
+      if(lowerSearchText.length == 0 || lowerSearchText == '' || lowerSearchText == null || lowerSearchText == undefined || lowerSearchText == 'undefined'){
+        this.ISSUE_REQUEST_LIST_DATA = [];
+        this.ISSUE_REQUEST_LIST_DATA  = this.FILTER_ISSUE_REQUEST_LIST_DATA;
+        return
+      }else if (element.ISSUE_TYPE_DESC.toLowerCase() == lowerSearchText) {
+        result.push(element); 
+    this.ISSUE_REQUEST_LIST_DATA = [];
+    this.ISSUE_REQUEST_LIST_DATA = result; 
+      }else if(element.MODULE_DESC.toLowerCase() == lowerSearchText){
+        result.push(element); 
+    this.ISSUE_REQUEST_LIST_DATA = [];
+    this.ISSUE_REQUEST_LIST_DATA = result; 
+      }else if(element.FUNCTION_CODE.toLowerCase() == lowerSearchText){
+        result.push(element); 
+    this.ISSUE_REQUEST_LIST_DATA = [];
+    this.ISSUE_REQUEST_LIST_DATA = result; 
+      }
+    });
+  } 
+
+ setStatus(value: string) {
+  this.liststatus = value;
+  // you can also filter your data or call API here
+  console.log('Selected Status:', this.liststatus);
+
+  this.GET_PM_CONFIRMATION_LIST();
+}
 
 }

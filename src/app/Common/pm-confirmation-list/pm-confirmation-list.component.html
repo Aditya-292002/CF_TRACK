@@ -1,56 +1,90 @@
-<div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
+<div class="d-flex flex-row justify-content-between align-items-center card p-2">
   <h5 class="h5 mb-0">PM Confirmation List</h5>
 
-  <div class="form-inline">
+   <div class="d-flex ml-2 justify-content-between align-items-center
+    mt-2">
+    <div class=" p-2 ">
+      <label class="Text_Primary Helper_Text">
     <input
-      type="text"
-      class="form-control"
-    formControlName="SearchValue"
-      (ngModelChange)="GetInputFilter(SearchValue)"
-      placeholder="Search"
+      type="radio"
+      name="status"
+      [(ngModel)]="liststatus"
+      value="Pending"
+      (change)="setStatus('Pending')"
+      class="mr-1"
     />
-  </div>
+    Pending
+  </label>
+    </div>
+<div class="p-1">
+   <label class="Text_Primary Helper_Text ">
+    <input
+    class="mr-1"
+      type="radio"
+      name="status"
+      [(ngModel)]="liststatus"
+      value="Closed"
+      (change)="setStatus('Closed')"
+    />
+    Closed
+  </label>
+</div>
+ 
 </div>
 
-<div class="card mt-4">
-  <div class="card-body p-3">
+  <div class="input-group" style="max-width: 259px;">
+      <div class="input-group-prepend">
+        <span class="input-group-text bg-white border-right-0">
+          <i class="fa fa-search"></i>
+        </span>
+      </div>
+      <input type="text" class="form-control border-left-0" placeholder="Search" [(ngModel)]="SearchValue"
+        (ngModelChange)="GetInputFilter(SearchValue)" style="box-shadow: none;" />
+    </div>
+</div>
 
-    <!-- When no records -->
-    <p *ngIf="ISSUE_REQUEST_LIST_DATA.length === 0" class="text-muted mb-0">
-      No Records Found
-    </p>
 
-    <!-- When records exist -->
-     <div *ngIf="ISSUE_REQUEST_LIST_DATA.length > 0" class="table-responsive">
-      <table class="table table-bordered table-hover  scrollable-table table-sm mb-0"  scrollHeight="500px">
-        <thead class="thead-light">
+
+
+<div class="mt-2 ">
+  <div class="card">
+    <div  class="p-3" *ngIf="this.ISSUE_REQUEST_LIST_DATA.length == 0">
+    <p *ngIf="this.ISSUE_REQUEST_LIST_DATA.length == 0">No Records Found</p>
+    </div>
+    <div class="tableFixHead" *ngIf="this.ISSUE_REQUEST_LIST_DATA.length > 0">
+      <table class="table-theam-1 row_bgcolor_1">
+        <thead>
           <tr>
-            <th *ngFor="let col of ISSUE_REQUEST_COLUMN_LIST" [style.width]="col.Col_Size">
-              {{ col.Col_Name }}
-            </th>
+            <th *ngFor="let column of ISSUE_REQUEST_COLUMN_LIST">{{ column.Col_Name }}</th>
+            <th class="">Action</th> <!-- For Action column -->
+ 
           </tr>
         </thead>
-
         <tbody>
-  <tr *ngFor="let rowData of ISSUE_REQUEST_LIST_DATA">
-    <td *ngFor="let col of ISSUE_REQUEST_COLUMN_LIST">
-      <span
-        *ngIf="col.Col_Filed === 'ISSSUE_NO'; else normalCell"
-        class="issue-no"
-        (click)="GetDeveloperRequestRaised(col, rowData)"
-      >
-        {{ rowData[col.Col_Filed] }}
-      </span>
-
-      <ng-template #normalCell>
-        {{ rowData[col.Col_Filed] }}
-      </ng-template>
-    </td>
-  </tr>
-</tbody>
-
+          <tr *ngFor="let data of ISSUE_REQUEST_LIST_DATA">
+            <td *ngFor="let column of ISSUE_REQUEST_COLUMN_LIST">
+              {{ data[column.Col_Filed] }}
+            </td>
+            <td class="">
+              <!-- Add your action buttons here -->
+              <span> <i class="far fa-eye mr-1" (click)="GetDeveloperRequestRaised(ISSUE_REQUEST_COLUMN_LIST[0], data)"></i></span>
+            </td>
+            <!-- (dblclick)="openPopup(data, 'Status')" -->
+            <!-- <td class=""> -->
+            <!-- <i class="fa fa-ban text-warning mr-2" *ngIf="data.STATUS == 'P'"></i>
+                 <i class="fa fa-check-square text-success mr-2" *ngIf="data.STATUS == 'A' || data.STATUS == 'M'"></i>
+                 <i class="fa fa-times text-danger mr-2" *ngIf="data.STATUS == 'R'"></i>{{data.STATUS_DESC}}</td>
+                <td class="">                
+                  <a *ngIf="data.STATUS == 'P' || data.STATUS == 'M' || (data.STATUS == 'A' && this.ROLE_ID== 3)">
+                    <i class="fa fa-edit small mr-2"  (click)="editLeave(data)" title="Edit"></i>  
+                  </a>
+                  <a *ngIf="(data.STATUS == 'P' && this.ROLE_NAME == 'HR USER') || (data.STATUS == 'M' && this.ROLE_NAME == 'HR USER')">
+                    <i class="fa fa-trash  small"  (click)="editLeave(data)" title="Delete"></i>  
+                  </a> -->
+            <!-- </td> -->
+          </tr>
+        </tbody>
       </table>
     </div>
-
   </div>
 </div>
