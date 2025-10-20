@@ -386,7 +386,7 @@ RAISED_BY_NAME:any;
         this.DOCUMENT_ATTECHED_LIST = res.iteamlist;
       }
 
-      // Refresh selectpicker (if still using Bootstrap selectpicker)
+          // Refresh selectpicker (if still using Bootstrap selectpicker)
       setTimeout(() => {
         this.form.get('PRODUCT_CODE').setValue(response.PRODUCT_CODE);
         this.form.get('PRIORITY_CODE').setValue(response.PRIORITY_CODE);

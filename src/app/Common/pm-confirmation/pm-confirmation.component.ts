@@ -132,7 +132,14 @@ if(this.DEVELOPER_STATUS_SELECTED=='OK'){
     }
 
      this.form.get('DEVELOPER_STATUS').valueChanges.subscribe(value => {
-    this.developerStatus = value;
+      console.log(value,"value")
+    if(value===""){
+      this.developerStatus="OK"
+    }else if(value===undefined){
+     this.developerStatus="OK"
+    }else{
+      this.developerStatus=value
+    }
 
   });
   }
@@ -178,7 +185,16 @@ if(this.DEVELOPER_STATUS_SELECTED=='OK'){
       // this.GetRemoveBase64DocumnetExtension(this.DEVELOPER_DOCUMENT_LIST1);
       // console.log('GETISSUERAISEDDETAILSBYISSUENO response', response);
 
-    });  
+
+    const deliveryDate = response.DELIVERY_BY? new Date(response.DELIVERY_BY).toISOString().substring(0, 10) : '';
+      this.form.patchValue({
+      DELIVERY_BY: deliveryDate,
+      EST_HOURS: response.EST_HOURS,
+      RESOLUTION_CODE: response.RESOLUTION_CODE,
+      DEVELOPER_COMMENT: response.DEVELOPER_COMMENT,
+      DEVELOPER_STATUS: this.developerStatus
+    });
+  });
   }
      
     convertToDate(dateString: string): Date {
@@ -285,7 +301,7 @@ convertFilesToBase64(fileList: FileList) {
     this.DOCUMENT_ATTECHED_LIST = data;
   }
  SaveConfirmationPopUpOpen() {
-debugger
+
       //  this.SaveConfirmationPopUp = true;
     // Trigger form validation
     this.form.markAllAsTouched();
@@ -333,7 +349,7 @@ closeModel() {
   
  SAVE_PM_CONFIRMATION_MASTER() {
 
-  debugger
+ 
 
   console.log('SAVE_PM_CONFIRMATION_MASTER called');
   // return
@@ -358,19 +374,7 @@ closeModel() {
 
   
 // 🧾 Extract values from form
-console.log(this.USER_ID,
-  this.EST_HOURS,
-  this.RESOLUTION_CODE,
-  this.ISSUE_NO,
-  this.DELIVERY_BY,
-  this.DEVELOPER_STATUS,
-  this.ISSUE_TYPE_CODE,
-  this.PRIORITY_CODE,
-  this.REASON_ISSUE,
-  this.DESC_ISSUE,
-  this.DEVELOPER_COMMENT,
-  this.DEVELOPER_DOCUMENT_LIST,
-  "values");
+
 
 const formValues = this.form.value;
   let data = {
