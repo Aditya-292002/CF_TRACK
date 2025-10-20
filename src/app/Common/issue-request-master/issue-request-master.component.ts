@@ -832,17 +832,17 @@ convertFilesToBase64(fileList: FileList) {
     }
     // console.log('data ->' , JSON.stringify(data))
     // return
-    // this.apiService.post(this.urlService.GETISSUERAISEDHISTORYLIST, data).then((res: any) => {
-    // if(res.flag == 1){
-    //   this.COMMENT_HISTORY = res.Datalist.RootElement;
-    //   this.MessageService.add({severity:'warn', summary:res.Datalist.RootElement[0].Status_Name,detail:res.Datalist.RootElement[0].comment});
-    //   if(val == 1){
-    //     this.visibleHistoryFun = true;
-    //   }
-    // }else if(res.flag == 0){
-    //   return
-    // }
-    // });
+    this.http.PostRequest(this.apiurl.GetDeveloperHistoryList, data).then((res: any) => {
+    if(res.flag == 1){
+      this.COMMENT_HISTORY = res.Datalist;
+      // this.MessageService.add({severity:'warn', summary:res.Datalist.RootElement[0].Status_Name,detail:res.Datalist.RootElement[0].comment});
+      if(val == 1){
+        this.visibleHistoryFun = true;
+      }
+    }else if(res.flag == 0){
+      return
+    }
+    });
   }
 
   convertToDate(dateString: string): Date {
