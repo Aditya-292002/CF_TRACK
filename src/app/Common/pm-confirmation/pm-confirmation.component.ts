@@ -33,6 +33,7 @@ export class PmConfirmationComponent implements OnInit {
   DEVELOPER_DOCUMENT_LIST: { FILE_NAME: string, FILE_EXTENSION: string, DOC_BASE64: string }[] = [];
   userData: any;
   MODE: any;
+  PROJ_NAME:any;
   ISSUE_NO: any;
   ISSUE_ID: any;
   FUNCTION_CODE: any;
@@ -53,20 +54,22 @@ export class PmConfirmationComponent implements OnInit {
   MODULE_CODE: any;
   ISSUE_SUBJECT: any;
   ISSSUE_NO: any;
-    DatePipe: any;
-    developerStatus: any="OK";
-    EST_HOURS:any;
-    DEVELOPER_DOCUMENT_LIST1:any;
-    RESOLUTION_CODE:any;
-    DELIVERY_BY:any;
-    DEVELOPER_STATUS:any;
-    ISSUE_TYPE_CODE:any;
-    PRIORITY_CODE:any;
-    REASON_ISSUE:any;
-    DESC_ISSUE:any;
-    DEVELOPER_COMMENT:any;
-    SaveConfirmationPopUp: boolean = false;
-viewflag:boolean=false;
+  DatePipe: any;
+  developerStatus: any="OK";
+  EST_HOURS:any;
+  DEVELOPER_DOCUMENT_LIST1:any;
+  RESOLUTION_CODE:any;
+  DELIVERY_BY:any;
+  DEVELOPER_STATUS:any;
+  ISSUE_TYPE_CODE:any;
+  PRIORITY_CODE:any;
+  REASON_ISSUE:any;
+  DESC_ISSUE:any;
+  DEVELOPER_COMMENT:any;
+  SaveConfirmationPopUp: boolean = false;
+  CR_ISSUE_REASON:any;
+  CUST_REF_NO:any;
+  viewflag:boolean=false;
  constructor(
     private fb: FormBuilder,
     private route: RoutingService,
@@ -92,8 +95,9 @@ viewflag:boolean=false;
 }
   ngOnInit(): void {
     this.form = this.fb.group({
-    
-          DEVELOPER_STATUS: ["OK"],
+
+      CUST_REF_NO: [{ value: '', disabled: true }],
+      DEVELOPER_STATUS: ["OK"],
       DEVELOPER_COMMENT: [''],
       DELIVERY_BY: [null],
       EST_HOURS: [null, [Validators.min(0), Validators.max(999)]],
@@ -117,12 +121,12 @@ if(this.DEVELOPER_STATUS_SELECTED=='OK'){
     // });
 
     
- this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
-    this.MODE = localStorage.getItem('MODE');
-    console.log(' this.MODE', this.MODE);
-    this.ISSUE_NO = localStorage.getItem('ISSUE_NO');
-    this.USER_ID = localStorage.getItem('USERID');
-    console.log(' this.ISSUE_NO', this.ISSUE_NO);
+  this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
+  this.MODE = localStorage.getItem('MODE');
+  console.log(' this.MODE', this.MODE);
+  this.ISSUE_NO = localStorage.getItem('ISSUE_NO');
+  this.USER_ID = localStorage.getItem('USERID');
+  console.log(' this.ISSUE_NO', this.ISSUE_NO);
 
 
     if (this.ISSUE_NO !== null && this.MODE === 'E') {
@@ -180,6 +184,9 @@ if(this.DEVELOPER_STATUS_SELECTED=='OK'){
       this.ISSUE_TYPE_CODE = response.ISSUE_TYPE_CODE;
       this.DESC_ISSUE = response.DESC_OF_ISSUE_CR;
       this.REASON_ISSUE = response.ASREASON_OF_ISSUE_CR;
+      this.PROJ_NAME = response.PROJ_NAME;
+      this.CR_ISSUE_REASON = response.ASREASON_OF_ISSUE_CR;
+      this.CUST_REF_NO = response.CUST_REF_NO;
 
       this.DEVELOPER_DOCUMENT_LIST1 = res.iteamlist || [];
       // this.GetRemoveBase64DocumnetExtension(this.DEVELOPER_DOCUMENT_LIST1);
@@ -385,6 +392,7 @@ const formValues = this.form.value;
   "REASON_ISSUE_CR": this.REASON_ISSUE,
   "DESC_ISSUE_CR": this.DESC_ISSUE,
   "EST_HOURS": formValues.EST_HOURS,
+  "CUST_REF_NO": this.CUST_REF_NO, 
   "RESOLUTION_CODE": formValues.RESOLUTION_CODE,
   "DEVELOPER_STATUS": formValues.DEVELOPER_STATUS,
   "DEVELOPER_COMMENT": formValues.DEVELOPER_COMMENT,

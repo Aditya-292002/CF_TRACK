@@ -52,6 +52,7 @@ export class IssueRequestMasterComponent implements OnInit {
   FILENAME: any;
   DOCUMENT_ATTECHED_LIST: Document[] = [];
   SRNO: any;
+  Cust_REF_NO: any;
 
   ImageData: any;
   isReasonofErrorCR: boolean = true;
@@ -121,7 +122,6 @@ export class IssueRequestMasterComponent implements OnInit {
   form: FormGroup;
   viewflag: boolean = false;
   historyData: { status: string; userName: string; time: string; comment: string; }[] = [];
-Cust_REF_NO: any;
   PROJECT_LIST: any;
 RAISED_BY_NAME:any;
 
@@ -156,7 +156,7 @@ RAISED_BY_NAME:any;
 
     this.form = this.formBuilder.group({
       ISSUE_NO: [{ value: '', disabled: true }],
-      Cust_REF_NO: [{ value: '', disabled: true }],
+      Cust_REF_NO: [{ value: '', disabled: this.viewflag }],
       REQUEST_DATE: [{ value: today1, disabled: this.viewflag }],
       PRODUCT_CODE: [{ value: '', disabled: this.viewflag }, Validators.required],
       RAISED_BY: ['SELF'],  // either SELF or OTHER
@@ -364,7 +364,8 @@ RAISED_BY_NAME:any;
         MODULE_CODE: response.MODULE_CODE,
         ISSUE_FUNCTION_CODE: response.FUNCTION_CODE,
         REASON_ISSUE: response.ASREASON_OF_ISSUE_CR,
-        DESC_ISSUE: response.DESC_OF_ISSUE_CR
+        DESC_ISSUE: response.DESC_OF_ISSUE_CR,
+        Cust_REF_NO: response.CUST_REF_NO
       });
 
       this.form.get('PRODUCT_CODE').setValue(response.PRODUCT_CODE);
@@ -543,6 +544,7 @@ RAISED_BY_NAME:any;
   //   });
   //  }
   SAVEISSUEREQUESTMASTER() {
+    debugger
     // 🚨 Validate form
     this.form.markAllAsTouched();
 
@@ -564,6 +566,7 @@ RAISED_BY_NAME:any;
 
     // 🧾 Extract values from form
     const formValues = this.form.value;
+    console.log('FormValues', formValues);
 
     const data = {
       ISSUE_NO: formValues.ISSUE_NO,
@@ -581,14 +584,17 @@ RAISED_BY_NAME:any;
       ISSUE_SUBJECT: formValues.ISSUE_SUBJECT,
       REASON_ISSUE: formValues.REASON_ISSUE,
       DESC_ISSUE: formValues.DESC_ISSUE,
+      CUST_REF_NO:formValues.Cust_REF_NO, 
       MODE: this.MODE,
       STATUS_CODE: this.STATUS_CODE,
       REVERT_COMMENT: this.REVERT_COMMENT,
-      DOCUMENT_ATTECHED_LIST: this.DOCUMENT_ATTECHED_LIST
+      
+      DOCUMENT_ATTECHED_LIST: this.DOCUMENT_ATTECHED_LIST,
+
     };
 
     console.log('data ->', data);
-
+// return
     // 📤 API call
     this.http.PostRequest(this.apiurl.SaveIssueDetails, data).then((res: any) => {
       if (res.Resultlist[0].FLAG === 1) {
