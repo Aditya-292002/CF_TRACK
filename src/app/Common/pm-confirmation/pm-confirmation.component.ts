@@ -66,7 +66,7 @@ export class PmConfirmationComponent implements OnInit {
     DESC_ISSUE:any;
     DEVELOPER_COMMENT:any;
     SaveConfirmationPopUp: boolean = false;
-
+viewflag:boolean=false;
  constructor(
     private fb: FormBuilder,
     private route: RoutingService,

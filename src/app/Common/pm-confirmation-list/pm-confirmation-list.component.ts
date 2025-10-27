@@ -48,7 +48,7 @@ export class PmConfirmationListComponent implements OnInit {
         "FUNCTION_CODE": ((this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE),
          "LISTSTATUS": ( this.liststatus == "Pending") ? "P" : "C",
       }
-       this.http.PostRequest(this.apiurl.GetIssueRequestList, data).then((res: any) => {
+       this.http.PostRequest(this.apiurl.GetIssuePmApprovalList, data).then((res: any) => {
        this.ISSUE_REQUEST_COLUMN_LIST = res.Columnlist;
        this.ISSUE_REQUEST_LIST_DATA = res.Datalist;
        this.SAMPEL_ISSUE_REQUEST_LIST_DATA = this.ISSUE_REQUEST_LIST_DATA;
