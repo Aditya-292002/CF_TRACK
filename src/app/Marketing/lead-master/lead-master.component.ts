@@ -24,9 +24,10 @@ export class LeadMasterComponent implements OnInit {
     segment_list: Array<any> = [];
     state_list: Array<any> = [];
     currency_list: Array<any> = [];
-    salesRegion_code: Array<any> = [];
+    salesregionlist: Array<any> = [];
     leadMaster_type_list: Array<any> = [];
     leadMaster_list: Array<any> = [];
+    custypelist: Array<any> = [];
     isPanANDGstInNotMandatory:boolean = false;
   
     constructor(public sharedService: SharedServiceService,
@@ -58,13 +59,14 @@ export class LeadMasterComponent implements OnInit {
         LEAD_PHONE: ["",Validators.required],
         LEAD_TURNOVER: ["",Validators.required],
         LEAD_EMAIL: ["",Validators.required],
-        LEAD_PARTNER: ["",Validators.required],
+        LEAD_PARTNER_CODE: ["",Validators.required],
         LEAD_URL: ["",Validators.required],
         LEAD_CURRENCY: ["INR",Validators.required],
         ACCT_MANAGER: ["",Validators.required],
-        SALESREGION_CODE: ["",Validators.required],
+        SALESREGION_CODE: [""],
         LEAD_STATUS: ["P",Validators.required],
-        LEAD_GRP_ID: ["",]
+        LEAD_GRP_ID: [""],
+        LEAD_REMARKS:[""]
   
       });
   
@@ -99,8 +101,9 @@ export class LeadMasterComponent implements OnInit {
           this.segment_list = res.segementlist;
           this.state_list = res.statelist;
           this.currency_list = res.currencylist;
-          this.salesRegion_code = res.salesRegion_code;
-          this.leadMaster_type_list = res.custypelist;
+          this.salesregionlist = res.salesregionlist;
+          this.leadMaster_type_list = res.leadpartnerlist;
+          this.custypelist=res.custypelist
   
           setTimeout(() => {
             $('.selectpicker').selectpicker('refresh').trigger('change');
@@ -200,7 +203,7 @@ export class LeadMasterComponent implements OnInit {
       this.form.get('LEAD_TURNOVER').setValue(data[0].LEAD_TURNOVER)
       this.form.get('LEAD_EMAIL').setValue(data[0].LEAD_EMAIL)
       this.form.get('LEAD_REMARKS').setValue(data[0].LEAD_REMARKS)
-      this.form.get('LEAD_PARTNER').setValue(data[0].LEAD_PARTNER)
+      this.form.get('LEAD_PARTNER_CODE').setValue(data[0].LEAD_PARTNER_CODE)
       this.form.get('LEAD_URL').setValue(data[0].LEAD_URL)
       this.form.get('LEAD_CURRENCY').setValue(data[0].LEAD_CURRENCY)
       this.form.get('ACCT_MANAGER').setValue(data[0].ACCT_MANAGER)
@@ -280,62 +283,63 @@ export class LeadMasterComponent implements OnInit {
       }
     }
     isSubmited: boolean = false;
-    // saveFormData(para: string = ''){
-    //   this.isSubmited = true;
-    //   if(this.form.valid){
-    //     let _contact_detail: Array<any> = [];
-    //     if(this.leadMaster_contact_detail.length < 0 ){
-    //       this.toast.warning("Add minimun 1 contact detail");
-    //       return;
-    //     }
-    //     for(let data of this.leadMaster_contact_detail){
-    //       if(data.CONTACT_NAME == "" || data.CONTACT_NAME == undefined || data.CONTACT_NAME == null){
-    //         this.toast.warning("Please enter contact person name");
-    //         return;
-    //       }else if(data.CONTACT_MOBILE == "" || data.CONTACT_MOBILE == undefined || data.CONTACT_MOBILE == null){
-    //         this.toast.warning("Please enter contact person mobile");
-    //         return;
-    //       }else if(data.CONTACT_DESIG == "" || data.CONTACT_DESIG == undefined || data.CONTACT_DESIG == null){
-    //         this.toast.warning("Please enter designation of contact person");
-    //         return;
-    //       }else if(data.CONTACT_EMAIL == "" || data.CONTACT_EMAIL == undefined || data.CONTACT_EMAIL == null){
-    //         this.toast.warning("Please enter contact person email");
-    //         return;
-    //       }else if(data.CONTACT_PHONE == "" || data.CONTACT_PHONE == undefined || data.CONTACT_PHONE == null){
-    //         this.toast.warning("Please enter contact person phone");
-    //         return;
-    //       }else if(data.CONTACT_DEPT == "" || data.CONTACT_DEPT == undefined || data.CONTACT_DEPT == null){
-    //         this.toast.warning("Please enter contact person department");
-    //         return;
-    //       }
+    saveFormData(para: string = ''){
+      this.isSubmited = true;
+      if(this.form.valid){
+        let _contact_detail: Array<any> = [];
+        if(this.leadMaster_contact_detail.length < 0 ){
+          this.toast.warning("Add minimun 1 contact detail");
+          return;
+        }
+        for(let data of this.leadMaster_contact_detail){
+          if(data.CONTACT_NAME == "" || data.CONTACT_NAME == undefined || data.CONTACT_NAME == null){
+            this.toast.warning("Please enter contact person name");
+            return;
+          }else if(data.CONTACT_MOBILE == "" || data.CONTACT_MOBILE == undefined || data.CONTACT_MOBILE == null){
+            this.toast.warning("Please enter contact person mobile");
+            return;
+          }else if(data.CONTACT_DESIG == "" || data.CONTACT_DESIG == undefined || data.CONTACT_DESIG == null){
+            this.toast.warning("Please enter designation of contact person");
+            return;
+          }else if(data.CONTACT_EMAIL == "" || data.CONTACT_EMAIL == undefined || data.CONTACT_EMAIL == null){
+            this.toast.warning("Please enter contact person email");
+            return;
+          }else if(data.CONTACT_PHONE == "" || data.CONTACT_PHONE == undefined || data.CONTACT_PHONE == null){
+            this.toast.warning("Please enter contact person phone");
+            return;
+          }else if(data.CONTACT_DEPT == "" || data.CONTACT_DEPT == undefined || data.CONTACT_DEPT == null){
+            this.toast.warning("Please enter contact person department");
+            return;
+          }
           
-    //       _contact_detail.push(data)
+          _contact_detail.push(data)
           
-    //     }
+        }
        
-    //     let data = {
-    //       leadMaster_detail: this.form.getRawValue(),
-    //       leadMaster_contact_detail: _contact_detail
-    //     }
-    //     // return
-    //     this.http.PostRequest(this.apiUrl.SaveLeadMasterDetail, data).then(res => {
-    //       if (res.flag) {
-    //         this.toast.success(res.msg)
-    //         this.GetLeadMasterList();
-    //         this.spinner = false;
-    //         this.f_clearForm()
-    //       } else {
-    //         this.toast.warning(res.msg)
-    //         this.spinner = false;
-    //       }
-    //     }, err => {
-    //       this.spinner = false;
-    //     });
+        let data = {
+          leadMaster_detail: this.form.getRawValue(),
+          leadMaster_contact_detail: _contact_detail
+        }
+        // return
+        console.log(data,"data")
+        // this.http.PostRequest(this.apiUrl.SaveLeadMasterDetail, data).then(res => {
+        //   if (res.flag) {
+        //     this.toast.success(res.msg)
+        //     this.GetLeadMasterList();
+        //     this.spinner = false;
+        //     this.f_clearForm()
+        //   } else {
+        //     this.toast.warning(res.msg)
+        //     this.spinner = false;
+        //   }
+        // }, err => {
+        //   this.spinner = false;
+        // });
   
-    //   } else{
-    //     this.f_validateForm();
-    //   }
-    // }
+      } else{
+        this.f_validateForm();
+      }
+    }
     f_clearForm(){
       this.isSubmited = false;
       this.search_user = "";
@@ -387,8 +391,8 @@ export class LeadMasterComponent implements OnInit {
         this.toast.warning("Please enter Lead Master phone");
       } else if(this.form.controls["LEAD_EMAIL"].invalid){
         this.toast.warning("Please enter Lead Master email");
-      } else if(this.form.controls["LEAD_PARTNER"].invalid){
-        this.toast.warning("Please select Partner");
+      } else if(this.form.controls["LEAD_PARTNER_CODE"].invalid){
+        this.toast.warning("Please select Partner Code");
       } else if(this.form.controls["LEAD_REMARKS"].invalid){
         this.toast.warning("Please enter Remarks");
       } else if(this.form.controls["LEAD_PAN"].invalid && this.isPanANDGstInNotMandatory){

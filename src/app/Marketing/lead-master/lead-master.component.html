@@ -34,7 +34,7 @@
                     <label>Lead Master Type<span class="validator">*</span> :</label>
                     <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_TYPE'].errors?.required}">
                         <select class="form-control selectpicker show-tick" id="leadMasterType" formControlName="LEAD_TYPE" data-live-search="true" title="Select">
-                                <option *ngFor="let opt of leadMaster_type_list; let i=index" 
+                                <option *ngFor="let opt of custypelist; let i=index" 
                                 [selected]="opt.LEAD_TYPE == form.controls['LEAD_TYPE'].value"
                                  [value]="opt.LEAD_TYPE" >{{ opt.LEAD_DESC }}</option>
                             </select>
@@ -189,7 +189,7 @@
                     <label>Sales Region<span class="validator">*</span> :</label>
                     <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['SALESREGION_CODE'].errors?.required}">
                         <select class="form-control selectpicker show-tick" id="salesRegion" formControlName="SALESREGION_CODE" data-live-search="true" title="Select">
-                            <option *ngFor="let opt of template_list; let i=index" 
+                            <option *ngFor="let opt of salesregionlist; let i=index" 
                             [selected]="opt.SALESREGION_CODE == form.controls['SALESREGION_CODE'].value"
                              [value]="opt.SALESREGION_CODE" >{{ opt.SALESREGION_NAME }}</option>                     
                         </select>
@@ -231,7 +231,7 @@
                         <select class="form-control selectpicker show-tick" id="leadMasterStatus" formControlName="LEAD_STATUS" data-live-search="true" title="Select">
                             <option *ngFor="let opt of leadMaster_status_list; let i=index" 
                             [selected]="opt.LEAD_STATUS == form.controls['LEAD_STATUS'].value"
-                             [value]="opt.LEAD_STATUS" >{{ opt.LEAD_STATUS_DESC }}</option>
+                             [value]="opt.LEAD_STATUS" >{{ opt.LEAD_DESC }}</option>
                         </select>
                         <button type="button" class="close" onclick="resetDropdown('leadMasterStatus')" (click)="form.controls['LEAD_STATUS'].reset();" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -241,13 +241,13 @@
 
                 <div class="col-md-4">
                     <label>Lead Partner<span class="validator">*</span> :</label>
-                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_PARTNER'].errors?.required}">
-                        <select class="form-control selectpicker show-tick" id="leadPartner" formControlName="LEAD_PARTNER" data-live-search="true" title="Select">
-                            <option *ngFor="let opt of leadMaster_status_list; let i=index" 
-                            [selected]="opt.LEAD_PARTNER == form.controls['LEAD_PARTNER'].value"
-                             [value]="opt.LEAD_PARTNER" >{{ opt.LEAD_PARTNER_NAME }}</option>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_PARTNER_CODE'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="leadPartner" formControlName="LEAD_PARTNER_CODE" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of leadMaster_type_list; let i=index" 
+                            [selected]="opt.LEAD_PARTNER_CODE == form.controls['LEAD_PARTNER_CODE'].value"
+                             [value]="opt.LEAD_PARTNER_CODE" >{{ opt.LEAD_PARTNER_NAME }}</option>
                         </select>
-                        <button type="button" class="close" onclick="resetDropdown('leadPartner')" (click)="form.controls['LEAD_PARTNER'].reset();" aria-label="Close">
+                        <button type="button" class="close" onclick="resetDropdown('leadPartner')" (click)="form.controls['LEAD_PARTNER_CODE'].reset();" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
