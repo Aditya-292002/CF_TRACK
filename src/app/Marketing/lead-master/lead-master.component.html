@@ -1,0 +1,350 @@
+<form [formGroup]="form">
+    <div class="row">
+        <div class="col-md-12" >
+            <div class="d-flex flex-wrap justify-content-between">
+                <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
+                <div class="d-flex  col-md-8 justify-content-end"> 
+                    <div class="col-md-8 ">
+                        <div class="floating-input list-btn">
+                            <select class="form-control selectpicker show-tick" (change)="f_searchUserData()" [(ngModel)]="search_user" data-live-search="true" id="search" #search title="Search Lead Master" [ngModelOptions]="{standalone: true}">
+                                <option *ngFor="let opt of leadMaster_list; let i=index" 
+                                [selected]="opt.LEAD_CODE == search_user"
+                                [value]="opt.LEAD_CODE" >{{ opt.LEAD_NAME }}</option>                     
+                            </select>
+                            <button type="button" class="close" onclick="resetDropdown('search')" (click)="search_user='';f_clearForm()" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary  mr-1" *ngIf="isUpdate" (click)="f_Add_Update('C')" title="Cancel">Cancel</button>
+                    <button class="btn btn-secondary mr-1" *ngIf="!isUpdate " (click)="saveFormData('INSERT')" title="Save">Save</button>
+                    <button class="btn btn-secondary mr-1" *ngIf="isUpdate " (click)="saveFormData('UPDATE')" title="Save">Save</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mt-2">
+            <div class="row card">
+                <div class="col-md-6">
+                    <label>Lead Master Code :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_CODE'].errors?.required}">
+                        <input type="text" formControlName="LEAD_CODE" InputType="AlphaNum" class="form-control" placeholder="Lead Master Code">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label>Lead Master Type<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_TYPE'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="leadMasterType" formControlName="LEAD_TYPE" data-live-search="true" title="Select">
+                                <option *ngFor="let opt of custypelist; let i=index" 
+                                [selected]="opt.LEAD_TYPE == form.controls['LEAD_TYPE'].value"
+                                 [value]="opt.LEAD_TYPE" >{{ opt.LEAD_DESC }}</option>
+                            </select>
+                        <button type="button" class="close" onclick="resetDropdown('leadMasterType')" (click)="form.controls['LEAD_TYPE'].reset();" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                </div>
+                <!-- <div class="col-md-4">
+                    <label>Lead Master Group :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_GRP_ID'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" formControlName="LEAD_GRP_ID" id="group" data-live-search="true" title="Select">
+                                <option *ngFor="let opt of leadMaster_group_list; let i=index" 
+                                [selected]="opt.LEAD_GRP_ID == form.controls['LEAD_GRP_ID'].value"
+                                 [value]="opt.LEAD_GRP_ID" >{{ opt.LEAD_GRP_NAME }}</option>
+                            </select>
+                        <button type="button" class="close" onclick="resetDropdown('group')" (click)="form.controls['LEAD_GRP_ID'].reset();" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                </div> -->
+                <div class="col-md-6">
+                    <label>Lead Master Name<span class="validator">*</span> :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_NAME'].errors?.required}">
+                        <input type="text" formControlName="LEAD_NAME" InputType="AlphaSpace" Uppercase placeholder="Lead Master Name" class="form-control ">
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label>Legal Name<span class="validator">*</span> :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_LEGALNAME'].errors?.required}">
+                        <input type="text" formControlName="LEAD_LEGALNAME" InputType="AlphaSpace" Uppercase placeholder="Legal Name" class="form-control ">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-8 mt-2 pr-0">
+            <div class="row card  pb-3">
+                <div class="col-md-12">
+                    <label>Address<span class="validator">*</span> :</label>
+                    <div class="floating-input mb-3" [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_ADDRESS1'].errors?.required}">
+                        <!-- <textarea name="addr1" id="addr1" formControlName="LEAD_ADDRESS1" cols="10" rows="2" class="form-control"></textarea> -->
+                        <input type="text" formControlName="LEAD_ADDRESS1" placeholder="Line 1" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="floating-input ">
+                        <input type="text" formControlName="LEAD_ADDRESS2" placeholder="Line 2" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label>City<span class="validator">*</span> :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_CITY'].errors?.required}">
+                        <input type="text" class="form-control" InputType="AlphaSpace" formControlName="LEAD_CITY" maxlength="30" autocomplete="false" placeholder="City">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label>PIN Code<span class="validator">*</span> :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_PIN'].errors?.required}">
+                        <input type="text" class="form-control" formControlName="LEAD_PIN" placeholder="PIN Code" maxlength="6" autocomplete="false" OnlyNumber='true'>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label>Country<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_COUNTRY'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="leadMasterCountry"
+                         formControlName="LEAD_COUNTRY" (change)="ChangeCountry()"  data-live-search="true"
+                          title="Select">
+                            <option *ngFor="let opt of country_list; let i=index" 
+                            [selected]="opt.COUNTRY_CODE == form.controls['LEAD_COUNTRY'].value"
+                             [value]="opt.COUNTRY_CODE" >{{ opt.COUNTRY_NAME }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('leadMasterCountry')" (click)="form.controls['LEAD_COUNTRY'].reset();" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label>State<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_STATE'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="leadMasterState" formControlName="LEAD_STATE" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of state_list; let i=index" 
+                            [selected]="opt.STATE_CODE == form.controls['LEAD_STATE'].value"
+                             [value]="opt.STATE_CODE" >{{ opt.STATE_NAME }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('leadMasterState')" (click)="form.controls['LEAD_STATE'].reset();" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <label>Email<span class="validator">*</span> :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_EMAIL'].errors?.required}">
+                        <input type="email" formControlName="LEAD_EMAIL" placeholder="Email" id="email" #email (focusout)="validateEmail()" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Phone<span class="validator">*</span> :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_PHONE'].errors?.required}">
+                        <input type="text" class="form-control" formControlName="LEAD_PHONE" placeholder="Phone"  minlength="10" >
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mt-2 ">
+            <div class="row card">
+                <div class="col-md-12">
+                    <label>PAN No.<span class="validator" *ngIf="this.isPanANDGstInNotMandatory">*</span> :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_PAN'].errors?.required && this.isPanANDGstInNotMandatory} ">
+                        <input type="text" formControlName="LEAD_PAN" InputType="AlphaNum" Uppercase maxlength="10" (focusout)="f_validatePAN()" id="panno" #panno placeholder="PAN No." autocomplete="false" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label>GSTIN<span class="validator" *ngIf="this.isPanANDGstInNotMandatory">*</span> :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_GSTIN'].errors?.required && this.isPanANDGstInNotMandatory}">
+                        <input type="text" formControlName="LEAD_GSTIN" InputType="AlphaNum" Uppercase placeholder="GSTIN" id="gstno" #gstno (focusout)="f_validateGSTNO()" maxlength="15" autocomplete="false" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label>Currency<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_CURRENCY'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="leadMasterCurrency" formControlName="LEAD_CURRENCY" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of currency_list; let i=index" 
+                            [selected]="opt.CURRENCY_CODE == form.controls['LEAD_CURRENCY'].value"
+                             [value]="opt.CURRENCY_CODE" >{{ opt.CURRENCY_NAME }}</option>                     
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('leadMasterCurrency')" (click)="form.controls['LEAD_CURRENCY'].reset();" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label>Lead URL<span class="validator">*</span> :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_URL'].errors?.required}">
+                        <input type="text" formControlName="LEAD_URL" placeholder="Lead URL" OnlyNumber="true" maxlength="3" class="form-control">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label>Lead Turnover<span class="validator">*</span> :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_TURNOVER'].errors?.required}">
+                        <input type="text" formControlName="LEAD_TURNOVER" placeholder="Lead Turnover" class="form-control" maxlength="100" InputType="AlphaNum">
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="col-md-12 mt-2">
+            <div class="row card">
+                <div class="col-md-4">
+                    <label>Sales Region<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['SALESREGION_CODE'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="salesRegion" formControlName="SALESREGION_CODE" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of salesregionlist; let i=index" 
+                            [selected]="opt.SALESREGION_CODE == form.controls['SALESREGION_CODE'].value"
+                             [value]="opt.SALESREGION_CODE" >{{ opt.SALESREGION_NAME }}</option>                     
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('salesRegion')" (click)="form.controls['SALESREGION_CODE'].reset();" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Segment<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_SEGMENT'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="leadMasterSegment" formControlName="LEAD_SEGMENT" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of segment_list; let i=index" 
+                            [selected]="opt.SEGMENT_CODE == form.controls['LEAD_SEGMENT'].value"
+                             [value]="opt.SEGMENT_CODE" >{{ opt.SEGMENT_NAME }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('leadMasterSegment')" (click)="form.controls['LEAD_SEGMENT'].reset();" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Account Manager<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['ACCT_MANAGER'].errors?.required}">
+                        <select class="form-control selectpicker show-tick dd_size" id="accManager" formControlName="ACCT_MANAGER" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of employee_list; let i=index" 
+                            [selected]="opt.EMP_CODE == form.controls['ACCT_MANAGER'].value"
+                             [value]="opt.EMP_CODE" >{{ opt.USER_NAME }}</option>                     
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('accManager')" (click)="form.controls['ACCT_MANAGER'].reset();" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label>Status<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_STATUS'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="leadMasterStatus" formControlName="LEAD_STATUS" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of leadMaster_status_list; let i=index" 
+                            [selected]="opt.LEAD_STATUS == form.controls['LEAD_STATUS'].value"
+                             [value]="opt.LEAD_STATUS" >{{ opt.LEAD_DESC }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('leadMasterStatus')" (click)="form.controls['LEAD_STATUS'].reset();" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label>Lead Partner<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_PARTNER_CODE'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="leadPartner" formControlName="LEAD_PARTNER_CODE" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of leadMaster_type_list; let i=index" 
+                            [selected]="opt.LEAD_PARTNER_CODE == form.controls['LEAD_PARTNER_CODE'].value"
+                             [value]="opt.LEAD_PARTNER_CODE" >{{ opt.LEAD_PARTNER_NAME }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('leadPartner')" (click)="form.controls['LEAD_PARTNER_CODE'].reset();" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label>Lead Remarks<span class="validator">*</span> :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_REMARKS'].errors?.required}">
+                        <textarea name="" id="" rows="2" class="form-control" formControlName="LEAD_REMARKS" placeholder="Enter Remarks"></textarea>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-12 mt-2">
+            <div class="row card">
+                <div class="form-inline col-md-12">
+                    <h6 class="mb-0 col-md-6 p-0">Lead Master Details</h6>
+                    <div class="row-add col-md-6  text-right">
+                        <button type="button" class="btn text-primary pb-0" (click)="addRow()">
+                            <i class='fas fa-plus-circle mr-2'></i>Add
+                        </button>
+                    </div>
+                    <hr class="m-0 mb-2">
+                </div>
+                <div class="col-md-12">
+                    <div class="tableFixHead">
+                        <table class="table-theam-1 row_bgcolor_2">
+                            <thead>
+                                <tr>
+                                    <th class="w-20 ">Sr.No</th>
+                                    <th class="w-15 ">Contact Name/Email</th>
+                                    <th class="w-20 ">Mobile/Phone No.</th>
+                                    <th class="w-20 ">Designation/Department</th>
+                                    <th class="w-10 text-center">Bill Email</th>
+                                    <th class="w-10 text-center">Rcpt Email</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let data of leadMaster_contact_detail; let i=index;">
+                                    <tr *ngIf="data.ACTIVE != 0">
+                                        <td class="pb-0 ">{{i+1}}</td>
+                                        <td class="w-15">
+                                            <div class="floating-input">
+                                                <input type="text" InputType="AlphaSpace" Uppercase class="form-control" [(ngModel)]="data.CONTACT_NAME" placeholder="Contact Name" [ngModelOptions]="{standalone: true}">
+                                            </div>
+                                        </td>
+                                        <td class="">
+                                            <div class="floating-input">
+                                                <input type="text" class="form-control" [(ngModel)]="data.CONTACT_MOBILE" placeholder="Mobile No."  [ngModelOptions]="{standalone: true}">
+                                            </div>
+                                        </td>
+                                        <td class="">
+                                            <div class="floating-input">
+                                                <input type="text" class="form-control" [(ngModel)]="data.CONTACT_DESIG" placeholder="Designation" [ngModelOptions]="{standalone: true}">
+                                            </div>
+                                        </td>
+                                        <td class="text-left">
+                                            <div class="floating-input">
+                                                <input type="checkbox" [(ngModel)]="data.SEND_INVOICEEMAIL" class="form-control" [ngModelOptions]="{standalone: true}">
+                                            </div>
+                                        </td>
+                                        <td class="text-left">
+                                            <div class="floating-input">
+                                                <input type="checkbox" [(ngModel)]="data.SEND_RECEIPTEMAIL" class="form-control" [ngModelOptions]="{standalone: true}">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="data.ACTIVE != 0">
+                                        <td class="pt-0"></td>
+                                        <td colspan="1" class="w-15 pt-0">
+                                            <div class="floating-input">
+                                                <input type="text" class="form-control" [(ngModel)]="data.CONTACT_EMAIL" placeholder="Email" [ngModelOptions]="{standalone: true}">
+                                            </div>
+                                        </td>
+                                        <td colspan="1" class="pt-0">
+                                            <div class="floating-input">
+                                                <input type="text" class="form-control" [(ngModel)]="data.CONTACT_PHONE" placeholder="Phone No"  [ngModelOptions]="{standalone: true}">
+                                            </div>
+                                        </td>
+                                        <td colspan="1" class="pt-0">
+                                            <div class="floating-input">
+                                                <input type="text" class="form-control" [(ngModel)]="data.CONTACT_DEPT" placeholder="Department" [ngModelOptions]="{standalone: true}">
+                                            </div>
+                                        </td>
+                                        <td colspan="2" class="text-left">
+                                            <div class="floating-inpu text-center">
+                                                <i class='fas fa-trash-alt text-danger' (click)=removeRow(i) id="i_{{i}}"></i>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

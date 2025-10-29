@@ -185,4 +185,6 @@ public GETISSUERAISEDDETAILSBYISSUENO: string='/TicketSystem/GETISSUERAISEDDETAI
 public SaveIssueDeveloperConfirmation: string='/TicketSystem/SaveIssueDeveloperConfirmation';  
 public GetDeveloperHistoryList: string='/TicketSystem/GetDeveloperHistoryList';  
 public GetIssuePmApprovalList: string='/TicketSystem/GetIssuePmApprovalList';
+public GetIssueHelpDeskMasterList: string='/TicketSystem/GetIssueHelpDeskMasterList';
+public GetLeadCommonList: string ='/Lead/GetLeadCommonList';
 }

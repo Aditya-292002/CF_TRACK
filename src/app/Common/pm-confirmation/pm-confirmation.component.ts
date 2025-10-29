@@ -17,22 +17,18 @@ export class PmConfirmationComponent implements OnInit {
 
   form: FormGroup;
   DEVELOPER_STATUS_SELECTED: string = ''
-  DOCUMENT_ATTECHED_LIST:any=[]
-  DOCUMENT_ATTECHED_LIST1:any=[]
-  statusflag:boolean=false;
+  DOCUMENT_ATTECHED_LIST: any = []
+  DOCUMENT_ATTECHED_LIST1: any = []
+  statusflag: boolean = false;
   // Options for dropdowns
   // RESOLUTION_LIST: { RESOLUTION_CODE: string, RESOLUTION_NAME: string }[] = [];
-    RESOLUTION_LIST = [
-    { RESOLUTION_CODE: 'R001', RESOLUTION_NAME: 'Resolved' },
-    { RESOLUTION_CODE: 'R002', RESOLUTION_NAME: 'Pending' },
-    { RESOLUTION_CODE: 'R003', RESOLUTION_NAME: 'Rejected' },
-    { RESOLUTION_CODE: 'R004', RESOLUTION_NAME: 'Reopened' }
-  ];
-  
+  RESOLUTION_LIST: any = [];
+
   // Uploaded document list
   DEVELOPER_DOCUMENT_LIST: { FILE_NAME: string, FILE_EXTENSION: string, DOC_BASE64: string }[] = [];
   userData: any;
   MODE: any;
+  PROJ_NAME: any;
   ISSUE_NO: any;
   ISSUE_ID: any;
   FUNCTION_CODE: any;
@@ -44,7 +40,7 @@ export class PmConfirmationComponent implements OnInit {
   STATUS_NAME: any;
   MODULE_DESC: any;
   FUNCTION_DESC: any;
-  product_code: any; 
+  product_code: any;
   REQUEST_DATE: any;
   REQUESTER_NAME: any;
   RAISED_BY_NAME: any;
@@ -53,21 +49,25 @@ export class PmConfirmationComponent implements OnInit {
   MODULE_CODE: any;
   ISSUE_SUBJECT: any;
   ISSSUE_NO: any;
-    DatePipe: any;
-    developerStatus: any="OK";
-    EST_HOURS:any;
-    DEVELOPER_DOCUMENT_LIST1:any;
-    RESOLUTION_CODE:any;
-    DELIVERY_BY:any;
-    DEVELOPER_STATUS:any;
-    ISSUE_TYPE_CODE:any;
-    PRIORITY_CODE:any;
-    REASON_ISSUE:any;
-    DESC_ISSUE:any;
-    DEVELOPER_COMMENT:any;
-    SaveConfirmationPopUp: boolean = false;
-viewflag:boolean=false;
- constructor(
+  DatePipe: any;
+  developerStatus: any = "OK";
+  EST_HOURS: any;
+  DEVELOPER_DOCUMENT_LIST1: any;
+  RESOLUTION_CODE: any;
+  DELIVERY_BY: any;
+  DEVELOPER_STATUS: any;
+  ISSUE_TYPE_CODE: any;
+  PRIORITY_CODE: any;
+  REASON_ISSUE: any;
+  DESC_ISSUE: any;
+  DEVELOPER_COMMENT: any;
+  SaveConfirmationPopUp: boolean = false;
+  CR_ISSUE_REASON: any;
+  CUST_REF_NO: any;
+  viewflag: boolean = false;
+  liststatus: any = "Pending";
+  isDisableRadioBtn: boolean = false
+  constructor(
     private fb: FormBuilder,
     private route: RoutingService,
     private http: HttpRequestServiceService,
@@ -75,49 +75,50 @@ viewflag:boolean=false;
     private toast: ToastrService,
     private datepipe: DatePipe,
     private router: Router,
-  
+
 
 
   ) { }
   formatDate(dateString) {
-  const date = new Date(dateString);
+    const date = new Date(dateString);
 
-  const day = String(date.getDate()).padStart(2, '0');
-  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  const month = monthNames[date.getMonth()];
-  const year = date.getFullYear();
+    const day = String(date.getDate()).padStart(2, '0');
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const month = monthNames[date.getMonth()];
+    const year = date.getFullYear();
 
-  return `${day}-${month}-${year}`;
-}
+    return `${day}-${month}-${year}`;
+  }
   ngOnInit(): void {
     this.form = this.fb.group({
-    
-          DEVELOPER_STATUS: ["OK"],
+
+      CUST_REF_NO: [{ value: '', disabled: true }],
+      DEVELOPER_STATUS: ["OK"],
       DEVELOPER_COMMENT: [''],
       DELIVERY_BY: [null],
       EST_HOURS: [null, [Validators.min(0), Validators.max(999)]],
       RESOLUTION_CODE: ['']
     });
-console.log(this.form.get('DEVELOPER_STATUS').value,"value");
-this.DEVELOPER_STATUS_SELECTED =this.form.get('DEVELOPER_STATUS').value
-if(this.DEVELOPER_STATUS_SELECTED=='OK'){
+    console.log(this.form.get('DEVELOPER_STATUS').value, "value");
+    this.DEVELOPER_STATUS_SELECTED = this.form.get('DEVELOPER_STATUS').value
+    if (this.DEVELOPER_STATUS_SELECTED == 'OK') {
 
-  this.statusflag=true;
-  }else{
-    this.statusflag=false;
-  }
+      this.statusflag = true;
+    } else {
+      this.statusflag = false;
+    }
     // Subscribe to changes and update our variable
     // this.form.get('DEVELOPER_STATUS').valueChanges.subscribe(value => {
     //   this.DEVELOPER_STATUS_SELECTED =this.form.get('DEVELOPER_STATUS').value;
     //   console.log('Status', value);
 
     //   // Reset fields based on status
-      
+
     // });
 
-    
- this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
+    this.GetPMConfirmationList()
+    this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
     this.MODE = localStorage.getItem('MODE');
     console.log(' this.MODE', this.MODE);
     this.ISSUE_NO = localStorage.getItem('ISSUE_NO');
@@ -131,25 +132,37 @@ if(this.DEVELOPER_STATUS_SELECTED=='OK'){
       // this.GETISSUERAISEDHISTORY(0);
     }
 
-     this.form.get('DEVELOPER_STATUS').valueChanges.subscribe(value => {
-      console.log(value,"value")
-    if(value===""){
-      this.developerStatus="OK"
-    }else if(value===undefined){
-     this.developerStatus="OK"
-    }else{
-      this.developerStatus=value
-    }
+    this.form.get('DEVELOPER_STATUS').valueChanges.subscribe(value => {
+      console.log(value, "value")
+      if (value === "") {
+        this.developerStatus = "OK"
+      } else if (value === undefined) {
+        this.developerStatus = "OK"
+      } else {
+        this.developerStatus = value
+      }
 
-  });
+    });
   }
 
-  
- GETISSUERAISEDDETAILSBYISSUENO() {
+
+  GetPMConfirmationList() {
+    this.http.PostRequest(this.apiurl.GetIssueHelpDeskMasterList, {}).then((res: any) => {
+      if (res.flag == 1) {
+        const response = res.Resolution;
+        this.RESOLUTION_LIST = response;
+      } else {
+        this.RESOLUTION_LIST = []
+      }
+
+    });
+  }
+
+  GETISSUERAISEDDETAILSBYISSUENO() {
     console.log('GETISSUERAISEDDETAILSBYISSUENO inside');
 
     const data = {
-      USER_ID: +this.USER_ID ,
+      USER_ID: +this.USER_ID,
       FUNCTION_CODE: (this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE,
       ISSUE_NO: this.ISSUE_NO,
       MODE: this.MODE
@@ -157,7 +170,7 @@ if(this.DEVELOPER_STATUS_SELECTED=='OK'){
 
     this.http.PostRequest(this.apiurl.GETISSUERAISEDDETAILSBYISSUENO, data).then((res: any) => {
       const response = res.datalist[0];
-      console.log(response,"response")
+      console.log(response, "response")
       if (!response) return;
       this.IS_HISTORY = response.IS_HISTORY;
       this.ISSSUE_NO = response.ISSSUE_NO;
@@ -180,24 +193,43 @@ if(this.DEVELOPER_STATUS_SELECTED=='OK'){
       this.ISSUE_TYPE_CODE = response.ISSUE_TYPE_CODE;
       this.DESC_ISSUE = response.DESC_OF_ISSUE_CR;
       this.REASON_ISSUE = response.ASREASON_OF_ISSUE_CR;
+      this.PROJ_NAME = response.PROJ_NAME;
+      this.CR_ISSUE_REASON = response.ASREASON_OF_ISSUE_CR;
+      this.CUST_REF_NO = response.CUST_REF_NO;
+
+
+      if (response.STATUS_CODE == '42') {
+        this.developerStatus = 'CLOSE'
+       
+        this.isDisableRadioBtn = true
+         console.log(this.isDisableRadioBtn," console.log(this.isDisableRadioBtn)")
+      } else if (response.STATUS_CODE == '40') {
+        this.developerStatus = 'OK'
+        this.isDisableRadioBtn = true
+                 console.log(this.isDisableRadioBtn," console.log(this.isDisableRadioBtn)")
+      }else if(response.STATUS_CODE == '00'){
+         this.isDisableRadioBtn = false
+                  console.log(this.isDisableRadioBtn," console.log(this.isDisableRadioBtn)")
+      }
+
 
       this.DEVELOPER_DOCUMENT_LIST1 = res.iteamlist || [];
       // this.GetRemoveBase64DocumnetExtension(this.DEVELOPER_DOCUMENT_LIST1);
       // console.log('GETISSUERAISEDDETAILSBYISSUENO response', response);
 
 
-    const deliveryDate = response.DELIVERY_BY? new Date(response.DELIVERY_BY).toISOString().substring(0, 10) : '';
+      const deliveryDate = response.DELIVERY_BY ? new Date(response.DELIVERY_BY).toISOString().substring(0, 10) : '';
       this.form.patchValue({
-      DELIVERY_BY: deliveryDate,
-      EST_HOURS: response.EST_HOURS,
-      RESOLUTION_CODE: response.RESOLUTION_CODE,
-      DEVELOPER_COMMENT: response.DEVELOPER_COMMENT,
-      DEVELOPER_STATUS: this.developerStatus
+        DELIVERY_BY: deliveryDate,
+        EST_HOURS: response.EST_HOURS,
+        RESOLUTION_CODE: response.RESOLUTION_CODE,
+        DEVELOPER_COMMENT: response.DEVELOPER_COMMENT,
+        DEVELOPER_STATUS: this.developerStatus
+      });
     });
-  });
   }
-     
-    convertToDate(dateString: string): Date {
+
+  convertToDate(dateString: string): Date {
     const [datePart, timePart, period] = dateString.split(' '); // split date and time
 
     const [day, month, year] = datePart.split('-').map(Number); // split day, month, year
@@ -234,55 +266,55 @@ if(this.DEVELOPER_STATUS_SELECTED=='OK'){
   deleteFile(index: number) {
     this.DOCUMENT_ATTECHED_LIST.splice(index, 1);
   }
-convertFilesToBase64(fileList: FileList) {
-  const files = Array.from(fileList); // Convert FileList to actual array
+  convertFilesToBase64(fileList: FileList) {
+    const files = Array.from(fileList); // Convert FileList to actual array
 
-  const fileReadPromises = files.map((file, index) => {
-    return new Promise((resolve, reject) => {
-      const fileExtension = file.name.split('.').pop().toLowerCase();
-      const reader = new FileReader();
+    const fileReadPromises = files.map((file, index) => {
+      return new Promise((resolve, reject) => {
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        const reader = new FileReader();
 
-      reader.onload = (e: any) => {
-        const base64 = e.target.result;
-        const fileData = {
-          FILE_NAME: file.name,
-          DOC_BASE64: base64,
-          SR_NO: this.DOCUMENT_ATTECHED_LIST.length + 1,
-          FILE_EXTENSION: fileExtension
+        reader.onload = (e: any) => {
+          const base64 = e.target.result;
+          const fileData = {
+            FILE_NAME: file.name,
+            DOC_BASE64: base64,
+            SR_NO: this.DOCUMENT_ATTECHED_LIST.length + 1,
+            FILE_EXTENSION: fileExtension
+          };
+
+          resolve(fileData);
         };
 
-        resolve(fileData);
-      };
+        reader.onerror = (error) => {
+          console.error('Error reading file:', file.name, error);
+          reject(error);
+        };
 
-      reader.onerror = (error) => {
-        console.error('Error reading file:', file.name, error);
-        reject(error);
-      };
-
-      reader.readAsDataURL(file);
+        reader.readAsDataURL(file);
+      });
     });
-  });
 
-  Promise.all(fileReadPromises)
-    .then((results: any[]) => {
-      this.DOCUMENT_ATTECHED_LIST.push(...results);
-      console.log('All files processed:', this.DOCUMENT_ATTECHED_LIST);
-    })
-    .catch((error) => {
-      console.error('Error processing some files:', error);
-    });
-}
-   onFileSelected(event: Event) {
+    Promise.all(fileReadPromises)
+      .then((results: any[]) => {
+        this.DOCUMENT_ATTECHED_LIST.push(...results);
+        console.log('All files processed:', this.DOCUMENT_ATTECHED_LIST);
+      })
+      .catch((error) => {
+        console.error('Error processing some files:', error);
+      });
+  }
+  onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    console.log(input,"input")
+    console.log(input, "input")
     if (input.files) {
       const filesArray = input.files;
-      console.log(filesArray,"filesArray")
+      console.log(filesArray, "filesArray")
       this.convertFilesToBase64(filesArray);
     }
   }
 
-    GetRemoveBase64DocumnetExtension(data: any) {
+  GetRemoveBase64DocumnetExtension(data: any) {
     data.forEach((file: any) => {
       if (file.FILE_EXTENSION == "pdf") {
         file.DOC_BASE64 = file.DOC_BASE64.split('data:application/pdf;base64,').join('')
@@ -300,9 +332,11 @@ convertFilesToBase64(fileList: FileList) {
     });
     this.DOCUMENT_ATTECHED_LIST = data;
   }
- SaveConfirmationPopUpOpen() {
+  SaveConfirmationPopUpOpen() {
 
-      //  this.SaveConfirmationPopUp = true;
+    this.form.get('DEVELOPER_STATUS').value
+    console.log(this.developerStatus, "this.developerStatus")
+    //  this.SaveConfirmationPopUp = true;
     // Trigger form validation
     this.form.markAllAsTouched();
 
@@ -311,48 +345,46 @@ convertFilesToBase64(fileList: FileList) {
       this.toast.error('Please fill all required fields');
       return;
     }
-    
-  if (!this.form.get('DELIVERY_BY').value) {
-      this.toast.error('Enter delivery by date');
-      return;
-    }
-        if (!this.form.get('EST_HOURS').value) {
-      this.toast.error('Please select estimated hours');
-      return;
-    }
-       if (!this.form.get('RESOLUTION_CODE').value) {
-      this.toast.error('Please select resolution');
-      return;
-    }
-    // Conditional validations for CR type
-    if (!this.form.get('DEVELOPER_COMMENT').value) {
-      this.toast.error('Enter a developer comment');
-      return;
+    if (this.developerStatus == 'OK') {
+      if (!this.form.get('DELIVERY_BY').value) {
+        this.toast.error('Enter delivery by date');
+        return;
+      }
+      if (!this.form.get('EST_HOURS').value) {
+        this.toast.error('Please select estimated hours');
+        return;
+      }
+      if (!this.form.get('RESOLUTION_CODE').value) {
+        this.toast.error('Please select resolution');
+        return;
+      }
+      // Conditional validations for CR type
+      if (!this.form.get('DEVELOPER_COMMENT').value) {
+        this.toast.error('Enter a developer comment');
+        return;
+      }
+    } else {
+      if (!this.form.get('DEVELOPER_COMMENT').value) {
+        this.toast.error('Enter a developer comment');
+        return;
+      }
+
     }
 
-    // if (this.isDescofErrorCR && !this.form.get('DESC_ISSUE').value) {
-    //   this.toast.error('Enter a Desc Issue');
-    //   return;
-    // }
-
-    // Conditional validation for revert comment
-  
-
-  
 
     // ✅ All good — proceed
     this.SaveConfirmationPopUp = true;
   }
-closeModel() {
+  closeModel() {
     this.SaveConfirmationPopUp = false;
   }
-  
- SAVE_PM_CONFIRMATION_MASTER() {
 
- 
+  SAVE_PM_CONFIRMATION_MASTER() {
 
-  console.log('SAVE_PM_CONFIRMATION_MASTER called');
-  // return
+
+
+    console.log('SAVE_PM_CONFIRMATION_MASTER called');
+    // return
     // 🚨 Validate form
     this.form.markAllAsTouched();
 
@@ -372,25 +404,26 @@ closeModel() {
       }
     });
 
-  
-// 🧾 Extract values from form
+
+    // 🧾 Extract values from form
 
 
-const formValues = this.form.value;
-  let data = {
-  "USER_ID": this.USER_ID,
-  "ISSUE_NO": this.ISSUE_NO,
-  "ISSUE_TYPE_CODE": this.ISSUE_TYPE_CODE,
-  "PRIORITY_CODE": this.PRIORITY_CODE,
-  "REASON_ISSUE_CR": this.REASON_ISSUE,
-  "DESC_ISSUE_CR": this.DESC_ISSUE,
-  "EST_HOURS": formValues.EST_HOURS,
-  "RESOLUTION_CODE": formValues.RESOLUTION_CODE,
-  "DEVELOPER_STATUS": formValues.DEVELOPER_STATUS,
-  "DEVELOPER_COMMENT": formValues.DEVELOPER_COMMENT,
-  "DOCUMENT_ATTECHED_LIST": this.DOCUMENT_ATTECHED_LIST,
-  "DELIVERY_BY": this.datepipe.transform(formValues.DELIVERY_BY, 'yyyy-MM-dd')
-}
+    const formValues = this.form.value;
+    let data = {
+      "USER_ID": this.USER_ID,
+      "ISSUE_NO": this.ISSUE_NO,
+      "ISSUE_TYPE_CODE": this.ISSUE_TYPE_CODE,
+      "PRIORITY_CODE": this.PRIORITY_CODE,
+      "REASON_ISSUE_CR": this.REASON_ISSUE,
+      "DESC_ISSUE_CR": this.DESC_ISSUE,
+      "EST_HOURS": formValues.EST_HOURS,
+      "CUST_REF_NO": this.CUST_REF_NO,
+      "RESOLUTION_CODE": formValues.RESOLUTION_CODE,
+      "DEVELOPER_STATUS": formValues.DEVELOPER_STATUS,
+      "DEVELOPER_COMMENT": formValues.DEVELOPER_COMMENT,
+      "DOCUMENT_ATTECHED_LIST": this.DOCUMENT_ATTECHED_LIST,
+      "DELIVERY_BY": this.datepipe.transform(formValues.DELIVERY_BY, 'yyyy-MM-dd')
+    }
 
 
     console.log('data', data);
@@ -406,14 +439,89 @@ const formValues = this.form.value;
     });
   }
 
-  viewDocument(file: any) {
-    console.log('View document', file);
-  }
+
 
   goToList() {
     this.route.changeRoute('/pmconfirmation');
   }
 
-  
+  viewDocument(data: any) {
+    if (!data.DOC_BASE64 || !data.EXTENSION) return;
+
+    const byteCharacters = atob(data.DOC_BASE64);
+    const byteNumbers = new Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: this.getMimeType(data.EXTENSION) });
+    const fileURL = URL.createObjectURL(blob);
+    window.open(fileURL, '_blank');
+  }
+
+  downloadDocument(data: any) {
+    if (!data.DOC_BASE64 || !data.FILE_NAME) return;
+
+    const byteCharacters = atob(data.DOC_BASE64);
+    const byteNumbers = new Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: this.getMimeType(data.EXTENSION) });
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = data.FILE_NAME;
+    link.click();
+  }
+
+  private getMimeType(extension: string): string {
+    switch (extension.toLowerCase()) {
+      case 'pdf':
+        return 'application/pdf';
+      case 'jpg':
+      case 'jpeg':
+        return 'image/jpeg';
+      case 'png':
+        return 'image/png';
+      case 'xls':
+        return 'application/vnd.ms-excel';
+      case 'xlsx':
+        return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+      case 'doc':
+        return 'application/msword';
+      case 'docx':
+        return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+      case 'txt':
+        return 'text/plain';
+      default:
+        return 'application/octet-stream';
+    }
+  }
+
+  GET_PM_CONFIRMATION_LIST() {
+    let data = {
+      "USER_ID": (+this.USER_ID),
+      "FUNCTION_CODE": ((this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE),
+      "LISTSTATUS": (this.liststatus == "Pending") ? "P" : "C",
+    }
+  }
+
+  setStatus(value: string) {
+    this.liststatus = value;
+    // you can also filter your data or call API here
+    console.log('Selected Status:', this.liststatus);
+
+    this.GET_PM_CONFIRMATION_LIST();
+  }
+
+  isPending(): boolean {
+    return this.liststatus === 'P';
+  }
 
 }

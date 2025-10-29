@@ -1,7 +1,7 @@
-<div class="d-flex flex-row justify-content-between align-items-center card p-2">
+<div class="d-flex flex-row justify-content-between align-items-center">
   <h5 class="h5 mb-0">PM Confirmation List</h5>
 
-   <div class="d-flex ml-2 justify-content-between align-items-center
+  <div class="d-flex ml-2 justify-content-between align-items-center
     mt-2">
     <div class=" p-2 ">
       <label class="Text_Primary Helper_Text">
@@ -16,21 +16,20 @@
     Pending
   </label>
     </div>
-<div class="p-1">
-   <label class="Text_Primary Helper_Text ">
-    <input
-    class="mr-1"
-      type="radio"
-      name="status"
-      [(ngModel)]="liststatus"
-      value="Closed"
-      (change)="setStatus('Closed')"
-    />
-    Closed
-  </label>
-</div>
- 
-</div>
+    <div class="p-1">
+      <label class="Text_Primary Helper_Text ">
+        <input
+        class="mr-1"
+          type="radio"
+          name="status"
+          [(ngModel)]="liststatus"
+          value="Closed"
+          (change)="setStatus('Closed')"
+        />
+        Closed
+      </label>
+    </div>
+  </div>
 
   <div class="input-group" style="max-width: 259px;">
       <div class="input-group-prepend">
@@ -67,21 +66,10 @@
             </td>
             <td class="">
               <!-- Add your action buttons here -->
-              <span> <i class="far fa-edit mr-1" (click)="GetDeveloperRequestRaised(ISSUE_REQUEST_COLUMN_LIST[0], data)"></i></span>
+              <span> <i class="fa fa-eye mr-1" *ngIf = "liststatus !== 'Pending'" (click)="GetDeveloperRequestRaised(ISSUE_REQUEST_COLUMN_LIST[0], data)"></i></span>
+              <span> <i class="far fa-edit mr-1" *ngIf = "liststatus == 'Pending'" (click)="GetDeveloperRequestRaised(ISSUE_REQUEST_COLUMN_LIST[0], data)"></i></span>
+
             </td>
-            <!-- (dblclick)="openPopup(data, 'Status')" -->
-            <!-- <td class=""> -->
-            <!-- <i class="fa fa-ban text-warning mr-2" *ngIf="data.STATUS == 'P'"></i>
-                 <i class="fa fa-check-square text-success mr-2" *ngIf="data.STATUS == 'A' || data.STATUS == 'M'"></i>
-                 <i class="fa fa-times text-danger mr-2" *ngIf="data.STATUS == 'R'"></i>{{data.STATUS_DESC}}</td>
-                <td class="">                
-                  <a *ngIf="data.STATUS == 'P' || data.STATUS == 'M' || (data.STATUS == 'A' && this.ROLE_ID== 3)">
-                    <i class="fa fa-edit small mr-2"  (click)="editLeave(data)" title="Edit"></i>  
-                  </a>
-                  <a *ngIf="(data.STATUS == 'P' && this.ROLE_NAME == 'HR USER') || (data.STATUS == 'M' && this.ROLE_NAME == 'HR USER')">
-                    <i class="fa fa-trash  small"  (click)="editLeave(data)" title="Delete"></i>  
-                  </a> -->
-            <!-- </td> -->
           </tr>
         </tbody>
       </table>
