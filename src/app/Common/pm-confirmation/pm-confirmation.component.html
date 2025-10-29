@@ -10,9 +10,9 @@
     <!-- Right section: Buttons -->
     <div class="d-flex align-items-center flex-wrap p-2">
       <button type="button" class="p-element prime-button save-button mr-2">History</button>
-   <button type="button" class="p-element prime-button secondary-button mr-2" (click)="goToList()">List</button>
+      <button type="button" class="p-element prime-button secondary-button mr-2" (click)="goToList()">List</button>
       <!-- Save button (visible only if viewflag is false) -->
-      <div *ngIf="!viewflag" class="mr-2">
+      <div *ngIf="STATUS_CODE == '00'" class="mr-2">
         <button 
           class="p-element prime-button save-button" 
           data-target="#saveissue" 
@@ -21,8 +21,6 @@
           Save
         </button>
       </div>
-
-   
     </div>
 
   </div>
@@ -75,7 +73,7 @@
       </div> -->
 
     <!-- Project Name -->
-    <div class="col-md-4">
+    <div class="col-md-3">
       <label class="font-weight-bold  small">Project Name</label>
       <p class="text-secondary small w-full p-0 m-0" *ngIf ="PROJ_NAME !==''" >
         {{PROJ_NAME }}
@@ -84,11 +82,28 @@
         NA
       </p>
     </div>
+    
+       <!-- Cust Ref No. -->
+    <div class="col-md-3 ">
+      <label for="issue_no" class="w-50  font-weight-bold label-13px">Cust Ref No.</label>
+      <p class="text-secondary small p-0 m-0" *ngIf =  "CUST_REF_NO !== ''">
+        {{ CUST_REF_NO }}
+      </p>
+      <p class="text-secondary small p-0 m-0" *ngIf = "CUST_REF_NO === null || CUST_REF_NO === '' || CUST_REF_NO === undefined">
+        NA
+      </p>
+
+      <!-- <div class="floating-input">
+        <input type="text" id="issue_no" class="form-control form-control-sm" formControlName="CUST_REF_NO"
+        placeholder="Enter Cust Ref No"  [attr.disabled]="viewflag ? '' : null">
+      </div> -->
+
+    </div> 
 
         <!-- Priority -->
     <div class="col-md-3 issue_pr">
       <label class="font-weight-bold  small">Priority</label>
-      <p class="text-secondary small p-0 m-0" *ngIf = "PRIORITY_DESC !== null || PRIORITY_DESC !== '' || PRIORITY_DESC !== undefined">
+      <p class="text-secondary small p-0 m-0" *ngIf = "PRIORITY_DESC !== ''">
         {{ PRIORITY_DESC }}
       </p>
       <p class="text-secondary small p-0 m-0" *ngIf = "PRIORITY_DESC === null || PRIORITY_DESC === '' || PRIORITY_DESC === undefined">
@@ -99,17 +114,13 @@
     <!-- Raised By -->
     <div class="col-md-3 ">
       <label class="font-weight-bold  small">Raised By</label>
-      <p class="text-secondary small p-0 m-0" *ngIf = " RAISED_BY_NAME !== ''">
+      <p class="text-secondary small p-0 m-0" *ngIf = "RAISED_BY_NAME !== ''">
         {{ RAISED_BY_NAME }}
       </p>
       <p class="text-secondary small p-0 m-0" *ngIf = "RAISED_BY_NAME === null || RAISED_BY_NAME === '' || RAISED_BY_NAME === undefined">
         NA
       </p>
-    </div>
-
-
-   
-     
+    </div>  
 
     <!-- Issue Type -->
     <div class="col-md-3 ">
@@ -152,7 +163,8 @@
         NA
       </p>
     </div>
-        <!-- Function -->
+
+    <!-- Function -->
     <div class="col-md-3 ">
       <label class="font-weight-bold  small">Function</label>
       <p class="text-secondary small p-0 m-0" *ngIf = " FUNCTION_CODE !== '' ">
@@ -162,16 +174,7 @@
         NA
       </p>
     </div>
-       <div class="col-md-3">
-      <label class="font-weight-bold  small">CR/Issue</label>
-      <p class="text-secondary small p-0 m-0" *ngIf = "CR_ISSUE_REASON !== ''">
-        {{ CR_ISSUE_REASON }} 
-      </p>
-      <p class="text-secondary small p-0 m-0" *ngIf = "CR_ISSUE_REASON === null || CR_ISSUE_REASON === '' || CR_ISSUE_REASON === undefined">
-        NA
-      </p>
-    </div>
-
+      
     <!-- Created By -->
     <div class="col-md-3 ">
       <label class="font-weight-bold  small">Created By</label>
@@ -183,63 +186,19 @@
       </p>
     </div> 
 
-    <!-- Cust Ref No. -->
-    <div class="col-md-3 ">
-      <label for="issue_no" class="w-50  font-weight-bold label-13px">Cust Ref No.</label>
-      <p class="text-secondary small p-0 m-0" *ngIf =  "CUST_REF_NO !== ''">
-        {{ CUST_REF_NO }}
+    <!-- CR/Issue Reason -->
+    <div class="col-md-5">
+      <label class="font-weight-bold  small">CR/Issue</label>
+      <p class="text-secondary small p-0 m-0" *ngIf = "CR_ISSUE_REASON !== ''">
+        {{ CR_ISSUE_REASON }} 
       </p>
-      <p class="text-secondary small p-0 m-0" *ngIf = "CUST_REF_NO === null || CUST_REF_NO === '' || CUST_REF_NO === undefined">
+      <p class="text-secondary small p-0 m-0" *ngIf = "CR_ISSUE_REASON === null || CR_ISSUE_REASON === '' || CR_ISSUE_REASON === undefined">
         NA
       </p>
+    </div>
 
-      <!-- <div class="floating-input">
-        <input type="text" id="issue_no" class="form-control form-control-sm" formControlName="CUST_REF_NO"
-        placeholder="Enter Cust Ref No"  [attr.disabled]="viewflag ? '' : null">
-      </div> -->
-
-    </div> 
-
- 
-
- 
- 
-
-
-
-   
-
-    <!-- Reason / Description of Issue/CR -->
-    <!-- <div class="col-12 mb-2" >
-      <label class="font-weight-bold  small" >Reason of CR</label>
-      <label class="font-weight-bold  small">Reason of Issue</label>
-      <label class="font-weight-bold  small">Description of CR</label>
-
-      <p class="text-secondary small" >
-       
-          Reason of Issue
-      </p>
-      <p class="text-secondary small" >NA</p>
-
-      <p class="text-secondary small" >
-  
-            Description of Issue
-      </p>
-      <p class="text-secondary small" >NA</p>
-    </div> -->
-
-    <!-- Propose Delivery & Est Hours -->
-    <!-- <div class="col-md-3 mb-2" >
-      <label class="font-weight-bold  small">Propose New</label>
-      <p class="text-secondary small">{{ "PROPOSE_DELIVERY_BY" }}</p>
-    </div> -->
-    <!-- <div class="col-md-3 mb-2" >
-      <label class="font-weight-bold  small">Est. Hours</label>
-      <p class="text-secondary small">{{ "PROPOSE_HOURS" }} Hr</p>
-    </div> -->
-
-    <!-- Uploaded Document List -->
-  <div class="col-md-9 mb-2 w-100">
+  <!-- Uploaded Document List -->
+  <!-- <div class="col-md-7 mb-2 w-100">
   <label class="font-weight-bold small">Uploaded Document List</label>
   <table class="table-theam-1 row_bgcolor_1 w-100">
     <thead class="thead-light">
@@ -266,8 +225,47 @@
       </tr>
     </tbody>
   </table>
-</div>
+</div> -->
 
+<!-- Uploaded Document List -->
+<div class="col-md-7 mb-2 w-100">
+  <label class="font-weight-bold small">Uploaded Document List</label>
+  <table class="table-theam-1 row_bgcolor_1 w-100">
+    <thead class="thead-light">
+      <tr>
+        <th>File Name</th>
+        <th>Uploaded By</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of DEVELOPER_DOCUMENT_LIST1">
+        <td>{{ data.FILE_NAME }}</td>
+        <td>{{ data.UPLOADEDBY }}</td>
+        <td>{{ data.DATE }}</td>
+        <td>
+          <button
+            type="button"
+            class="btn btn-sm mr-1"
+            (click)="viewDocument(data)"
+            title="View Document"
+          >
+            <i class="fa fa-eye"></i>
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm"
+            (click)="downloadDocument(data)"
+            title="Download Document"
+          >
+            <i class="fa fa-download"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
   </div>
 </div>
@@ -279,12 +277,13 @@
 
     <!-- Row 1: Radio Buttons -->
     <div class="d-flex align-items-center mb-3">
-      <div class="form-check form-check-inline">
+      <div class="form-check form-check-inline ">
         <input
           class="form-check-input"
           type="radio"
           id="statusOk"
           name="developerStatus"
+           [attr.disabled]="isDisableRadioBtn ? '' : null"
           formControlName="DEVELOPER_STATUS"
           value="OK"
           (change)="developerStatus = 'OK'"
@@ -298,6 +297,7 @@
           type="radio"
           id="statusClose"
           name="developerStatus"
+            [attr.disabled]="isDisableRadioBtn ? '' : null"
           formControlName="DEVELOPER_STATUS"
           value="CLOSE"
           (change)="developerStatus = 'CLOSE'"

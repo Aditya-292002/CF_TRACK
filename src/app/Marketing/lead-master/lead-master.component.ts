@@ -1,0 +1,427 @@
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, PatternValidator, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { ApiUrlService } from 'src/app/services/api-url.service';
+import { HttpRequestServiceService } from 'src/app/services/http-request-service.service';
+import { SharedServiceService } from 'src/app/services/shared-service.service';
+import { ValidationService } from 'src/app/services/validation.service';
+import { CommonModule } from '@angular/common';
+declare var $: any;
+
+@Component({
+  selector: 'app-lead-master',
+  templateUrl: './lead-master.component.html',
+  styleUrls: ['./lead-master.component.css']
+})
+export class LeadMasterComponent implements OnInit {
+  @ViewChild('email', { static: false }) email: ElementRef;
+    
+    spinner: boolean = false;
+    form: FormGroup
+    country_list: Array<any> = [];
+    leadMaster_status_list: Array<any> = [];
+    leadMaster_group_list: Array<any> = [];
+    segment_list: Array<any> = [];
+    state_list: Array<any> = [];
+    currency_list: Array<any> = [];
+    salesRegion_code: Array<any> = [];
+    leadMaster_type_list: Array<any> = [];
+    leadMaster_list: Array<any> = [];
+    isPanANDGstInNotMandatory:boolean = false;
+  
+    constructor(public sharedService: SharedServiceService,
+      private apiUrl: ApiUrlService,
+      private http: HttpRequestServiceService,
+      private formBuilder: FormBuilder,
+      private toast: ToastrService,
+      private validationService: ValidationService) { } 
+  
+    ngOnInit() {
+      this.sharedService.formName = "Lead Master"
+      this.form = this.formBuilder.group({
+        EMP_CODE: [""],
+        LOGIN_ID: [""],
+        LEAD_CODE : [{value: '', disabled: true}],
+        LEAD_NAME : ["",Validators.required],
+        LEAD_LEGALNAME: ["",Validators.required],
+        LEAD_TYPE: ["",Validators.required],
+        LEAD_ADDRESS1: ["",Validators.required],
+        LEAD_ADDRESS2: ["",Validators.required],
+        LEAD_CITY: ["",Validators.required],
+        LEAD_PIN: ["",[Validators.required, Validators.minLength(6),Validators.maxLength(6)]],
+        LEAD_COUNTRY: ["",Validators.required],
+        LEAD_STATE: ["",Validators.required],
+  
+        LEAD_PAN: ["",Validators.required],
+        LEAD_GSTIN: ["",Validators.required],
+        LEAD_SEGMENT: ["",Validators.required],
+        LEAD_PHONE: ["",Validators.required],
+        LEAD_TURNOVER: ["",Validators.required],
+        LEAD_EMAIL: ["",Validators.required],
+        LEAD_PARTNER: ["",Validators.required],
+        LEAD_URL: ["",Validators.required],
+        LEAD_CURRENCY: ["INR",Validators.required],
+        ACCT_MANAGER: ["",Validators.required],
+        SALESREGION_CODE: ["",Validators.required],
+        LEAD_STATUS: ["P",Validators.required],
+        LEAD_GRP_ID: ["",]
+  
+      });
+  
+      $('.selectpicker').selectpicker('refresh');
+    }
+    ADD_RIGHTS: boolean = false;
+    UPDATE_RIGHTS: boolean = false;
+    isUpdate: boolean = false;
+    ngAfterViewInit() {
+      setTimeout(() => {
+        if (this.sharedService.form_rights.ADD_RIGHTS) {
+          this.ADD_RIGHTS = this.sharedService.form_rights.ADD_RIGHTS
+        }
+        if (this.sharedService.form_rights.UPDATE_RIGHTS) {
+          this.UPDATE_RIGHTS = this.sharedService.form_rights.UPDATE_RIGHTS
+        }
+        this.getLeadMasterCommonList();
+        // this.GetLeadMasterList();
+        this.getEmployee();
+        this.addRow()
+      }, 150);
+    }
+  
+    getLeadMasterCommonList() {
+  
+      this.http.PostRequest(this.apiUrl.GetLeadCommonList, {}).then(res => {
+        console.log (res,"resres")
+        if (res.flag) {
+          this.country_list = res.countrylist;
+          this.leadMaster_status_list = res.statuslist;
+          this.leadMaster_group_list = res.leadMaster_group_list;
+          this.segment_list = res.segementlist;
+          this.state_list = res.statelist;
+          this.currency_list = res.currencylist;
+          this.salesRegion_code = res.salesRegion_code;
+          this.leadMaster_type_list = res.custypelist;
+  
+          setTimeout(() => {
+            $('.selectpicker').selectpicker('refresh').trigger('change');
+          }, 100);
+          this.spinner = false;
+        } else {
+          this.spinner = false;
+        }
+      }, err => {
+        this.spinner = false;
+      });
+    }
+    // GetLeadMasterList(){
+    //   let data = {
+    //     LISTTYPE:"all"
+    //   }
+    //   this.http.PostRequest(this.apiUrl.GetLeadMasterList, data).then(res => {
+    //     if (res.flag) {
+    //       this.leadMaster_list = res.leadMaster_list;
+  
+    //       setTimeout(() => {
+    //         $('.selectpicker').selectpicker('refresh').trigger('change');
+    //       }, 100);
+    //       this.spinner = false;
+    //     } else {
+    //       this.spinner = false;
+    //     }
+    //   }, err => {
+    //     this.spinner = false;
+    //   });
+    // }
+    employee_list: Array<any> = [];
+    getEmployee() {
+      let data = {
+        LISTTYPE: ""
+      }
+  
+      this.http.PostRequest(this.apiUrl.GetEmployeeList, data).then(res => {
+        if (res.flag) {
+          this.employee_list = res.employee_list;
+  
+          setTimeout(() => {
+            $('.selectpicker').selectpicker('refresh').trigger('change');
+          }, 100);
+  
+          this.spinner = false;
+        } else {
+          this.spinner = false;
+        }
+      }, err => {
+        this.spinner = false;
+      });
+    }
+    search_user: any = ""
+    // f_searchUserData() {
+    //   this.isUpdate = false;
+    //   if (this.search_user != "") {
+    //     this.GetLeadMasterDetail();
+    //   } else {
+    //   }
+    // }
+    leadMaster_contact_detail: Array<any> = [];
+    // GetLeadMasterDetail(){
+    //   let data = {
+    //     LEAD_CODE: this.search_user
+    //   }
+    //   this.spinner =true;
+    //   this.http.PostRequest(this.apiUrl.GetLeadMasterDetail, data).then(res => {
+    //     if (res.flag) {
+    //       this.leadMaster_contact_detail = res.leadMaster_contact_detail;
+    //       this.fillLeadMasterData(res.leadMaster_detail)
+    //       this.spinner = false;
+    //     } else {
+    //       this.spinner = false;
+    //     }
+    //   }, err => {
+    //     this.spinner = false;
+    //   });
+    // }
+  
+    fillLeadMasterData(data: any = []){
+  
+      this.form.get('LEAD_CODE').setValue(data[0].LEAD_CODE)
+      this.form.get('LEAD_NAME').setValue(data[0].LEAD_NAME)
+      this.form.get('LEAD_LEGALNAME').setValue(data[0].LEAD_LEGALNAME)
+      this.form.get('LEAD_TYPE').setValue(data[0].LEAD_TYPE)
+      this.form.get('LEAD_ADDRESS1').setValue(data[0].LEAD_ADDRESS1)
+      this.form.get('LEAD_ADDRESS2').setValue(data[0].LEAD_ADDRESS2)
+      this.form.get('LEAD_CITY').setValue(data[0].LEAD_CITY)
+      this.form.get('LEAD_PIN').setValue(Number(data[0].LEAD_PIN))
+      this.form.get('LEAD_COUNTRY').setValue(data[0].LEAD_COUNTRY)
+      this.form.get('LEAD_STATE').setValue(data[0].LEAD_STATE)
+      this.form.get('LEAD_PAN').setValue(data[0].LEAD_PAN)
+      this.form.get('LEAD_GSTIN').setValue(data[0].LEAD_GSTIN)
+      this.form.get('LEAD_SEGMENT').setValue(data[0].LEAD_SEGMENT)
+      this.form.get('LEAD_PHONE').setValue(data[0].LEAD_PHONE)
+      this.form.get('LEAD_TURNOVER').setValue(data[0].LEAD_TURNOVER)
+      this.form.get('LEAD_EMAIL').setValue(data[0].LEAD_EMAIL)
+      this.form.get('LEAD_REMARKS').setValue(data[0].LEAD_REMARKS)
+      this.form.get('LEAD_PARTNER').setValue(data[0].LEAD_PARTNER)
+      this.form.get('LEAD_URL').setValue(data[0].LEAD_URL)
+      this.form.get('LEAD_CURRENCY').setValue(data[0].LEAD_CURRENCY)
+      this.form.get('ACCT_MANAGER').setValue(data[0].ACCT_MANAGER)
+      this.form.get('SALESREGION_CODE').setValue(data[0].SALESREGION_CODE)
+      this.form.get('LEAD_STATUS').setValue(data[0].LEAD_STATUS)
+      this.form.get('LEAD_GRP_ID').setValue(data[0].LEAD_GRP_ID)
+      
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh').trigger('change');
+      }, 100);
+  
+      this.f_Add_Update('U');
+    }
+  
+    f_validatePAN(){
+      if(this.form.getRawValue().LEAD_PAN != "" && this.form.getRawValue().LEAD_PAN != undefined && this.form.getRawValue().LEAD_PAN != null){
+        let pan_regex: RegExp = new RegExp(/[A-Z]{5}[0-9]{4}[A-Z]{1}$/);
+        if(!pan_regex.test(this.form.getRawValue().LEAD_PAN)){
+          this.form.getRawValue().LEAD_PAN = '';
+          document.getElementById('panno').focus();
+          this.toast.warning('PAN number not valid')
+        }
+      }
+  
+    }
+    f_validateGSTNO(){
+      if(this.form.getRawValue().LEAD_GSTIN != "" && this.form.getRawValue().LEAD_GSTIN != undefined && this.form.getRawValue().LEAD_GSTIN != null){
+        let gst_regex: RegExp = new RegExp(/\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/);
+        if(!gst_regex.test(this.form.getRawValue().LEAD_GSTIN)){
+          this.form.getRawValue().LEAD_GSTIN = '';
+          document.getElementById('gstno').focus();
+          this.toast.warning('GST number not valid')
+        }
+      }
+  
+    }
+  
+    // f_validateADDRESS1(){
+    //   if(this.form.getRawValue().LEAD_ADDRESS1 != "" && this.form.getRawValue().LEAD_ADDRESS1 != undefined && this.form.getRawValue().LEAD_ADDRESS1 != null){
+    //     let address1_regex: RegExp = new RegExp(/[A-Za-z0-9'\.\-\s\,]/);
+    //     if(!address1_regex.test(this.form.getRawValue().LEAD_ADDRESS1)){
+    //       this.form.getRawValue().LEAD_ADDRESS1 = '';
+    //       document.getElementById('address1').focus();
+    //       this.toast.warning('please enter your address')
+    //     }
+    //   }
+  
+    // }
+  
+    addRow(){
+      this.leadMaster_contact_detail.push({
+        LEAD_SRNO:0,
+        CONTACT_NAME:"",
+        CONTACT_MOBILE:"",
+        CONTACT_DESIG:"",
+        SEND_INVOICEEMAIL:"",
+        SEND_RECEIPTEMAIL:"",
+        CONTACT_EMAIL:"",
+        CONTACT_PHONE:"",
+        CONTACT_DEPT:"",
+        ACTIVE:1
+      })
+    }
+    removeRow(index: number){
+        if(this.leadMaster_contact_detail[index].LEAD_SRNO == 0){        
+      this.leadMaster_contact_detail.splice(index,1);
+        }else if(this.leadMaster_contact_detail[index].LEAD_SRNO > 0){        
+          this.leadMaster_contact_detail[index].ACTIVE=0;
+            }
+    }
+    f_Add_Update(para: string = ''){
+      if(para == 'C'){
+        this.isUpdate = false;
+        this.f_clearForm();
+      } else if(para == 'U'){
+        this.isUpdate = true;
+      }
+    }
+    isSubmited: boolean = false;
+    // saveFormData(para: string = ''){
+    //   this.isSubmited = true;
+    //   if(this.form.valid){
+    //     let _contact_detail: Array<any> = [];
+    //     if(this.leadMaster_contact_detail.length < 0 ){
+    //       this.toast.warning("Add minimun 1 contact detail");
+    //       return;
+    //     }
+    //     for(let data of this.leadMaster_contact_detail){
+    //       if(data.CONTACT_NAME == "" || data.CONTACT_NAME == undefined || data.CONTACT_NAME == null){
+    //         this.toast.warning("Please enter contact person name");
+    //         return;
+    //       }else if(data.CONTACT_MOBILE == "" || data.CONTACT_MOBILE == undefined || data.CONTACT_MOBILE == null){
+    //         this.toast.warning("Please enter contact person mobile");
+    //         return;
+    //       }else if(data.CONTACT_DESIG == "" || data.CONTACT_DESIG == undefined || data.CONTACT_DESIG == null){
+    //         this.toast.warning("Please enter designation of contact person");
+    //         return;
+    //       }else if(data.CONTACT_EMAIL == "" || data.CONTACT_EMAIL == undefined || data.CONTACT_EMAIL == null){
+    //         this.toast.warning("Please enter contact person email");
+    //         return;
+    //       }else if(data.CONTACT_PHONE == "" || data.CONTACT_PHONE == undefined || data.CONTACT_PHONE == null){
+    //         this.toast.warning("Please enter contact person phone");
+    //         return;
+    //       }else if(data.CONTACT_DEPT == "" || data.CONTACT_DEPT == undefined || data.CONTACT_DEPT == null){
+    //         this.toast.warning("Please enter contact person department");
+    //         return;
+    //       }
+          
+    //       _contact_detail.push(data)
+          
+    //     }
+       
+    //     let data = {
+    //       leadMaster_detail: this.form.getRawValue(),
+    //       leadMaster_contact_detail: _contact_detail
+    //     }
+    //     // return
+    //     this.http.PostRequest(this.apiUrl.SaveLeadMasterDetail, data).then(res => {
+    //       if (res.flag) {
+    //         this.toast.success(res.msg)
+    //         this.GetLeadMasterList();
+    //         this.spinner = false;
+    //         this.f_clearForm()
+    //       } else {
+    //         this.toast.warning(res.msg)
+    //         this.spinner = false;
+    //       }
+    //     }, err => {
+    //       this.spinner = false;
+    //     });
+  
+    //   } else{
+    //     this.f_validateForm();
+    //   }
+    // }
+    f_clearForm(){
+      this.isSubmited = false;
+      this.search_user = "";
+      this.form.reset();
+      this.isUpdate = false;
+      this.leadMaster_contact_detail = [];
+      this.form.get('LEAD_CURRENCY').setValue("INR")
+      this.form.get('LEAD_URL').setValue("1")
+      this.form.get('LEAD_STATUS').setValue("P")
+      this.addRow()
+      setTimeout(() => {
+        $('.selectpicker').selectpicker('refresh').trigger('change');
+      }, 100);
+    }
+  
+    
+    validateEmail() {
+        if (!this.validationService.emailValidator(this.form.getRawValue().LEAD_EMAIL)) {
+          this.form.get('LEAD_EMAIL').setValue('')
+          this.email.nativeElement.focus()
+        } else {
+          
+        }
+    }
+  
+    f_validateForm(){
+      if(this.form.controls["LEAD_TYPE"].invalid){
+        this.toast.warning("Please select Lead Master type");
+      } else if(this.form.controls["LEAD_NAME"].invalid){
+        this.toast.warning("Please enter Lead Master name");
+      }  else if(this.form.controls["LEAD_GRP_ID"].invalid){
+        this.toast.warning("Please select Lead Master group");
+      } else if(this.form.controls["LEAD_LEGALNAME"].invalid){
+        this.toast.warning("Please enter Lead Master legal name");
+      } else if(this.form.controls["LEAD_ADDRESS1"].invalid){
+        this.toast.warning("Please enter address line 1");
+      } else if(this.form.controls["LEAD_ADDRESS2"].invalid){
+        this.toast.warning("Please enter address line 2");
+      }
+      else if(this.form.controls["LEAD_CITY"].invalid){
+        this.toast.warning("Please enter city");
+      } else if(this.form.controls["LEAD_PIN"].invalid ){
+        this.toast.warning("Please enter valid 6 digit PIN");
+      } else if(this.form.controls["LEAD_COUNTRY"].invalid){
+        this.toast.warning("Please select Country");
+      }  else if(this.form.controls["LEAD_STATE"].invalid){
+        this.toast.warning("Please select state");
+      } else if(this.form.controls["LEAD_PHONE"].invalid){
+        this.toast.warning("Please enter Lead Master phone");
+      } else if(this.form.controls["LEAD_EMAIL"].invalid){
+        this.toast.warning("Please enter Lead Master email");
+      } else if(this.form.controls["LEAD_PARTNER"].invalid){
+        this.toast.warning("Please select Partner");
+      } else if(this.form.controls["LEAD_REMARKS"].invalid){
+        this.toast.warning("Please enter Remarks");
+      } else if(this.form.controls["LEAD_PAN"].invalid && this.isPanANDGstInNotMandatory){
+        this.toast.warning("Please enter PAN No");
+      }
+        else if(this.form.controls["LEAD_GSTIN"].invalid && this.isPanANDGstInNotMandatory){
+        this.toast.warning("Please enter valid 15 digit GSTIN");
+      } else if(this.form.controls["LEAD_CURRENCY"].invalid){
+        this.toast.warning("Please select Currency");
+      } else if(this.form.controls["LEAD_URL"].invalid){
+        this.toast.warning("Please enter Lead URL");
+      } else if(this.form.controls["LEAD_TURNOVER"].invalid){
+        this.toast.warning("Please enter Kind Attention");
+      } else if(this.form.controls["ACCT_MANAGER"].invalid){
+        this.toast.warning("Please select Account Manager");
+      } else if(this.form.controls["SALESREGION_CODE"].invalid){
+        this.toast.warning("Please select Template");
+      } else if(this.form.controls["LEAD_SEGMENT"].invalid){
+        this.toast.warning("Please select Segment");
+      } else if(this.form.controls["LEAD_STATUS"].invalid){
+        this.toast.warning("Please select Status");
+      }
+      
+    }
+  
+    ChangeCountry(){
+      if(this.form.controls['LEAD_COUNTRY'].value == 'IND'){
+         this.isPanANDGstInNotMandatory = true;
+      }else {
+        this.isPanANDGstInNotMandatory = false;
+      }
+    // console.log('LEAD_COUNTRY ->' , this.form.controls['LEAD_COUNTRY'].value)
+    }
+  
+  }
+  

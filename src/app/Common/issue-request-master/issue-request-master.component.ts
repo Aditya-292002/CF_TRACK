@@ -240,6 +240,7 @@ RAISED_BY_NAME:any;
     let data = {
       "USER_ID": (+this.USERID),
       "FUNCTION_CODE": ((this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE),
+      "COMPANY_CODE":this.userData[0].COMPANY_CODE
     }
     this.http.PostRequest(this.apiurl.GetIssueCommonList, data).then((res: any) => {
       this.FUNCTION_LIST = res.Functioncodelist;

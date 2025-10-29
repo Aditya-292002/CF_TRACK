@@ -72,6 +72,7 @@ import { IssueRequestMasterComponent } from './Common/issue-request-master/issue
 import { IssueRequestListComponent } from './Common/issue-request-list/issue-request-list.component';
 import { PmConfirmationComponent } from './Common/pm-confirmation/pm-confirmation.component';
 import { PmConfirmationListComponent } from './Common/pm-confirmation-list/pm-confirmation-list.component';
+import { LeadMasterComponent } from './Marketing/lead-master/lead-master.component';
 
 const routes: Routes = [
   {path: 'ForgotPasswordReset', component: ResetPasswordComponent },
@@ -149,6 +150,7 @@ const routes: Routes = [
       // {path: "issuerequestlist", component: PmConfirmationComponent },
       {path: "pmconfirmationmaster", component: PmConfirmationComponent },
       {path: "pmconfirmation", component: PmConfirmationListComponent },
+      {path: "leadmaster", component: LeadMasterComponent },
       {path: '**', component:Pnf400Component }
     ]
   },
