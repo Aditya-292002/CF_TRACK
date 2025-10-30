@@ -158,13 +158,13 @@ export class LeadMasterComponent implements OnInit {
       });
     }
     search_user: any = ""
-    // f_searchUserData() {
-    //   this.isUpdate = false;
-    //   if (this.search_user != "") {
-    //     this.GetLeadMasterDetail();
-    //   } else {
-    //   }
-    // }
+    f_searchUserData() {
+      this.isUpdate = false;
+      if (this.search_user != "") {
+        // this.GetLeadMasterDetail();
+      } else {
+      }
+    }
     leadMaster_contact_detail: Array<any> = [];
     // GetLeadMasterDetail(){
     //   let data = {
