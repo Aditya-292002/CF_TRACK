@@ -170,7 +170,7 @@
                 <div class="col-md-12">
                     <label>Lead URL<span class="validator">*</span> :</label>
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_URL'].errors?.required}">
-                        <input type="text" formControlName="LEAD_URL" placeholder="Lead URL" OnlyNumber="true" maxlength="3" class="form-control">
+                        <input type="text" formControlName="LEAD_URL" placeholder="Lead URL"  class="form-control">
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -187,13 +187,13 @@
             <div class="row card">
                 <div class="col-md-4">
                     <label>Sales Region<span class="validator">*</span> :</label>
-                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['SALESREGION_CODE'].errors?.required}">
-                        <select class="form-control selectpicker show-tick" id="salesRegion" formControlName="SALESREGION_CODE" data-live-search="true" title="Select">
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['SALES_REGION_ID'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="salesRegion" formControlName="SALES_REGION_ID" data-live-search="true" title="Select">
                             <option *ngFor="let opt of salesregionlist; let i=index" 
-                            [selected]="opt.SALESREGION_CODE == form.controls['SALESREGION_CODE'].value"
+                            [selected]="opt.SALESREGION_CODE == form.controls['SALES_REGION_ID'].value"
                              [value]="opt.SALESREGION_CODE" >{{ opt.SALESREGION_NAME }}</option>                     
                         </select>
-                        <button type="button" class="close" onclick="resetDropdown('salesRegion')" (click)="form.controls['SALESREGION_CODE'].reset();" aria-label="Close">
+                        <button type="button" class="close" onclick="resetDropdown('salesRegion')" (click)="form.controls['SALES_REGION_ID'].reset();" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>

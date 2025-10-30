@@ -5,7 +5,6 @@ import { ApiUrlService } from 'src/app/services/api-url.service';
 import { HttpRequestServiceService } from 'src/app/services/http-request-service.service';
 import { SharedServiceService } from 'src/app/services/shared-service.service';
 import { ValidationService } from 'src/app/services/validation.service';
-import { CommonModule } from '@angular/common';
 declare var $: any;
 
 @Component({
@@ -29,6 +28,9 @@ export class LeadMasterComponent implements OnInit {
     leadMaster_list: Array<any> = [];
     custypelist: Array<any> = [];
     isPanANDGstInNotMandatory:boolean = false;
+    USER_ID:any;
+
+    userdetails: Array<any> = [];
   
     constructor(public sharedService: SharedServiceService,
       private apiUrl: ApiUrlService,
@@ -63,7 +65,7 @@ export class LeadMasterComponent implements OnInit {
         LEAD_URL: ["",Validators.required],
         LEAD_CURRENCY: ["INR",Validators.required],
         ACCT_MANAGER: ["",Validators.required],
-        SALESREGION_CODE: [""],
+        SALES_REGION_ID: ["",Validators.required],
         LEAD_STATUS: ["P",Validators.required],
         LEAD_GRP_ID: [""],
         LEAD_REMARKS:[""]
@@ -71,7 +73,12 @@ export class LeadMasterComponent implements OnInit {
       });
   
       $('.selectpicker').selectpicker('refresh');
+     this.userdetails= JSON.parse (sessionStorage.getItem("user_detail")) ;
+     console.log("this.userdetails : ",this.userdetails)
+
     }
+
+     
     ADD_RIGHTS: boolean = false;
     UPDATE_RIGHTS: boolean = false;
     isUpdate: boolean = false;
@@ -84,7 +91,7 @@ export class LeadMasterComponent implements OnInit {
           this.UPDATE_RIGHTS = this.sharedService.form_rights.UPDATE_RIGHTS
         }
         this.getLeadMasterCommonList();
-        // this.GetLeadMasterList();
+        this.GetLeadMasterList();
         this.getEmployee();
         this.addRow()
       }, 150);
@@ -116,25 +123,29 @@ export class LeadMasterComponent implements OnInit {
         this.spinner = false;
       });
     }
-    // GetLeadMasterList(){
-    //   let data = {
-    //     LISTTYPE:"all"
-    //   }
-    //   this.http.PostRequest(this.apiUrl.GetLeadMasterList, data).then(res => {
-    //     if (res.flag) {
-    //       this.leadMaster_list = res.leadMaster_list;
+
+   
+    GetLeadMasterList(){
+      let data = {
+    "ROLE_ID":this.userdetails[0].ROLE_ID,
+    "EMP_CODE":this.userdetails[0].EMP_CODE,
+    "USERID":this.userdetails[0].USERID
+}
+      this.http.PostRequest(this.apiUrl.GetLeadList, data).then(res => {
+        if (res.flag) {
+          this.leadMaster_list = res.Datalist;
   
-    //       setTimeout(() => {
-    //         $('.selectpicker').selectpicker('refresh').trigger('change');
-    //       }, 100);
-    //       this.spinner = false;
-    //     } else {
-    //       this.spinner = false;
-    //     }
-    //   }, err => {
-    //     this.spinner = false;
-    //   });
-    // }
+          setTimeout(() => {
+            $('.selectpicker').selectpicker('refresh').trigger('change');
+          }, 100);
+          this.spinner = false;
+        } else {
+          this.spinner = false;
+        }
+      }, err => {
+        this.spinner = false;
+      });
+    }
     employee_list: Array<any> = [];
     getEmployee() {
       let data = {
@@ -158,31 +169,32 @@ export class LeadMasterComponent implements OnInit {
       });
     }
     search_user: any = ""
-    // f_searchUserData() {
-    //   this.isUpdate = false;
-    //   if (this.search_user != "") {
-    //     this.GetLeadMasterDetail();
-    //   } else {
-    //   }
-    // }
+    f_searchUserData() {
+      this.isUpdate = false;
+      if (this.search_user != "") {
+        this.GetLeadMasterDetail();
+      } else {
+      }
+    }
     leadMaster_contact_detail: Array<any> = [];
-    // GetLeadMasterDetail(){
-    //   let data = {
-    //     LEAD_CODE: this.search_user
-    //   }
-    //   this.spinner =true;
-    //   this.http.PostRequest(this.apiUrl.GetLeadMasterDetail, data).then(res => {
-    //     if (res.flag) {
-    //       this.leadMaster_contact_detail = res.leadMaster_contact_detail;
-    //       this.fillLeadMasterData(res.leadMaster_detail)
-    //       this.spinner = false;
-    //     } else {
-    //       this.spinner = false;
-    //     }
-    //   }, err => {
-    //     this.spinner = false;
-    //   });
-    // }
+  
+    GetLeadMasterDetail(){
+      let data = {
+        LEAD_CODE: this.search_user
+      }
+      this.spinner =true;
+      this.http.PostRequest(this.apiUrl.GetLeadDetail, data).then(res => {
+        if (res.flag) {
+          this.leadMaster_contact_detail = res.leadcontactdetails;
+          this.fillLeadMasterData(res.leadetails)
+          this.spinner = false;
+        } else {
+          this.spinner = false;
+        }
+      }, err => {
+        this.spinner = false;
+      });
+    }
   
     fillLeadMasterData(data: any = []){
   
@@ -207,7 +219,7 @@ export class LeadMasterComponent implements OnInit {
       this.form.get('LEAD_URL').setValue(data[0].LEAD_URL)
       this.form.get('LEAD_CURRENCY').setValue(data[0].LEAD_CURRENCY)
       this.form.get('ACCT_MANAGER').setValue(data[0].ACCT_MANAGER)
-      this.form.get('SALESREGION_CODE').setValue(data[0].SALESREGION_CODE)
+      this.form.get('SALES_REGION_ID').setValue(data[0].SALESREGIONID)
       this.form.get('LEAD_STATUS').setValue(data[0].LEAD_STATUS)
       this.form.get('LEAD_GRP_ID').setValue(data[0].LEAD_GRP_ID)
       
@@ -283,7 +295,9 @@ export class LeadMasterComponent implements OnInit {
       }
     }
     isSubmited: boolean = false;
+    
     saveFormData(para: string = ''){
+   
       this.isSubmited = true;
       if(this.form.valid){
         let _contact_detail: Array<any> = [];
@@ -317,24 +331,27 @@ export class LeadMasterComponent implements OnInit {
         }
        
         let data = {
-          leadMaster_detail: this.form.getRawValue(),
-          leadMaster_contact_detail: _contact_detail
+          USER_ID:this.userdetails[0].USERID,
+          CRM_LEAD: this.form.getRawValue(),
+          LEAD_CONTACT: _contact_detail
         }
         // return
-        console.log(data,"data")
-        // this.http.PostRequest(this.apiUrl.SaveLeadMasterDetail, data).then(res => {
-        //   if (res.flag) {
-        //     this.toast.success(res.msg)
-        //     this.GetLeadMasterList();
-        //     this.spinner = false;
-        //     this.f_clearForm()
-        //   } else {
-        //     this.toast.warning(res.msg)
-        //     this.spinner = false;
-        //   }
-        // }, err => {
-        //   this.spinner = false;
-        // });
+        console.log("data : ",data, "User Id : ", this.userdetails[0].USERID)
+
+        // return
+        this.http.PostRequest(this.apiUrl.SaveLead, data).then(res => {
+          if (res.flag) {
+            this.toast.success(res.msg)
+            this.GetLeadMasterList();
+            this.spinner = false;
+            this.f_clearForm()
+          } else {
+            this.toast.warning(res.msg)
+            this.spinner = false;
+          }
+        }, err => {
+          this.spinner = false;
+        });
   
       } else{
         this.f_validateForm();
@@ -408,7 +425,7 @@ export class LeadMasterComponent implements OnInit {
         this.toast.warning("Please enter Kind Attention");
       } else if(this.form.controls["ACCT_MANAGER"].invalid){
         this.toast.warning("Please select Account Manager");
-      } else if(this.form.controls["SALESREGION_CODE"].invalid){
+      } else if(this.form.controls["SALES_REGION_ID"].invalid){
         this.toast.warning("Please select Template");
       } else if(this.form.controls["LEAD_SEGMENT"].invalid){
         this.toast.warning("Please select Segment");

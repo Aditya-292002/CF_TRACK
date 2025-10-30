@@ -21,7 +21,9 @@ export class ApiUrlService {
   GetSalesOrderFile: string = '/File/GetSalesOrderFile';
   GetCustCommonList: string = '/Customer/GetCustCommonList';
   GetCustomerList: string = '/Customer/GetCustomerList';
+  GetLeadList: string = '/Lead/GetLeadList';
   GetCustomerDetail: string = '/Customer/GetCustomerDetail';
+  GetLeadDetail: string = '/Lead/GetLeadMasterDetails';
   SaveCustomerDetail: string = '/Customer/SaveCustomerDetail';
   GetProjCommonList: string = '/Project/GetProjCommonList';
   GetProjectList: string = '/Project/GetProjectList';
@@ -187,4 +189,6 @@ public GetDeveloperHistoryList: string='/TicketSystem/GetDeveloperHistoryList';
 public GetIssuePmApprovalList: string='/TicketSystem/GetIssuePmApprovalList';
 public GetIssueHelpDeskMasterList: string='/TicketSystem/GetIssueHelpDeskMasterList';
 public GetLeadCommonList: string ='/Lead/GetLeadCommonList';
+public SaveLead: string ='/Lead/SaveLead';
+
 }
