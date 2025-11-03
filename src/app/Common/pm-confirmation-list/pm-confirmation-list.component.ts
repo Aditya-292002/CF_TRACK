@@ -55,6 +55,7 @@ export class PmConfirmationListComponent implements OnInit {
        this.http.PostRequest(this.apiurl.GetIssuePmApprovalList, data).then((res: any) => {
        this.ISSUE_REQUEST_COLUMN_LIST = res.Columnlist;
        this.ISSUE_REQUEST_LIST_DATA = res.Datalist;
+       this.FILTER_ISSUE_REQUEST_LIST_DATA = res.Datalist;
        this.SAMPEL_ISSUE_REQUEST_LIST_DATA = this.ISSUE_REQUEST_LIST_DATA;
       //  this.LISTSTATUS = res.LISTSTATUS;
        console.log('LISTSTATUS set to:', this.liststatus);
@@ -101,9 +102,9 @@ export class PmConfirmationListComponent implements OnInit {
   //   });
   // } 
 
-  GetInputFilter(val:any){
+   GetInputFilter(val:any){
     console.log('INSIDE SEARH',val);
-   
+    
     const lowerSearchText = val.toLowerCase();
     let result: any[] = [];
     this.FILTER_ISSUE_REQUEST_LIST_DATA.forEach((element:any) => {
@@ -112,26 +113,26 @@ export class PmConfirmationListComponent implements OnInit {
         this.ISSUE_REQUEST_LIST_DATA  = this.FILTER_ISSUE_REQUEST_LIST_DATA;
         return
       }else if (element.ISSUE_SUBJECT.toLowerCase() == lowerSearchText) {
-        result.push(element);
-    this.ISSUE_REQUEST_LIST_DATA = [];
-    this.ISSUE_REQUEST_LIST_DATA = result;
+        result.push(element); 
+    this.ISSUE_REQUEST_LIST_DATA = []; 
+    this.ISSUE_REQUEST_LIST_DATA = result; 
       }else if(element.MODULE_CODE.toLowerCase() == lowerSearchText){
-        result.push(element);
+        result.push(element); 
     this.ISSUE_REQUEST_LIST_DATA = [];
     this.ISSUE_REQUEST_LIST_DATA = result;
       }else if(element.FUNCTION_CODE.toLowerCase() == lowerSearchText){
         result.push(element);
     this.ISSUE_REQUEST_LIST_DATA = [];
-    this.ISSUE_REQUEST_LIST_DATA = result;
+    this.ISSUE_REQUEST_LIST_DATA = result; 
       }else if(element.PROJ_NAME.toLowerCase() == lowerSearchText){
-        result.push(element);
+        result.push(element); 
     this.ISSUE_REQUEST_LIST_DATA = [];
-    this.ISSUE_REQUEST_LIST_DATA = result;
+    this.ISSUE_REQUEST_LIST_DATA = result; 
       }
       else if(element.ISSUE_TYPE_DESC.toLowerCase() == lowerSearchText){
-        result.push(element);
+        result.push(element); 
     this.ISSUE_REQUEST_LIST_DATA = [];
-    this.ISSUE_REQUEST_LIST_DATA = result;
+    this.ISSUE_REQUEST_LIST_DATA = result; 
       }
     });
   }

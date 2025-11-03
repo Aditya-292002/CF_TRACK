@@ -665,39 +665,53 @@ RAISED_BY_NAME:any;
     link.click();
   }
 
-  viewDocument(file: Document) {
-  const { DOC_BASE64, FILE_EXTENSION, FILE_NAME } = file;
+//   viewDocument(file: Document) {
+//   const { DOC_BASE64, FILE_EXTENSION, FILE_NAME } = file;
 
-  // Get the appropriate MIME type
-  const mimeType = this.getMimeType(file.FILE_EXTENSION);
+//   // Get the appropriate MIME type
+//   const mimeType = this.getMimeType(file.FILE_EXTENSION);
 
-  if (!mimeType) {
-    console.error('Unsupported file type:', FILE_EXTENSION);
-    return;
+//   if (!mimeType) {
+//     console.error('Unsupported file type:', FILE_EXTENSION);
+//     return;
+//   }
+
+//   // Check if DOC_BASE64 already includes data URI prefix
+//   const base64Data = DOC_BASE64.startsWith('data:')
+//     ? DOC_BASE64
+//     : `data:${mimeType};base64,${DOC_BASE64}`;
+
+//   // Open in a new tab using <embed> to display the content
+//   const newWindow = window.open();
+//   if (newWindow) {
+//     newWindow.document.write(`
+//       <html>
+//         <head><title>${FILE_NAME}</title></head>
+//         <body style="margin:0">
+//           <embed src="${base64Data}" type="${mimeType}" width="100%" height="100%" />
+//         </body>
+//       </html>
+//     `);
+//     newWindow.document.close();
+//   } else {
+//     console.error('Popup blocked. Please allow popups for this site.');
+//   }
+// }
+  viewDocument(data: any) {
+    if (!data.DOC_BASE64 || !data.EXTENSION) return;
+
+    const byteCharacters = atob(data.DOC_BASE64);
+    const byteNumbers = new Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: this.getMimeType(data.EXTENSION) });
+    const fileURL = URL.createObjectURL(blob);
+    window.open(fileURL, '_blank');
   }
-
-  // Check if DOC_BASE64 already includes data URI prefix
-  const base64Data = DOC_BASE64.startsWith('data:')
-    ? DOC_BASE64
-    : `data:${mimeType};base64,${DOC_BASE64}`;
-
-  // Open in a new tab using <embed> to display the content
-  const newWindow = window.open();
-  if (newWindow) {
-    newWindow.document.write(`
-      <html>
-        <head><title>${FILE_NAME}</title></head>
-        <body style="margin:0">
-          <embed src="${base64Data}" type="${mimeType}" width="100%" height="100%" />
-        </body>
-      </html>
-    `);
-    newWindow.document.close();
-  } else {
-    console.error('Popup blocked. Please allow popups for this site.');
-  }
-}
-
 
   onGlobalFilter(table: any, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
