@@ -204,10 +204,15 @@
           <tr *ngFor="let file of DOCUMENT_ATTECHED_LIST; let i = index">
             <td>{{ file.FILE_NAME }}</td>
             <td>
-               <button class="btn btn-sm card-padding-none mr-2" (click)="viewDocument(file)">
+               <button 
+               class="btn btn-sm card-padding-none mr-2" 
+               (click)="viewDocument(file)" 
+               title="View Document">
               <i class="pi pi-eye"></i>
             </button>
-              <button class="btn btn-sm card-padding-none" (click)="deleteFile(i)">
+              <button 
+              class="btn btn-sm card-padding-none" 
+              (click)="deleteFile(i)">
                 <i class="pi pi-trash"></i>
               </button>
             </td>

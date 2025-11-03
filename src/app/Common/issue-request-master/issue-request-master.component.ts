@@ -698,15 +698,17 @@ RAISED_BY_NAME:any;
 //   }
 // }
   viewDocument(data: any) {
+    debugger
+    console.log(data,"data")
     if (!data.DOC_BASE64 || !data.EXTENSION) return;
-
+ 
     const byteCharacters = atob(data.DOC_BASE64);
     const byteNumbers = new Array(byteCharacters.length);
-
+ 
     for (let i = 0; i < byteCharacters.length; i++) {
       byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
-
+ 
     const byteArray = new Uint8Array(byteNumbers);
     const blob = new Blob([byteArray], { type: this.getMimeType(data.EXTENSION) });
     const fileURL = URL.createObjectURL(blob);
