@@ -698,8 +698,6 @@ RAISED_BY_NAME:any;
 //   }
 // }
   viewDocument(data: any) {
-    debugger
-    console.log(data,"data")
     if (!data.DOC_BASE64 || !data.EXTENSION) return;
  
     const byteCharacters = atob(data.DOC_BASE64);
