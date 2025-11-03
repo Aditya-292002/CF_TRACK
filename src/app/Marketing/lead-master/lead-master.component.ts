@@ -215,7 +215,7 @@ export class LeadMasterComponent implements OnInit {
       this.form.get('LEAD_TURNOVER').setValue(data[0].LEAD_TURNOVER)
       this.form.get('LEAD_EMAIL').setValue(data[0].LEAD_EMAIL)
       this.form.get('LEAD_REMARKS').setValue(data[0].LEAD_REMARKS)
-      this.form.get('LEAD_PARTNER_CODE').setValue(data[0].LEAD_PARTNER_CODE)
+      this.form.get('LEAD_PARTNER_CODE').setValue(data[0].LEAD_PARTNER)
       this.form.get('LEAD_URL').setValue(data[0].LEAD_URL)
       this.form.get('LEAD_CURRENCY').setValue(data[0].LEAD_CURRENCY)
       this.form.get('ACCT_MANAGER').setValue(data[0].ACCT_MANAGER)
