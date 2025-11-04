@@ -734,7 +734,6 @@ export class IssueRequestMasterComponent implements OnInit {
   // }
 
   viewDocument(data: any) {
-    debugger
   if (!data.DOC_BASE64 || !data.FILE_EXTENSION) return;
 
   const base64Content = data.DOC_BASE64.includes(',')

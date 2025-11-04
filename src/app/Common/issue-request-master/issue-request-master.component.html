@@ -5,7 +5,7 @@
         <h5 class="formName form-header" *ngIf="this.MODE == 'A'">Raise Issue</h5>
  
         <h5 class="text-xl form-header" *ngIf="this.MODE == 'E'">View Issue Raised</h5>
-        <p class="Text_Primary form-header Helper_Text status_container" *ngIf="this.MODE == 'E'">{{ STATUS_NAME }}</p>
+        <!-- <p class="Text_Primary form-header Helper_Text status_container" *ngIf="this.MODE == 'E'">{{ STATUS_NAME }}</p> -->
         <p class="Text_Primary form-header Helper_Text history_container"
           *ngIf="this.MODE == 'E' && this.COMMENT_HISTORY.length > 0">
           ( Please Check History)

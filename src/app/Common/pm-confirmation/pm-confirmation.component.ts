@@ -304,15 +304,47 @@ export class PmConfirmationComponent implements OnInit {
         console.error('Error processing some files:', error);
       });
   }
-  onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    console.log(input, "input")
-    if (input.files) {
-      const filesArray = input.files;
-      console.log(filesArray, "filesArray")
-      this.convertFilesToBase64(filesArray);
+  onFileSelected(event: Event): void {
+  const input = event.target as HTMLInputElement;
+
+  if (input && input.files && input.files.length > 0) {
+    const allowedTypes: string[] = [
+      'application/pdf',
+      'image/jpeg',
+      'image/png',
+      'application/vnd.ms-excel',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'text/plain'
+    ];
+
+    const filesArray: FileList = input.files;
+    const invalidFiles: File[] = [];
+
+    // Iterate over each file
+    for (let i = 0; i < filesArray.length; i++) {
+      const file = filesArray[i];
+      const fileType = file.type || this.getMimeType(file.name.split('.').pop() || '');
+
+      if (!allowedTypes.includes(fileType)) {
+        invalidFiles.push(file);
+      }
     }
+
+    if (invalidFiles.length > 0) {
+      // Show Toastr error
+      this.toast.error('Only PDF, Word, Excel, Text, and Image (JPG/PNG) files are allowed.', 'Invalid File Type');
+
+      // Reset the input
+      input.value = '';
+      return;
+    }
+
+    // If all files are valid, proceed with conversion
+    this.convertFilesToBase64(filesArray);
   }
+}
 
   GetRemoveBase64DocumnetExtension(data: any) {
     data.forEach((file: any) => {
@@ -486,28 +518,28 @@ export class PmConfirmationComponent implements OnInit {
   }
 
   private getMimeType(extension: string): string {
-    switch (extension.toLowerCase()) {
-      case 'pdf':
-        return 'application/pdf';
-      case 'jpg':
-      case 'jpeg':
-        return 'image/jpeg';
-      case 'png':
-        return 'image/png';
-      case 'xls':
-        return 'application/vnd.ms-excel';
-      case 'xlsx':
-        return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-      case 'doc':
-        return 'application/msword';
-      case 'docx':
-        return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-      case 'txt':
-        return 'text/plain';
-      default:
-        return 'application/octet-stream';
-    }
+  switch (extension.toLowerCase()) {
+    case 'pdf':
+      return 'application/pdf';
+    case 'jpg':
+    case 'jpeg':
+      return 'image/jpeg';
+    case 'png':
+      return 'image/png';
+    case 'xls':
+      return 'application/vnd.ms-excel';
+    case 'xlsx':
+      return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    case 'doc':
+      return 'application/msword';
+    case 'docx':
+      return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    case 'txt':
+      return 'text/plain';
+    default:
+      return 'application/octet-stream';
   }
+}
 
   GET_PM_CONFIRMATION_LIST() {
     let data = {
