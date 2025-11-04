@@ -42,8 +42,8 @@ export class PmConfirmationComponent implements OnInit {
   FUNCTION_DESC: any;
   product_code: any;
   REQUEST_DATE: any;
-  REQUESTER_NAME: any;
-  RAISED_BY_NAME: any;
+  CREATEDBY: any;
+  REQUESTER: any;
   ISSUE_TYPE_DESC: any;
   PRIORITY_DESC: any;
   MODULE_CODE: any;
@@ -176,8 +176,8 @@ export class PmConfirmationComponent implements OnInit {
       this.ISSSUE_NO = response.ISSSUE_NO;
       const REQUEST_DATE = this.formatDate(response.REQUEST_DATE as string);
       this.REQUEST_DATE = REQUEST_DATE;
-      this.REQUESTER_NAME = response.REQUESTER_NAME;
-      this.RAISED_BY_NAME = response.RAISED_BY_NAME;
+      this.CREATEDBY = response.CREATEDBY;
+      this.REQUESTER = response.REQUESTER;
       this.ISSUE_TYPE_DESC = response.ISSUE_TYPE_DESC;
       this.PRIORITY_DESC = response.PRIORITY_DESC;
       this.MODULE_CODE = response.MODULE_CODE;
@@ -446,23 +446,28 @@ export class PmConfirmationComponent implements OnInit {
   }
 
   viewDocument(data: any) {
-    if (!data.DOC_BASE64 || !data.EXTENSION) return;
+    debugger
+  if (!data.DOC_BASE64 || !data.FILE_EXTENSION) return;
 
-    const byteCharacters = atob(data.DOC_BASE64);
-    const byteNumbers = new Array(byteCharacters.length);
+  const base64Content = data.DOC_BASE64.includes(',')
+    ? data.DOC_BASE64.split(',')[1]
+    : data.DOC_BASE64;
 
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
+  const byteCharacters = atob(base64Content);
+  const byteNumbers = new Array(byteCharacters.length);
 
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: this.getMimeType(data.EXTENSION) });
-    const fileURL = URL.createObjectURL(blob);
-    window.open(fileURL, '_blank');
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
   }
 
+  const byteArray = new Uint8Array(byteNumbers);
+  const blob = new Blob([byteArray], { type: this.getMimeType(data.FILE_EXTENSION) });
+  const fileURL = URL.createObjectURL(blob);
+  window.open(fileURL, '_blank');
+}
+
   downloadDocument(data: any) {
-    if (!data.DOC_BASE64 || !data.FILE_NAME) return;
+    if (!data.DOC_BASE64 || !data.FILE_EXTENSION) return;
 
     const byteCharacters = atob(data.DOC_BASE64);
     const byteNumbers = new Array(byteCharacters.length);
@@ -472,7 +477,7 @@ export class PmConfirmationComponent implements OnInit {
     }
 
     const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: this.getMimeType(data.EXTENSION) });
+    const blob = new Blob([byteArray], { type: this.getMimeType(data.FILE_EXTENSION) });
 
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);

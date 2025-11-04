@@ -28,6 +28,7 @@ export class IssueRequestListComponent implements OnInit {
   ISSUE_REQUEST_COLUMN_LIST:any = [];
   ISSUE_REQUEST_LIST_DATA:any = [];
   ISSUE_NO:any;
+  CUST_CODE:any;
   IS_CANCEL:any = 0;
   CANCEL_IND:any;
   SearchValue:any;
@@ -58,6 +59,7 @@ export class IssueRequestListComponent implements OnInit {
      console.log('ngAfterViewInit called');
     this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
     this.USER_ID = this.userData[0].LOGIN_ID;
+    this.CUST_CODE = this.userData[0].COMPANY_CODE;
     console.log(' this.USER_ID', this.USER_ID);
     localStorage.removeItem('ISSUE_NO')
     localStorage.removeItem('IS_CANCEL')
@@ -97,6 +99,7 @@ export class IssueRequestListComponent implements OnInit {
       "USER_ID": (+this.USER_ID),
       "FUNCTION_CODE": ((this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE),
       "LISTSTATUS": ( this.liststatus == "Pending") ? "P" : "C",
+      "CUST_CODE": this.CUST_CODE,
     }
    
     this.http.PostRequest(this.apiurl.GetIssueRequestList, data).then((res: any) => {

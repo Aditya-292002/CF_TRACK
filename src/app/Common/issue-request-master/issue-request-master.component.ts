@@ -47,7 +47,7 @@ export class IssueRequestMasterComponent implements OnInit {
   ISSUE_LIST: any = [];
   FUNCTION_LIST: any = [];
   USER_NAME: any;
-  USERID: any ;
+  USERID: any;
   Image: any;
   FILENAME: any;
   DOCUMENT_ATTECHED_LIST: Document[] = [];
@@ -123,7 +123,9 @@ export class IssueRequestMasterComponent implements OnInit {
   viewflag: boolean = false;
   historyData: { status: string; userName: string; time: string; comment: string; }[] = [];
   PROJECT_LIST: any;
-RAISED_BY_NAME:any;
+  RAISED_BY_NAME: any;
+
+  
 
   deleteFile(index: number) {
     this.DOCUMENT_ATTECHED_LIST.splice(index, 1);
@@ -147,7 +149,7 @@ RAISED_BY_NAME:any;
   ) { }
 
   ngOnInit(): void {
-      const today1 = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
+    const today1 = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
     this.historyData = [
       { status: 'Open', userName: 'John Doe', time: '2025-10-09 10:00', comment: 'Initial issue raised' },
       { status: 'In Progress', userName: 'Jane Smith', time: '2025-10-09 12:30', comment: 'Working on the issue' },
@@ -171,18 +173,18 @@ RAISED_BY_NAME:any;
       DESC_ISSUE: [{ value: '', disabled: this.viewflag }],
     });
     this.form.get('RAISED_BY').valueChanges.subscribe(value => {
-      if (value === 'SELF') {
+      if (value === 'OTHER') {
 
         this.form.get('OTHER_NAME').reset();  // Clear the name when "Self" is selected
-      } 
-      if (value === 'OTHER') {
+      }
+      if (value === 'SELF') {
         this.form.get('OTHER_NAME').setValue(this.RAISED_BY_NAME);
       }
     });
     this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
     this.RAISED_BY_NAME = this.userData[0].USER_NAME;
     console.log('TEST', this.RAISED_BY_NAME);
-    
+
     this.MODE = localStorage.getItem('MODE');
     console.log(' this.MODE', this.MODE);
     this.ISSUE_NO = sessionStorage.getItem('ISSUE_NO');
@@ -226,10 +228,10 @@ RAISED_BY_NAME:any;
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit called');
 
- this.USER_ID = this.userData[0].LOGIN_ID;
+    this.USER_ID = this.userData[0].LOGIN_ID;
     this.USERID = this.userData[0].LOGIN_ID;
     console.log(' this.USER_ID', this.USER_ID);
-    
+
 
 
     // this.GETISSUERAISEDHISTORY(0);
@@ -240,7 +242,7 @@ RAISED_BY_NAME:any;
     let data = {
       "USER_ID": (+this.USERID),
       "FUNCTION_CODE": ((this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE),
-      "COMPANY_CODE":this.userData[0].COMPANY_CODE
+      "COMPANY_CODE": this.userData[0].COMPANY_CODE
     }
     this.http.PostRequest(this.apiurl.GetIssueCommonList, data).then((res: any) => {
       this.FUNCTION_LIST = res.Functioncodelist;
@@ -331,7 +333,7 @@ RAISED_BY_NAME:any;
     console.log('GETISSUERAISEDDETAILSBYISSUENO inside');
 
     const data = {
-      USER_ID: +this.USER_ID ,
+      USER_ID: +this.USER_ID,
       FUNCTION_CODE: (this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE,
       ISSUE_NO: this.ISSUE_NO,
       MODE: this.MODE
@@ -388,12 +390,12 @@ RAISED_BY_NAME:any;
         this.DOCUMENT_ATTECHED_LIST = res.iteamlist;
       }
 
-          // Refresh selectpicker (if still using Bootstrap selectpicker)
+      // Refresh selectpicker (if still using Bootstrap selectpicker)
       setTimeout(() => {
         this.form.get('PRODUCT_CODE').setValue(response.PRODUCT_CODE);
         this.form.get('PRIORITY_CODE').setValue(response.PRIORITY_CODE);
-            this.form.get('ISSUE_TYPE_CODE').setValue(response.ISSUE_TYPE_CODE);
-                // this.form.get('OTHER_NAME').setValue(this.RAISED_BY_NAME);
+        this.form.get('ISSUE_TYPE_CODE').setValue(response.ISSUE_TYPE_CODE);
+        // this.form.get('OTHER_NAME').setValue(this.RAISED_BY_NAME);
         $('.selectpicker').selectpicker('refresh').trigger('change');
       }, 100);
     });
@@ -575,27 +577,27 @@ RAISED_BY_NAME:any;
       // REQUESTER: this.USER_ID, // Can also come from login context
       REQUESTER: formValues.RAISED_BY === 'SELF' ? this.USER_ID : formValues.OTHER_NAME,
       PRODUCT_CODE: formValues.PRODUCT_CODE,
-     //  USERID: formValues.RAISED_BY === 'SELF' ? this.USER_ID : formValues.OTHER_NAME,
+      //  USERID: formValues.RAISED_BY === 'SELF' ? this.USER_ID : formValues.OTHER_NAME,
       USERID: this.USERID,
       OTHER_NAME: formValues.OTHER_NAME,
       ISSUE_TYPE_CODE: formValues.ISSUE_TYPE_CODE,
       PRIORITY_CODE: formValues.PRIORITY_CODE,
       MODULE_CODE: formValues.MODULE_CODE,
-      FUNCTION_CODE: formValues.ISSUE_FUNCTION_CODE,  
+      FUNCTION_CODE: formValues.ISSUE_FUNCTION_CODE,
       ISSUE_SUBJECT: formValues.ISSUE_SUBJECT,
       REASON_ISSUE: formValues.REASON_ISSUE,
       DESC_ISSUE: formValues.DESC_ISSUE,
-      CUST_REF_NO:formValues.Cust_REF_NO, 
+      CUST_REF_NO: formValues.Cust_REF_NO,
       MODE: this.MODE,
       STATUS_CODE: this.STATUS_CODE,
       REVERT_COMMENT: this.REVERT_COMMENT,
-      
+
       DOCUMENT_ATTECHED_LIST: this.DOCUMENT_ATTECHED_LIST,
 
     };
 
     console.log('data ->', data);
-// return
+    // return
     // 📤 API call
     this.http.PostRequest(this.apiurl.SaveIssueDetails, data).then((res: any) => {
       if (res.Resultlist[0].FLAG === 1) {
@@ -665,53 +667,92 @@ RAISED_BY_NAME:any;
     link.click();
   }
 
-//   viewDocument(file: Document) {
-//   const { DOC_BASE64, FILE_EXTENSION, FILE_NAME } = file;
+  //   viewDocument(file: Document) {
+  //   const { DOC_BASE64, FILE_EXTENSION, FILE_NAME } = file;
 
-//   // Get the appropriate MIME type
-//   const mimeType = this.getMimeType(file.FILE_EXTENSION);
+  //   // Get the appropriate MIME type
+  //   const mimeType = this.getMimeType(file.FILE_EXTENSION);
 
-//   if (!mimeType) {
-//     console.error('Unsupported file type:', FILE_EXTENSION);
-//     return;
-//   }
+  //   if (!mimeType) {
+  //     console.error('Unsupported file type:', FILE_EXTENSION);
+  //     return;
+  //   }
 
-//   // Check if DOC_BASE64 already includes data URI prefix
-//   const base64Data = DOC_BASE64.startsWith('data:')
-//     ? DOC_BASE64
-//     : `data:${mimeType};base64,${DOC_BASE64}`;
+  //   // Check if DOC_BASE64 already includes data URI prefix
+  //   const base64Data = DOC_BASE64.startsWith('data:')
+  //     ? DOC_BASE64
+  //     : `data:${mimeType};base64,${DOC_BASE64}`;
 
-//   // Open in a new tab using <embed> to display the content
-//   const newWindow = window.open();
-//   if (newWindow) {
-//     newWindow.document.write(`
-//       <html>
-//         <head><title>${FILE_NAME}</title></head>
-//         <body style="margin:0">
-//           <embed src="${base64Data}" type="${mimeType}" width="100%" height="100%" />
-//         </body>
-//       </html>
-//     `);
-//     newWindow.document.close();
-//   } else {
-//     console.error('Popup blocked. Please allow popups for this site.');
-//   }
-// }
+  //   // Open in a new tab using <embed> to display the content
+  //   const newWindow = window.open();
+  //   if (newWindow) {
+  //     newWindow.document.write(`
+  //       <html>
+  //         <head><title>${FILE_NAME}</title></head>
+  //         <body style="margin:0">
+  //           <embed src="${base64Data}" type="${mimeType}" width="100%" height="100%" />
+  //         </body>
+  //       </html>
+  //     `);
+  //     newWindow.document.close();
+  //   } else {
+  //     console.error('Popup blocked. Please allow popups for this site.');
+  //   }
+  // }
+
+  allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png', 'xls', 'xlsx', 'doc', 'docx', 'txt'];
+
+  // allowedMimeTypes = this.allowedExtensions
+  // .map(ext => {
+  //   switch (ext) {
+  //     case 'pdf': return 'application/pdf';
+  //     case 'jpg':
+  //     case 'jpeg': return 'image/jpeg';
+  //     case 'png': return 'image/png';
+  //     case 'xls': return 'application/vnd.ms-excel';
+  //     case 'xlsx': return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+  //     case 'doc': return 'application/msword';
+  //     case 'docx': return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+  //     case 'txt': return 'text/plain';
+  //     default: return '';
+  //   }
+  // })
+  // .filter(Boolean)
+  // .join(',');
+
+  // viewDocument(data: any) {
+  //   if (!data.DOC_BASE64 || !data.EXTENSION) return;
+  //   const byteCharacters = atob(data.DOC_BASE64);
+  //   const byteNumbers = new Array(byteCharacters.length);
+  //   for (let i = 0; i < byteCharacters.length; i++) {
+  //     byteNumbers[i] = byteCharacters.charCodeAt(i);
+  //   }
+  //   const byteArray = new Uint8Array(byteNumbers);
+  //   const blob = new Blob([byteArray], { type: this.getMimeType(data.EXTENSION) });
+  //   const fileURL = URL.createObjectURL(blob);
+  //   window.open(fileURL, '_blank');
+  // }
+
   viewDocument(data: any) {
-    if (!data.DOC_BASE64 || !data.EXTENSION) return;
- 
-    const byteCharacters = atob(data.DOC_BASE64);
-    const byteNumbers = new Array(byteCharacters.length);
- 
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
- 
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: this.getMimeType(data.EXTENSION) });
-    const fileURL = URL.createObjectURL(blob);
-    window.open(fileURL, '_blank');
+    debugger
+  if (!data.DOC_BASE64 || !data.FILE_EXTENSION) return;
+
+  const base64Content = data.DOC_BASE64.includes(',')
+    ? data.DOC_BASE64.split(',')[1]
+    : data.DOC_BASE64;
+
+  const byteCharacters = atob(base64Content);
+  const byteNumbers = new Array(byteCharacters.length);
+
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
   }
+
+  const byteArray = new Uint8Array(byteNumbers);
+  const blob = new Blob([byteArray], { type: this.getMimeType(data.FILE_EXTENSION) });
+  const fileURL = URL.createObjectURL(blob);
+  window.open(fileURL, '_blank');
+}
 
   onGlobalFilter(table: any, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
@@ -735,65 +776,52 @@ RAISED_BY_NAME:any;
   //     reader.readAsDataURL(file); 
   //   });
   // }
-convertFilesToBase64(fileList: FileList) {
-  
-  const files = Array.from(fileList); // Convert FileList to actual array
+  convertFilesToBase64(fileList: FileList) {
 
-  const fileReadPromises = files.map((file, index) => {
-    return new Promise((resolve, reject) => {
-      const fileExtension = file.name.split('.').pop().toLowerCase();
-      const reader = new FileReader();
+    const files = Array.from(fileList); // Convert FileList to actual array
 
-      reader.onload = (e: any) => {
-        const base64 = e.target.result;
-        const fileData = {
-          FILE_NAME: file.name,
-          DOC_BASE64: base64,
-          SR_NO: this.DOCUMENT_ATTECHED_LIST.length + 1,
-          FILE_EXTENSION: fileExtension
+    const fileReadPromises = files.map((file, index) => {
+      return new Promise((resolve, reject) => {
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        const reader = new FileReader();
+
+         if (!this.allowedExtensions.includes(fileExtension)) {
+        console.warn(`File type .${fileExtension} is not allowed.`);
+        reject(`Invalid file type: ${file.name}`);
+        return;
+      }
+
+        reader.onload = (e: any) => {
+          const base64 = e.target.result;
+          const fileData = {
+            FILE_NAME: file.name,
+            DOC_BASE64: base64,
+            SR_NO: this.DOCUMENT_ATTECHED_LIST.length + 1,
+            FILE_EXTENSION: fileExtension
+          };
+
+          resolve(fileData);
         };
 
-        resolve(fileData);
-      };
+        reader.onerror = (error) => {
+          console.error('Error reading file:', file.name, error);
+          reject(error);
+        };
 
-      reader.onerror = (error) => {
-        console.error('Error reading file:', file.name, error);
-        reject(error);
-      };
-
-      reader.readAsDataURL(file);
+        reader.readAsDataURL(file);
+      });
     });
-  });
 
-  Promise.all(fileReadPromises)
-    .then((results: any[]) => {
-      this.DOCUMENT_ATTECHED_LIST.push(...results);
-      console.log('All files processed:', this.DOCUMENT_ATTECHED_LIST);
-    })
-    .catch((error) => {
-      console.error('Error processing some files:', error);
-    });
-}
-
-
-
-  getMimeType(extension: any): any {
-    switch (extension.toLowerCase()) {
-      case 'jpg':
-      case 'jpeg':
-        return 'image/jpeg';
-      case 'png':
-        return 'image/png';
-      case 'pdf':
-        return 'application/pdf';
-      case 'xlsx':
-        return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-      case 'docx':
-        return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-      default:
-        return 'application/octet-stream'; // Fallback for unknown types
-    }
+    Promise.all(fileReadPromises)
+      .then((results: any[]) => {
+        this.DOCUMENT_ATTECHED_LIST.push(...results);
+        console.log('All files processed:', this.DOCUMENT_ATTECHED_LIST);
+      })
+      .catch((error) => {
+        console.error('Error processing some files:', error);
+      });
   }
+
 
   onKeyPressModule(event: KeyboardEvent) {
     if (event.key === 'Tab' || event.key === 'Enter') {
@@ -854,15 +882,15 @@ convertFilesToBase64(fileList: FileList) {
     // console.log('data ->' , JSON.stringify(data))
     // return
     this.http.PostRequest(this.apiurl.GetDeveloperHistoryList, data).then((res: any) => {
-    if(res.flag == 1){
-      this.COMMENT_HISTORY = res.Datalist;
-      // this.MessageService.add({severity:'warn', summary:res.Datalist.RootElement[0].Status_Name,detail:res.Datalist.RootElement[0].comment});
-      if(val == 1){
-        this.visibleHistoryFun = true;
+      if (res.flag == 1) {
+        this.COMMENT_HISTORY = res.Datalist;
+        // this.MessageService.add({severity:'warn', summary:res.Datalist.RootElement[0].Status_Name,detail:res.Datalist.RootElement[0].comment});
+        if (val == 1) {
+          this.visibleHistoryFun = true;
+        }
+      } else if (res.flag == 0) {
+        return
       }
-    }else if(res.flag == 0){
-      return
-    }
     });
   }
 
@@ -964,13 +992,114 @@ convertFilesToBase64(fileList: FileList) {
   //     }
   //   }
 
-  onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files) {
-      const filesArray = input.files;
-      this.convertFilesToBase64(filesArray);
+  // onFileSelected(event: Event) {
+  //   const input = event.target as HTMLInputElement;
+  //   console.log("input : ", input,input.files)
+  //   if (input.files) {
+  //      const allowedTypes = [
+  //   'application/pdf',
+  //   'application/msword',
+  //   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  //   'application/vnd.ms-excel',
+  //   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  //   'image/jpeg',
+  //   'image/png'
+  // ];
+  //     const filesArray :any= input.files;
+  //     console.log(filesArray,"filesArray")
+  // const validFiles = filesArray.filter(file => allowedTypes.includes(file.type));
+
+  // if (validFiles.length !== filesArray.length) {
+  //   alert('Only PDF, Excel, Word, and JPG/PNG image files are allowed.');
+  // }
+  //     this.convertFilesToBase64(filesArray);
+  //   }
+  // }
+
+    // getMimeType(extension: any): any {
+  //   switch (extension.toLowerCase()) {
+  //     case 'jpg':
+  //     case 'jpeg':
+  //       return 'image/jpeg';
+  //     case 'png':
+  //       return 'image/png';
+  //     case 'pdf':
+  //       return 'application/pdf';
+  //     case 'xlsx':
+  //       return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+  //     case 'docx':
+  //       return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+  //     default:
+  //       return 'application/octet-stream'; // Fallback for unknown types
+  //   }
+  // }
+
+  onFileSelected(event: Event): void {
+  const input = event.target as HTMLInputElement;
+
+  if (input && input.files && input.files.length > 0) {
+    const allowedTypes: string[] = [
+      'application/pdf',
+      'image/jpeg',
+      'image/png',
+      'application/vnd.ms-excel',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'text/plain'
+    ];
+
+    const filesArray: FileList = input.files;
+    const invalidFiles: File[] = [];
+
+    // Iterate over each file
+    for (let i = 0; i < filesArray.length; i++) {
+      const file = filesArray[i];
+      const fileType = file.type || this.getMimeType(file.name.split('.').pop() || '');
+
+      if (!allowedTypes.includes(fileType)) {
+        invalidFiles.push(file);
+      }
     }
+
+    if (invalidFiles.length > 0) {
+      // Show Toastr error
+      this.toast.error('Only PDF, Word, Excel, Text, and Image (JPG/PNG) files are allowed.', 'Invalid File Type');
+
+      // Reset the input
+      input.value = '';
+      return;
+    }
+
+    // If all files are valid, proceed with conversion
+    this.convertFilesToBase64(filesArray);
   }
+}
+
+  private getMimeType(extension: string): string {
+  switch (extension.toLowerCase()) {
+    case 'pdf':
+      return 'application/pdf';
+    case 'jpg':
+    case 'jpeg':
+      return 'image/jpeg';
+    case 'png':
+      return 'image/png';
+    case 'xls':
+      return 'application/vnd.ms-excel';
+    case 'xlsx':
+      return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    case 'doc':
+      return 'application/msword';
+    case 'docx':
+      return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    case 'txt':
+      return 'text/plain';
+    default:
+      return 'application/octet-stream';
+  }
+}
+
   showHistoryDialog() {
     console.log("calling")
     // this.displayHistory = true;
