@@ -219,7 +219,7 @@ export class ReportComponent implements OnInit {
                 if (CURRENT_DATE < TO_DATE) {
                   this.para4 = this.datepipe.transform(new Date(CURRENT_DATE), 'dd-MMM-yyyy');
                   this.min_date = element.FROM_DATE
-                  this.maxdate = element.TO_DATE
+                  this.maxdate = CURRENT_DATE
                   return
                 } else if (CURRENT_DATE > TO_DATE) {
                   this.form.get('para4').setValue(this.datepipe.transform(new Date(element.TO_DATE), 'dd-MMM-yyyy'))
