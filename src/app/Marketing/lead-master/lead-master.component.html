@@ -282,8 +282,8 @@
                                     <th class="w-15 ">Contact Name/Email</th>
                                     <th class="w-20 ">Mobile/Phone No.</th>
                                     <th class="w-20 ">Designation/Department</th>
-                                    <th class="w-10 text-center">Bill Email</th>
-                                    <th class="w-10 text-center">Rcpt Email</th>
+                                    <!-- <th class="w-10 text-center">Bill Email</th>
+                                    <th class="w-10 text-center">Rcpt Email</th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -305,7 +305,7 @@
                                                 <input type="text" class="form-control" [(ngModel)]="data.CONTACT_DESIG" placeholder="Designation" [ngModelOptions]="{standalone: true}">
                                             </div>
                                         </td>
-                                        <td class="text-left">
+                                        <!-- <td class="text-left">
                                             <div class="floating-input">
                                                 <input type="checkbox" [(ngModel)]="data.SEND_INVOICEEMAIL" class="form-control" [ngModelOptions]="{standalone: true}">
                                             </div>
@@ -314,7 +314,7 @@
                                             <div class="floating-input">
                                                 <input type="checkbox" [(ngModel)]="data.SEND_RECEIPTEMAIL" class="form-control" [ngModelOptions]="{standalone: true}">
                                             </div>
-                                        </td>
+                                        </td> -->
                                     </tr>
                                     <tr *ngIf="data.ACTIVE != 0">
                                         <td class="pt-0"></td>
