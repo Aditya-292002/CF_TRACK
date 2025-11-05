@@ -41,7 +41,7 @@ export class PmConfirmationComponent implements OnInit {
   MODULE_DESC: any;
   FUNCTION_DESC: any;
   product_code: any;
-  REQUEST_DATE: any;
+  REQUEST_DATE: any = '';
   CREATEDBY: any;
   REQUESTER: any;
   ISSUE_TYPE_DESC: any;
@@ -91,15 +91,27 @@ export class PmConfirmationComponent implements OnInit {
     return `${day}-${month}-${year}`;
   }
   ngOnInit(): void {
+    const today1 = new Date().toISOString().split('T')[0];
     this.form = this.fb.group({
-
+      ISSUE_NO: [{ value: '', disabled: true }],
+      REQUEST_DATE: [{ value: today1, disabled: true }],
       CUST_REF_NO: [{ value: '', disabled: true }],
+      PROJ_NAME: [{ value: '', disabled: true }],
+      RAISED_BY_NAME: [{ value: '', disabled: true }],
+      ISSUE_TYPE_DESC: [{ value: '', disabled: true }],
+      PRIORITY_DESC: [{ value: '', disabled: true }],
+      ISSUE_SUBJECT: [{ value: '', disabled: true }],
+      MODULE_CODE: [{ value: '', disabled: true }],
+      FUNCTION_CODE: [{ value: '', disabled: true }],
+      CREATEDBY: [{ value: '', disabled: true }],
+      ASREASON_OF_ISSUE_CR: [{ value: '', disabled: true }],
       DEVELOPER_STATUS: ["OK"],
       DEVELOPER_COMMENT: [''],
       DELIVERY_BY: [null],
       EST_HOURS: [null, [Validators.min(0), Validators.max(999)]],
       RESOLUTION_CODE: ['']
     });
+
     console.log(this.form.get('DEVELOPER_STATUS').value, "value");
     this.DEVELOPER_STATUS_SELECTED = this.form.get('DEVELOPER_STATUS').value
     if (this.DEVELOPER_STATUS_SELECTED == 'OK') {
@@ -174,8 +186,8 @@ export class PmConfirmationComponent implements OnInit {
       if (!response) return;
       this.IS_HISTORY = response.IS_HISTORY;
       this.ISSSUE_NO = response.ISSSUE_NO;
-      const REQUEST_DATE = this.formatDate(response.REQUEST_DATE as string);
-      this.REQUEST_DATE = REQUEST_DATE;
+      // const REQUEST_DATE = this.formatDate(response.REQUEST_DATE as string);
+      this.REQUEST_DATE =response.REQUEST_DATE;
       this.CREATEDBY = response.CREATEDBY;
       this.REQUESTER = response.REQUESTER;
       this.ISSUE_TYPE_DESC = response.ISSUE_TYPE_DESC;
@@ -196,6 +208,28 @@ export class PmConfirmationComponent implements OnInit {
       this.PROJ_NAME = response.PROJ_NAME;
       this.CR_ISSUE_REASON = response.ASREASON_OF_ISSUE_CR;
       this.CUST_REF_NO = response.CUST_REF_NO;
+
+       
+      this.form.patchValue({
+        ISSUE_NO: response.ISSSUE_NO,
+        REQUEST_DATE: response.REQUEST_DATE,
+        PRIORITY_CODE: response.PRIORITY_CODE,
+        RAISED_BY_NAME: response.RAISED_BY_NAME,
+        ISSUE_TYPE_DESC: response.ISSUE_TYPE_DESC,
+        PRIORITY_DESC: response.PRIORITY_DESC,
+        FUNCTION_CODE: response.FUNCTION_CODE,
+        CREATEDBY: response.CREATEDBY,
+        ASREASON_OF_ISSUE_CR: response.ASREASON_OF_ISSUE_CR,
+        OTHER_NAME: response.REQUESTER !== this.userData[0].LOGIN_ID ? response.REQUESTER : '',
+        ISSUE_TYPE_CODE: response.ISSUE_TYPE_CODE,
+        ISSUE_SUBJECT: response.ISSUE_SUBJECT,
+        MODULE_CODE: response.MODULE_CODE,
+        ISSUE_FUNCTION_CODE: response.FUNCTION_CODE,
+        REASON_ISSUE: response.ASREASON_OF_ISSUE_CR,
+        DESC_ISSUE: response.DESC_OF_ISSUE_CR,
+        CUST_REF_NO: response.CUST_REF_NO,
+        PROJ_NAME: response.PROJ_NAME,
+      });
 
 
       if (response.STATUS_CODE == '42') {
