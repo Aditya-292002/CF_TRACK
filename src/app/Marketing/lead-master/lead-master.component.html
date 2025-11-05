@@ -134,8 +134,9 @@
                 </div>
                 <div class="col-md-4">
                     <label>Phone<span class="validator">*</span> :</label>
+                    <!-- (keypress)="allowOnlyNumbers($event)"  -->
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_PHONE'].errors?.required}">
-                        <input type="text" class="form-control" formControlName="LEAD_PHONE" placeholder="Phone"  minlength="10" >
+                        <input type="text" class="form-control" formControlName="LEAD_PHONE" placeholder="Phone" minlength="10" maxlength="13" (focusout)="validateMobileNumber()">
                     </div>
                 </div>
             </div>
@@ -143,13 +144,15 @@
         <div class="col-md-4 mt-2 ">
             <div class="row card">
                 <div class="col-md-12">
-                    <label>PAN No.<span class="validator" *ngIf="this.isPanANDGstInNotMandatory">*</span> :</label>
+                    <!-- *ngIf="this.isPanANDGstInNotMandatory" -->
+                    <label>PAN No:</label>
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_PAN'].errors?.required && this.isPanANDGstInNotMandatory} ">
-                        <input type="text" formControlName="LEAD_PAN" InputType="AlphaNum" Uppercase maxlength="10" (focusout)="f_validatePAN()" id="panno" #panno placeholder="PAN No." autocomplete="false" class="form-control">
+                        <input type="text" formControlName="LEAD_PAN" InputType="AlphaNum" Uppercase maxlength="10" (focusout)="isValidPanCardNo()" id="panno" #panno placeholder="PAN No." autocomplete="false" class="form-control">
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <label>GSTIN<span class="validator" *ngIf="this.isPanANDGstInNotMandatory">*</span> :</label>
+                     <!-- *ngIf="this.isPanANDGstInNotMandatory" -->
+                    <label>GSTIN:</label>
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_GSTIN'].errors?.required && this.isPanANDGstInNotMandatory}">
                         <input type="text" formControlName="LEAD_GSTIN" InputType="AlphaNum" Uppercase placeholder="GSTIN" id="gstno" #gstno (focusout)="f_validateGSTNO()" maxlength="15" autocomplete="false" class="form-control">
                     </div>
@@ -169,8 +172,9 @@
                 </div>
                 <div class="col-md-12">
                     <label>Lead URL<span class="validator">*</span> :</label>
-                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_URL'].errors?.required}">
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_URL'].errors?.required} || {'invalid-control':isSubmited && form.controls['LEAD_URL'].errors?.pattern}">
                         <input type="text" formControlName="LEAD_URL" placeholder="Lead URL"  class="form-control">
+                
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -240,7 +244,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label>Lead Partner<span class="validator">*</span> :</label>
+                    <label>Lead Partner:</label>
                     <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_PARTNER_CODE'].errors?.required}">
                         <select class="form-control selectpicker show-tick" id="leadPartner" formControlName="LEAD_PARTNER_CODE" data-live-search="true" title="Select">
                             <option *ngFor="let opt of leadMaster_type_list; let i=index" 
@@ -254,7 +258,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label>Lead Remarks<span class="validator">*</span> :</label>
+                    <label>Lead Remarks:</label>
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_REMARKS'].errors?.required}">
                         <textarea name="" id="" rows="2" class="form-control" formControlName="LEAD_REMARKS" placeholder="Enter Remarks"></textarea>
                     </div>
@@ -265,7 +269,7 @@
         <div class="col-md-12 mt-2">
             <div class="row card">
                 <div class="form-inline col-md-12">
-                    <h6 class="mb-0 col-md-6 p-0">Lead Master Details</h6>
+                    <h6 class="mb-0 col-md-6 p-0">Lead Master Details<span class="validator">*</span></h6>
                     <div class="row-add col-md-6  text-right">
                         <button type="button" class="btn text-primary pb-0" (click)="addRow()">
                             <i class='fas fa-plus-circle mr-2'></i>Add
@@ -279,11 +283,12 @@
                             <thead>
                                 <tr>
                                     <th class="w-20 ">Sr.No</th>
-                                    <th class="w-15 ">Contact Name/Email</th>
-                                    <th class="w-20 ">Mobile/Phone No.</th>
-                                    <th class="w-20 ">Designation/Department</th>
-                                    <th class="w-10 text-center">Bill Email</th>
-                                    <th class="w-10 text-center">Rcpt Email</th>
+                                    <th class="w-15 ">Contact Name/Email <span class="validator">*</span></th>
+                                    <th class="w-20 ">Mobile/Phone No.<span class="validator">*</span></th>
+                                    <th class="w-20 ">Designation/Department <span class="validator">*</span></th>
+                                    <th class="w-10 text-center">Action</th>
+                                         <!-- <th class="w-10 text-center"></th> -->
+                                    <!-- <th class="w-10 text-center">Rcpt Email</th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -305,7 +310,9 @@
                                                 <input type="text" class="form-control" [(ngModel)]="data.CONTACT_DESIG" placeholder="Designation" [ngModelOptions]="{standalone: true}">
                                             </div>
                                         </td>
-                                        <td class="text-left">
+                                        <td></td>
+                                        <td></td>
+                                        <!-- <td class="text-left">
                                             <div class="floating-input">
                                                 <input type="checkbox" [(ngModel)]="data.SEND_INVOICEEMAIL" class="form-control" [ngModelOptions]="{standalone: true}">
                                             </div>
@@ -314,7 +321,7 @@
                                             <div class="floating-input">
                                                 <input type="checkbox" [(ngModel)]="data.SEND_RECEIPTEMAIL" class="form-control" [ngModelOptions]="{standalone: true}">
                                             </div>
-                                        </td>
+                                        </td> -->
                                     </tr>
                                     <tr *ngIf="data.ACTIVE != 0">
                                         <td class="pt-0"></td>

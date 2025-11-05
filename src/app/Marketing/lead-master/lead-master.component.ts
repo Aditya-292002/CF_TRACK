@@ -29,7 +29,7 @@ export class LeadMasterComponent implements OnInit {
     custypelist: Array<any> = [];
     isPanANDGstInNotMandatory:boolean = false;
     USER_ID:any;
-
+PANFlag:boolean=false;
     userdetails: Array<any> = [];
   
     constructor(public sharedService: SharedServiceService,
@@ -49,24 +49,30 @@ export class LeadMasterComponent implements OnInit {
         LEAD_LEGALNAME: ["",Validators.required],
         LEAD_TYPE: ["",Validators.required],
         LEAD_ADDRESS1: ["",Validators.required],
-        LEAD_ADDRESS2: ["",Validators.required],
+        LEAD_ADDRESS2: [""],
         LEAD_CITY: ["",Validators.required],
         LEAD_PIN: ["",[Validators.required, Validators.minLength(6),Validators.maxLength(6)]],
         LEAD_COUNTRY: ["",Validators.required],
         LEAD_STATE: ["",Validators.required],
   
-        LEAD_PAN: ["",Validators.required],
-        LEAD_GSTIN: ["",Validators.required],
+        LEAD_PAN: [""],
+        LEAD_GSTIN: [""],
         LEAD_SEGMENT: ["",Validators.required],
         LEAD_PHONE: ["",Validators.required],
         LEAD_TURNOVER: ["",Validators.required],
         LEAD_EMAIL: ["",Validators.required],
-        LEAD_PARTNER_CODE: ["",Validators.required],
-        LEAD_URL: ["",Validators.required],
+        LEAD_PARTNER_CODE: [""],
+LEAD_URL: [
+  "",
+  [
+    Validators.required,
+    Validators.pattern(/^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/[^\s]*)?$/)
+  ]
+],
         LEAD_CURRENCY: ["INR",Validators.required],
         ACCT_MANAGER: ["",Validators.required],
         SALES_REGION_ID: ["",Validators.required],
-        LEAD_STATUS: ["P",Validators.required],
+        LEAD_STATUS: ["",Validators.required],
         LEAD_GRP_ID: [""],
         LEAD_REMARKS:[""]
   
@@ -336,9 +342,9 @@ export class LeadMasterComponent implements OnInit {
           LEAD_CONTACT: _contact_detail
         }
         // return
-        console.log("data : ",data, "User Id : ", this.userdetails[0].USERID)
+        console.log("data : ",data)
 
-        // return
+         return
         this.http.PostRequest(this.apiUrl.SaveLead, data).then(res => {
           if (res.flag) {
             this.toast.success(res.msg)
@@ -419,9 +425,11 @@ export class LeadMasterComponent implements OnInit {
         this.toast.warning("Please enter valid 15 digit GSTIN");
       } else if(this.form.controls["LEAD_CURRENCY"].invalid){
         this.toast.warning("Please select Currency");
-      } else if(this.form.controls["LEAD_URL"].invalid){
-        this.toast.warning("Please enter Lead URL");
-      } else if(this.form.controls["LEAD_TURNOVER"].invalid){
+      } 
+      // else if(this.form.controls["LEAD_URL"].invalid){
+      //   this.toast.warning("Please enter a valid Lead URL (e.g. https://example.com).");
+      // } 
+      else if(this.form.controls["LEAD_TURNOVER"].invalid){
         this.toast.warning("Please enter Kind Attention");
       } else if(this.form.controls["ACCT_MANAGER"].invalid){
         this.toast.warning("Please select Account Manager");
@@ -431,7 +439,15 @@ export class LeadMasterComponent implements OnInit {
         this.toast.warning("Please select Segment");
       } else if(this.form.controls["LEAD_STATUS"].invalid){
         this.toast.warning("Please select Status");
-      }
+      }else if (this.form.controls["LEAD_URL"].invalid) {
+  const urlCtrl = this.form.controls["LEAD_URL"];
+  if ( urlCtrl.errors.pattern ) {
+    this.toast.warning("Please enter a valid Lead URL (e.g. https://example.com).");
+  } else if (urlCtrl.errors.required) {
+     this.toast.warning("Lead URL is required.");
+  }
+}
+
       
     }
   
@@ -443,6 +459,55 @@ export class LeadMasterComponent implements OnInit {
       }
     // console.log('LEAD_COUNTRY ->' , this.form.controls['LEAD_COUNTRY'].value)
     }
-  
+
+    isValidPanCardNo() {
+  console.log('Inside PAN validation');
+
+  // PAN format: 5 uppercase letters, 4 digits, 1 uppercase letter
+  // let regex = new RegExp(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/);
+const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+  // return panRegex.test(pan.toUpperCase());
+  // Check if the PAN number is valid
+   if(this.form.getRawValue().LEAD_PAN =='' || this.form.getRawValue().LEAD_PAN ==null){
+     this.PANFlag = false;
+     return false;
+   }
+
+  if (panRegex.test(this.form.getRawValue().LEAD_PAN)) {
+    this.PANFlag = false;
+    console.log('Valid PAN');
+    // this.toast.warning("Please enter valid PAN number");
+    return true;
+  } else {
+    this.PANFlag = true;
+    console.log('Invalid PAN');
+     this.toast.warning("Please enter valid PAN number");
+    return false;
+  }
+}
+ validateMobileNumber(): boolean {
+    // Regular expression for validating mobile number with optional country code
+     const pattern = /^(\+?\d{1,3})?[-.\s]?(\(?\d{1,4}\)?[-.\s]?)?\d{1,4}[-.\s]?\d{1,4}$/;
+        // const pattern = /^(\+?\d{1,3})?[-.\s]?(\(?\d{1,4}\)?[-.\s]?)?\d{1,4}[-.\s]?\d{1,4}$/;
+    // Test if the number matches the pattern
+     if (pattern.test(this.form.getRawValue().LEAD_PHONE)) {
+    console.log('Valid Phone');
+    return true;
+  } else {
+
+    console.log('Invalid Phone');
+     this.toast.warning("Please enter valid Phone number");
+    return false;
+  }
+   
+}
+allowOnlyNumbers(event: KeyboardEvent): void {
+  const charCode = event.which ? event.which : event.keyCode;
+  // Allow only digits (0–9)
+  if (charCode < 48 || charCode > 57) {
+    event.preventDefault();
+  }
+}
+
   }
   
