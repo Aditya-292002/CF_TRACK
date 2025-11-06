@@ -67,6 +67,7 @@ export class PmConfirmationComponent implements OnInit {
   viewflag: boolean = false;
   liststatus: any = "Pending";
   isDisableRadioBtn: boolean = false
+  minDate:any
   constructor(
     private fb: FormBuilder,
     private route: RoutingService,
@@ -92,6 +93,7 @@ export class PmConfirmationComponent implements OnInit {
   }
   ngOnInit(): void {
     const today1 = new Date().toISOString().split('T')[0];
+    this.minDate =today1;
     this.form = this.fb.group({
       ISSUE_NO: [{ value: '', disabled: true }],
       REQUEST_DATE: [{ value: today1, disabled: true }],
@@ -299,7 +301,10 @@ export class PmConfirmationComponent implements OnInit {
 
   deleteFile(index: number) {
     this.DOCUMENT_ATTECHED_LIST.splice(index, 1);
+     console.log(this.DOCUMENT_ATTECHED_LIST,"this.DOCUMENT_ATTECHED_LIST")
   }
+
+ 
   convertFilesToBase64(fileList: FileList) {
     const files = Array.from(fileList); // Convert FileList to actual array
 

@@ -38,7 +38,7 @@
     <div class="floating-input list-btn mr-2">
       <select class="form-control selectpicker show-tick" 
         formControlName="PROJ_CODE"
-      
+       (change)="onProjectChange($event.target.value)"
         data-live-search="true" title="Select Project">
         <option
           *ngFor="let opt of projectList; let i = index"
@@ -57,7 +57,9 @@
         class="form-control selectpicker show-tick"
         formControlName="STATUS_CODE"
         data-live-search="true"
-        title="Select Status">
+        title="Select Status"
+        (change)="onStatusChange($event.target.value)"
+        >
         <option
           *ngFor="let opt of statusList; let i = index"
           [selected]="opt.STATUS_CODE == form.controls['STATUS_CODE'].value"

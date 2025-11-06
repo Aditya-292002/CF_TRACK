@@ -25,6 +25,7 @@ export class PmConfirmationListComponent implements OnInit {
   IS_CANCEL:any = 0;
   CANCEL_IND:any;
   FILTER_ISSUE_REQUEST_LIST_DATA:any = [];
+  FILTER:any;
   SearchValue:any;
   ISSUE_ID:any;
   userData: any;
@@ -34,6 +35,9 @@ export class PmConfirmationListComponent implements OnInit {
   projectList: any;
   statusList: any;
   form: FormGroup;
+  minDate:any;
+  selectedProjCode:any;
+   selectedStatusCode:any;
   constructor(
     private apiurl: ApiUrlService,
     private http: HttpRequestServiceService,
@@ -45,31 +49,43 @@ export class PmConfirmationListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
-    console.log(' this.userData', this.userData);
-    this.USER_ID = this.userData[0].USERID;
-    this.FUNCTION_CODE = localStorage.getItem('FUNCTION_CODE');
-    this.LISTSTATUS = sessionStorage.getItem('LISTSTATUS');
-    this.GET_PM_COMMON_LIST()
-    this.GET_PM_CONFIRMATION_LIST();
-    
-
-     this.form = this.formBuilder.group({
+  this.form = this.formBuilder.group({
       PROJ_CODE: [],
       STATUS_CODE: []
     
     });
+    this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
+    console.log(' this.userData', this.userData);
+    this.USER_ID = this.userData[0].USERID;
+    this.FUNCTION_CODE = localStorage.getItem('FUNCTION_CODE');
+    this.LISTSTATUS = sessionStorage.getItem('LISTSTATUS'); 
+    this.GET_PM_COMMON_LIST()
+    this.GET_PM_CONFIRMATION_LIST();
+
+    
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);
+
+    
   }
 
+onStatusChange(value: any) {
+this.selectedStatusCode=value
+  this.GET_PM_CONFIRMATION_LIST(); // or filter data etc.
+}
+onProjectChange(value: any) {
+  this.selectedProjCode=value;
+  this.GET_PM_CONFIRMATION_LIST(); // or filter data etc.
+}
   GET_PM_CONFIRMATION_LIST(){
       let data = {
         "USER_ID": (+this.USER_ID),
         "FUNCTION_CODE": ((this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE),
          "LISTSTATUS": ( this.liststatus == "Pending") ? "P" : "C",
          "EMP_CODE": (+this.userData[0].EMP_CODE),
+         "STATUS_CODE":(+this.selectedStatusCode),
+         "PROJ_CODE":(+this.selectedProjCode)
       }
        this.http.PostRequest(this.apiurl.GetIssuePmApprovalList, data).then((res: any) => {
        this.ISSUE_REQUEST_COLUMN_LIST = res.Columnlist;
@@ -81,21 +97,21 @@ export class PmConfirmationListComponent implements OnInit {
      
     });
      }
-     GET_PM_COMMON_LIST(){
-      let data = {
-        "USER_ID": (+this.userData[0].USERID),
-        "EMP_CODE": (+this.userData[0].EMP_CODE),
-       
-      }
-       this.http.PostRequest(this.apiurl.GetPMCommonList, data).then((res: any) => {
-        this.projectList = res.ProjectList,
-        this.statusList = res.StatusList,
-        console.log(this.projectList,this.statusList,"values")
-       
-       console.log('res',res);
-     
-    });
-     }
+    GET_PM_COMMON_LIST() {
+  let data = {
+    "USER_ID": (+this.userData[0].USERID),
+    "EMP_CODE": (+this.userData[0].EMP_CODE),
+  }
+
+  this.http.PostRequest(this.apiurl.GetPMCommonList, data).then((res: any) => {
+    this.projectList = res.ProjectList;
+    this.statusList = res.StatusList;
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh');
+    }, 100);
+  });
+}
+
 
 
   GetDeveloperRequestRaised(col:any,rowData:any){

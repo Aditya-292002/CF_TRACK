@@ -331,12 +331,14 @@
               type="date"
               class="form-control"
               formControlName="DELIVERY_BY"
+               [min]="minDate"
+               
             />
           </div>
 
           <div class="col-md-4">
             <label class="font-weight-bold small">
-              Est. Hours <span class="text-danger">*</span>
+              Est. Manners <span class="text-danger">*</span>
             </label>
             <input
               type="number"
