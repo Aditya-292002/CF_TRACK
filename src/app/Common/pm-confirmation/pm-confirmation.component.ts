@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RoutingService } from 'src/app/services/routing.service';
 import { HttpRequestServiceService } from 'src/app/services/http-request-service.service';
 import { ApiUrlService } from 'src/app/services/api-url.service';
+import { SharedServiceService } from 'src/app/services/shared-service.service';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
@@ -79,6 +80,7 @@ export class PmConfirmationComponent implements OnInit {
     private toast: ToastrService,
     private datepipe: DatePipe,
     private router: Router,
+    public sharedService: SharedServiceService,
 
 
 
@@ -282,10 +284,9 @@ ISSUE_ID:localStorage.getItem("ISSUE_ID")
       // this.GetRemoveBase64DocumnetExtension(this.DEVELOPER_DOCUMENT_LIST1);
       // console.log('GETISSUERAISEDDETAILSBYISSUENO response', response);
 
-
-      const deliveryDate = response.DELIVERY_BY ? new Date(response.DELIVERY_BY).toISOString().substring(0, 10) : '';
+const deliveryDate1  = this.datepipe.transform(new Date(response.DELIVERY_BY), 'dd-MMM-yyyy')
       this.form.patchValue({
-        DELIVERY_BY: deliveryDate,
+        DELIVERY_BY: deliveryDate1,
         EST_HOURS: response.EST_HOURS,
         RESOLUTION_CODE: response.RESOLUTION_CODE,
         DEVELOPER_COMMENT: response.DEVELOPER_COMMENT,

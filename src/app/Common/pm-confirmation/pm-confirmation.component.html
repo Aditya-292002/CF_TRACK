@@ -339,7 +339,7 @@
 
 
             						<div class="">
-							<label>From :<span class="text-danger">*</span></label>
+							<label>Delivery By:<span class="text-danger">*</span></label>
 							<div class="floating-input mb-2" [ngClass]="{'invalid-control':isSubmited && form.controls['DELIVERY_BY'].errors?.required}">
 								<input type="text" class="form-control" placeholder="dd-mm-yyyy" formControlName="DELIVERY_BY" [(ngModel)]="DELIVERY_BY" (change)="ChangeFDate()" readonly>
 								<!-- <app-date-picker id="reqdate" [(ngModel)]="JV_DATE" #reqdate class="date-input" [ngModelOptions]="{standalone: true}"></app-date-picker> -->
@@ -375,36 +375,47 @@
           </div> -->
 
           <div class="col-3">
-            <label class="w-50 label-13px">Est. Man Hours</label>
+            <label class="w-50 label-13px">Est. Man Hours:
+              <span class="text-danger">*</span>
+            </label>
             <div class="floating-input">
               <input
-                type="text"
+                type="number"
                 class="form-control"
                 formControlName="EST_HOURS"
                 placeholder="Enter Est. Hours"
+              
               />
             </div>
           </div>
 
-          <div class="col-md-4">
-            <label class="font-weight-bold small">
-              Resolution <span class="text-danger">*</span>
-            </label>
-            <select class="form-control" formControlName="RESOLUTION_CODE">
-              <option
-                *ngFor="let res of RESOLUTION_LIST"
-                [value]="res.RESOLUTION_CODE"
-              >
-                {{ res.RESOLUTION_NAME }}
-              </option>
-            </select>
-          </div>
+          <div class="col-3">
+        <label class="w-50 label-13px">Resolution:
+           <span class="text-danger">*</span>
+        </label>
+        <div class="floating-input list-btn">
+          <select
+            class="form-control show-tick"
+            data-live-search="true"
+            formControlName="RESOLUTION_CODE"
+            title="Select Resolution"
+            [attr.disabled]="viewflag ? '' : null"
+          >
+            <option
+              *ngFor="let res of RESOLUTION_LIST"
+              [value]="res.RESOLUTION_CODE"
+            >
+              {{ res.RESOLUTION_NAME }}
+            </option>
+          </select>
+        </div>
+      </div>
         </div>
 
         <div class="form-row">
           <div class="col-md-6 mb-3">
-            <label class="font-weight-bold small">
-              PM Explanation <span class="text-danger">*</span>
+            <label class="label-13px">
+              PM Explanation: <span class="text-danger">*</span>
             </label>
             <textarea
               class="form-control"
