@@ -326,19 +326,42 @@
       <div *ngIf="developerStatus === 'OK'">
         <div class="form-row mb-3">
           <div class="col-md-4">
-            <label class="font-weight-bold small">Delivery By</label>
+            <!-- <label class="font-weight-bold small">Delivery By</label>
             <input
               type="date"
               class="form-control"
               formControlName="DELIVERY_BY"
                [min]="minDate"
                
-            />
+            /> -->
+
+
+            						<div class="">
+							<label>From :<span class="text-danger">*</span></label>
+							<div class="floating-input mb-2" [ngClass]="{'invalid-control':isSubmited && form.controls['FROM_DATE'].errors?.required}">
+								<input type="text" class="form-control" placeholder="dd-mm-yyyy" formControlName="FROM_DATE" [(ngModel)]="FROM_DATE" (change)="ChangeFDate()" readonly>
+								<!-- <app-date-picker id="reqdate" [(ngModel)]="JV_DATE" #reqdate class="date-input" [ngModelOptions]="{standalone: true}"></app-date-picker> -->
+								<div class="date-input">
+									<mat-form-field fxFlex="100" appearance="fill">
+										<!-- <mat-icon matDatepickerToggleIcon (click)="clearDate($event)">clear</mat-icon> -->
+										<mat-datepicker-toggle matPrefix [for]="picker2"  id='cal2' #cal2></mat-datepicker-toggle>
+										<input class="form-control" placeholder="dd-mm-yyyy" (dateChange)="ChangeFDate()" [value]="F_DATE" matInput [(ngModel)]="F_DATE" [ngModelOptions]="{standalone: true}" [matDatepicker]="picker2" [min]="min_date" [max]="maxdate" [disabled]="false" readonly />
+							  			<mat-datepicker #picker2 id="picker2"></mat-datepicker>
+									</mat-form-field>
+								</div>
+							</div>
+						</div>
           </div>
+          
+
+
+
+
+          
 
           <div class="col-md-4">
             <label class="font-weight-bold small">
-              Est. Manners <span class="text-danger">*</span>
+              Est. Man hrs <span class="text-danger">*</span>
             </label>
             <input
               type="number"

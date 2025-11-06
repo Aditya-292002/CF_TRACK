@@ -231,17 +231,17 @@ line-height: 1rem;
 .save-button {
     background: #12558d;
     color: #fff;
-    border: 4px solid #12558d;
+    border: 1px solid #12558d;
     border-radius: 4px;
-    padding: 4px 15px;
+    padding: 4px 8px;
 }
 
 .secondary-button {
     background-color: white;
     color: #12558d;
-    border: 2px solid #12558d;
+    border: 1px solid #12558d;
     border-radius: 4px;
-    padding: 4px 15px;
+    padding: 4px 12px;
 }
 
 /* added by hemant  */
