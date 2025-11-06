@@ -78,14 +78,43 @@ onProjectChange(value: any) {
   this.selectedProjCode=value;
   this.GET_PM_CONFIRMATION_LIST(); // or filter data etc.
 }
+
+ resetProjectDropdown(): void {
+    // Clear the form control value
+    this.form.controls['PROJ_CODE'].setValue("");
+   
+
+    // Force Bootstrap selectpicker to visually reset
+    $('#projectType').val('').selectpicker('refresh');
+ this.selectedProjCode=""
+ console.log(this.selectedProjCode,"this.selectedProjCode")
+    console.log('Dropdown reset done.');
+
+    // 🔥 Call your API here
+    this.GET_PM_CONFIRMATION_LIST();
+  }
+   resetStatusDropdown(): void {
+    // Clear the form control value
+    this.form.controls['STATUS_CODE'].setValue("");
+   
+
+    // Force Bootstrap selectpicker to visually reset
+    $('#statusType').val('').selectpicker('refresh');
+ this.selectedStatusCode=""
+ console.log(this.selectedProjCode,"this.selectedProjCode")
+    console.log('Dropdown reset done.');
+
+    // 🔥 Call your API here
+    this.GET_PM_CONFIRMATION_LIST();
+  }
   GET_PM_CONFIRMATION_LIST(){
       let data = {
         "USER_ID": (+this.USER_ID),
         "FUNCTION_CODE": ((this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE),
          "LISTSTATUS": ( this.liststatus == "Pending") ? "P" : "C",
          "EMP_CODE": (+this.userData[0].EMP_CODE),
-         "STATUS_CODE":(+this.selectedStatusCode),
-         "PROJ_CODE":(+this.selectedProjCode)
+         "STATUS_CODE":(this.selectedStatusCode==null?"":this.selectedStatusCode),
+         "PROJ_CODE":(this.selectedProjCode==null?"":this.selectedProjCode)
       }
        this.http.PostRequest(this.apiurl.GetIssuePmApprovalList, data).then((res: any) => {
        this.ISSUE_REQUEST_COLUMN_LIST = res.Columnlist;
