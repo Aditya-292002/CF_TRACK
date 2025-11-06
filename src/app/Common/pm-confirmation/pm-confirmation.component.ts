@@ -7,7 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { Console } from 'console';
-
+declare var $: any;
+declare var jQuery: any;
 @Component({
   selector: 'app-pm-confirmation',
   templateUrl: './pm-confirmation.component.html',
@@ -93,6 +94,8 @@ export class PmConfirmationComponent implements OnInit {
 
     return `${day}-${month}-${year}`;
   }
+
+  //  this.DATE = this.datePipe.transform(new Date(), 'dd-MMM-yyyy')
   ngOnInit(): void {
     const today1 = new Date().toISOString().split('T')[0];
     this.minDate =today1;
@@ -164,7 +167,12 @@ export class PmConfirmationComponent implements OnInit {
     console.log("calling")
      this.displayHistory = true;
   }
-
+ ChangeFDate(){
+    this.DELIVERY_BY = this.datepipe.transform(new Date(this.DELIVERY_BY), 'dd-MMM-yyyy')
+      setTimeout(() => {
+          $('.selectpicker').selectpicker('refresh').trigger('change');
+       }, 100);
+    }
   GetPMConfirmationList() {
     this.http.PostRequest(this.apiurl.GetIssueHelpDeskMasterList, {}).then((res: any) => {
       if (res.flag == 1) {

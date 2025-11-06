@@ -11,6 +11,8 @@ import { RoutingService } from 'src/app/services/routing.service';
 import { SharedServiceService } from 'src/app/services/shared-service.service';
 import { ValidationService } from 'src/app/services/validation.service';
 import { DatePipe } from '@angular/common';
+import { MatFormField } from '@angular/material';
+import { debuglog } from 'util';
 declare var $: any;
 declare var jQuery: any;
 interface Document {
@@ -347,7 +349,8 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
 
   //   });
 
-  //  }
+  //  }\
+  response1:any
   GETISSUERAISEDDETAILSBYISSUENO() {
     console.log('GETISSUERAISEDDETAILSBYISSUENO inside');
 
@@ -359,8 +362,13 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
     };
 
     this.http.PostRequest(this.apiurl.GETISSUERAISEDDETAILSBYISSUENO, data).then((res: any) => {
+     debugger
+     
       const response = res.datalist[0];
-      const response1=res.datalist[1];
+      if(res.datalist[0].STATUS_CODE=="40" ||res.datalist[0].STATUS_CODE=="42"){
+           this.response1=res.datalist[1];  
+      }
+       
       if (!response) return;
 
       // Save response values for non-form-related properties
@@ -372,7 +380,10 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
       this.MODULE_DESC = response.MODULE_DESC;
       this.FUNCTION_DESC = response.FUNCTION_DESC;
       this.product_code = response.PRODUCT_CODE;
-      this.checkStatus=response1.STATUS_CODE
+      if(this.response1){
+        this.checkStatus=this.response1.STATUS_CODE
+      }
+      
 
       // Fill the form using patchVa
       //  PRODUCT_CODE: response.PRODUCT_CODE,lue
@@ -389,10 +400,13 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
         REASON_ISSUE: response.ASREASON_OF_ISSUE_CR,
         DESC_ISSUE: response.DESC_OF_ISSUE_CR,
         Cust_REF_NO: response.CUST_REF_NO,
-        RESOLUTION_CODE:response1.RESOLUTION_CODE,
-        EST_HOURS:response1.EST_HOURS,
-        DELIVERY_BY:response1.DELIVERY_BY,
-        DEVELOPER_COMMENT:response1.DEVELOPER_COMMENT
+
+        RESOLUTION_CODE:this.response1.RESOLUTION_CODE,
+        EST_HOURS:this.response1.EST_HOURS,
+        DELIVERY_BY:this.response1.DELIVERY_BY,
+        DEVELOPER_COMMENT:this.response1.DEVELOPER_COMMENT
+     
+       
 
       });
 

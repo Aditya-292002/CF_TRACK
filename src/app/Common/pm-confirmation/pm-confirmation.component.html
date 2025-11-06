@@ -281,6 +281,7 @@
 <form [formGroup]="form">
   <div class="card p-2 mt-2">
     <div class="card-body">
+       
       <!-- Row 1: Radio Buttons -->
       <div class="d-flex align-items-center mb-3">
         <div class="form-check form-check-inline">
@@ -326,17 +327,10 @@
       <!-- Row 3: Other Fields (Visible only when OK is selected) -->
       <div *ngIf="developerStatus === 'OK'">
         <div class="form-row mb-3">
-          <div class="col-md-4">
-            <label class="font-weight-bold small">Delivery By</label>
-            <input
-              type="date"
-              class="form-control"
-              formControlName="DELIVERY_BY"
-               [min]="minDate"
-               
-            />
-          </div>
 
+        
+          
+          
           <div class="col-md-4">
             <label class="font-weight-bold small">
               Est. Man Hours <span class="text-danger">*</span>
