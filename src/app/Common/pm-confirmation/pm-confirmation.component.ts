@@ -68,6 +68,8 @@ export class PmConfirmationComponent implements OnInit {
   liststatus: any = "Pending";
   isDisableRadioBtn: boolean = false
   minDate:any
+  displayHistory: boolean = false;
+  COMMENT_HISTORY:any
   constructor(
     private fb: FormBuilder,
     private route: RoutingService,
@@ -158,7 +160,10 @@ export class PmConfirmationComponent implements OnInit {
 
     });
   }
-
+  showHistoryDialog() {
+    console.log("calling")
+     this.displayHistory = true;
+  }
 
   GetPMConfirmationList() {
     this.http.PostRequest(this.apiurl.GetIssueHelpDeskMasterList, {}).then((res: any) => {
@@ -171,6 +176,22 @@ export class PmConfirmationComponent implements OnInit {
 
     });
   }
+    GET_PM_HISTORY() {
+
+    const  data={
+ISSUE_ID:localStorage.getItem("ISSUE_ID")
+      }
+      this.http.PostRequest(this.apiurl.GetDeveloperHistoryList, data).then((res: any) => {
+        console.log(res,"GetDeveloperHistoryList : ")
+      if (res.flag == 1) {
+       this.COMMENT_HISTORY = res.Datalist;
+      } else {
+        this.COMMENT_HISTORY = []
+      }
+    });
+    }
+
+  
 
   GETISSUERAISEDDETAILSBYISSUENO() {
     console.log('GETISSUERAISEDDETAILSBYISSUENO inside');

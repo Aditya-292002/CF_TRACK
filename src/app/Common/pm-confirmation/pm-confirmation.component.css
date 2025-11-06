@@ -155,3 +155,99 @@
     border-radius: 4px;
     padding: 4px 15px;
 }
+
+
+.comment-history {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Each Accordion Item */
+.comment-item {
+  border: 1px solid var(--surface-border, #ddd);
+  border-radius: 6px;
+  background: var(--surface-card, #fff);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Header */
+.comment-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: var(--surface-ground, #f8f9fa);
+  cursor: pointer;
+  user-select: none;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.comment-header:hover {
+  background: var(--surface-hover, #f0f0f0);
+}
+
+.status-text {
+  font-size: 0.9rem;
+  color: var(--text-color, #333);
+  white-space: nowrap;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--primary-color, #007ad9);
+  margin: 0;
+}
+
+.date {
+  font-size: 0.8rem;
+  color: #777;
+  margin: 0;
+}
+
+.toggle-icon {
+  font-size: 1rem;
+  color: #555;
+  transition: transform 0.2s ease;
+}
+
+/* Comment Body */
+.comment-body {
+  padding: 0.75rem 1rem 1rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.comment-label {
+  display: block;
+  font-weight: 600;
+  color: #555;
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+
+.comment-textarea {
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  resize: none;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}

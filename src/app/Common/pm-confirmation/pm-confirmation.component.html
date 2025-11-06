@@ -8,7 +8,8 @@
 
     <!-- Right section: Buttons -->
     <div class="d-flex align-items-center flex-wrap p-2">
-      <button type="button" class="p-element prime-button save-button mr-2">
+      <button type="button" class="p-element prime-button save-button mr-2"
+      (click)="GET_PM_HISTORY(); showHistoryDialog()">
         History
       </button>
       <button
@@ -338,7 +339,7 @@
 
           <div class="col-md-4">
             <label class="font-weight-bold small">
-              Est. Manners <span class="text-danger">*</span>
+              Est. Man Hours <span class="text-danger">*</span>
             </label>
             <input
               type="number"
@@ -389,9 +390,9 @@
                 type="file"
                 #fileInput
                 hidden
-                (change)="onFileSelected($event)"
-              />
-            </div>
+                (change)="onFileSelected($event)"/>
+                <small class="mb-0">(Accepted file formats: PDF, JPG, PNG, Xls, Xlsx, Doc, Docx)</small>
+              </div>
 
             <!-- Table below Add File button -->
             <div>
@@ -482,3 +483,59 @@
     </div>
   </div>
 </div>
+
+
+ <p-dialog
+  header="History Details"
+  [(visible)]="displayHistory"
+  [modal]="true"
+  [style]="{ width: '50rem' }"
+>
+<div class="">
+<div class="comment-history">
+  <div 
+    class="comment-item" 
+    *ngFor="let data of COMMENT_HISTORY; let i = index"
+  >
+    <!-- Header -->
+    <div 
+      class="comment-header"
+      (click)="data.expanded = !data.expanded"
+    >
+      <span class="status-text">{{ data.STATUS_NAME }}</span>
+
+      <div class="header-right">
+        <p class="status">
+          <i class="pi pi-circle-fill mr-1" [ngClass]="data.STATUS_COLOR_NAME"></i>
+          {{ data.STATUS_NAME }}
+        </p>
+        <p class="date">{{ data.CREATEDON }}</p>
+        <i 
+          class="pi toggle-icon"
+          [ngClass]="data.expanded ? 'pi-chevron-up' : 'pi-chevron-down'"
+        ></i>
+      </div>
+    </div>
+
+    <!-- Comment Section -->
+    <div class="comment-body" *ngIf="data.expanded">
+      <label 
+        for="comment-{{ i }}" 
+        class="comment-label"
+      >Comment :-</label>
+
+      <textarea
+        id="comment-{{ i }}"
+        rows="3"
+        pInputTextarea
+        class="comment-textarea"
+        [(ngModel)]="data.COMMENTS"
+        [disabled]="true"
+      ></textarea>
+    </div>
+  </div>
+</div>
+
+</div>
+
+</p-dialog>
