@@ -74,17 +74,18 @@ export class IssueRequestMasterComponent implements OnInit {
   STATUS_CODE: any;
   GET_STATUS_CODE: any;
   visibleHistoryFun: boolean = false;
-  COMMENT_HISTORY: any = [{
-    status: '',
-    STATUS_COLOR_NAME: '',
-    Status_Name: '',
-    date: '',
-    EST_HOURS: '',
-    DELIVERY_BY: '',
-    PROPOSE_HOURS: '',
-    PROPOSE_DELIVERY_BY: '',
-    comment: ''
-  }];
+   COMMENT_HISTORY: any = [];
+   //= [{
+  //   status: '',
+  //   STATUS_COLOR_NAME: '',
+  //   Status_Name: '',
+  //   date: '',
+  //   EST_HOURS: '',
+  //   DELIVERY_BY: '',
+  //   PROPOSE_HOURS: '',
+  //   PROPOSE_DELIVERY_BY: '',
+  //   comment: ''
+  // }];
   ISSUE_ID: any;
   SAMPEL_FUNCTION_LIST: any = [];
   IS_HISTORY: boolean = false;
@@ -879,7 +880,7 @@ export class IssueRequestMasterComponent implements OnInit {
     }
     // console.log('data ->' , JSON.stringify(data))
     // return
-    this.http.PostRequest(this.apiurl.GetDeveloperHistoryList, data).then((res: any) => {
+    this.http.PostRequest(this.apiurl.GetIssueRaisedHistoryList, data).then((res: any) => {
       if (res.flag == 1) {
         this.COMMENT_HISTORY = res.Datalist;
         // this.MessageService.add({severity:'warn', summary:res.Datalist.RootElement[0].Status_Name,detail:res.Datalist.RootElement[0].comment});
@@ -1100,7 +1101,7 @@ export class IssueRequestMasterComponent implements OnInit {
 
   showHistoryDialog() {
     console.log("calling")
-    // this.displayHistory = true;
+     this.displayHistory = true;
   }
 
   goToList() {
