@@ -4,11 +4,14 @@ import { HttpRequestServiceService } from 'src/app/services/http-request-service
 import { RoutingService } from 'src/app/services/routing.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
+declare var $: any;
+declare var jQuery: any;
 @Component({
   selector: 'app-pm-confirmation-list',
   templateUrl: './pm-confirmation-list.component.html',
   styleUrls: ['./pm-confirmation-list.component.css']
 })
+
 export class PmConfirmationListComponent implements OnInit {
 
  USER_ID:any;
@@ -56,7 +59,9 @@ export class PmConfirmationListComponent implements OnInit {
       STATUS_CODE: []
     
     });
-    
+    setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh').trigger('change');
+    }, 100);
   }
 
   GET_PM_CONFIRMATION_LIST(){
