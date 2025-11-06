@@ -190,5 +190,6 @@ public GetIssuePmApprovalList: string='/TicketSystem/GetIssuePmApprovalList';
 public GetIssueHelpDeskMasterList: string='/TicketSystem/GetIssueHelpDeskMasterList';
 public GetLeadCommonList: string ='/Lead/GetLeadCommonList';
 public SaveLead: string ='/Lead/SaveLead';
+public GetPMCommonList: string = '/TicketSystem/GetPMCommonList';
 
 }

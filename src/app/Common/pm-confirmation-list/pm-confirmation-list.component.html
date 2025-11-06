@@ -1,25 +1,24 @@
 <div class="d-flex flex-row justify-content-between align-items-center">
   <h5 class="h5 mb-0">PM Confirmation List</h5>
 
-  <div class="d-flex ml-2 justify-content-between align-items-center
-    mt-2">
-    <div class=" p-2 ">
+  <div class="d-flex ml-2 justify-content-between align-items-center mt-2">
+    <div class="p-2">
       <label class="Text_Primary Helper_Text">
-    <input
-      type="radio"
-      name="status"
-      [(ngModel)]="liststatus"
-      value="Pending"
-      (change)="setStatus('Pending')"
-      class="mr-1"
-    />
-    Pending
-  </label>
+        <input
+          type="radio"
+          name="status"
+          [(ngModel)]="liststatus"
+          value="Pending"
+          (change)="setStatus('Pending')"
+          class="mr-1"
+        />
+        Pending
+      </label>
     </div>
     <div class="p-1">
-      <label class="Text_Primary Helper_Text ">
+      <label class="Text_Primary Helper_Text">
         <input
-        class="mr-1"
+          class="mr-1"
           type="radio"
           name="status"
           [(ngModel)]="liststatus"
@@ -31,32 +30,86 @@
     </div>
   </div>
 
-  <div class="input-group" style="max-width: 259px;">
-      <div class="input-group-prepend">
-        <span class="input-group-text bg-white border-right-0">
-          <i class="fa fa-search"></i>
-        </span>
-      </div>
-      <input type="text" class="form-control border-left-0" placeholder="Search" [(ngModel)]="SearchValue"
-        (ngModelChange)="GetInputFilter(SearchValue)" style="box-shadow: none;" />
+
+  <form [formGroup]="form">
+ 
+  <div class="d-flex flex-row justify-content-between  align-items-center" >
+    <!-- <label>Project List :</label> -->
+    <div class="floating-input list-btn mr-2">
+      <select class="form-control selectpicker show-tick" 
+        formControlName="PROJ_CODE"
+      
+        data-live-search="true" title="Select Project">
+        <option
+          *ngFor="let opt of projectList; let i = index"
+          [value]="opt.PROJ_CODE">
+          {{ opt.PROJ_NAME }}
+        </option>
+      </select>
+      <button type="button" class="close"
+        (click)="form.controls['PROJ_CODE'].reset()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
+    <!-- <label>Status List :</label> -->
+    <div class="floating-input list-btn">
+      <select
+        class="form-control selectpicker show-tick"
+        formControlName="STATUS_CODE"
+        data-live-search="true"
+        title="Select Status">
+        <option
+          *ngFor="let opt of statusList; let i = index"
+          [selected]="opt.STATUS_CODE == form.controls['STATUS_CODE'].value"
+          [value]="opt.STATUS_CODE">
+          {{ opt.STATUS_NAME }}
+        </option>
+      </select>
+      <button
+        type="button" class="close" onclick="resetDropdown('leadMasterType')"
+        (click)="form.controls['STATUS_CODE'].reset()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+     <!-- [ngClass]="{'invalid-control':isSubmited && form.controls['STATUS_CODE'].errors?.required}"> -->
+
+
+
+</form>
+
+  
+  <div class="input-group" style="max-width: 259px">
+    <div class="input-group-prepend">
+      <span class="input-group-text bg-white border-right-0">
+        <i class="fa fa-search"></i>
+      </span>
+    </div>
+    <input
+      type="text"
+      class="form-control border-left-0"
+      placeholder="Search"
+      [(ngModel)]="SearchValue"
+      (ngModelChange)="GetInputFilter(SearchValue)"
+      style="box-shadow: none"
+    />
+  </div>
 </div>
 
-
-
-
-<div class="mt-2 ">
+<div class="mt-2">
   <div class="card">
-    <div  class="p-3" *ngIf="this.ISSUE_REQUEST_LIST_DATA.length == 0">
-    <p *ngIf="this.ISSUE_REQUEST_LIST_DATA.length == 0">No Records Found</p>
+    <div class="p-3" *ngIf="this.ISSUE_REQUEST_LIST_DATA.length == 0">
+      <p *ngIf="this.ISSUE_REQUEST_LIST_DATA.length == 0">No Records Found</p>
     </div>
     <div class="tableFixHead" *ngIf="this.ISSUE_REQUEST_LIST_DATA.length > 0">
       <table class="table-theam-1 row_bgcolor_1">
         <thead>
           <tr>
-            <th *ngFor="let column of ISSUE_REQUEST_COLUMN_LIST">{{ column.Col_Name }}</th>
-            <th class="">Action</th> <!-- For Action column -->
- 
+            <th *ngFor="let column of ISSUE_REQUEST_COLUMN_LIST">
+              {{ column.Col_Name }}
+            </th>
+            <th class="">Action</th>
+            <!-- For Action column -->
           </tr>
         </thead>
         <tbody>
@@ -66,9 +119,30 @@
             </td>
             <td class="">
               <!-- Add your action buttons here -->
-              <span> <i class="fa fa-eye mr-1" *ngIf = "liststatus !== 'Pending'" (click)="GetDeveloperRequestRaised(ISSUE_REQUEST_COLUMN_LIST[0], data)"></i></span>
-              <span> <i class="far fa-edit mr-1" *ngIf = "liststatus == 'Pending'" (click)="GetDeveloperRequestRaised(ISSUE_REQUEST_COLUMN_LIST[0], data)"></i></span>
-
+              <span>
+                <i
+                  class="fa fa-eye mr-1"
+                  *ngIf="liststatus !== 'Pending'"
+                  (click)="
+                    GetDeveloperRequestRaised(
+                      ISSUE_REQUEST_COLUMN_LIST[0],
+                      data
+                    )
+                  "
+                ></i
+              ></span>
+              <span>
+                <i
+                  class="far fa-edit mr-1"
+                  *ngIf="liststatus == 'Pending'"
+                  (click)="
+                    GetDeveloperRequestRaised(
+                      ISSUE_REQUEST_COLUMN_LIST[0],
+                      data
+                    )
+                  "
+                ></i
+              ></span>
             </td>
           </tr>
         </tbody>
