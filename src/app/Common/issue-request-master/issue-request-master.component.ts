@@ -709,9 +709,7 @@ export class IssueRequestMasterComponent implements OnInit {
   //     console.error('Popup blocked. Please allow popups for this site.');
   //   }
   // }
-
-  allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png', 'xls', 'xlsx', 'doc', 'docx', 'txt'];
-
+  allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png', 'xls', 'xlsx', 'doc', 'docx'];
   // allowedMimeTypes = this.allowedExtensions
   // .map(ext => {
   //   switch (ext) {
@@ -729,7 +727,6 @@ export class IssueRequestMasterComponent implements OnInit {
   // })
   // .filter(Boolean)
   // .join(',');
-
   // viewDocument(data: any) {
   //   if (!data.DOC_BASE64 || !data.EXTENSION) return;
   //   const byteCharacters = atob(data.DOC_BASE64);
@@ -878,7 +875,7 @@ export class IssueRequestMasterComponent implements OnInit {
     //  } else if (res.Resultlist[0].FLAG == 0) {
     //    this.Toastr.error(res.Resultlist[0].MSG);
     //  }
-    // });
+    // });                                                                                                          
   }
 
   GETISSUERAISEDHISTORY(val: any) {
