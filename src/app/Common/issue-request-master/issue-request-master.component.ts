@@ -354,7 +354,6 @@ export class IssueRequestMasterComponent implements OnInit {
       this.product_code = response.PRODUCT_CODE;
 
       // Fill the form using patchVa
-      // //
       //  PRODUCT_CODE: response.PRODUCT_CODE,lue
       this.form.patchValue({
         ISSUE_NO: response.ISSSUE_NO,
@@ -734,7 +733,6 @@ export class IssueRequestMasterComponent implements OnInit {
   // }
 
   viewDocument(data: any) {
-    debugger
   if (!data.DOC_BASE64 || !data.FILE_EXTENSION) return;
 
   const base64Content = data.DOC_BASE64.includes(',')
@@ -1093,8 +1091,8 @@ export class IssueRequestMasterComponent implements OnInit {
       return 'application/msword';
     case 'docx':
       return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-    case 'txt':
-      return 'text/plain';
+    // case 'txt':
+    //   return 'text/plain';
     default:
       return 'application/octet-stream';
   }

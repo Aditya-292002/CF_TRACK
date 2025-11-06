@@ -1,444 +1,479 @@
 <div class="">
   <div class="d-flex flex-wrap justify-content-between align-items-center">
-    
     <!-- Left section -->
     <div class="d-flex align-items-center flex-wrap">
-      <h5 class=" mb-0 mr-2">PM Confirmation</h5>
+      <h5 class="mb-0 mr-2">PM Confirmation</h5>
       <p class="text-primary small mb-0">(Please Check History)</p>
     </div>
 
     <!-- Right section: Buttons -->
     <div class="d-flex align-items-center flex-wrap p-2">
-      <button type="button" class="p-element prime-button save-button mr-2">History</button>
-      <button type="button" class="p-element prime-button secondary-button mr-2" (click)="goToList()">List</button>
+      <button type="button" class="p-element prime-button save-button mr-2">
+        History
+      </button>
+      <button
+        type="button"
+        class="p-element prime-button secondary-button mr-2"
+        (click)="goToList()"
+      >
+        List
+      </button>
       <!-- Save button (visible only if viewflag is false) -->
       <div *ngIf="STATUS_CODE == '00'" class="mr-2">
-        <button 
-          class="p-element prime-button save-button" 
-          data-target="#saveissue" 
+        <button
+          class="p-element prime-button save-button"
+          data-target="#saveissue"
           data-toggle="modal"
-          (click)="SaveConfirmationPopUpOpen()">
+          (click)="SaveConfirmationPopUpOpen()"
+        >
           Save
         </button>
       </div>
     </div>
-
-  </div>
-</div>
-
-
-<div class="card mb-3 p-3">
-  <div class="row">
-
-    <!-- Issue No -->
-    <div class="col-md-3 ">
-      <label class="font-weight-bold  small">Issue No.</label>
-      <p class="text-secondary small p-0 m-0" *ngIf = " ISSSUE_NO !== ''">
-        {{ISSSUE_NO }}
-      </p>
-      <p class="text-secondary small p-0 m-0" *ngIf = "ISSSUE_NO === null || ISSSUE_NO === '' || ISSSUE_NO === undefined">
-        NA
-      </p>
-    </div>
-
-    <!-- Issue No -->
-          <!-- <div class="col-3">
-            <label for="issue_no" class="w-50 label-13px">Issue No.</label>
-            <div class="floating-input">
-              <input type="text" id="issue_no" class="form-control form-control-sm" formControlName="ISSSUE_NO"
-                placeholder="Enter Issue No" disabled>
-            </div>
-          </div> -->
-
-     <!-- Date -->
-    <div class="col-md-3 ">
-      <label class="font-weight-bold  small">Date</label>
-      <p class="text-secondary small p-0 m-0" *ngIf = " REQUEST_DATE !== ''">
-        {{ REQUEST_DATE }}
-      </p>
-      <p class="text-secondary small p-0 m-0" *ngIf = "REQUEST_DATE === null || REQUEST_DATE === '' || REQUEST_DATE === undefined">
-        NA
-      </p>
-    </div>
-
-    <!-- Date -->
-      <!-- <div class="col-3">
-        <label class="w-50 label-13px">Date</label>
-        <div class="floating-input">
-          <input *ngIf="!viewflag" type="date" class="form-control" placeholder="dd-mm-yyyy"
-            formControlName="REQUEST_DATE" disabled>
-          <input *ngIf="viewflag" type="date" class="form-control"
-            [value]="form.get('REQUEST_DATE')?.value | date:'yyyy-MM-dd'" [attr.disabled]="viewflag ? '' : null">
-        </div>
-      </div> -->
-
-    <!-- Project Name -->
-    <div class="col-md-3">
-      <label class="font-weight-bold  small">Project Name</label>
-      <p class="text-secondary small w-full p-0 m-0" *ngIf ="PROJ_NAME !==''" >
-        {{PROJ_NAME }}
-      </p>
-      <p class="text-secondary small p-0 m-0" *ngIf = "PROJ_NAME === null || PROJ_NAME === '' || PROJ_NAME === undefined">
-        NA
-      </p>
-    </div>
-    
-       <!-- Cust Ref No. -->
-    <div class="col-md-3 ">
-      <label for="issue_no" class="w-50  font-weight-bold small">Cust Ref No.</label>
-      <p class="text-secondary small p-0 m-0" *ngIf =  "CUST_REF_NO !== ''">
-        {{ CUST_REF_NO }}
-      </p>
-      <p class="text-secondary small p-0 m-0" *ngIf = "CUST_REF_NO === null || CUST_REF_NO === '' || CUST_REF_NO === undefined">
-        NA
-      </p>
-
-      <!-- <div class="floating-input">
-        <input type="text" id="issue_no" class="form-control form-control-sm" formControlName="CUST_REF_NO"
-        placeholder="Enter Cust Ref No"  [attr.disabled]="viewflag ? '' : null">
-      </div> -->
-
-    </div> 
-
-        <!-- Priority -->
-    <div class="col-md-3 issue_pr">
-      <label class="font-weight-bold  small">Priority</label>
-      <p class="text-secondary small p-0 m-0" *ngIf = "PRIORITY_DESC !== ''">
-        {{ PRIORITY_DESC }}
-      </p>
-      <p class="text-secondary small p-0 m-0" *ngIf = "PRIORITY_DESC === null || PRIORITY_DESC === '' || PRIORITY_DESC === undefined">
-        NA
-      </p>
-    </div>
-
-    <!-- Raised By -->
-    <div class="col-md-3 ">
-      <label class="font-weight-bold  small">Raised By</label>
-      <p class="text-secondary small p-0 m-0" *ngIf = "REQUESTER !== ''">
-        {{ REQUESTER }}
-      </p>
-      <p class="text-secondary small p-0 m-0" *ngIf = "REQUESTER === null || REQUESTER === '' || REQUESTER === undefined">
-        NA
-      </p>
-    </div>  
-
-    <!-- Issue Type -->
-    <div class="col-md-3 ">
-      <label class="font-weight-bold  small">Issue Type</label>
-      <p class="text-secondary small p-0 m-0" *ngIf = " ISSUE_TYPE_DESC !== ''">
-        {{ISSUE_TYPE_DESC }}
-      </p>
-      <p class="text-secondary small p-0 m-0" *ngIf = "ISSUE_TYPE_DESC === null || ISSUE_TYPE_DESC === '' || ISSUE_TYPE_DESC === undefined">
-        NA
-      </p>
-    </div>
-
-     <!-- Issue Subject -->
-    <div class="col-md-3">
-      <label class="font-weight-bold  small">Issue Subject</label>
-      <p class="text-secondary small p-0 m-0" *ngIf = "ISSUE_SUBJECT !== ''">
-        {{ ISSUE_SUBJECT }} 
-      </p>
-      <p class="text-secondary small p-0 m-0 " *ngIf = "ISSUE_SUBJECT === null || ISSUE_SUBJECT === '' || ISSUE_SUBJECT === undefined">
-        NA
-      </p>
-    </div>
-
-    <!-- Issue Subject -->
-      <!-- <div class="col-md-3">
-        <label class="w-50 label-13px">Issue Subject</label>
-        <div class="floating-input">
-          <input type="text" class="form-control" formControlName="ISSUE_SUBJECT" placeholder="Issue Subject"
-            [attr.disabled]="viewflag ? '' : null">
-        </div>
-      </div> -->
-
-      <!-- Module -->
-    <div class="col-md-3">
-      <label class="font-weight-bold  small">Module</label>
-      <p class="text-secondary small p-0 m-0" *ngIf = "MODULE_CODE !== ''">
-        {{MODULE_CODE }}
-      </p>
-      <p class="text-secondary small p-0 m-0" *ngIf = "MODULE_CODE === null || MODULE_CODE === '' || MODULE_CODE === undefined">
-        NA
-      </p>
-    </div>
-
-    <!-- Function -->
-    <div class="col-md-3 ">
-      <label class="font-weight-bold  small">Function</label>
-      <p class="text-secondary small p-0 m-0" *ngIf = " FUNCTION_CODE !== '' ">
-        {{ FUNCTION_CODE }}
-      </p>
-      <p class="text-secondary small p-0 m-0" *ngIf = "FUNCTION_CODE === null || FUNCTION_CODE === '' || FUNCTION_CODE === undefined">
-        NA
-      </p>
-    </div>
-      
-    <!-- Created By -->
-    <div class="col-md-3 ">
-      <label class="font-weight-bold  small">Created By</label>
-      <p class="text-secondary small p-0 m-0" *ngIf =  "CREATEDBY !== ''">
-        {{ CREATEDBY }}
-      </p>
-      <p class="text-secondary small p-0 m-0" *ngIf = "CREATEDBY === null || CREATEDBY === '' || CREATEDBY === undefined">
-        NA
-      </p>
-    </div> 
-
-    <!-- CR/Issue Reason -->
-    <div class="col-md-5">
-      <label class="font-weight-bold  small">CR/Issue</label>
-      <p class="text-secondary small p-0 m-0" *ngIf = "CR_ISSUE_REASON !== ''">
-        {{ CR_ISSUE_REASON }} 
-      </p>
-      <p class="text-secondary small p-0 m-0" *ngIf = "CR_ISSUE_REASON === null || CR_ISSUE_REASON === '' || CR_ISSUE_REASON === undefined">
-        NA
-      </p>
-    </div>
-
-  <!-- Uploaded Document List -->
-  <!-- <div class="col-md-7 mb-2 w-100">
-  <label class="font-weight-bold small">Uploaded Document List</label>
-  <table class="table-theam-1 row_bgcolor_1 w-100">
-    <thead class="thead-light">
-      <tr>
-        <th>File Name</th>
-        <th>Uploaded By</th>
-        <th>Date</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let data of DEVELOPER_DOCUMENT_LIST1">
-        <td>{{ data.FILE_NAME }}</td>
-        <td>{{ data.UPLOADEDBY }}</td>
-        <td>{{ data.DATE }}</td>
-        <td>
-          <button type="button" class="btn btn-sm mr-1">
-            <i class="fa fa-eye"></i>
-          </button>
-          <button type="button" class="btn btn-sm">
-            <i class="fa fa-download"></i>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div> -->
-
-<!-- Uploaded Document List -->
-<div class="col-md-7 mb-2 w-100">
-  <label class="font-weight-bold small">Uploaded Document List</label>
-  <table class="table-theam-1 row_bgcolor_1 w-100">
-    <thead class="thead-light">
-      <tr>
-        <th>File Name</th>
-        <!-- <th>Uploaded By</th>
-        <th>Date</th> -->
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let data of DEVELOPER_DOCUMENT_LIST1">
-        <td>{{ data.FILE_NAME }}</td>
-        <!-- <td>{{ data.UPLOADEDBY }}</td>
-        <td>{{ data.DATE }}</td> -->
-        <td>
-          <button
-            type="button"
-            class="btn btn-sm mr-1"
-            (click)="viewDocument(data)"
-            title="View Document"
-          >
-            <i class="fa fa-eye"></i>
-          </button>
-          <button
-            type="button"
-            class="btn btn-sm"
-            (click)="downloadDocument(data)"
-            title="Download Document"
-          >
-            <i class="fa fa-download"></i>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
   </div>
 </div>
 
 <form [formGroup]="form">
+  <div class="card card-padding-none">
+    <div class="card-body">
+      <div class="row row-gap">
+        <!-- Issue No -->
+        <div class="col-3">
+          <label for="issue_no" class="w-50 label-13px">Issue No.</label>
+          <div class="floating-input">
+            <input
+              type="text"
+              id="issue_no"
+              class="form-control form-control-sm"
+              formControlName="ISSUE_NO"
+              placeholder="Issue No"
+              disabled
+            />
+          </div>
+        </div>
 
-<div class="card p-2 mb-2">
-  <div class="card-body">
+        <!-- Request Date -->
+        <div class="col-3">
+          <label class="w-50 label-13px">Date</label>
+          <div class="floating-input">
+            <!-- <input
+              
+              type="date"
+              class="form-control"
+              placeholder="dd-mm-yyyy"
+              formControlName="REQUEST_DATE"
+              disabled
+            /> -->
+            <input
+            
+              type="date"
+              class="form-control"
+              [value]="form.get('REQUEST_DATE')?.value | date : 'yyyy-MM-dd'"
+              [attr.disabled]="true"
+               formControlName="REQUEST_DATE"
+                disabled
+            />
+          </div>
+        </div>
 
-    <!-- Row 1: Radio Buttons -->
-    <div class="d-flex align-items-center mb-3">
-      <div class="form-check form-check-inline ">
-        <input
-          class="form-check-input"
-          type="radio"
-          id="statusOk"
-          name="developerStatus"
-           [attr.disabled]="isDisableRadioBtn ? '' : null"
-          formControlName="DEVELOPER_STATUS"
-          value="OK"
-          (change)="developerStatus = 'OK'"
-        />
-        <label class="form-check-label mt-2" for="statusOk">OK</label>
-      </div>
+        <!-- Project Name -->
+        <div class="col-3">
+          <label for="project_name" class="w-50 label-13px">Project Name</label>
+          <div class="floating-input">
+            <input
+              type="text"
+              id="project_name"
+              class="form-control form-control-sm"
+              formControlName="PROJ_NAME"
+              placeholder="Project Name"
+              disabled
+            />
+          </div>
+        </div>
 
-      <div class="form-check form-check-inline">
-        <input
-          class="form-check-input"
-          type="radio"
-          id="statusClose"
-          name="developerStatus"
-            [attr.disabled]="isDisableRadioBtn ? '' : null"
-          formControlName="DEVELOPER_STATUS"
-          value="CLOSE"
-          (change)="developerStatus = 'CLOSE'"
-        />
-        <label class="form-check-label mt-2" for="statusClose">Close</label>
+        <!-- Cust Ref No. -->
+        <div class="col-3">
+          <label for="cust_ref_no" class="w-50 label-13px">Cust Ref No.</label>
+          <div class="floating-input">
+            <input
+              type="text"
+              id="cust_ref_no"
+              class="form-control form-control-sm"
+              formControlName="CUST_REF_NO"
+              placeholder="Cust Ref No."
+              disabled
+            />
+          </div>
+        </div>
+
+        <!-- Priority -->
+        <div class="col-3">
+          <label for="priority" class="w-50 label-13px">Priority</label>
+          <div class="floating-input">
+            <input
+              type="text"
+              id="priority"
+              class="form-control form-control-sm"
+              formControlName="PRIORITY_DESC"
+              placeholder="Priority"
+              disabled
+            />
+          </div>
+        </div>
+
+        <!-- Raised by -->
+        <div class="col-3">
+          <label for="raised_by" class="w-50 label-13px">Raised by</label>
+          <div class="floating-input">
+            <input
+              type="text"
+              id="raised_by"
+              class="form-control form-control-sm"
+              formControlName="RAISED_BY_NAME"
+              placeholder="Raised By"
+              disabled
+            />
+          </div>
+        </div>
+
+        <!-- Issue Type -->
+        <div class="col-3">
+          <label for="issue-type" class="w-50 label-13px">Issue Type</label>
+          <div class="floating-input">
+            <input
+              type="text"
+              id="issue-type"
+              class="form-control form-control-sm"
+              formControlName="ISSUE_TYPE_DESC"
+              placeholder="Issue Type"
+              disabled
+            />
+          </div>
+        </div>
+
+        <!-- Issue Subject -->
+        <div class="col-3">
+          <label for="issue_subject" class="w-50 label-13px"
+            >Issue Subject</label
+          >
+          <div class="floating-input">
+            <input
+              type="text"
+              id="issue_subject"
+              class="form-control form-control-sm"
+              formControlName="ISSUE_SUBJECT"
+              placeholder="Issue Subject"
+              disabled
+            />
+          </div>
+        </div>
+
+        <!-- Module -->
+        <div class="col-3">
+          <label for="module" class="w-50 label-13px">Module</label>
+          <div class="floating-input">
+            <input
+              type="text"
+              id="module"
+              class="form-control form-control-sm"
+              formControlName="MODULE_CODE"
+              placeholder="Module"
+              disabled
+            />
+          </div>
+        </div>
+
+        <!-- Function -->
+        <div class="col-3">
+          <label for="function" class="w-50 label-13px">Function</label>
+          <div class="floating-input">
+            <input
+              type="text"
+              id="function"
+              class="form-control form-control-sm"
+              formControlName="FUNCTION_CODE"
+              placeholder="Function"
+              disabled
+            />
+          </div>
+        </div>
+
+        <!-- Created By -->
+        <div class="col-3">
+          <label for="created_by" class="w-50 label-13px">Created By</label>
+          <div class="floating-input">
+            <input
+              type="text"
+              id="created_by"
+              class="form-control form-control-sm"
+              formControlName="CREATEDBY"
+              placeholder="Created By"
+              disabled
+            />
+          </div>
+        </div>
+
+        <!-- CR/Issue -->
+        <div class="col-6">
+          <label for="cr_stock_issue" class="w-50 label-13px">CR/Issue</label>
+          <div class="floating-input">
+            <textarea
+              id="cr_stock_issue"
+              class="form-control form-control-sm"
+              formControlName="ASREASON_OF_ISSUE_CR"
+              placeholder="CR/Issue"
+              rows="6"
+              disabled
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Uploaded Document List -->
+        <div class="col-md-6 mt-2 mb-2 w-100">
+          <label class="w-50 label-13px">Uploaded Document List</label>
+          <table class="table-theam-1 row_bgcolor_1 w-100">
+            <thead class="thead-light">
+              <tr>
+                <th>File Name</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of DEVELOPER_DOCUMENT_LIST1">
+                <td>{{ data.FILE_NAME }}</td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-sm card-padding-none"
+                    (click)="viewDocument(data)"
+                    title="View Document"
+                  >
+                    <i class="pi pi-eye"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-sm card-padding-none"
+                    (click)="downloadDocument(data)"
+                    title="Download Document"
+                  >
+                    <i class="pi pi-download"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Description -->
+        <!-- <div class="col-6">
+            <label class="label-13px">Description of CR</label>
+            <div class="floating-input">
+              <textarea class="form-control" rows="4" placeholder="Enter Description" formControlName="DESC_ISSUE"
+                [attr.disabled]="viewflag ? '' : null"></textarea>
+            </div>
+          </div> -->
       </div>
     </div>
-
-    <!-- Row 2: Reason Field (Visible only when CLOSE is selected) -->
-    <div class="form-group mt-2" *ngIf="developerStatus === 'CLOSE'">
-      <label class="font-weight-bold small">Reason</label>
-      <textarea
-        class="form-control"
-        rows="2"
-        formControlName="DEVELOPER_COMMENT"
-        placeholder="Enter Reason"
-      ></textarea>
-    </div>
-
-    <!-- Row 3: Other Fields (Visible only when OK is selected) -->
-    <div *ngIf="developerStatus === 'OK'">
-
-      <div class="form-row mb-3">
-        <div class="col-md-4">
-          <label class="font-weight-bold small">Delivery By</label>
-          <input
-            type="date"
-            class="form-control"
-            formControlName="DELIVERY_BY"
-          />
-        </div>
-
-        <div class="col-md-4">
-          <label class="font-weight-bold small">
-            Est. Hours <span class="text-danger">*</span>
-          </label>
-          <input
-            type="number"
-            class="form-control"
-            formControlName="EST_HOURS"
-            placeholder="Enter Est. Hours"
-            maxlength="3"
-          />
-        </div>
-
-        <div class="col-md-4">
-          <label class="font-weight-bold small">
-            Resolution <span class="text-danger">*</span>
-          </label>
-          <select class="form-control" formControlName="RESOLUTION_CODE">
-            <option
-              *ngFor="let res of RESOLUTION_LIST"
-              [value]="res.RESOLUTION_CODE"
-            >
-              {{ res.RESOLUTION_NAME }}
-            </option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="col-md-6 mb-3">
-          <label class="font-weight-bold small">
-            PM Explanation <span class="text-danger">*</span>
-          </label>
-          <textarea
-            class="form-control"
-            rows="4"
-            formControlName="DEVELOPER_COMMENT"
-            placeholder="Enter PM Explanation"
-          ></textarea>
-        </div>
-
-        <div class="col-6 d-flex flex-column">
-        <div class=" pt-6 mt-3">
-          <button class="btn custom-file-uploader" (click)="fileInput.click()">
-            <i class="pi pi-upload mr-2"></i>Add File
-          </button>
-          <input type="file" #fileInput hidden (change)="onFileSelected($event)" />
-        </div>
-
-  <!-- Table below Add File button -->
-  <div>
-    <table class="table-theam-1 row_bgcolor_1 w-100">
-      <thead>
-        <tr>
-          <th>File Name</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let file of DOCUMENT_ATTECHED_LIST; let i = index">
-          <td>{{ file.FILE_NAME }}</td>
-          <td>
-            <button class="btn btn-sm card-padding-none mr-2" (click)="viewDocument(file)">
-              <i class="pi pi-eye"></i>
-            </button>
-            <button class="btn btn-sm card-padding-none" (click)="deleteFile(i)">
-              <i class="pi pi-trash"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
   </div>
-</div>
-
-
-
-      </div>
-    </div>
-  </div>
-</div>
 </form>
 
-<div class="modal fade" *ngIf="SaveConfirmationPopUp" #saveissue id="saveissue" tabindex="-1" role="dialog"
-    data-keyboard="false" data-backdrop="static" aria-labelledby="saveissue">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-        <h5 class="modal-title" >Confirmation</h5>
+<form [formGroup]="form">
+  <div class="card p-2 mt-2">
+    <div class="card-body">
+      <!-- Row 1: Radio Buttons -->
+      <div class="d-flex align-items-center mb-3">
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            id="statusOk"
+            name="developerStatus"
+            [attr.disabled]="isDisableRadioBtn ? '' : null"
+            formControlName="DEVELOPER_STATUS"
+            value="OK"
+            (change)="developerStatus = 'OK'"
+          />
+          <label class="form-check-label mt-2" for="statusOk">OK</label>
         </div>
-        <div class="modal-body">
-          <div class="form-header text-center">
-            <!-- <h5>Confirmation</h5> -->
-            <p style="text-align: left;margin-left: 15px;">Are you sure you want to save ?</p>
+
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            id="statusClose"
+            name="developerStatus"
+            [attr.disabled]="isDisableRadioBtn ? '' : null"
+            formControlName="DEVELOPER_STATUS"
+            value="CLOSE"
+            (change)="developerStatus = 'CLOSE'"
+          />
+          <label class="form-check-label mt-2" for="statusClose">Close</label>
+        </div>
+      </div>
+
+      <!-- Row 2: Reason Field (Visible only when CLOSE is selected) -->
+      <div class="form-group mt-2" *ngIf="developerStatus === 'CLOSE'">
+        <label class="font-weight-bold small">Reason</label>
+        <textarea
+          class="form-control"
+          rows="2"
+          formControlName="DEVELOPER_COMMENT"
+          placeholder="Enter Reason"
+        ></textarea>
+      </div>
+
+      <!-- Row 3: Other Fields (Visible only when OK is selected) -->
+      <div *ngIf="developerStatus === 'OK'">
+        <div class="form-row mb-3">
+          <div class="col-md-4">
+            <label class="font-weight-bold small">Delivery By</label>
+            <input
+              type="date"
+              class="form-control"
+              formControlName="DELIVERY_BY"
+            />
           </div>
-          <!-- <div class="col-md-12" *ngIf="differenceOfreqAndApp">
+
+          <div class="col-md-4">
+            <label class="font-weight-bold small">
+              Est. Hours <span class="text-danger">*</span>
+            </label>
+            <input
+              type="number"
+              class="form-control"
+              formControlName="EST_HOURS"
+              placeholder="Enter Est. Hours"
+              maxlength="3"
+            />
+          </div>
+
+          <div class="col-md-4">
+            <label class="font-weight-bold small">
+              Resolution <span class="text-danger">*</span>
+            </label>
+            <select class="form-control" formControlName="RESOLUTION_CODE">
+              <option
+                *ngFor="let res of RESOLUTION_LIST"
+                [value]="res.RESOLUTION_CODE"
+              >
+                {{ res.RESOLUTION_NAME }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="col-md-6 mb-3">
+            <label class="font-weight-bold small">
+              PM Explanation <span class="text-danger">*</span>
+            </label>
+            <textarea
+              class="form-control"
+              rows="4"
+              formControlName="DEVELOPER_COMMENT"
+              placeholder="Enter PM Explanation"
+            ></textarea>
+          </div>
+
+          <div class="col-6 d-flex flex-column">
+            <div class="pt-6 pb-2 mt-3">
+              <button
+                class="btn custom-file-uploader"
+                (click)="fileInput.click()"
+              >
+                <i class="pi pi-upload mr-2"></i>Add File
+              </button>
+              <input
+                type="file"
+                #fileInput
+                hidden
+                (change)="onFileSelected($event)"
+              />
+            </div>
+
+            <!-- Table below Add File button -->
+            <div>
+              <table class="table-theam-1 row_bgcolor_1 w-100">
+                <thead>
+                  <tr>
+                    <th>File Name</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let file of DOCUMENT_ATTECHED_LIST; let i = index"
+                  >
+                    <td>{{ file.FILE_NAME }}</td>
+                    <td>
+                      <button
+                        class="btn btn-sm card-padding-none mr-2"
+                        (click)="viewDocument(file)"
+                      >
+                        <i class="pi pi-eye"></i>
+                      </button>
+                      <button
+                        class="btn btn-sm card-padding-none"
+                        (click)="deleteFile(i)"
+                      >
+                        <i class="pi pi-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div
+  class="modal fade"
+  *ngIf="SaveConfirmationPopUp"
+  #saveissue
+  id="saveissue"
+  tabindex="-1"
+  role="dialog"
+  data-keyboard="false"
+  data-backdrop="static"
+  aria-labelledby="saveissue"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmation</h5>
+      </div>
+      <div class="modal-body">
+        <div class="form-header text-center">
+          <!-- <h5>Confirmation</h5> -->
+          <p style="text-align: left; margin-left: 15px">
+            Are you sure you want to save ?
+          </p>
+        </div>
+        <!-- <div class="col-md-12" *ngIf="differenceOfreqAndApp">
           <label> Reason to reduce requested amount:<span class="text-danger">*</span></label>
           <div class="floating-input mb-2">
             <textarea name="" id="" cols="2" class="form-control" placeholder="Approve Reason"  [(ngModel)]="REJECT_REASON"
               ></textarea>
           </div>
         </div> -->
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal"
-            (click)="SAVE_PM_CONFIRMATION_MASTER()">Yes</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-        </div>
- 
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          (click)="SAVE_PM_CONFIRMATION_MASTER()"
+        >
+          Yes
+        </button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          No
+        </button>
       </div>
     </div>
   </div>
+</div>

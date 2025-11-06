@@ -1,13 +1,19 @@
 <div class="grid gap-y-3">
   <div class="card mb-2">
-    <div class=" d-flex flex-row  flex flex-wrap justify-content-between mx-2 ">
+    <div class="d-flex flex-row flex flex-wrap justify-content-between mx-2">
       <div class="d-flex align-content-center flex-wrap align-middle">
-        <h5 class="formName form-header" *ngIf="this.MODE == 'A'">Raise Issue</h5>
- 
-        <h5 class="text-xl form-header" *ngIf="this.MODE == 'E'">View Issue Raised</h5>
-        <p class="Text_Primary form-header Helper_Text status_container" *ngIf="this.MODE == 'E'">{{ STATUS_NAME }}</p>
-        <p class="Text_Primary form-header Helper_Text history_container"
-          *ngIf="this.MODE == 'E' && this.COMMENT_HISTORY.length > 0">
+        <h5 class="formName form-header" *ngIf="this.MODE == 'A'">
+          Raise Issue
+        </h5>
+
+        <h5 class="text-xl form-header" *ngIf="this.MODE == 'E'">
+          View Issue Raised
+        </h5>
+        <!-- <p class="Text_Primary form-header Helper_Text status_container" *ngIf="this.MODE == 'E'">{{ STATUS_NAME }}</p> -->
+        <p
+          class="Text_Primary form-header Helper_Text history_container"
+          *ngIf="this.MODE == 'E' && this.COMMENT_HISTORY.length > 0"
+        >
           ( Please Check History)
         </p>
       </div>
@@ -15,156 +21,250 @@
         <button class="p-element prime-button save-button" (click)="goToList()">List</button>
         <button class="p-element prime-button save-button"  data-target="#saveissue" data-toggle="modal" (click)="SaveConfirmationPopUpOpen()">Save</button>
       </div> -->
- 
-      <div class="d-flex justify-content-end
-">
+
+      <div class="d-flex justify-content-end">
         <div class="d-flex justify-content-between mr-2">
           <div class="mr-2">
-            <button class="p-element prime-button save-button" *ngIf="this.IS_CANCEL == 1"
-              (click)="CANCELISSUERAISED()">
-              Cancel</button>
+            <button
+              class="p-element prime-button save-button"
+              *ngIf="this.IS_CANCEL == 1"
+              (click)="CANCELISSUERAISED()"
+            >
+              Cancel
+            </button>
           </div>
           <!-- <div class=" mr-2">
             <button class="p-element prime-button save-button"
               *ngIf="this.IS_HISTORY == true && this.COMMENT_HISTORY.length > 0"
               (click)="GETISSUERAISEDHISTORY(1)">History</button>
           </div> -->
-          <div class=" mr-2">
-            <button class="p-element prime-button save-button" (click)="GETISSUERAISEDHISTORY(1);showHistoryDialog()">
-              History</button>
+          <div class="mr-2">
+            <button
+              class="p-element prime-button save-button"
+              (click)="GETISSUERAISEDHISTORY(1); showHistoryDialog()"
+            >
+              History
+            </button>
           </div>
-          <button class="p-element prime-button secondary-button" (click)="goToList()">List</button>
+          <button
+            class="p-element prime-button secondary-button"
+            (click)="goToList()"
+          >
+            List
+          </button>
         </div>
- 
-        <div class="mr-2 " *ngIf="!viewflag">
-          <button class="p-element prime-button save-button" data-target="#saveissue" data-toggle="modal"
-            (click)="SaveConfirmationPopUpOpen()">Save</button>
+
+        <div class="mr-2" *ngIf="!viewflag">
+          <button
+            class="p-element prime-button save-button"
+            data-target="#saveissue"
+            data-toggle="modal"
+            (click)="SaveConfirmationPopUpOpen()"
+          >
+            Save
+          </button>
         </div>
- 
       </div>
- 
     </div>
   </div>
- 
+
   <!-- Ithun start -->
   <form [formGroup]="form">
     <div class="card card-padding-none">
       <div class="card-body">
         <div class="row row-gap">
- 
           <!-- Issue No -->
           <div class="col-3">
             <label for="issue_no" class="w-50 label-13px">Issue No.</label>
             <div class="floating-input">
-              <input type="text" id="issue_no" class="form-control form-control-sm" formControlName="ISSUE_NO"
-                placeholder="Enter Issue No" disabled>
+              <input
+                type="text"
+                id="issue_no"
+                class="form-control form-control-sm"
+                formControlName="ISSUE_NO"
+                placeholder="Enter Issue No"
+                disabled
+              />
             </div>
           </div>
- 
+
           <!-- Request Date -->
           <div class="col-3">
             <label class="w-50 label-13px">Date</label>
             <div class="floating-input">
-              <input *ngIf="!viewflag" type="date" class="form-control" placeholder="dd-mm-yyyy"
-                formControlName="REQUEST_DATE" disabled>
-              <input *ngIf="viewflag" type="date" class="form-control"
-                [value]="form.get('REQUEST_DATE')?.value | date:'yyyy-MM-dd'" [attr.disabled]="viewflag ? '' : null">
-            </div>
-          </div>
- 
-           <!-- Project Name -->
-          <div class="col-3">
-            <label class="w-50 label-13px">Project Name</label>
-            <div class="floating-input list-btn">
-              <select class="form-control selectpicker show-tick" formControlName="PRODUCT_CODE" data-live-search="true"
-                title="Select" [attr.disabled]="viewflag ? '' : null">
-                <option *ngFor="let opt of PROJECT_LIST" [value]="opt.PROJ_CODE">{{ opt.PROJ_NAME }}</option>
-              </select>
-            </div>
-          </div>
-          
-           <!-- Issue No -->
-          <div class="col-3">
-            <label for="issue_no" class="w-50 label-13px">Cust Ref No.</label>
-            <div class="floating-input">
-              <input type="text" id="issue_no" class="form-control form-control-sm" formControlName="Cust_REF_NO"
-                placeholder="Enter Cust Ref No"  [attr.disabled]="viewflag ? '' : null">
+              <input
+                *ngIf="!viewflag"
+                type="date"
+                class="form-control"
+                placeholder="dd-mm-yyyy"
+                formControlName="REQUEST_DATE"
+                disabled
+              />
+              <input
+                *ngIf="viewflag"
+                type="date"
+                class="form-control"
+                [value]="form.get('REQUEST_DATE')?.value | date : 'yyyy-MM-dd'"
+                [attr.disabled]="viewflag ? '' : null"
+              />
             </div>
           </div>
 
- 
+          <!-- Project Name -->
+          <div class="col-3">
+            <label class="w-50 label-13px">Project Name</label>
+            <div class="floating-input list-btn">
+              <select
+                class="form-control selectpicker show-tick"
+                formControlName="PRODUCT_CODE"
+                data-live-search="true"
+                title="Select"
+                [attr.disabled]="viewflag ? '' : null"
+              >
+                <option
+                  *ngFor="let opt of PROJECT_LIST"
+                  [value]="opt.PROJ_CODE"
+                >
+                  {{ opt.PROJ_NAME }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Issue No -->
+          <div class="col-3">
+            <label for="issue_no" class="w-50 label-13px">Cust Ref No.</label>
+            <div class="floating-input">
+              <input
+                type="text"
+                id="issue_no"
+                class="form-control form-control-sm"
+                formControlName="Cust_REF_NO"
+                placeholder="Enter Cust Ref No"
+                [attr.disabled]="viewflag ? '' : null"
+              />
+            </div>
+          </div>
+
           <!-- Raised By -->
           <div class="col-3 d-flex flex-column">
             <label class="w-50 label-13px">Raised By</label>
             <div class="d-flex radio-btn-gap">
               <div class="d-flex align-items-center">
-                <input class="mr-2" type="radio" formControlName="RAISED_BY" [value]="'SELF'"
-                  [attr.disabled]="viewflag ? '' : null">
+                <input
+                  class="mr-2"
+                  type="radio"
+                  formControlName="RAISED_BY"
+                  [value]="'SELF'"
+                  [attr.disabled]="viewflag ? '' : null"
+                />
                 <label class="label-13px">Self</label>
               </div>
               <div class="d-flex align-items-center">
-                <input class="mr-2" type="radio" formControlName="RAISED_BY" [value]="'OTHER'"
-                  [attr.disabled]="viewflag ? '' : null">
+                <input
+                  class="mr-2"
+                  type="radio"
+                  formControlName="RAISED_BY"
+                  [value]="'OTHER'"
+                  [attr.disabled]="viewflag ? '' : null"
+                />
                 <label class="label-13px">Other</label>
               </div>
             </div>
           </div>
- 
+
           <!-- Other Name Input -->
           <div class="col-3">
             <label class="small label-13px">Raised by</label>
             <div class="floating-input">
-              <input type="text" class="form-control form-control-sm" placeholder="Raised by Name"
-                formControlName="OTHER_NAME" [attr.disabled]="viewflag ? '' : null || form.get('RAISED_BY')?.value === 'OTHER' ? null : ''">
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Raised by Name"
+                formControlName="OTHER_NAME"
+                [attr.disabled]="
+                  viewflag
+                    ? ''
+                    : null || form.get('RAISED_BY')?.value === 'OTHER'
+                    ? null
+                    : ''
+                "
+              />
             </div>
           </div>
- 
+
           <!-- Issue Type -->
-            <!-- [ngClass]="form.get('RAISED_BY')?.value === 'OTHER' ? 'col-3' : 'col-5'" -->
+          <!-- [ngClass]="form.get('RAISED_BY')?.value === 'OTHER' ? 'col-3' : 'col-5'" -->
           <div class="col-3">
             <label class="w-50 label-13px">Issue Type</label>
             <!-- <div class="floating-input">
               <input type="text" class="form-control" formControlName="ISSUE_TYPE_CODE" placeholder="Enter Issue Type"
                 [attr.disabled]="viewflag ? '' : null">
             </div> -->
-                        <div class="floating-input list-btn">
-              <select class="form-control selectpicker show-tick" data-live-search="true"
-                formControlName="ISSUE_TYPE_CODE" title="Select issue type" [attr.disabled]="viewflag ? '' : null">
-                <option *ngFor="let opt of ISSUE_LIST" [value]="opt.ISSUE_TYPE_CODE">
+            <div class="floating-input list-btn">
+              <select
+                class="form-control selectpicker show-tick"
+                data-live-search="true"
+                formControlName="ISSUE_TYPE_CODE"
+                title="Select issue type"
+                [attr.disabled]="viewflag ? '' : null"
+              >
+                <option
+                  *ngFor="let opt of ISSUE_LIST"
+                  [value]="opt.ISSUE_TYPE_CODE"
+                >
                   {{ opt.ISSUE_TYPE_DESC }}
                 </option>
               </select>
             </div>
           </div>
 
-        <!-- Priority -->
+          <!-- Priority -->
           <div class="col-3">
             <label class="w-50 label-13px">Priority</label>
             <div class="floating-input list-btn">
-              <select class="form-control selectpicker show-tick" data-live-search="true"
-                formControlName="PRIORITY_CODE" title="Select priority" [attr.disabled]="viewflag ? '' : null">
-                <option *ngFor="let opt of PRIORITY_LIST" [value]="opt.PRIORITY_CODE">
+              <select
+                class="form-control selectpicker show-tick"
+                data-live-search="true"
+                formControlName="PRIORITY_CODE"
+                title="Select priority"
+                [attr.disabled]="viewflag ? '' : null"
+              >
+                <option
+                  *ngFor="let opt of PRIORITY_LIST"
+                  [value]="opt.PRIORITY_CODE"
+                >
                   {{ opt.PRIORITY_DESC }}
                 </option>
               </select>
             </div>
           </div>
- 
+
           <!-- Module -->
           <div class="col-3">
             <label class="w-50 label-13px">Module</label>
             <div class="floating-input">
-              <input type="text" class="form-control" formControlName="MODULE_CODE" placeholder="Enter Module"
-                [attr.disabled]="viewflag ? '' : null">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="MODULE_CODE"
+                placeholder="Enter Module"
+                [attr.disabled]="viewflag ? '' : null"
+              />
             </div>
           </div>
- 
+
           <!-- Function -->
           <div class="col-3">
             <label class="w-50 label-13px">Function</label>
             <div class="floating-input">
-              <input type="text" class="form-control" formControlName="ISSUE_FUNCTION_CODE" placeholder="Enter Function"
-                [attr.disabled]="viewflag ? '' : null">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="ISSUE_FUNCTION_CODE"
+                placeholder="Enter Function"
+                [attr.disabled]="viewflag ? '' : null"
+              />
             </div>
           </div>
 
@@ -172,57 +272,77 @@
           <div class="col-6">
             <label class="w-50 label-13px">Issue Subject</label>
             <div class="floating-input">
-              <input type="text" class="form-control" formControlName="ISSUE_SUBJECT" placeholder="Issue Subject"
-                [attr.disabled]="viewflag ? '' : null">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="ISSUE_SUBJECT"
+                placeholder="Issue Subject"
+                [attr.disabled]="viewflag ? '' : null"
+              />
             </div>
           </div>
- 
+
           <!-- CR Stock Issue -->
           <div class="col-6">
             <label class="label-13px">CR/Issue</label>
             <div class="floating-input">
-              <textarea class="form-control" rows="6" placeholder="Enter CR/Issue" formControlName="REASON_ISSUE"
-                [attr.disabled]="viewflag ? '' : null"></textarea>
+              <textarea
+                class="form-control"
+                rows="6"
+                placeholder="Enter CR/Issue"
+                formControlName="REASON_ISSUE"
+                [attr.disabled]="viewflag ? '' : null"
+              ></textarea>
             </div>
           </div>
-     <div class="col-6">
- <div class="col-12 pt-2">
-    <button class="btn custom-file-uploader" (click)="fileInput.click()">
-        <i class="pi pi-upload mr-2"></i>Add File</button>
-      <input type="file" #fileInput hidden (change)="onFileSelected($event)" />
- </div>
-<div class="col-12 pt-2">
-      <table class="table-theam-1 row_bgcolor_1">
-        <thead>
-          <tr>
-            <th class=" ">File Name</th>
-            <th class="">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let file of DOCUMENT_ATTECHED_LIST; let i = index">
-            <td>{{ file.FILE_NAME }}</td>
-            <td>
-               <button 
-               class="btn btn-sm card-padding-none mr-2" 
-               (click)="viewDocument(file)" 
-               title="View Document">
-              <i class="pi pi-eye"></i>
-            </button>
-              <button 
-              class="btn btn-sm card-padding-none" 
-              (click)="deleteFile(i)">
-                <i class="pi pi-trash"></i>
+          <div class="col-6">
+            <div class="col-12 pt-2">
+              <button
+                class="btn custom-file-uploader"
+                (click)="fileInput.click()"
+              >
+                <i class="pi pi-upload mr-2"></i>Add File
               </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-</div>
-
-
- 
-    </div>
+              <input
+                type="file"
+                #fileInput
+                hidden
+                (change)="onFileSelected($event)"
+              />
+            </div>
+            <div class="col-12 pt-2">
+              <table class="table-theam-1 row_bgcolor_1">
+                <thead>
+                  <tr>
+                    <th class=" ">File Name</th>
+                    <th class="">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let file of DOCUMENT_ATTECHED_LIST; let i = index"
+                  >
+                    <td>{{ file.FILE_NAME }}</td>
+                    <td>
+                      <button
+                        class="btn btn-sm card-padding-none mr-2"
+                        (click)="viewDocument(file)"
+                        title="View Document"
+                      >
+                        <i class="pi pi-eye"></i>
+                      </button>
+                      <button
+                        class="btn btn-sm card-padding-none"
+                        (click)="deleteFile(i)"
+                      >
+                        <i class="pi pi-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
           <!-- Description -->
           <!-- <div class="col-6">
             <label class="label-13px">Description of CR</label>
@@ -231,14 +351,11 @@
                 [attr.disabled]="viewflag ? '' : null"></textarea>
             </div>
           </div> -->
- 
         </div>
       </div>
     </div>
   </form>
- 
- 
- 
+
   <!-- <div class="card mt-2 card-padding-none">
  
     <div class="card-body">
@@ -273,18 +390,29 @@
  
     </div>
   </div> -->
- 
-  <div class="modal fade" *ngIf="SaveConfirmationPopUp" #saveissue id="saveissue" tabindex="-1" role="dialog"
-    data-keyboard="false" data-backdrop="static" aria-labelledby="saveissue">
+
+  <div
+    class="modal fade"
+    *ngIf="SaveConfirmationPopUp"
+    #saveissue
+    id="saveissue"
+    tabindex="-1"
+    role="dialog"
+    data-keyboard="false"
+    data-backdrop="static"
+    aria-labelledby="saveissue"
+  >
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-        <h5 class="modal-title" >Confirmation</h5>
+          <h5 class="modal-title">Confirmation</h5>
         </div>
         <div class="modal-body">
           <div class="form-header text-center">
             <!-- <h5>Confirmation</h5> -->
-            <p style="text-align: left;margin-left: 15px;">Are you sure you want to save ?</p>
+            <p style="text-align: left; margin-left: 15px">
+              Are you sure you want to save ?
+            </p>
           </div>
           <!-- <div class="col-md-12" *ngIf="differenceOfreqAndApp">
           <label> Reason to reduce requested amount:<span class="text-danger">*</span></label>
@@ -295,17 +423,28 @@
         </div> -->
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal"
-            (click)="SAVEISSUEREQUESTMASTER()">Yes</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+            (click)="SAVEISSUEREQUESTMASTER()"
+          >
+            Yes
+          </button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            No
+          </button>
         </div>
- 
       </div>
     </div>
   </div>
-  <p-dialog header="Issue History" [(visible)]="displayHistory" [modal]="true" [closable]="true"
-    [style]="{width: '850px'}">
- 
+  <p-dialog
+    header="Issue History"
+    [(visible)]="displayHistory"
+    [modal]="true"
+    [closable]="true"
+    [style]="{ width: '850px' }"
+  >
     <!-- Bootstrap Card inside Dialog -->
     <div class="card shadow">
       <div class="card-body p-0">
@@ -322,11 +461,14 @@
             <tbody>
               <tr *ngFor="let item of historyData">
                 <td>
-                  <span class="badge" [ngClass]="{
-                  'bg-danger': item.status === 'Open',
-                  'bg-warning text-dark': item.status === 'In Progress',
-                  'bg-success': item.status === 'Closed'
-                }">
+                  <span
+                    class="badge"
+                    [ngClass]="{
+                      'bg-danger': item.status === 'Open',
+                      'bg-warning text-dark': item.status === 'In Progress',
+                      'bg-success': item.status === 'Closed'
+                    }"
+                  >
                     {{ item.status }}
                   </span>
                 </td>
@@ -339,5 +481,5 @@
         </div>
       </div>
     </div>
- 
   </p-dialog>
+</div>

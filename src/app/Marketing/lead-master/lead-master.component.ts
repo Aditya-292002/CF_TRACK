@@ -344,7 +344,7 @@ LEAD_URL: [
         // return
         console.log("data : ",data)
 
-         return
+        //  return
         this.http.PostRequest(this.apiUrl.SaveLead, data).then(res => {
           if (res.flag) {
             this.toast.success(res.msg)
@@ -370,8 +370,8 @@ LEAD_URL: [
       this.isUpdate = false;
       this.leadMaster_contact_detail = [];
       this.form.get('LEAD_CURRENCY').setValue("INR")
-      this.form.get('LEAD_URL').setValue("1")
-      this.form.get('LEAD_STATUS').setValue("P")
+      // this.form.get('LEAD_URL').setValue("1")
+      // this.form.get('LEAD_STATUS').setValue("P")
       this.addRow()
       setTimeout(() => {
         $('.selectpicker').selectpicker('refresh').trigger('change');
@@ -430,26 +430,24 @@ LEAD_URL: [
       //   this.toast.warning("Please enter a valid Lead URL (e.g. https://example.com).");
       // } 
       else if(this.form.controls["LEAD_TURNOVER"].invalid){
-        this.toast.warning("Please enter Kind Attention");
+        this.toast.warning("Please enter Lead Turnover");
       } else if(this.form.controls["ACCT_MANAGER"].invalid){
         this.toast.warning("Please select Account Manager");
       } else if(this.form.controls["SALES_REGION_ID"].invalid){
-        this.toast.warning("Please select Template");
+        this.toast.warning("Please select Sales Region");
       } else if(this.form.controls["LEAD_SEGMENT"].invalid){
         this.toast.warning("Please select Segment");
       } else if(this.form.controls["LEAD_STATUS"].invalid){
         this.toast.warning("Please select Status");
       }else if (this.form.controls["LEAD_URL"].invalid) {
-  const urlCtrl = this.form.controls["LEAD_URL"];
-  if ( urlCtrl.errors.pattern ) {
-    this.toast.warning("Please enter a valid Lead URL (e.g. https://example.com).");
-  } else if (urlCtrl.errors.required) {
-     this.toast.warning("Lead URL is required.");
-  }
-}
-
-      
+        const urlCtrl = this.form.controls["LEAD_URL"];
+        if ( urlCtrl.errors.pattern ) {
+        this.toast.warning("Please enter a valid Lead URL (e.g. https://example.com).");
+      } else if (urlCtrl.errors.required) {
+        this.toast.warning("Lead URL is required.");
+      }
     }
+  }
   
     ChangeCountry(){
       if(this.form.controls['LEAD_COUNTRY'].value == 'IND'){

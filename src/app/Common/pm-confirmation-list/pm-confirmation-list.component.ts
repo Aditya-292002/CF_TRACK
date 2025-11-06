@@ -3,6 +3,7 @@ import { ApiUrlService } from 'src/app/services/api-url.service';
 import { HttpRequestServiceService } from 'src/app/services/http-request-service.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-pm-confirmation-list',
   templateUrl: './pm-confirmation-list.component.html',
@@ -27,11 +28,15 @@ export class PmConfirmationListComponent implements OnInit {
   liststatus:any="Pending"; // Default status
   Is_Edit_Visible_status :any; 
   viewflag:boolean = true;
+  projectList: any;
+  statusList: any;
+  form: FormGroup;
   constructor(
     private apiurl: ApiUrlService,
     private http: HttpRequestServiceService,
     private route: RoutingService,
     private router: Router,
+    private formBuilder: FormBuilder,
   ) { 
 
   }
@@ -42,8 +47,16 @@ export class PmConfirmationListComponent implements OnInit {
     this.USER_ID = this.userData[0].USERID;
     this.FUNCTION_CODE = localStorage.getItem('FUNCTION_CODE');
     this.LISTSTATUS = sessionStorage.getItem('LISTSTATUS');
+    this.GET_PM_COMMON_LIST()
     this.GET_PM_CONFIRMATION_LIST();
-     
+    
+
+     this.form = this.formBuilder.group({
+      PROJ_CODE: [],
+      STATUS_CODE: []
+    
+    });
+    
   }
 
   GET_PM_CONFIRMATION_LIST(){
@@ -51,6 +64,7 @@ export class PmConfirmationListComponent implements OnInit {
         "USER_ID": (+this.USER_ID),
         "FUNCTION_CODE": ((this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE),
          "LISTSTATUS": ( this.liststatus == "Pending") ? "P" : "C",
+         "EMP_CODE": (+this.userData[0].EMP_CODE),
       }
        this.http.PostRequest(this.apiurl.GetIssuePmApprovalList, data).then((res: any) => {
        this.ISSUE_REQUEST_COLUMN_LIST = res.Columnlist;
@@ -59,6 +73,21 @@ export class PmConfirmationListComponent implements OnInit {
        this.SAMPEL_ISSUE_REQUEST_LIST_DATA = this.ISSUE_REQUEST_LIST_DATA;
       //  this.LISTSTATUS = res.LISTSTATUS;
        console.log('LISTSTATUS set to:', this.liststatus);
+     
+    });
+     }
+     GET_PM_COMMON_LIST(){
+      let data = {
+        "USER_ID": (+this.userData[0].USERID),
+        "EMP_CODE": (+this.userData[0].EMP_CODE),
+       
+      }
+       this.http.PostRequest(this.apiurl.GetPMCommonList, data).then((res: any) => {
+        this.projectList = res.ProjectList,
+        this.statusList = res.StatusList,
+        console.log(this.projectList,this.statusList,"values")
+       
+       console.log('res',res);
      
     });
      }
@@ -76,7 +105,7 @@ export class PmConfirmationListComponent implements OnInit {
       return
     }
   }
-
+ 
 
   //  GetInputFilter(val:any){
   //   const lowerSearchText = val.toLowerCase();
