@@ -191,5 +191,6 @@ public GetIssueHelpDeskMasterList: string='/TicketSystem/GetIssueHelpDeskMasterL
 public GetLeadCommonList: string ='/Lead/GetLeadCommonList';
 public SaveLead: string ='/Lead/SaveLead';
 public GetPMCommonList: string = '/TicketSystem/GetPMCommonList';
+public GetIssueRaisedHistoryList: string='/TicketSystem/GetIssueRaisedHistoryList'; 
 
 }
