@@ -1,100 +1,79 @@
-<div class="d-flex flex-row justify-content-between align-items-center">
-  <h5 class="h5 mb-0">PM Confirmation List</h5>
 
-  <!-- <div class="d-flex ml-2 justify-content-between align-items-center mt-2">
-    <div class="p-2">
-      <label class="Text_Primary Helper_Text">
-        <input
-          type="radio"
-          name="status"
-          [(ngModel)]="liststatus"
-          value="Pending"
-          (change)="setStatus('Pending')"
-          class="mr-1"
-        />
-        Pending
-      </label>
-    </div>
-    <div class="p-1">
-      <label class="Text_Primary Helper_Text">
-        <input
-          class="mr-1"
-          type="radio"
-          name="status"
-          [(ngModel)]="liststatus"
-          value="Closed"
-          (change)="setStatus('Closed')"
-        />
-        Closed
-      </label>
-    </div>
-  </div> -->
+<div class="d-flex flex-row justify-content-between align-items-center flex-wrap">
+  <h5 class="h5 mb-0 mr-3">PM Confirmation List</h5>
 
-  <form [formGroup]="form">
-    <div class="d-flex flex-row justify-content-between align-items-center">
-      <!-- <label>Project List :</label> -->
-      <div class="floating-input list-btn mr-2">
-        <select
-          class="form-control selectpicker show-tick"
-          formControlName="PROJ_CODE"
-          (change)="onProjectChange($event.target.value)"
-          data-live-search="true"
-          id="projectType"
-          title="Select Project"
-        >
-          <option
-            *ngFor="let opt of projectList; let i = index"
-            [value]="opt.PROJ_CODE"
+  <form [formGroup]="form" class="flex-grow-1 mx-2">
+    <div class="d-flex flex-row align-items-center w-100">
+
+      <!-- Project Dropdown -->
+      <div class="floating-input list-btn mr-2 flex-fill position-relative">
+        <div class="dropdown-wrapper">
+          <select
+            class="form-control selectpicker show-tick"
+            formControlName="PROJ_CODE"
+            (change)="onProjectChange($event.target.value)"
+            data-live-search="true"
+            id="projectType"
+            title="Select Project"
           >
-            {{ opt.PROJ_NAME }}
-          </option>
-        </select>
+            <option *ngFor="let opt of projectList" [value]="opt.PROJ_CODE">
+              {{ opt.PROJ_NAME }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Close button -->
         <button
           type="button"
-          class="close"
+          class="btn p-0 close-btn"
           aria-label="Close"
-           (click)="resetProjectDropdown()"
-        
+          (click)="resetProjectDropdown()"
         >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <!-- <label>Status List :</label> -->
-      <div class="floating-input list-btn">
-        <select
-          class="form-control selectpicker show-tick"
-          formControlName="STATUS_CODE"
-          data-live-search="true"
-          title="Select Status"
-          id="statusType"
-          (change)="onStatusChange($event.target.value)"
-        >
-          <option
-            *ngFor="let opt of statusList; let i = index"
-            [selected]="opt.STATUS_CODE == form.controls['STATUS_CODE'].value"
-            [value]="opt.STATUS_CODE"
+
+      <!-- Status Dropdown -->
+      <div class="floating-input list-btn flex-fill position-relative">
+        <div class="dropdown-wrapper">
+          <select
+            class="form-control selectpicker show-tick"
+            formControlName="STATUS_CODE"
+            data-live-search="true"
+            title="Select Status"
+            id="statusType"
+            (change)="onStatusChange($event.target.value)"
           >
-            {{ opt.STATUS_NAME }}
-          </option>
-        </select>
+            <option
+              *ngFor="let opt of statusList"
+              [selected]="opt.STATUS_CODE == form.controls['STATUS_CODE'].value"
+              [value]="opt.STATUS_CODE"
+            >
+              {{ opt.STATUS_NAME }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Close button -->
         <button
           type="button"
-          class="close"
-        (click)="resetStatusDropdown()"
+          class="btn p-0 close-btn"
           aria-label="Close"
+          (click)="resetStatusDropdown()"
         >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
     </div>
-    <!-- [ngClass]="{'invalid-control':isSubmited && form.controls['STATUS_CODE'].errors?.required}"> -->
   </form>
 
-  <div class="input-group" style="max-width: 259px; height: 29.61px">
+  <!-- Search box -->
+  <div class="input-group ml-3" style="max-width: 259px; height: 29.61px;">
     <div class="input-group-prepend">
       <span
         class="input-group-text bg-white border-right-0"
-        style="height: 29.61px">
+        style="height: 29.61px;"
+      >
         <i class="fa fa-search"></i>
       </span>
     </div>
@@ -104,9 +83,11 @@
       placeholder="Search"
       [(ngModel)]="SearchValue"
       (ngModelChange)="GetInputFilter(SearchValue)"
-      style="box-shadow: none; height: 29.61px"/>
+      style="box-shadow: none; height: 29.61px;"
+    />
   </div>
 </div>
+
 
 <div class="mt-2">
   <div class="card">

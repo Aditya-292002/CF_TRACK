@@ -11,6 +11,8 @@ import { RoutingService } from 'src/app/services/routing.service';
 import { SharedServiceService } from 'src/app/services/shared-service.service';
 import { ValidationService } from 'src/app/services/validation.service';
 import { DatePipe } from '@angular/common';
+import { MatFormField } from '@angular/material';
+import { debuglog } from 'util';
 declare var $: any;
 declare var jQuery: any;
 interface Document {
@@ -75,6 +77,7 @@ export class IssueRequestMasterComponent implements OnInit {
   GET_STATUS_CODE: any;
   visibleHistoryFun: boolean = false;
    COMMENT_HISTORY: any = [];
+   checkStatus:any
    //= [{
   //   status: '',
   //   STATUS_COLOR_NAME: '',
@@ -108,6 +111,7 @@ export class IssueRequestMasterComponent implements OnInit {
   product_code: any;
   otherName: string = '';
   displayHistory: boolean = false;
+RESOLUTION_LIST:any
 
   dropdownList: { PRIORITY_CODE: string; PRIORITY_DESC: string; }[];
   dropdownList1 = [
@@ -182,6 +186,11 @@ export class IssueRequestMasterComponent implements OnInit {
       PRIORITY_CODE: [{ value: '', disabled: this.viewflag }],
       REASON_ISSUE: [{ value: '', disabled: this.viewflag }],
       DESC_ISSUE: [{ value: '', disabled: this.viewflag }],
+DEVELOPER_COMMENT: [{ value: '', disabled: this.viewflag }],
+DELIVERY_BY: [{ value: '', disabled: this.viewflag }],
+EST_HOURS: [{ value: '', disabled: this.viewflag }],
+RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
+
     });
     this.form.get('RAISED_BY').valueChanges.subscribe(value => {
       if (value === 'OTHER') {
@@ -217,6 +226,7 @@ export class IssueRequestMasterComponent implements OnInit {
     // Format as yyyy-MM-dd because HTML date input requires this format
     this.REQUEST_DATE = new Date()
     this.GETISSUEREQUESTMASTER();
+    this.GetPMConfirmationList()
 
     this.dropdownList = [
       { PRIORITY_CODE: '01', PRIORITY_DESC: 'Low' },
@@ -339,7 +349,8 @@ export class IssueRequestMasterComponent implements OnInit {
 
   //   });
 
-  //  }
+  //  }\
+  response1:any
   GETISSUERAISEDDETAILSBYISSUENO() {
     console.log('GETISSUERAISEDDETAILSBYISSUENO inside');
 
@@ -351,7 +362,13 @@ export class IssueRequestMasterComponent implements OnInit {
     };
 
     this.http.PostRequest(this.apiurl.GETISSUERAISEDDETAILSBYISSUENO, data).then((res: any) => {
+     debugger
+     
       const response = res.datalist[0];
+      if(res.datalist[0].STATUS_CODE=="40" ||res.datalist[0].STATUS_CODE=="42"){
+           this.response1=res.datalist[1];  
+      }
+       
       if (!response) return;
 
       // Save response values for non-form-related properties
@@ -363,6 +380,10 @@ export class IssueRequestMasterComponent implements OnInit {
       this.MODULE_DESC = response.MODULE_DESC;
       this.FUNCTION_DESC = response.FUNCTION_DESC;
       this.product_code = response.PRODUCT_CODE;
+      if(this.response1){
+        this.checkStatus=this.response1.STATUS_CODE
+      }
+      
 
       // Fill the form using patchVa
       //  PRODUCT_CODE: response.PRODUCT_CODE,lue
@@ -371,14 +392,22 @@ export class IssueRequestMasterComponent implements OnInit {
         REQUEST_DATE: new Date(response.REQUEST_DATE),
         PRIORITY_CODE: response.PRIORITY_CODE,
         RAISED_BY: response.RAISED_BY === this.userData[0].LOGIN_ID || response.REQUESTER === this.userData[0].LOGIN_ID ? 'SELF' : 'OTHER',
-        OTHER_NAME: response.REQUESTER !== this.userData[0].LOGIN_ID ? response.REQUESTER : '',
+        OTHER_NAME: response.REQUESTER !== this.userData[0].LOGIN_ID ? response.REQUESTER : this.userData[0].LOGIN_ID,
         ISSUE_TYPE_CODE: response.ISSUE_TYPE_CODE,
         ISSUE_SUBJECT: response.ISSUE_SUBJECT,
         MODULE_CODE: response.MODULE_CODE,
         ISSUE_FUNCTION_CODE: response.FUNCTION_CODE,
         REASON_ISSUE: response.ASREASON_OF_ISSUE_CR,
         DESC_ISSUE: response.DESC_OF_ISSUE_CR,
-        Cust_REF_NO: response.CUST_REF_NO
+        Cust_REF_NO: response.CUST_REF_NO,
+
+        RESOLUTION_CODE:this.response1.RESOLUTION_CODE,
+        EST_HOURS:this.response1.EST_HOURS,
+        DELIVERY_BY:this.response1.DELIVERY_BY,
+        DEVELOPER_COMMENT:this.response1.DEVELOPER_COMMENT
+     
+       
+
       });
 
       this.form.get('PRODUCT_CODE').setValue(response.PRODUCT_CODE);
@@ -620,7 +649,17 @@ export class IssueRequestMasterComponent implements OnInit {
     });
   }
 
+ GetPMConfirmationList() {
+    this.http.PostRequest(this.apiurl.GetIssueHelpDeskMasterList, {}).then((res: any) => {
+      if (res.flag == 1) {
+        const response = res.Resolution;
+        this.RESOLUTION_LIST = response;
+      } else {
+        this.RESOLUTION_LIST = []
+      }
 
+    });
+  }
   showFunctionDialog() {
     this.visibleFunction = true;
   }

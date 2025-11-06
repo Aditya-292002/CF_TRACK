@@ -109,6 +109,8 @@
               />
             </div>
           </div>
+            
+ 
 
           <!-- Project Name -->
           <div class="col-3">
@@ -307,11 +309,8 @@
                 type="file"
                 #fileInput
                 hidden
-                (change)="onFileSelected($event)"
-              />
-            <small class="mb-0">
-    (Accepted file formats: PDF, JPG, PNG, XLS,Doc)
-  </small>
+                (change)="onFileSelected($event)"/>
+              <small class="mb-0">(Accepted file formats: PDF, JPG, PNG, Xls, Xlsx, Doc, Docx)</small>
             </div>
             <div class="col-12 pt-2">
               <table class="table-theam-1 row_bgcolor_1">
@@ -358,9 +357,114 @@
             </div>
           </div> -->
         </div>
+<div class=" p-2 mt-2">
+  <div class="">
+
+    <!-- Row 1: Radio Buttons -->
+    <div class="row row-gap">
+      <!-- You may have your radio buttons here -->
+    </div>
+
+    <!-- Row 2: Reason Field (Visible only when CLOSE is selected) -->
+    <div class="form-group mt-2" *ngIf="checkStatus === '42'">
+      <label class="font-weight-bold small">Reason</label>
+      <textarea
+        class="form-control"
+        rows="2"
+        formControlName="DEVELOPER_COMMENT"
+        placeholder="Enter Reason"
+        disabled
+      ></textarea>
+    </div>
+
+    <!-- Row 3: Other Fields (Visible only when OK is selected) -->
+    <div  class="row mt-3" *ngIf="checkStatus === '40'">
+      
+      <!-- Delivery By -->
+      <div class="col-3">
+        <label class="w-50 label-13px">Delivery By</label>
+        <div class="floating-input">
+          <input
+            *ngIf="!viewflag"
+            type="date"
+            class="form-control"
+            placeholder="dd-mm-yyyy"
+            formControlName="DELIVERY_BY"
+            disabled
+          />
+          <input
+            *ngIf="viewflag"
+            type="date"
+            class="form-control"
+            [value]="form.get('DELIVERY_BY')?.value | date : 'yyyy-MM-dd'"
+            [attr.disabled]="viewflag ? '' : null"
+          />
+        </div>
+      </div>
+
+    
+
+      <!-- Est. Man Hours (text input) -->
+      <div class="col-3">
+        <label class="w-50 label-13px">Est. Man Hours</label>
+        <div class="floating-input">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="EST_HOURS"
+            placeholder="Enter Est. Man Hours"
+            [attr.disabled]="viewflag ? '' : null"
+          />
+        </div>
+      </div>
+
+      <!-- Priority -->
+      <div class="col-3">
+        <label class="w-50 label-13px">Resolution</label>
+        <div class="floating-input list-btn">
+          <select
+            class="form-control selectpicker show-tick"
+            data-live-search="true"
+            formControlName="RESOLUTION_CODE"
+            title="Select Resolution"
+            [attr.disabled]="viewflag ? '' : null"
+          >
+            <option
+              *ngFor="let res of RESOLUTION_LIST"
+              [value]="res.RESOLUTION_CODE"
+            >
+              {{ res.RESOLUTION_NAME }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- PM Explanation -->
+      <div class="col-6">
+        <label class="label-13px">PM Explanation</label>
+        <div class="floating-input">
+          <textarea
+            class="form-control"
+            rows="6"
+            placeholder="PM Explanation"
+            formControlName="DEVELOPER_COMMENT"
+            [attr.disabled]="viewflag ? '' : null"
+          ></textarea>
+        </div>
+      </div>
+
+    </div> <!-- end of Row 3 -->
+
+  </div> <!-- end of card-body -->
+</div> 
+        
       </div>
     </div>
   </form>
+
+  <!-- end of card -->
+
+ 
 
   <!-- <div class="card mt-2 card-padding-none">
  

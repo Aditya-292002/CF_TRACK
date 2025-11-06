@@ -7,7 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { Console } from 'console';
-
+declare var $: any;
+declare var jQuery: any;
 @Component({
   selector: 'app-pm-confirmation',
   templateUrl: './pm-confirmation.component.html',
@@ -68,6 +69,8 @@ export class PmConfirmationComponent implements OnInit {
   liststatus: any = "Pending";
   isDisableRadioBtn: boolean = false
   minDate:any
+  displayHistory: boolean = false;
+  COMMENT_HISTORY:any
   constructor(
     private fb: FormBuilder,
     private route: RoutingService,
@@ -91,6 +94,8 @@ export class PmConfirmationComponent implements OnInit {
 
     return `${day}-${month}-${year}`;
   }
+
+  //  this.DATE = this.datePipe.transform(new Date(), 'dd-MMM-yyyy')
   ngOnInit(): void {
     const today1 = new Date().toISOString().split('T')[0];
     this.minDate =today1;
@@ -158,8 +163,16 @@ export class PmConfirmationComponent implements OnInit {
 
     });
   }
-
-
+  showHistoryDialog() {
+    console.log("calling")
+     this.displayHistory = true;
+  }
+ ChangeFDate(){
+    this.DELIVERY_BY = this.datepipe.transform(new Date(this.DELIVERY_BY), 'dd-MMM-yyyy')
+      setTimeout(() => {
+          $('.selectpicker').selectpicker('refresh').trigger('change');
+       }, 100);
+    }
   GetPMConfirmationList() {
     this.http.PostRequest(this.apiurl.GetIssueHelpDeskMasterList, {}).then((res: any) => {
       if (res.flag == 1) {
@@ -171,6 +184,22 @@ export class PmConfirmationComponent implements OnInit {
 
     });
   }
+    GET_PM_HISTORY() {
+
+    const  data={
+ISSUE_ID:localStorage.getItem("ISSUE_ID")
+      }
+      this.http.PostRequest(this.apiurl.GetDeveloperHistoryList, data).then((res: any) => {
+        console.log(res,"GetDeveloperHistoryList : ")
+      if (res.flag == 1) {
+       this.COMMENT_HISTORY = res.Datalist;
+      } else {
+        this.COMMENT_HISTORY = []
+      }
+    });
+    }
+
+  
 
   GETISSUERAISEDDETAILSBYISSUENO() {
     console.log('GETISSUERAISEDDETAILSBYISSUENO inside');
