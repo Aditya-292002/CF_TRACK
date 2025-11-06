@@ -30,60 +30,69 @@
     </div>
   </div>
 
-
   <form [formGroup]="form">
- 
-  <div class="d-flex flex-row justify-content-between  align-items-center" >
-    <!-- <label>Project List :</label> -->
-    <div class="floating-input list-btn mr-2">
-      <select class="form-control selectpicker show-tick" 
-        formControlName="PROJ_CODE"
-       (change)="onProjectChange($event.target.value)"
-        data-live-search="true" title="Select Project">
-        <option
-          *ngFor="let opt of projectList; let i = index"
-          [value]="opt.PROJ_CODE">
-          {{ opt.PROJ_NAME }}
-        </option>
-      </select>
-      <button type="button" class="close"
-        (click)="form.controls['PROJ_CODE'].reset()" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <!-- <label>Status List :</label> -->
-    <div class="floating-input list-btn">
-      <select
-        class="form-control selectpicker show-tick"
-        formControlName="STATUS_CODE"
-        data-live-search="true"
-        title="Select Status"
-        (change)="onStatusChange($event.target.value)"
+    <div class="d-flex flex-row justify-content-between align-items-center">
+      <!-- <label>Project List :</label> -->
+      <div class="floating-input list-btn mr-2">
+        <select
+          class="form-control selectpicker show-tick"
+          formControlName="PROJ_CODE"
+          (change)="onProjectChange($event.target.value)"
+          data-live-search="true"
+          title="Select Project"
         >
-        <option
-          *ngFor="let opt of statusList; let i = index"
-          [selected]="opt.STATUS_CODE == form.controls['STATUS_CODE'].value"
-          [value]="opt.STATUS_CODE">
-          {{ opt.STATUS_NAME }}
-        </option>
-      </select>
-      <button
-        type="button" class="close" onclick="resetDropdown('leadMasterType')"
-        (click)="form.controls['STATUS_CODE'].reset()" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
+          <option
+            *ngFor="let opt of projectList; let i = index"
+            [value]="opt.PROJ_CODE"
+          >
+            {{ opt.PROJ_NAME }}
+          </option>
+        </select>
+        <button
+          type="button"
+          class="close"
+          (click)="form.controls['PROJ_CODE'].reset()"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- <label>Status List :</label> -->
+      <div class="floating-input list-btn">
+        <select
+          class="form-control selectpicker show-tick"
+          formControlName="STATUS_CODE"
+          data-live-search="true"
+          title="Select Status"
+          (change)="onStatusChange($event.target.value)"
+        >
+          <option
+            *ngFor="let opt of statusList; let i = index"
+            [selected]="opt.STATUS_CODE == form.controls['STATUS_CODE'].value"
+            [value]="opt.STATUS_CODE"
+          >
+            {{ opt.STATUS_NAME }}
+          </option>
+        </select>
+        <button
+          type="button"
+          class="close"
+          onclick="resetDropdown('leadMasterType')"
+          (click)="form.controls['STATUS_CODE'].reset()"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
     </div>
-  </div>
-     <!-- [ngClass]="{'invalid-control':isSubmited && form.controls['STATUS_CODE'].errors?.required}"> -->
+    <!-- [ngClass]="{'invalid-control':isSubmited && form.controls['STATUS_CODE'].errors?.required}"> -->
+  </form>
 
-
-
-</form>
-
-  
-  <div class="input-group" style="max-width: 259px">
+  <div class="input-group" style="max-width: 259px; height: 29.61px">
     <div class="input-group-prepend">
-      <span class="input-group-text bg-white border-right-0">
+      <span
+        class="input-group-text bg-white border-right-0"
+        style="height: 29.61px">
         <i class="fa fa-search"></i>
       </span>
     </div>
@@ -93,8 +102,7 @@
       placeholder="Search"
       [(ngModel)]="SearchValue"
       (ngModelChange)="GetInputFilter(SearchValue)"
-      style="box-shadow: none"
-    />
+      style="box-shadow: none; height: 29.61px"/>
   </div>
 </div>
 

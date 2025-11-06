@@ -128,9 +128,19 @@ export class IssueRequestMasterComponent implements OnInit {
 
   
 
-  deleteFile(index: number) {
-    this.DOCUMENT_ATTECHED_LIST.splice(index, 1);
+  deleteFile(index: number, fileInput?: HTMLInputElement): void {
+  // Remove the file from the list
+  this.DOCUMENT_ATTECHED_LIST.splice(index, 1);
+  console.log('After delete:', this.DOCUMENT_ATTECHED_LIST);
+
+  // ✅ Force reset of file input so the same file can be re-uploaded
+  if (fileInput) {
+    fileInput.type = 'text';  // temporarily change the type
+    fileInput.type = 'file';  // revert it back to file (forces DOM refresh)
   }
+}
+
+
   // constructor(private router: Router, private urlService: UrlService, private Cmmon: CommonService,
   //   private apiService: ApiService,private sharedservice: SharedService,private route:ActivatedRoute
   //   ,private Toastr:ToastrService,private MessageService:MessageService) { }
