@@ -89,27 +89,22 @@
           </div>
 
           <!-- Request Date -->
-          <div class="col-3">
-            <label class="w-50 label-13px">Date</label>
-            <div class="floating-input">
-              <input
-                *ngIf="!viewflag"
-                type="date"
-                class="form-control"
-                placeholder="dd-mm-yyyy"
-                formControlName="REQUEST_DATE"
-                disabled
-              />
-              <input
-                *ngIf="viewflag"
-                type="date"
-                class="form-control"
-                [value]="form.get('REQUEST_DATE')?.value | date : 'yyyy-MM-dd'"
-                [attr.disabled]="viewflag ? '' : null"
-              />
-            </div>
-          </div>
-            
+
+           <div class="col-3">
+          <label class="w-50 label-13px">Date</label>
+							<div class="floating-input mb-2">
+								<input type="text" class="form-control" placeholder="dd-mm-yyyy" formControlName="REQUEST_DATE" [(ngModel)]="REQUEST_DATE" (change)="ChangeFDate()" readonly>
+								<!-- <app-date-picker id="reqdate" [(ngModel)]="JV_DATE" #reqdate class="date-input" [ngModelOptions]="{standalone: true}"></app-date-picker> -->
+								<div class="date-input">
+									<mat-form-field fxFlex="100" appearance="fill">
+										<!-- <mat-icon matDatepickerToggleIcon (click)="clearDate($event)">clear</mat-icon> -->
+										<mat-datepicker-toggle matPrefix [for]="picker2"  id='cal2' #cal2></mat-datepicker-toggle>
+										<input class="form-control" placeholder="dd-mm-yyyy" (dateChange)="ChangeFDate()" [value]="REQUEST_DATE" matInput [(ngModel)]="REQUEST_DATE" [ngModelOptions]="{standalone: true}" [matDatepicker]="picker2" [min]="minDate"  [disabled]="true" readonly />
+							  			<mat-datepicker #picker2 id="picker2"></mat-datepicker>
+									</mat-form-field>
+								</div>
+							</div>
+        </div>
  
 
           <!-- Project Name -->
@@ -381,7 +376,7 @@
     <div  class="row mt-3" *ngIf="checkStatus === '40'">
       
       <!-- Delivery By -->
-      <div class="col-3">
+      <!-- <div class="col-3">
         <label class="w-50 label-13px">Delivery By</label>
         <div class="floating-input">
           <input
@@ -400,8 +395,22 @@
             [attr.disabled]="viewflag ? '' : null"
           />
         </div>
-      </div>
-
+      </div> -->
+ <div class="col-3">
+          <label class="w-50 label-13px">Delivery By</label>
+							<div class="floating-input mb-2">
+								<input type="text" class="form-control" placeholder="dd-mm-yyyy" formControlName="DELIVERY_BY" [(ngModel)]="DELIVERY_BY" (change)="ChangeFDate()" readonly>
+								<!-- <app-date-picker id="reqdate" [(ngModel)]="JV_DATE" #reqdate class="date-input" [ngModelOptions]="{standalone: true}"></app-date-picker> -->
+								<div class="date-input">
+									<mat-form-field fxFlex="100" appearance="fill">
+										<!-- <mat-icon matDatepickerToggleIcon (click)="clearDate($event)">clear</mat-icon> -->
+										<mat-datepicker-toggle matPrefix [for]="picker3"  id='cal3' #cal3></mat-datepicker-toggle>
+										<input class="form-control" placeholder="dd-MMM-yyyy" (dateChange)="ChangeFDate()" [value]="DELIVERY_BY" matInput [(ngModel)]="DELIVERY_BY" [ngModelOptions]="{standalone: true}" [matDatepicker]="picker3" [min]="minDate"  [disabled]="true" readonly />
+							  			<mat-datepicker #picker3 id="picker3"></mat-datepicker>
+									</mat-form-field>
+								</div>
+							</div>
+        </div>
     
 
       <!-- Est. Man Hours (text input) -->
@@ -548,50 +557,7 @@
       </div>
     </div>
   </div>
-  <p-dialog
-    header="Issue History"
-    [(visible)]="displayHistory1"
-    [modal]="true"
-    [closable]="true"
-    [style]="{ width: '850px' }"
-  >
-    <!-- Bootstrap Card inside Dialog -->
-    <div class="card shadow">
-      <div class="card-body p-0">
-        <div class="table-responsive">
-          <table class="table table-striped table-bordered mb-0">
-            <thead class="table-secondary">
-              <tr>
-                <th>Status</th>
-                <th>User Name</th>
-                <th>Time</th>
-                <th>Comment / Remarks</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let item of historyData">
-                <td>
-                  <span
-                    class="badge"
-                    [ngClass]="{
-                      'bg-danger': item.status === 'Open',
-                      'bg-warning text-dark': item.status === 'In Progress',
-                      'bg-success': item.status === 'Closed'
-                    }"
-                  >
-                    {{ item.status }}
-                  </span>
-                </td>
-                <td>{{ item.userName }}</td>
-                <td>{{ item.time }}</td>
-                <td>{{ item.comment }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </p-dialog>
+
 </div>
  <p-dialog
   header="History Details"
