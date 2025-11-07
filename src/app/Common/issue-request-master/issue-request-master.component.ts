@@ -380,28 +380,10 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
     this.http.PostRequest(this.apiurl.GETISSUERAISEDDETAILSBYISSUENO, data).then((res: any) => {
   debugger
       const response = res.datalist[0];
-      if((res.datalist[0].STATUS_CODE=="40" ||res.datalist[0].STATUS_CODE=="42")&&res.datalist[0].STATUS_CODE!=="00"){
-           this.response1=res.datalist[1];  
-            this.form.patchValue({
-        RESOLUTION_CODE:this.response1.RESOLUTION_CODE,
-        EST_HOURS:this.response1.EST_HOURS,
-        DELIVERY_BY:this.datepipe.transform(new Date(this.response1.DELIVERY_BY), 'dd-MMM-yyyy'),
-        DEVELOPER_COMMENT:this.response1.DEVELOPER_COMMENT
-     
-        });
-        setTimeout(() => {
-        let date =this.datepipe.transform(new Date(this.response1.DELIVERY_BY), 'dd-MMM-yyyy');
-        console.log('test',date);
-        this.form.get('DELIVERY_BY').setValue(date);
-   
-         this.form.get('RESOLUTION_CODE').setValue(this.response1.RESOLUTION_CODE);
-        $('.selectpicker').selectpicker('refresh').trigger('change');
-      }, 100);
-      }
-      if(this.response1){
-        this.checkStatus=this.response1.STATUS_CODE
-      }
 
+    //  if(this.response1){
+        this.checkStatus=response.STATUS_CODE
+//}
       // Save response values for non-form-related properties
       this.IS_HISTORY = response.IS_HISTORY;
       this.ISSUE_ID = response.ISSUE_ID;
@@ -432,8 +414,16 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
       });
 
       this.form.get('PRODUCT_CODE').setValue(response.PRODUCT_CODE);
-
-
+if(response.DELIVERY_BY!=""){
+  var date =this.datepipe.transform(new Date(response.DELIVERY_BY), 'dd-MMM-yyyy');
+}
+     this.form.patchValue({
+        RESOLUTION_CODE:response.RESOLUTION_CODE,
+        EST_HOURS:response.EST_HOURS,
+        DELIVERY_BY:date,
+        DEVELOPER_COMMENT:response.DEVELOPER_COMMENT
+     
+        });
       // Handle dynamic fields (like ReasonOfErrorCR toggle)
       if (response.ISSUE_TYPE_CODE === '02') {
         this.isReasonofErrorCR = true;
@@ -465,7 +455,19 @@ this.RESOLVE_DOC_LIST = this.GET_DOCUMENT_LIST.filter((x: any) => x.TYPE === 'R'
         // this.form.get('OTHER_NAME').setValue(this.RAISED_BY_NAME);
         $('.selectpicker').selectpicker('refresh').trigger('change');
       }, 100);
+
+        setTimeout(() => {
+        let date =this.datepipe.transform(new Date(response.DELIVERY_BY), 'dd-MMM-yyyy');
+        console.log('test',date);
+        this.form.get('DELIVERY_BY').setValue(date);
+   
+         this.form.get('RESOLUTION_CODE').setValue(response.RESOLUTION_CODE);
+        $('.selectpicker').selectpicker('refresh').trigger('change');
+      }, 100);
     });
+
+
+      
   }
 
   GetissueSelect(code: any) {
@@ -1190,4 +1192,6 @@ this.RESOLVE_DOC_LIST = this.GET_DOCUMENT_LIST.filter((x: any) => x.TYPE === 'R'
     this.SaveConfirmationPopUp = false;
   }
 }
+
+
 

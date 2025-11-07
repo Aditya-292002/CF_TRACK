@@ -10,12 +10,12 @@
           View Issue Raised
         </h5>
         <!-- <p class="Text_Primary form-header Helper_Text status_container" *ngIf="this.MODE == 'E'">{{ STATUS_NAME }}</p> -->
-        <p
+        <!-- <p
           class="Text_Primary form-header Helper_Text history_container"
           *ngIf="this.MODE == 'E' && this.COMMENT_HISTORY.length > 0"
         >
           ( Please Check History)
-        </p>
+        </p> -->
       </div>
       <!-- <div class="justify-content-end">
         <button class="p-element prime-button save-button" (click)="goToList()">List</button>
@@ -420,7 +420,7 @@
  <div class="col-3">
           <label class="w-50 label-13px">Delivery By</label>
 							<div class="floating-input mb-2">
-								<input type="text" class="form-control" placeholder="dd-mm-yyyy" formControlName="DELIVERY_BY" [(ngModel)]="DELIVERY_BY" (change)="ChangeFDate()" readonly>
+								<input type="text" class="form-control" placeholder="dd-mmm-yyyy" formControlName="DELIVERY_BY" [(ngModel)]="DELIVERY_BY" (change)="ChangeFDate()" readonly>
 								<!-- <app-date-picker id="reqdate" [(ngModel)]="JV_DATE" #reqdate class="date-input" [ngModelOptions]="{standalone: true}"></app-date-picker> -->
 								<div class="date-input">
 									<mat-form-field fxFlex="100" appearance="fill">

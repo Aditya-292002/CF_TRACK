@@ -300,8 +300,10 @@ this.RESOLVE_DOC_LIST = res.iteamlist.filter((x: any) => x.TYPE === 'R');
     this.INITIAL_DOC_LIST = [];
     this.RESOLVE_DOC_LIST = [];
    }
+if( response.DELIVERY_BY!=""){
 
-const deliveryDate1  = this.datepipe.transform(new Date(response.DELIVERY_BY), 'dd-MMM-yyyy')
+  var deliveryDate1  = this.datepipe.transform(new Date(response.DELIVERY_BY), 'dd-MMM-yyyy')
+}
       this.form.patchValue({
         DELIVERY_BY: deliveryDate1,
         EST_HOURS: response.EST_HOURS,
@@ -309,7 +311,16 @@ const deliveryDate1  = this.datepipe.transform(new Date(response.DELIVERY_BY), '
         DEVELOPER_COMMENT: response.DEVELOPER_COMMENT,
         DEVELOPER_STATUS: this.developerStatus
       });
+      setTimeout(() => {
+     
+        this.form.get('DEVELOPER_COMMENT').setValue(response.DEVELOPER_COMMENT);
+   
+       //  this.form.get('RESOLUTION_CODE').setValue(response.RESOLUTION_CODE);
+        $('.selectpicker').selectpicker('refresh').trigger('change');
+      }, 100);
+
     });
+
 
   }
 
