@@ -252,7 +252,7 @@ ISSUE_ID:localStorage.getItem("ISSUE_ID")
         ISSUE_NO: response.ISSSUE_NO,
         REQUEST_DATE: this.datepipe.transform(new Date(response.REQUEST_DATE), 'dd-MMM-yyyy'),
         PRIORITY_CODE: response.PRIORITY_CODE,
-        RAISED_BY_NAME: response.RAISED_BY_NAME,
+        RAISED_BY_NAME: response.REQUESTER_NAME,
         ISSUE_TYPE_DESC: response.ISSUE_TYPE_DESC,
         PRIORITY_DESC: response.PRIORITY_DESC,
         FUNCTION_CODE: response.FUNCTION_CODE,

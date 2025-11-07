@@ -385,7 +385,7 @@
     </div>
 
     <!-- Row 3: Other Fields (Visible only when OK is selected) -->
-    <div  class="row mt-3" *ngIf="checkStatus === '40'">
+    <div  class="row row-gap" *ngIf="checkStatus === '40'">
       
       <!-- Delivery By -->
       <!-- <div class="col-3">
@@ -408,7 +408,7 @@
           />
         </div>
       </div> -->
- <div class="col-4">
+ <div class="col-3">
           <label class="w-50 label-13px">Delivery By</label>
 							<div class="floating-input mb-2">
 								<input type="text" class="form-control" placeholder="dd-mm-yyyy" formControlName="DELIVERY_BY" [(ngModel)]="DELIVERY_BY" (change)="ChangeFDate()" readonly>
@@ -426,7 +426,7 @@
     
 
       <!-- Est. Man Hours (text input) -->
-      <div class="col-4">
+      <div class="col-3">
         <label class="w-50 label-13px">Est. Man Hours</label>
         <div class="floating-input">
           <input
@@ -440,7 +440,7 @@
       </div>
 
       <!-- Priority -->
-      <div class="col-4">
+      <div class="col-3">
         <label class="w-50 label-13px">Resolution</label>
         <div class="floating-input list-btn">
           <select
@@ -489,13 +489,13 @@
                 (change)="onFileSelected($event)"/>
               <small class="mb-0">(Accepted file formats: PDF, JPG, PNG, Xls, Xlsx, Doc, Docx)</small>
             </div> -->
-            <label for="" class="ml-3">Uploaded Document List</label>
-            <div class="col-12  w-100">
+            <label for="" class="">Uploaded Document List</label>
+            <div class="  w-100">
               <table class="table-theam-1 row_bgcolor_1">
                 <thead>
-                  <tr>
-                    <th class=" ">File Name</th>
-                    <th class="">Action</th>
+                  <tr class="width-100percent">
+                    <th class="width-85percent">File Name</th>
+                    <th class="width-15percent">Action</th>
                   </tr>
                 </thead>
                 <tbody>
