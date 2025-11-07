@@ -89,6 +89,7 @@ export class IssueRequestMasterComponent implements OnInit {
   //   PROPOSE_DELIVERY_BY: '',
   //   comment: ''
   // }];
+  DELIVERY_BY: any;
   ISSUE_ID: any;
   SAMPEL_FUNCTION_LIST: any = [];
   IS_HISTORY: boolean = false;
@@ -164,7 +165,8 @@ RESOLUTION_LIST:any
   ) { }
 
   ngOnInit(): void {
-    const today1 = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
+    const today1 = this.datepipe.transform(new Date(), 'dd-MMM-yyyy');
+    console.log('today1', today1);
     this.historyData = [
       { status: 'Open', userName: 'John Doe', time: '2025-10-09 10:00', comment: 'Initial issue raised' },
       { status: 'In Progress', userName: 'Jane Smith', time: '2025-10-09 12:30', comment: 'Working on the issue' },
@@ -192,6 +194,7 @@ EST_HOURS: [{ value: '', disabled: this.viewflag }],
 RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
 
     });
+        this.form.get('REQUEST_DATE').setValue(today1);
     this.form.get('RAISED_BY').valueChanges.subscribe(value => {
       if (value === 'OTHER') {
 
@@ -222,9 +225,7 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
     this.FUNCTION_CODE = localStorage.getItem('FUNCTION_CODE');
     this.GET_STATUS_CODE = localStorage.getItem('STATUS_CODE');
     this.IS_REVERT = localStorage.getItem('IS_REVERT');
-    const today = new Date();
-    // Format as yyyy-MM-dd because HTML date input requires this format
-    this.REQUEST_DATE = new Date()
+  
     this.GETISSUEREQUESTMASTER();
     this.GetPMConfirmationList()
 
@@ -243,6 +244,7 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
       // this.GETISSUERAISEDHISTORY(0);
     }
     setTimeout(() => {
+          this.form.get('REQUEST_DATE').setValue(today1);
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);
   }
@@ -259,6 +261,18 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
 
   }
 
+   ChangeFDate(){
+    this.REQUEST_DATE = this.datepipe.transform(new Date(this.REQUEST_DATE), 'dd-MMM-yyyy')
+      setTimeout(() => {
+          $('.selectpicker').selectpicker('refresh').trigger('change');
+       }, 100);
+    }
+   ChangeDDate(){
+    this.DELIVERY_BY = this.datepipe.transform(new Date(this.DELIVERY_BY), 'dd-MMM-yyyy')
+      setTimeout(() => {
+          $('.selectpicker').selectpicker('refresh').trigger('change');
+       }, 100);
+    }
   GETISSUEREQUESTMASTER() {
     let data = {
       "USER_ID": (+this.USERID),
@@ -362,14 +376,32 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
     };
 
     this.http.PostRequest(this.apiurl.GETISSUERAISEDDETAILSBYISSUENO, data).then((res: any) => {
-     debugger
-     
+  debugger
       const response = res.datalist[0];
-      if(res.datalist[0].STATUS_CODE=="40" ||res.datalist[0].STATUS_CODE=="42"){
+      if((res.datalist[0].STATUS_CODE=="40" ||res.datalist[0].STATUS_CODE=="42")&&res.datalist[0].STATUS_CODE!=="00"){
            this.response1=res.datalist[1];  
+            this.form.patchValue({
+        RESOLUTION_CODE:this.response1.RESOLUTION_CODE,
+        EST_HOURS:this.response1.EST_HOURS,
+        DELIVERY_BY:this.datepipe.transform(new Date(this.response1.DELIVERY_BY), 'dd-MMM-yyyy'),
+        DEVELOPER_COMMENT:this.response1.DEVELOPER_COMMENT
+     
+        });
+              setTimeout(() => {
+        this.form.get('PRODUCT_CODE').setValue(response.PRODUCT_CODE);
+        this.form.get('PRIORITY_CODE').setValue(response.PRIORITY_CODE);
+        this.form.get('ISSUE_TYPE_CODE').setValue(response.ISSUE_TYPE_CODE);
+        let date =this.datepipe.transform(new Date(this.response1.DELIVERY_BY), 'dd-MMM-yyyy');
+        console.log('test',date);
+        this.form.get('DELIVERY_BY').setValue(date);
+   
+        // this.form.get('OTHER_NAME').setValue(this.RAISED_BY_NAME);
+        $('.selectpicker').selectpicker('refresh').trigger('change');
+      }, 100);
       }
-       
-      if (!response) return;
+      if(this.response1){
+        this.checkStatus=this.response1.STATUS_CODE
+      }
 
       // Save response values for non-form-related properties
       this.IS_HISTORY = response.IS_HISTORY;
@@ -380,16 +412,14 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
       this.MODULE_DESC = response.MODULE_DESC;
       this.FUNCTION_DESC = response.FUNCTION_DESC;
       this.product_code = response.PRODUCT_CODE;
-      if(this.response1){
-        this.checkStatus=this.response1.STATUS_CODE
-      }
+
       
 
       // Fill the form using patchVa
       //  PRODUCT_CODE: response.PRODUCT_CODE,lue
       this.form.patchValue({
         ISSUE_NO: response.ISSSUE_NO,
-        REQUEST_DATE: new Date(response.REQUEST_DATE),
+        REQUEST_DATE: this.datepipe.transform(new Date(response.REQUEST_DATE), 'dd-MMM-yyyy'),
         PRIORITY_CODE: response.PRIORITY_CODE,
         RAISED_BY: response.RAISED_BY === this.userData[0].LOGIN_ID || response.REQUESTER === this.userData[0].LOGIN_ID ? 'SELF' : 'OTHER',
         OTHER_NAME: response.REQUESTER !== this.userData[0].LOGIN_ID ? response.REQUESTER : this.userData[0].LOGIN_ID,
@@ -400,14 +430,6 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
         REASON_ISSUE: response.ASREASON_OF_ISSUE_CR,
         DESC_ISSUE: response.DESC_OF_ISSUE_CR,
         Cust_REF_NO: response.CUST_REF_NO,
-
-        RESOLUTION_CODE:this.response1.RESOLUTION_CODE,
-        EST_HOURS:this.response1.EST_HOURS,
-        DELIVERY_BY:this.response1.DELIVERY_BY,
-        DEVELOPER_COMMENT:this.response1.DEVELOPER_COMMENT
-     
-       
-
       });
 
       this.form.get('PRODUCT_CODE').setValue(response.PRODUCT_CODE);
@@ -424,6 +446,8 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
 
       // Handle attached documents
       this.GET_DOCUMENT_LIST = res.iteamlist || [];
+
+  
       if (res.iteamlist.length > 0) {
         this.isUploadDocument = true;
         this.DOCUMENT_ATTECHED_LIST = res.iteamlist;

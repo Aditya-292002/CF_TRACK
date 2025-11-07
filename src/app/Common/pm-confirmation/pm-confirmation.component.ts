@@ -100,10 +100,12 @@ export class PmConfirmationComponent implements OnInit {
   //  this.DATE = this.datePipe.transform(new Date(), 'dd-MMM-yyyy')
   ngOnInit(): void {
     const today1 = new Date().toISOString().split('T')[0];
+  const thisDate=  this.datepipe.transform(new Date(), 'dd-MMM-yyyy')
+  console.log(today1,thisDate,"today1")
     this.minDate =today1;
     this.form = this.fb.group({
       ISSUE_NO: [{ value: '', disabled: true }],
-      REQUEST_DATE: [{ value: today1, disabled: true }],
+      REQUEST_DATE: [{ value: thisDate, disabled: true }],
       CUST_REF_NO: [{ value: '', disabled: true }],
       PROJ_NAME: [{ value: '', disabled: true }],
       RAISED_BY_NAME: [{ value: '', disabled: true }],
@@ -220,7 +222,8 @@ ISSUE_ID:localStorage.getItem("ISSUE_ID")
       this.IS_HISTORY = response.IS_HISTORY;
       this.ISSSUE_NO = response.ISSSUE_NO;
       // const REQUEST_DATE = this.formatDate(response.REQUEST_DATE as string);
-      this.REQUEST_DATE =response.REQUEST_DATE;
+      console.log(this.datepipe.transform(new Date(response.REQUEST_DATE), 'dd-MMM-yyyy'))
+      this.REQUEST_DATE =this.datepipe.transform(new Date(response.REQUEST_DATE), 'dd-MMM-yyyy');
       this.CREATEDBY = response.CREATEDBY;
       this.REQUESTER = response.REQUESTER;
       this.ISSUE_TYPE_DESC = response.ISSUE_TYPE_DESC;
@@ -245,7 +248,7 @@ ISSUE_ID:localStorage.getItem("ISSUE_ID")
        
       this.form.patchValue({
         ISSUE_NO: response.ISSSUE_NO,
-        REQUEST_DATE: response.REQUEST_DATE,
+        REQUEST_DATE: this.datepipe.transform(new Date(response.REQUEST_DATE), 'dd-MMM-yyyy'),
         PRIORITY_CODE: response.PRIORITY_CODE,
         RAISED_BY_NAME: response.RAISED_BY_NAME,
         ISSUE_TYPE_DESC: response.ISSUE_TYPE_DESC,
@@ -293,6 +296,7 @@ const deliveryDate1  = this.datepipe.transform(new Date(response.DELIVERY_BY), '
         DEVELOPER_STATUS: this.developerStatus
       });
     });
+
   }
 
   convertToDate(dateString: string): Date {
