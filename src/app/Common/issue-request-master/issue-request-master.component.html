@@ -317,7 +317,7 @@
                 </thead>
                 <tbody>
                   <tr
-                    *ngFor="let file of DOCUMENT_ATTECHED_LIST; let i = index"
+                    *ngFor="let file of INITIAL_DOC_LIST; let i = index"
                   >
                     <td>{{ file.FILE_NAME }}</td>
                     <td>
@@ -396,7 +396,7 @@
           />
         </div>
       </div> -->
- <div class="col-3">
+ <div class="col-4">
           <label class="w-50 label-13px">Delivery By</label>
 							<div class="floating-input mb-2">
 								<input type="text" class="form-control" placeholder="dd-mm-yyyy" formControlName="DELIVERY_BY" [(ngModel)]="DELIVERY_BY" (change)="ChangeFDate()" readonly>
@@ -414,7 +414,7 @@
     
 
       <!-- Est. Man Hours (text input) -->
-      <div class="col-3">
+      <div class="col-4">
         <label class="w-50 label-13px">Est. Man Hours</label>
         <div class="floating-input">
           <input
@@ -428,7 +428,7 @@
       </div>
 
       <!-- Priority -->
-      <div class="col-3">
+      <div class="col-4">
         <label class="w-50 label-13px">Resolution</label>
         <div class="floating-input list-btn">
           <select
@@ -461,6 +461,59 @@
           ></textarea>
         </div>
       </div>
+
+<div class="col-6">
+            <!-- <div class="col-12 pt-2">
+              <button
+                class="btn custom-file-uploader"
+                (click)="fileInput.click()"
+              >
+                <i class="pi pi-upload mr-2"></i>Add File
+              </button>
+              <input
+                type="file"
+                #fileInput
+                hidden
+                (change)="onFileSelected($event)"/>
+              <small class="mb-0">(Accepted file formats: PDF, JPG, PNG, Xls, Xlsx, Doc, Docx)</small>
+            </div> -->
+            <label for="" class="ml-3">Uploaded Document List</label>
+            <div class="col-12  w-100">
+              <table class="table-theam-1 row_bgcolor_1">
+                <thead>
+                  <tr>
+                    <th class=" ">File Name</th>
+                    <th class="">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let file of RESOLVE_DOC_LIST; let i = index"
+                  >
+                    <td>{{ file.FILE_NAME }}</td>
+                    <td>
+                      <button
+                        class="btn btn-sm card-padding-none mr-2"
+                        (click)="viewDocument(file)"
+                        title="View Document"
+                      >
+                        <i class="pi pi-eye"></i>
+                      </button>
+                      
+                      <button
+                        type="button"
+                        class="btn btn-sm card-padding-none"
+                        (click)="deleteFile(i, fileInput)"
+                        title="Delete file">
+                        <i class="pi pi-trash"></i>
+                      </button>
+
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
 
     </div> <!-- end of Row 3 -->
 

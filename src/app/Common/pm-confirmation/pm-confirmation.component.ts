@@ -72,6 +72,8 @@ export class PmConfirmationComponent implements OnInit {
   minDate:any
   displayHistory: boolean = false;
   COMMENT_HISTORY:any
+  INITIAL_DOC_LIST: any = [];
+  RESOLVE_DOC_LIST: any = [];
   constructor(
     private fb: FormBuilder,
     private route: RoutingService,
@@ -286,6 +288,13 @@ ISSUE_ID:localStorage.getItem("ISSUE_ID")
       this.DEVELOPER_DOCUMENT_LIST1 = res.iteamlist || [];
       // this.GetRemoveBase64DocumnetExtension(this.DEVELOPER_DOCUMENT_LIST1);
       // console.log('GETISSUERAISEDDETAILSBYISSUENO response', response);
+        if(res.iteamlist.length>0){
+this.INITIAL_DOC_LIST = res.iteamlist.filter((x: any) => x.TYPE === 'I');
+this.RESOLVE_DOC_LIST = res.iteamlist.filter((x: any) => x.TYPE === 'R');
+   }else{
+    this.INITIAL_DOC_LIST = [];
+    this.RESOLVE_DOC_LIST = [];
+   }
 
 const deliveryDate1  = this.datepipe.transform(new Date(response.DELIVERY_BY), 'dd-MMM-yyyy')
       this.form.patchValue({
@@ -377,6 +386,7 @@ const deliveryDate1  = this.datepipe.transform(new Date(response.DELIVERY_BY), '
     Promise.all(fileReadPromises)
       .then((results: any[]) => {
         this.DOCUMENT_ATTECHED_LIST.push(...results);
+        this.RESOLVE_DOC_LIST=this.DOCUMENT_ATTECHED_LIST
         console.log('All files processed:', this.DOCUMENT_ATTECHED_LIST);
       })
       .catch((error) => {
@@ -557,7 +567,6 @@ const deliveryDate1  = this.datepipe.transform(new Date(response.DELIVERY_BY), '
   }
 
   viewDocument(data: any) {
-    debugger
   if (!data.DOC_BASE64 || !data.FILE_EXTENSION) return;
 
   const base64Content = data.DOC_BASE64.includes(',')

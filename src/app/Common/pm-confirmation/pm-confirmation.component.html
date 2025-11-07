@@ -235,7 +235,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let data of DEVELOPER_DOCUMENT_LIST1">
+              <tr *ngFor="let data of INITIAL_DOC_LIST; let i = index">
                 <td>{{ data.FILE_NAME }}</td>
                 <td>
                   <button
@@ -447,7 +447,7 @@
                 </thead>
                 <tbody>
                   <tr
-                    *ngFor="let file of DOCUMENT_ATTECHED_LIST; let i = index"
+                    *ngFor="let file of RESOLVE_DOC_LIST; let i = index"
                   >
                     <td>{{ file.FILE_NAME }}</td>
                     <td>

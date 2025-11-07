@@ -113,6 +113,8 @@ export class IssueRequestMasterComponent implements OnInit {
   otherName: string = '';
   displayHistory: boolean = false;
 RESOLUTION_LIST:any
+RESOLVE_DOC_LIST: any = [];
+INITIAL_DOC_LIST: any = [];
 
   dropdownList: { PRIORITY_CODE: string; PRIORITY_DESC: string; }[];
   dropdownList1 = [
@@ -445,9 +447,14 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
       }
 
       // Handle attached documents
-      this.GET_DOCUMENT_LIST = res.iteamlist || [];
-
-  
+   this.GET_DOCUMENT_LIST = res.iteamlist || [];
+   if(this.GET_DOCUMENT_LIST.length>0){
+this.INITIAL_DOC_LIST = this.GET_DOCUMENT_LIST.filter((x: any) => x.TYPE === 'I');
+this.RESOLVE_DOC_LIST = this.GET_DOCUMENT_LIST.filter((x: any) => x.TYPE === 'R');
+   }else{
+    this.INITIAL_DOC_LIST = [];
+    this.RESOLVE_DOC_LIST = [];
+   }
       if (res.iteamlist.length > 0) {
         this.isUploadDocument = true;
         this.DOCUMENT_ATTECHED_LIST = res.iteamlist;
@@ -884,6 +891,7 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
     Promise.all(fileReadPromises)
       .then((results: any[]) => {
         this.DOCUMENT_ATTECHED_LIST.push(...results);
+        this.INITIAL_DOC_LIST=this.DOCUMENT_ATTECHED_LIST
         console.log('All files processed:', this.DOCUMENT_ATTECHED_LIST);
       })
       .catch((error) => {
