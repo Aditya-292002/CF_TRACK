@@ -105,13 +105,27 @@
   border-radius: 4px;
   padding: 4px 8px;
 }
-.secondary-button {
+/* .secondary-button {
     background-color: white;
     color: #12558d;
     border: 1px solid #12558d;
     border-radius: 4px;
     padding: 4px 8px;
+} */
+
+.secondary-button  {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
 }
+.btn.btn-secondary {
+    background-color: #424a5a;
+    font-size: 0.9em;
+    line-height: 1.2;
+}
+
+
+
 /* toggle-button */
 .header-toggle {
   display: flex;

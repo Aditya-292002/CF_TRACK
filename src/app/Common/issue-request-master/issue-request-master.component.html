@@ -1,6 +1,6 @@
 <div class="grid gap-y-3">
-  <div class="card mb-2">
-    <div class="d-flex flex-row flex flex-wrap justify-content-between mx-2">
+  <div class=" mb-2">
+    <div class="d-flex flex-row flex flex-wrap justify-content-between ">
       <div class="d-flex align-content-center flex-wrap align-middle">
         <h5 class="formName form-header" *ngIf="this.MODE == 'A'">
           Raise Issue
@@ -23,7 +23,7 @@
       </div> -->
 
       <div class="d-flex justify-content-end">
-        <div class="d-flex justify-content-between mr-2">
+        <div class="d-flex justify-content-between ">
           <div class="mr-2">
             <button
               class="p-element prime-button save-button"
@@ -39,19 +39,31 @@
               (click)="GETISSUERAISEDHISTORY(1)">History</button>
           </div> -->
           <div class="mr-2">
-            <button
+            <!-- <button
               class="p-element prime-button save-button"
               (click)="GETISSUERAISEDHISTORY(1); showHistoryDialog()"
             >
               History
-            </button>
+            </button> -->
+             <button
+          class="btn btn-secondary mr-1"
+          (click)="GETISSUERAISEDHISTORY(1); showHistoryDialog()"
+        >
+          History
+  </button>
           </div>
-          <button
+          <!-- <button
             class="p-element prime-button secondary-button"
             (click)="goToList()"
           >
             List
-          </button>
+          </button> -->
+             <button
+          class="btn btn-secondary "
+           (click)="goToList()"
+        >
+          List
+  </button>
         </div>
 
         <div class="mr-2" *ngIf="!viewflag">
@@ -310,9 +322,9 @@
             <div class="col-12 pt-2">
               <table class="table-theam-1 row_bgcolor_1">
                 <thead>
-                  <tr>
-                    <th class=" ">File Name</th>
-                    <th class="">Action</th>
+                  <tr class="width-100percent">
+                    <th class="width-85percent">File Name</th>
+                    <th class="width-15percent">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -629,14 +641,14 @@
       class="comment-header"
       (click)="data.expanded = !data.expanded"
     >
-      <span class="status-text">{{ data.STATUS_NAME }}</span>
-
+      <span class="status-text">{{ data.CREATEDON }},  {{ data.USER_NAME }}</span>
+ <!-- <span class="P"></span> -->
       <div class="header-right">
         <p class="status">
           <i class="pi pi-circle-fill mr-1" [ngClass]="data.STATUS_COLOR_NAME"></i>
           {{ data.STATUS_NAME }}
         </p>
-        <p class="date">{{ data.CREATEDON }}</p>
+        <!-- <p class="date">{{ data.CREATEDON }}</p> -->
         <i 
           class="pi toggle-icon"
           [ngClass]="data.expanded ? 'pi-chevron-up' : 'pi-chevron-down'"
