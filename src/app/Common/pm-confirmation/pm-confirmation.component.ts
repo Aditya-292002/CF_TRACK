@@ -182,13 +182,18 @@ export class PmConfirmationComponent implements OnInit {
   GetPMConfirmationList() {
     this.http.PostRequest(this.apiurl.GetIssueHelpDeskMasterList, {}).then((res: any) => {
       if (res.flag == 1) {
+        
         const response = res.Resolution;
         this.RESOLUTION_LIST = response;
+
       } else {
         this.RESOLUTION_LIST = []
       }
 
     });
+     setTimeout(() => {
+          $('.selectpicker').selectpicker('refresh').trigger('change');
+       }, 100);
   }
     GET_PM_HISTORY() {
 

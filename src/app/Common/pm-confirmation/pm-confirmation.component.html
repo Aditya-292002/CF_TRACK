@@ -402,12 +402,10 @@
           </div>
 
           <div class="col-3">
-        <label class="w-50 label-13px">Resolution:
-           <span class="text-danger">*</span>
-        </label>
+        <label class="w-50 label-13px">Resolution <span class="text-danger">*</span></label>
         <div class="floating-input list-btn">
           <select
-            class="form-control show-tick"
+            class="form-control selectpicker show-tick"
             data-live-search="true"
             formControlName="RESOLUTION_CODE"
             title="Select Resolution"
@@ -561,8 +559,8 @@
       class="comment-header"
       (click)="data.expanded = !data.expanded"
     >
-      <span class="status-text">{{ data.STATUS_NAME }}</span>
-
+      <!-- <span class="status-text">{{ data.STATUS_NAME }}</span> -->
+ <span class="status-text">{{ data.CREATEDON }},  {{ data.USER_NAME }}</span>
       <div class="header-right">
         <p class="status">
           <i class="pi pi-circle-fill mr-1" [ngClass]="data.STATUS_COLOR_NAME"></i>

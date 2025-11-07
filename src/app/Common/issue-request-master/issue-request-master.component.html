@@ -38,7 +38,7 @@
               *ngIf="this.IS_HISTORY == true && this.COMMENT_HISTORY.length > 0"
               (click)="GETISSUERAISEDHISTORY(1)">History</button>
           </div> -->
-          <div class="mr-2">
+          <div class="mr-2" *ngIf="viewflag">
             <!-- <button
               class="p-element prime-button save-button"
               (click)="GETISSUERAISEDHISTORY(1); showHistoryDialog()"
@@ -59,7 +59,7 @@
             List
           </button> -->
              <button
-          class="btn btn-secondary "
+          class="btn btn-secondary mr-2"
            (click)="goToList()"
         >
           List
@@ -67,14 +67,23 @@
         </div>
 
         <div class="mr-2" *ngIf="!viewflag">
-          <button
+             <button
+             data-target="#saveissue"
+            data-toggle="modal"
+          class="btn btn-secondary "
+           (click)="SaveConfirmationPopUpOpen()"
+        >
+          Save
+  </button>
+
+          <!-- <button
             class="p-element prime-button save-button"
             data-target="#saveissue"
             data-toggle="modal"
             (click)="SaveConfirmationPopUpOpen()"
           >
             Save
-          </button>
+          </button> -->
         </div>
       </div>
     </div>
