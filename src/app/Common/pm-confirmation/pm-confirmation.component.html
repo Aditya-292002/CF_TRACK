@@ -8,27 +8,44 @@
 
     <!-- Right section: Buttons -->
     <div class="d-flex align-items-center flex-wrap p-2">
-      <button type="button" class="p-element prime-button save-button mr-2"
+      <!-- <button type="button" class="p-element prime-button save-button mr-2"
       (click)="GET_PM_HISTORY(); showHistoryDialog()">
         History
-      </button>
-      <button
+      </button> -->
+         <button
+          class="btn btn-secondary mr-1"
+          (click)="GET_PM_HISTORY(); showHistoryDialog()" >
+          History
+  </button>
+      <!-- <button
         type="button"
         class="p-element prime-button secondary-button mr-2"
         (click)="goToList()"
       >
         List
-      </button>
+      </button> -->
+       <button
+          class="btn btn-secondary"
+         (click)="goToList()" >
+          List
+  </button>
       <!-- Save button (visible only if viewflag is false) -->
       <div *ngIf="STATUS_CODE == '00'" class="mr-2">
-        <button
+        <!-- <button
           class="p-element prime-button save-button"
           data-target="#saveissue"
           data-toggle="modal"
           (click)="SaveConfirmationPopUpOpen()"
         >
           Save
-        </button>
+        </button> -->
+          <button
+          class="btn btn-secondary ml-1"
+           data-target="#saveissue"
+          data-toggle="modal"
+          (click)="SaveConfirmationPopUpOpen()" >
+          Save
+  </button>
       </div>
     </div>
   </div>
@@ -229,9 +246,9 @@
           <label class="w-50 label-13px">Uploaded Document List</label>
           <table class="table-theam-1 row_bgcolor_1 w-100">
             <thead class="thead-light">
-              <tr>
-                <th>File Name</th>
-                <th>Action</th>
+              <tr class="width-100percent">
+                <th class="width-85percent">File Name</th>
+                <th class="width-15percent">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -240,7 +257,7 @@
                 <td>
                   <button
                     type="button"
-                    class="btn btn-sm card-padding-none"
+                    class="btn btn-sm card-padding-none p-0 mr-1"
                     (click)="viewDocument(data)"
                     title="View Document"
                   >
@@ -248,7 +265,7 @@
                   </button>
                   <button
                     type="button"
-                    class="btn btn-sm card-padding-none"
+                    class="btn btn-sm card-padding-none p-0"
                     (click)="downloadDocument(data)"
                     title="Download Document"
                   >
@@ -321,8 +338,8 @@
 
       <!-- Row 3: Other Fields (Visible only when OK is selected) -->
       <div *ngIf="developerStatus === 'OK'">
-        <div class="form-row mb-3">
-          <div class="col-md-4">
+        <div class="row row-gap">
+          <div class="col-md-3">
             <!-- <label class="font-weight-bold small">Delivery By</label>
             <input
               type="date"
@@ -407,7 +424,7 @@
       </div>
         </div>
 
-        <div class="form-row">
+        <div class="row row-gap">
           <div class="col-md-6 mb-3">
             <label class="label-13px">
               PM Explanation: <span class="text-danger">*</span>
@@ -440,9 +457,9 @@
             <div>
               <table class="table-theam-1 row_bgcolor_1 w-100">
                 <thead>
-                  <tr>
-                    <th>File Name</th>
-                    <th>Action</th>
+                  <tr class="width-100percent">
+                    <th class="width-85percent">File Name</th>
+                    <th class="width-15percent">Action</th>
                   </tr>
                 </thead>
                 <tbody>

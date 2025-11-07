@@ -387,15 +387,12 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
         DEVELOPER_COMMENT:this.response1.DEVELOPER_COMMENT
      
         });
-              setTimeout(() => {
-        this.form.get('PRODUCT_CODE').setValue(response.PRODUCT_CODE);
-        this.form.get('PRIORITY_CODE').setValue(response.PRIORITY_CODE);
-        this.form.get('ISSUE_TYPE_CODE').setValue(response.ISSUE_TYPE_CODE);
+        setTimeout(() => {
         let date =this.datepipe.transform(new Date(this.response1.DELIVERY_BY), 'dd-MMM-yyyy');
         console.log('test',date);
         this.form.get('DELIVERY_BY').setValue(date);
    
-        // this.form.get('OTHER_NAME').setValue(this.RAISED_BY_NAME);
+         this.form.get('RESOLUTION_CODE').setValue(this.response1.RESOLUTION_CODE);
         $('.selectpicker').selectpicker('refresh').trigger('change');
       }, 100);
       }

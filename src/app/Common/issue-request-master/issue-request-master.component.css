@@ -236,13 +236,17 @@ line-height: 1rem;
     padding: 4px 8px;
 }
 
-.secondary-button {
-    background-color: white;
-    color: #12558d;
-    border: 1px solid #12558d;
-    border-radius: 4px;
-    padding: 4px 12px;
+.secondary-button  {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
 }
+.btn.btn-secondary {
+    background-color: #424a5a;
+    font-size: 0.9em;
+    line-height: 1.2;
+}
+
 
 /* added by hemant  */
 /* PrimeIcons */
@@ -432,4 +436,16 @@ line-height: 1rem;
   border-radius: 4px;
   color: #333;
   font-size: 0.9rem;
+}
+
+.width-100percent{
+    width: 100%;
+}
+
+.width-85percent{
+    width: 85%;
+}
+
+.width-15percent{
+    width: 15%;
 }
