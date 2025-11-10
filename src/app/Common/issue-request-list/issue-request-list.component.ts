@@ -59,7 +59,7 @@ export class IssueRequestListComponent implements OnInit {
      console.log('ngAfterViewInit called');
     this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
     this.USER_ID = this.userData[0].LOGIN_ID;
-    this.CUST_CODE = this.userData[0].COMPANY_CODE;
+    this.CUST_CODE = this.userData[0].CUST_CODE;
     console.log(' this.USER_ID', this.USER_ID);
     localStorage.removeItem('ISSUE_NO')
     localStorage.removeItem('IS_CANCEL')

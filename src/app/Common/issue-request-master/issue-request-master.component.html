@@ -314,10 +314,12 @@
             </div>
           </div>
           <div class="col-6">
-            <div class="col-12 pt-2">
+            <div class="custom-file-uploader-container">
+              <div class="flex-box-col">
               <button
-                class="btn custom-file-uploader"
+                class="btn btn-secondary"
                 (click)="fileInput.click()"
+                title="(Accepted file formats: PDF, JPG, PNG, Xls, Xlsx, Doc, Docx)"
               >
                 <i class="pi pi-upload mr-2"></i>Add File
               </button>
@@ -326,9 +328,10 @@
                 #fileInput
                 hidden
                 (change)="onFileSelected($event)"/>
-              <small class="mb-0">(Accepted file formats: PDF, JPG, PNG, Xls, Xlsx, Doc, Docx)</small>
+                </div>
+              <small class="mb-0 file-upload-label" >Any file for Explanation</small>
             </div>
-            <div class="col-12 pt-2">
+            <div class=" pt-2">
               <table class="table-theam-1 row_bgcolor_1">
                 <thead>
                   <tr class="width-100percent">

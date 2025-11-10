@@ -328,10 +328,10 @@ line-height: 1rem;
 
 .custom-file-uploader {
     padding: 3px !important;
-    border: 2px dashed #c3dbf6 !important;
-    background: #ebf3fc !important;
+    border: 1px solid #acacac !important;
+    background: #ddddddb8 !important;
     width: 100px !important;
-    font-size: 11px !important;
+    font-size: 13px !important;
 }
 
 /* HISTORY */
@@ -448,4 +448,25 @@ line-height: 1rem;
 
 .width-15percent{
     width: 15%;
+}
+
+.custom-file-uploader-container{
+    border: 2px dashed #d9d9d9;
+    border-radius: 4px;
+    padding: 12px;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 8px;
+}
+
+.flex-box-col{
+    display: flex;
+    justify-content: center;
+}
+
+.file-upload-label{
+    color: #666666f0;
 }
