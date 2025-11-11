@@ -288,210 +288,264 @@
       </div>
     </div>
   </div>
-</form>
+<!-- </form> -->
 
-<form [formGroup]="form">
-  <div class="card p-2 mt-2">
-    <div class="card-body">
-       
-      <!-- Row 1: Radio Buttons -->
-      <div class="d-flex align-items-center mb-3">
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="radio"
-            id="statusOk"
-            name="developerStatus"
-            [attr.disabled]="isDisableRadioBtn ? '' : null"
-            formControlName="DEVELOPER_STATUS"
-            value="OK"
-            (change)="developerStatus = 'OK'"
-          />
-          <label class="form-check-label mt-2" for="statusOk">OK</label>
-        </div>
 
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="radio"
-            id="statusClose"
-            name="developerStatus"
-            [attr.disabled]="isDisableRadioBtn ? '' : null"
-            formControlName="DEVELOPER_STATUS"
-            value="CLOSE"
-            (change)="developerStatus = 'CLOSE'"
-          />
-          <label class="form-check-label mt-2" for="statusClose">Close</label>
-        </div>
+<!-- --------------------------------------------- -->
+
+<!-- Acknowledge / Accept / Closed Tabs -->
+<!-- <form [formGroup]="form"> -->
+ 
+  <!-- SINGLE PANE CONTENT -->
+  <div class="">
+    <div class="form-tabs" id="form-tab">
+        <ul class="nav nav-tabs mt-2" role="tablist">
+          <li
+            role="presentation"
+            class="nav-item no-branding"
+            (click)="onbgcolorchange(2)"
+            [ngClass]="{'nav-active': bg_color == 2, disabled: isDisableRadioBtn}"
+            [style.pointer-events]="isDisableRadioBtn ? 'none' : 'auto'">
+            <a href="javascript:void(0)" class="nav-link" role="tab">Acknowledge</a>
+          </li>
+          <li
+            role="presentation"
+            class="nav-item no-branding"
+            (click)="onbgcolorchange(0)"
+            [ngClass]="{'nav-active': bg_color == 0, disabled: isDisableRadioBtn}"
+            [style.pointer-events]="isDisableRadioBtn ? 'none' : 'auto'">
+            <a href="javascript:void(0)" class="nav-link" role="tab">Accept</a>
+          </li>
+          <li
+            role="presentation"
+            class="nav-item no-branding"
+            (click)="onbgcolorchange(1)"
+            [ngClass]="{'nav-active': bg_color == 1, disabled: isDisableRadioBtn}"
+            [style.pointer-events]="isDisableRadioBtn ? 'none' : 'auto'">
+           <a href="javascript:void(0)" class="nav-link" role="tab">Close</a>
+          </li>
+        </ul>
       </div>
+  <div class="card mt-2">    
+   <!-- <div class="col-md-12 mt-1"> -->
+      
+    <!-- </div> -->
+     
 
-      <!-- Row 2: Reason Field (Visible only when CLOSE is selected) -->
-      <div class="form-group mt-2" *ngIf="developerStatus === 'CLOSE'">
-        <label class="font-weight-bold small">Reason</label>
-        <textarea
-          class="form-control"
-          rows="2"
-          formControlName="DEVELOPER_COMMENT"
-          placeholder="Enter Reason"
-        ></textarea>
-      </div>
-
-      <!-- Row 3: Other Fields (Visible only when OK is selected) -->
-      <div *ngIf="developerStatus === 'OK'">
-        <div class="row row-gap">
-          <div class="col-md-3">
-            <!-- <label class="font-weight-bold small">Delivery By</label>
-            <input
-              type="date"
-              class="form-control"
-              formControlName="DELIVERY_BY"
-               [min]="minDate"
-               
-            /> -->
-
-
-            						<div class="">
-							<label>Delivery By:<span class="text-danger">*</span></label>
-							<div class="floating-input mb-2">
-								<input type="text" class="form-control" placeholder="dd-mm-yyyy" formControlName="DELIVERY_BY" [(ngModel)]="DELIVERY_BY" (change)="ChangeFDate()" readonly>
-								<!-- <app-date-picker id="reqdate" [(ngModel)]="JV_DATE" #reqdate class="date-input" [ngModelOptions]="{standalone: true}"></app-date-picker> -->
-								<div class="date-input">
-									<mat-form-field fxFlex="100" appearance="fill">
-										<!-- <mat-icon matDatepickerToggleIcon (click)="clearDate($event)">clear</mat-icon> -->
-										<mat-datepicker-toggle matPrefix [for]="picker2"  id='cal2' #cal2></mat-datepicker-toggle>
-										<input class="form-control" placeholder="dd-mm-yyyy" (dateChange)="ChangeFDate()" [value]="DELIVERY_BY" matInput [(ngModel)]="DELIVERY_BY" [ngModelOptions]="{standalone: true}" [matDatepicker]="picker2" [min]="minDate"  [disabled]="false" readonly />
-							  			<mat-datepicker #picker2 id="picker2"></mat-datepicker>
-									</mat-form-field>
-								</div>
-							</div>
-						</div>
-          </div>
-          
-
-
-
-
-          
-
-          <!-- <div class="col-md-4">
-            <label class="font-weight-bold small">
-              Est. Man Hours <span class="text-danger">*</span>
-            </label>
-            <input
-              type="number"
-              class="form-control"
-              formControlName="EST_HOURS"
-              placeholder="Enter Est. Hours"
-              maxlength="3"
-            />
-          </div> -->
-
-          <div class="col-3">
-            <label class="w-50 label-13px">Est. Man Hours:
-              <span class="text-danger">*</span>
-            </label>
+   
+    <div class="">
+      <div class="tab-content">
+        <div class="tab-pane mt-2 col-md-12" id="acknowledge"   [ngClass]="{'show active': bg_color == 2}" >
+        <div class="col-4">
+            <label class=" label-13px">Discussion:<span class="text-danger">*</span> </label>
             <div class="floating-input">
               <input
-                type="number"
+                type="text"
                 class="form-control"
-                formControlName="EST_HOURS"
-                placeholder="Enter Est. Hours"
-              
+                formControlName="DISCUSSION"
+                placeholder="Enter Discussion"
+                [attr.disabled]="viewflag ? '' : null"
               />
             </div>
           </div>
-
-          <div class="col-3">
-        <label class="w-50 label-13px">Resolution <span class="text-danger">*</span></label>
-        <div class="floating-input list-btn">
-          <select
-            class="form-control selectpicker show-tick"
-            data-live-search="true"
-            formControlName="RESOLUTION_CODE"
-            title="Select Resolution"
-            [attr.disabled]="viewflag ? '' : null"
-          >
-            <option
-              *ngFor="let res of RESOLUTION_LIST"
-              [value]="res.RESOLUTION_CODE"
-            >
-              {{ res.RESOLUTION_NAME }}
-            </option>
-          </select>
-        </div>
-      </div>
         </div>
 
-        <div class="row row-gap">
-          <div class="col-md-6 mb-3">
-            <label class="label-13px">
-              PM Explanation: <span class="text-danger">*</span>
+        <div class="tab-pane mt-2 col-md-12" id="accept" [ngClass]="{'show active': bg_color == 0}" >
+          <div>
+            <div class="row row-gap">
+              <!-- Delivery By -->
+              <div class="col-md-3">
+                <label>Delivery By:<span class="text-danger">*</span></label>
+                <div class="floating-input mb-2">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="dd-mm-yyyy"
+                    formControlName="DELIVERY_BY"
+                    [(ngModel)]="DELIVERY_BY"
+                    (change)="ChangeFDate()"
+                    readonly
+                  />
+                  <div class="date-input">
+                    <mat-form-field fxFlex="100" appearance="fill">
+                      <mat-datepicker-toggle
+                        matPrefix
+                        [for]="picker3"
+                        id="cal3"
+                        #cal3
+                      ></mat-datepicker-toggle>
+                      <input
+                        class="form-control"
+                        placeholder="dd-mm-yyyy"
+                        (dateChange)="ChangeFDate()"
+                        [value]="DELIVERY_BY"
+                        matInput
+                        [(ngModel)]="DELIVERY_BY"
+                        [ngModelOptions]="{standalone: true}"
+                        [matDatepicker]="picker3"
+                        [min]="minDate"
+                        [disabled]="false"
+                        readonly
+                      />
+                      <mat-datepicker #picker3 id="picker3"></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Est. Man Hours -->
+              <div class="col-3">
+                <label class="w-50 label-13px"
+                  >Est. Man Hours:
+                  <span class="text-danger">*</span>
+                </label>
+                <div class="floating-input">
+                  <input
+                    type="number"
+                    class="form-control"
+                    formControlName="EST_HOURS"
+                    placeholder="Enter Est. Hours"
+                  />
+                </div>
+              </div>
+
+              <!-- Resolution -->
+              <div class="col-3">
+                <label class="w-50 label-13px"
+                  >Resolution
+                  <span class="text-danger">*</span>
+                </label>
+                <div class="floating-input list-btn">
+                  <select
+                    class="form-control selectpicker show-tick"
+                    data-live-search="true"
+                    formControlName="RESOLUTION_CODE"
+                    title="Select Resolution"
+                    [attr.disabled]="viewflag ? '' : null"
+                  >
+                    <option
+                      *ngFor="let res of RESOLUTION_LIST"
+                      [value]="res.RESOLUTION_CODE"
+                    >
+                      {{ res.RESOLUTION_NAME }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- PM Explanation and File Upload -->
+            <div class="row row-gap">
+              <div class="col-md-6 mb-3">
+                <label class="label-13px">
+                  PM Explanation: <span class="text-danger">*</span>
+                </label>
+                <textarea
+                  class="form-control"
+                  rows="4"
+                  formControlName="DEVELOPER_COMMENT"
+                  placeholder="Enter PM Explanation"
+                ></textarea>
+              </div>
+
+              <div class="col-6 d-flex flex-column">
+                <div class="">
+                  <div class="custom-file-uploader-container">
+                    <div class="flex-box-col">
+                      <button
+                        class="btn btn-secondary"
+                        (click)="fileInput.click()"
+                        title="(Accepted file formats: PDF, JPG, PNG, Xls, Xlsx, Doc, Docx)"
+                      >
+                        <i class="pi pi-upload mr-2"></i>Add File
+                      </button>
+                      <input
+                        type="file"
+                        #fileInput
+                        hidden
+                        (change)="onFileSelected($event)"
+                      />
+                    </div>
+                    <small class="mb-0 file-upload-label"
+                      >Any file for Explanation</small
+                    >
+                  </div>
+                  <div class="pt-2">
+                    <table class="table-theam-1 row_bgcolor_1">
+                      <thead>
+                        <tr class="width-100percent">
+                          <th class="width-85percent">File Name</th>
+                          <th class="width-15percent">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let file of RESOLVE_DOC_LIST; let i = index">
+                          <td>{{ file.FILE_NAME }}</td>
+                          <td>
+                            <button
+                              class="btn btn-sm card-padding-none mr-2"
+                              (click)="viewDocument(file)"
+                              title="View Document"
+                            >
+                              <i class="pi pi-eye"></i>
+                            </button>
+
+                            <button
+                              type="button"
+                              class="btn btn-sm card-padding-none"
+                              (click)="deleteFile(i, fileInput)"
+                              title="Delete file"
+                            >
+                              <i class="pi pi-trash"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End of OK (Accept) section -->
+        </div>
+
+        <div class="tab-pane mt-2 col-md-12" id="closed"  [ngClass]="{'show active': bg_color == 1}">
+          <!-- Row 2: Reason Field (Visible only when CLOSE/Closed tab is active) -->
+          <div class="form-group mt-2" >
+            <label class="font-weight-bold small">Reason:
+              <span class="text-danger">*</span>
             </label>
             <textarea
               class="form-control"
-              rows="4"
+              rows="2"
               formControlName="DEVELOPER_COMMENT"
-              placeholder="Enter PM Explanation"
+              placeholder="Enter Reason"
             ></textarea>
           </div>
-
-          <div class="col-6 d-flex flex-column">
-            <div class="pt-6 pb-2 mt-3">
-              <button
-                class="btn custom-file-uploader"
-                (click)="fileInput.click()"
-              >
-                <i class="pi pi-upload mr-2"></i>Add File
-              </button>
-              <input
-                type="file"
-                #fileInput
-                hidden
-                (change)="onFileSelected($event)"/>
-                <small class="mb-0">(Accepted file formats: PDF, JPG, PNG, Xls, Xlsx, Doc, Docx)</small>
-              </div>
-
-            <!-- Table below Add File button -->
-            <div>
-              <table class="table-theam-1 row_bgcolor_1 w-100">
-                <thead>
-                  <tr class="width-100percent">
-                    <th class="width-85percent">File Name</th>
-                    <th class="width-15percent">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    *ngFor="let file of RESOLVE_DOC_LIST; let i = index"
-                  >
-                    <td>{{ file.FILE_NAME }}</td>
-                    <td>
-                      <button
-                        class="btn btn-sm card-padding-none mr-2"
-                        (click)="viewDocument(file)"
-                      >
-                        <i class="pi pi-eye"></i>
-                      </button>
-
-                      <button
-                        type="button"
-                        class="btn btn-sm card-padding-none"
-                        (click)="deleteFile(i, fileInput)"
-                        title="Delete file">
-                        <i class="pi pi-trash"></i>
-                      </button>
-
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
         </div>
+
       </div>
+    </div>
+
+
+
+
     </div>
   </div>
 </form>
+
+
+
+
+
+
+<!-- --------------------------------------------- -->
+
+
+
+
+
 
 <div
   class="modal fade"

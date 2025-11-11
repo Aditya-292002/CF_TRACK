@@ -38,4 +38,8 @@
   padding-right: 25px !important;
 }
 
-
+.no-focus:focus {
+  box-shadow: none !important;
+  outline: none !important;
+  border-color: #ced4da !important;
+}

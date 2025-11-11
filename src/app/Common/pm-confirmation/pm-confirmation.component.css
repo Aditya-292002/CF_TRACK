@@ -263,3 +263,89 @@
 .width-15percent{
     width: 15%;
 }
+
+.form-tabs .nav-tabs>li.nav-active a {
+   
+    border-bottom: 4px solid !important;
+    color: #1e6b90;
+}
+
+.file-info {
+  background-color: #f8f9fa;
+  border-left: 3px solid #007bff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.width-100percent{
+    width: 100%;
+}
+
+.width-85percent{
+    width: 85%;
+}
+
+.width-15percent{
+    width: 15%;
+}
+
+.custom-file-uploader-container{
+    border: 2px dashed #d9d9d9;
+    border-radius: 4px;
+    padding: 12px;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 8px;
+}
+
+.flex-box-col{
+    display: flex;
+    justify-content: center;
+}
+
+.file-upload-label{
+    color: #666666f0;
+}
+
+.nav-tabs {
+    border-bottom: 1px solid #dee2e6;
+    background: #fff !important;
+    border-radius: .25rem;
+    box-shadow: 0 .1875rem .75rem 0 rgba(47, 43, 61, .14);
+}
+.form-tabs .nav-tabs>li {
+    margin: 0 2px 0 0;
+    padding: 5px 8px 0 8px; 
+    width: auto;
+    text-align: center;
+}
+
+.form-tabs .nav-tabs>li>a {
+    border: 0;
+    color: #33414e;
+    font-weight: 500; 
+    width: 100%;
+    margin-bottom: 1px;
+    letter-spacing: 0.2px;
+}
+
+.form-tabs .nav-tabs>li.nav-active a {
+   
+    border-bottom: 4px solid !important;
+    color: #1e6b90;
+}
+
+.form-tabs .placeholder {
+    border-radius: 10px;
+    padding-top: 5px;
+    margin-left: 5px;
+    color: #555555;
+    line-height: 1;
+    text-decoration: none;
+    text-align: center;
+}

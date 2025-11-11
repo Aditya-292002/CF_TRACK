@@ -181,40 +181,72 @@ onProjectChange(value: any) {
   //   });
   // } 
 
-   GetInputFilter(val:any){
-    console.log('INSIDE SEARH',val);
+  //  GetInputFilter(val:any){
+  //   console.log('INSIDE SEARH',val);
     
-    const lowerSearchText = val.toLowerCase();
-    let result: any[] = [];
-    this.FILTER_ISSUE_REQUEST_LIST_DATA.forEach((element:any) => {
-      if(lowerSearchText.length == 0 || lowerSearchText == '' || lowerSearchText == null || lowerSearchText == undefined || lowerSearchText == 'undefined'){
-        this.ISSUE_REQUEST_LIST_DATA = [];
-        this.ISSUE_REQUEST_LIST_DATA  = this.FILTER_ISSUE_REQUEST_LIST_DATA;
-        return
-      }else if (element.ISSUE_SUBJECT.toLowerCase() == lowerSearchText) {
-        result.push(element); 
-    this.ISSUE_REQUEST_LIST_DATA = []; 
-    this.ISSUE_REQUEST_LIST_DATA = result; 
-      }else if(element.MODULE_CODE.toLowerCase() == lowerSearchText){
-        result.push(element); 
-    this.ISSUE_REQUEST_LIST_DATA = [];
-    this.ISSUE_REQUEST_LIST_DATA = result;
-      }else if(element.FUNCTION_CODE.toLowerCase() == lowerSearchText){
-        result.push(element);
-    this.ISSUE_REQUEST_LIST_DATA = [];
-    this.ISSUE_REQUEST_LIST_DATA = result; 
-      }else if(element.PROJ_NAME.toLowerCase() == lowerSearchText){
-        result.push(element); 
-    this.ISSUE_REQUEST_LIST_DATA = [];
-    this.ISSUE_REQUEST_LIST_DATA = result; 
-      }
-      else if(element.ISSUE_TYPE_DESC.toLowerCase() == lowerSearchText){
-        result.push(element); 
-    this.ISSUE_REQUEST_LIST_DATA = [];
-    this.ISSUE_REQUEST_LIST_DATA = result; 
-      }
-    });
+  //   const lowerSearchText = val.toLowerCase();
+  //   let result: any[] = [];
+  //   this.FILTER_ISSUE_REQUEST_LIST_DATA.forEach((element:any) => {
+  //     if(lowerSearchText.length == 0 || lowerSearchText == '' || lowerSearchText == null || lowerSearchText == undefined || lowerSearchText == 'undefined'){
+  //       this.ISSUE_REQUEST_LIST_DATA = [];
+  //       this.ISSUE_REQUEST_LIST_DATA  = this.FILTER_ISSUE_REQUEST_LIST_DATA;
+  //       return
+  //     }else if (element.ISSUE_SUBJECT.toLowerCase() == lowerSearchText) {
+  //       result.push(element); 
+  //   this.ISSUE_REQUEST_LIST_DATA = []; 
+  //   this.ISSUE_REQUEST_LIST_DATA = result; 
+  //     }else if(element.MODULE_CODE.toLowerCase() == lowerSearchText){
+  //       result.push(element); 
+  //   this.ISSUE_REQUEST_LIST_DATA = [];
+  //   this.ISSUE_REQUEST_LIST_DATA = result;
+  //     }else if(element.FUNCTION_CODE.toLowerCase() == lowerSearchText){
+  //       result.push(element);
+  //   this.ISSUE_REQUEST_LIST_DATA = [];
+  //   this.ISSUE_REQUEST_LIST_DATA = result; 
+  //     }else if(element.PROJ_NAME.toLowerCase() == lowerSearchText){
+  //       result.push(element); 
+  //   this.ISSUE_REQUEST_LIST_DATA = [];
+  //   this.ISSUE_REQUEST_LIST_DATA = result; 
+  //     }
+  //     else if(element.ISSUE_TYPE_DESC.toLowerCase() == lowerSearchText){
+  //       result.push(element); 
+  //   this.ISSUE_REQUEST_LIST_DATA = [];
+  //   this.ISSUE_REQUEST_LIST_DATA = result; 
+  //     }
+  //   });
+  // }
+
+// ---------------------------------------------------------
+
+
+GetInputFilter(val: any) {
+  const searchText = (val || '').trim().toLowerCase();
+  // if search box is empty — show full data again
+  if (!searchText) {
+    this.ISSUE_REQUEST_LIST_DATA = [...this.FILTER_ISSUE_REQUEST_LIST_DATA];
+    return;
   }
+
+  // Filter based on partial match in any of these fields
+  this.ISSUE_REQUEST_LIST_DATA = this.FILTER_ISSUE_REQUEST_LIST_DATA.filter((element: any) => {
+    return (
+      (element.ISSSUE_NO && element.ISSSUE_NO.toLowerCase().includes(searchText)) ||
+      (element.REQUEST_DATE && element.REQUEST_DATE.toLowerCase().includes(searchText)) ||
+      (element.PROJ_NAME && element.PROJ_NAME.toLowerCase().includes(searchText)) ||
+      (element.ISSUE_TYPE_DESC && element.ISSUE_TYPE_DESC.toLowerCase().includes(searchText)) ||
+      (element.ISSUE_SUBJECT && element.ISSUE_SUBJECT.toLowerCase().includes(searchText)) ||
+      (element.PRIORITY_CODE && element.PRIORITY_CODE.toLowerCase().includes(searchText)) ||
+    (element.STATUS_CODE && element.STATUS_CODE.toLowerCase().includes(searchText))
+      
+    )
+     
+      
+    
+  });
+
+  console.log('Filtered Results:', this.ISSUE_REQUEST_LIST_DATA);
+}
+
 
  setStatus(value: string) {
   this.liststatus = value;

@@ -22,9 +22,14 @@ export class PmConfirmationComponent implements OnInit {
   DOCUMENT_ATTECHED_LIST: any = []
   DOCUMENT_ATTECHED_LIST1: any = []
   statusflag: boolean = false;
+  activeTab: string = 'Accept';
   // Options for dropdowns
   // RESOLUTION_LIST: { RESOLUTION_CODE: string, RESOLUTION_NAME: string }[] = [];
-  RESOLUTION_LIST: any = [];
+  RESOLUTION_LIST = [
+    { RESOLUTION_CODE: 'R1', RESOLUTION_NAME: 'Fixed' },
+    { RESOLUTION_CODE: 'R2', RESOLUTION_NAME: 'Not Reproducible' },
+    { RESOLUTION_CODE: 'R3', RESOLUTION_NAME: 'Duplicate' },
+  ];
 
   // Uploaded document list
   DEVELOPER_DOCUMENT_LIST: { FILE_NAME: string, FILE_EXTENSION: string, DOC_BASE64: string }[] = [];
@@ -63,6 +68,7 @@ export class PmConfirmationComponent implements OnInit {
   REASON_ISSUE: any;
   DESC_ISSUE: any;
   DEVELOPER_COMMENT: any;
+  DISCUSSION: any;
   SaveConfirmationPopUp: boolean = false;
   CR_ISSUE_REASON: any;
   CUST_REF_NO: any;
@@ -74,6 +80,9 @@ export class PmConfirmationComponent implements OnInit {
   COMMENT_HISTORY:any
   INITIAL_DOC_LIST: any = [];
   RESOLVE_DOC_LIST: any = [];
+  bg_color: number = 0;
+  disabledTabs = [false, false, false];
+ 
   constructor(
     private fb: FormBuilder,
     private route: RoutingService,
@@ -122,7 +131,7 @@ export class PmConfirmationComponent implements OnInit {
       DEVELOPER_COMMENT: [''],
       DELIVERY_BY: [null],
       EST_HOURS: [null, [Validators.min(0), Validators.max(999)]],
-      RESOLUTION_CODE: ['']
+      RESOLUTION_CODE: [''],
     });
 
     console.log(this.form.get('DEVELOPER_STATUS').value, "value");
@@ -157,17 +166,17 @@ export class PmConfirmationComponent implements OnInit {
       // this.GETISSUERAISEDHISTORY(0);
     }
 
-    this.form.get('DEVELOPER_STATUS').valueChanges.subscribe(value => {
-      console.log(value, "value")
-      if (value === "") {
-        this.developerStatus = "OK"
-      } else if (value === undefined) {
-        this.developerStatus = "OK"
-      } else {
-        this.developerStatus = value
-      }
+    // this.form.get('DEVELOPER_STATUS').valueChanges.subscribe(value => {
+    //   console.log(value, "value")
+    //   if (value === "") {
+    //     this.developerStatus = "OK"
+    //   } else if (value === undefined) {
+    //     this.developerStatus = "OK"
+    //   } else {
+    //     this.developerStatus = value
+    //   }
 
-    });
+    // });
   }
   showHistoryDialog() {
     console.log("calling")
@@ -214,13 +223,14 @@ ISSUE_ID:localStorage.getItem("ISSUE_ID")
 
   GETISSUERAISEDDETAILSBYISSUENO() {
     console.log('GETISSUERAISEDDETAILSBYISSUENO inside');
-
     const data = {
       USER_ID: +this.USER_ID,
       FUNCTION_CODE: (this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE,
       ISSUE_NO: this.ISSUE_NO,
       MODE: this.MODE
     };
+
+   
 
     this.http.PostRequest(this.apiurl.GETISSUERAISEDDETAILSBYISSUENO, data).then((res: any) => {
       const response = res.datalist[0];
@@ -276,17 +286,22 @@ ISSUE_ID:localStorage.getItem("ISSUE_ID")
 
 
       if (response.STATUS_CODE == '42') {
-        this.developerStatus = 'CLOSE'
-       
+        // this.developerStatus = 'CLOSE'
         this.isDisableRadioBtn = true
-         console.log(this.isDisableRadioBtn," console.log(this.isDisableRadioBtn)")
+      this.bg_color=1
+   
+        console.log(this.isDisableRadioBtn," console.log(this.isDisableRadioBtn)")
       } else if (response.STATUS_CODE == '40') {
-        this.developerStatus = 'OK'
+        // this.developerStatus = 'OK'
         this.isDisableRadioBtn = true
-                 console.log(this.isDisableRadioBtn," console.log(this.isDisableRadioBtn)")
+     
+         this.bg_color=0
+        console.log(this.isDisableRadioBtn," console.log(this.isDisableRadioBtn)")
       }else if(response.STATUS_CODE == '00'){
-         this.isDisableRadioBtn = false
-                  console.log(this.isDisableRadioBtn," console.log(this.isDisableRadioBtn)")
+        this.isDisableRadioBtn = false
+       
+         this.bg_color=2
+        console.log(this.isDisableRadioBtn," console.log(this.isDisableRadioBtn)")
       }
 
 
@@ -309,7 +324,7 @@ if( response.DELIVERY_BY!=""){
         EST_HOURS: response.EST_HOURS,
         RESOLUTION_CODE: response.RESOLUTION_CODE,
         DEVELOPER_COMMENT: response.DEVELOPER_COMMENT,
-        DEVELOPER_STATUS: this.developerStatus
+        // DEVELOPER_STATUS: this.developerStatus
       });
       setTimeout(() => {
      
@@ -471,8 +486,8 @@ if( response.DELIVERY_BY!=""){
   }
   SaveConfirmationPopUpOpen() {
 
-    this.form.get('DEVELOPER_STATUS').value
-    console.log(this.developerStatus, "this.developerStatus")
+    // this.form.get('DEVELOPER_STATUS').value
+    // console.log(this.developerStatus, "this.developerStatus")
     //  this.SaveConfirmationPopUp = true;
     // Trigger form validation
     this.form.markAllAsTouched();
@@ -664,5 +679,15 @@ if( response.DELIVERY_BY!=""){
   isPending(): boolean {
     return this.liststatus === 'P';
   }
+
+  onbgcolorchange(para: number) {
+   this.bg_color = para;
+  // disable all tabs except the selected one
+
+ 
+}
+
+
+
 
 }
