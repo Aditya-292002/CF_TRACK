@@ -314,7 +314,7 @@
             </div>
           </div>
           <div class="col-6">
-            <div class="custom-file-uploader-container">
+            <div class="custom-file-uploader-container" *ngIf="!viewflag">
               <div class="flex-box-col">
               <button
                 class="btn btn-secondary"
@@ -332,6 +332,7 @@
               <small class="mb-0 file-upload-label" >Any file for Explanation</small>
             </div>
             <div class=" pt-2">
+              <label for="" class=""  *ngIf="viewflag">Uploaded Document List</label>
               <table class="table-theam-1 row_bgcolor_1">
                 <thead>
                   <tr class="width-100percent">

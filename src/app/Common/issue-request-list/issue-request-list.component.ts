@@ -87,6 +87,7 @@ export class IssueRequestListComponent implements OnInit {
     let data = {
       "USER_ID": (+this.USER_ID),
       "FUNCTION_CODE": ((this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE),
+     "COMPANY_CODE": this.userData[0].CUST_CODE
     }
     // this.apiService.post(this.apiurl.GETISSUEREQUESTMASTER, data).then((res: any) => {
     //   this.STATUS_LIST = res.Statuscodelist;
@@ -99,7 +100,7 @@ export class IssueRequestListComponent implements OnInit {
       "USER_ID": (+this.USER_ID),
       "FUNCTION_CODE": ((this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE),
       "LISTSTATUS": ( this.liststatus == "Pending") ? "P" : "C",
-      "CUST_CODE": this.CUST_CODE,
+     "CUST_CODE": this.userData[0].CUST_CODE
     }
    
     this.http.PostRequest(this.apiurl.GetIssueRequestList, data).then((res: any) => {
@@ -159,7 +160,9 @@ export class IssueRequestListComponent implements OnInit {
    }
 
    GetInputFilter(val:any){
-    const lowerSearchText = val.toLowerCase();
+    const lowerSearchText = val.
+    console.log('test',val);
+    
     let result: any[] = [];
     this.FILTER_ISSUE_REQUEST_LIST_DATA.forEach((element:any) => {
       if(lowerSearchText.length == 0 || lowerSearchText == '' || lowerSearchText == null || lowerSearchText == undefined || lowerSearchText == 'undefined'){

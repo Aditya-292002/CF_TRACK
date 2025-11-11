@@ -435,11 +435,13 @@
             ></textarea>
           </div>
 
-          <div class="col-6 d-flex flex-column">
-            <div class="pt-6 pb-2 mt-3">
+         <div class="col-6 d-flex flex-column">    
+            <div class="custom-file-uploader-container">
+              <div class="flex-box-col">
               <button
-                class="btn custom-file-uploader"
+                class="btn btn-secondary"
                 (click)="fileInput.click()"
+                title="(Accepted file formats: PDF, JPG, PNG, Xls, Xlsx, Doc, Docx)"
               >
                 <i class="pi pi-upload mr-2"></i>Add File
               </button>
@@ -448,12 +450,11 @@
                 #fileInput
                 hidden
                 (change)="onFileSelected($event)"/>
-                <small class="mb-0">(Accepted file formats: PDF, JPG, PNG, Xls, Xlsx, Doc, Docx)</small>
-              </div>
-
-            <!-- Table below Add File button -->
-            <div>
-              <table class="table-theam-1 row_bgcolor_1 w-100">
+                </div>
+              <small class="mb-0 file-upload-label" >Any file for Explanation</small>
+            </div>
+            <div class=" pt-2">
+              <table class="table-theam-1 row_bgcolor_1">
                 <thead>
                   <tr class="width-100percent">
                     <th class="width-85percent">File Name</th>
@@ -469,10 +470,11 @@
                       <button
                         class="btn btn-sm card-padding-none mr-2"
                         (click)="viewDocument(file)"
+                        title="View Document"
                       >
                         <i class="pi pi-eye"></i>
                       </button>
-
+                     
                       <button
                         type="button"
                         class="btn btn-sm card-padding-none"
@@ -480,7 +482,7 @@
                         title="Delete file">
                         <i class="pi pi-trash"></i>
                       </button>
-
+ 
                     </td>
                   </tr>
                 </tbody>

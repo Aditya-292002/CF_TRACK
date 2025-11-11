@@ -279,7 +279,7 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
     let data = {
       "USER_ID": (+this.USERID),
       "FUNCTION_CODE": ((this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE),
-      "COMPANY_CODE": this.userData[0].COMPANY_CODE
+      "COMPANY_CODE": this.userData[0].CUST_CODE
     }
     this.http.PostRequest(this.apiurl.GetIssueCommonList, data).then((res: any) => {
       this.FUNCTION_LIST = res.Functioncodelist;
@@ -378,9 +378,7 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
     };
 
     this.http.PostRequest(this.apiurl.GETISSUERAISEDDETAILSBYISSUENO, data).then((res: any) => {
-  debugger
       const response = res.datalist[0];
-
     //  if(this.response1){
         this.checkStatus=response.STATUS_CODE
 //}

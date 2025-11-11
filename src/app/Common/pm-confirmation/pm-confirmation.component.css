@@ -263,3 +263,46 @@
 .width-15percent{
     width: 15%;
 }
+
+
+.file-info {
+  background-color: #f8f9fa;
+  border-left: 3px solid #007bff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  color: #333;
+  font-size: 0.9rem;
+}
+ 
+.width-100percent{
+    width: 100%;
+}
+ 
+.width-85percent{
+    width: 85%;
+}
+ 
+.width-15percent{
+    width: 15%;
+}
+ 
+.custom-file-uploader-container{
+    border: 2px dashed #d9d9d9;
+    border-radius: 4px;
+    padding: 12px;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 8px;
+}
+ 
+.flex-box-col{
+    display: flex;
+    justify-content: center;
+}
+ 
+.file-upload-label{
+    color: #666666f0;
+}
