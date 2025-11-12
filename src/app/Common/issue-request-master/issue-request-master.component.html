@@ -17,10 +17,6 @@
           ( Please Check History)
         </p> -->
       </div>
-      <!-- <div class="justify-content-end">
-        <button class="p-element prime-button save-button" (click)="goToList()">List</button>
-        <button class="p-element prime-button save-button"  data-target="#saveissue" data-toggle="modal" (click)="SaveConfirmationPopUpOpen()">Save</button>
-      </div> -->
 
       <div class="d-flex justify-content-end">
         <div class="d-flex justify-content-between ">
@@ -39,32 +35,18 @@
               (click)="GETISSUERAISEDHISTORY(1)">History</button>
           </div> -->
           <div class="mr-2" *ngIf="viewflag">
-            <!-- <button
-              class="p-element prime-button save-button"
-              (click)="GETISSUERAISEDHISTORY(1); showHistoryDialog()"
-            >
-              History
-            </button> -->
-             <button
-          class="btn btn-secondary mr-1"
-          (click)="GETISSUERAISEDHISTORY(1); showHistoryDialog()"
-        >
-          History
-  </button>
-          </div>
-          <!-- <button
-            class="p-element prime-button secondary-button"
-            (click)="goToList()"
-          >
-            List
-          </button> -->
-             <button
-          class="btn btn-secondary mr-2"
-           (click)="goToList()"
-        >
-          List
-  </button>
+            <button
+            class="btn btn-secondary mr-1"
+            (click)="GETISSUERAISEDHISTORY(1); showHistoryDialog()">
+            History
+          </button>
         </div>
+          <button
+          class="btn btn-secondary mr-2"
+          (click)="goToList()">
+          List
+        </button>
+      </div>
 
         <div class="mr-2" *ngIf="!viewflag">
              <button
@@ -75,15 +57,6 @@
         >
           Save
   </button>
-
-          <!-- <button
-            class="p-element prime-button save-button"
-            data-target="#saveissue"
-            data-toggle="modal"
-            (click)="SaveConfirmationPopUpOpen()"
-          >
-            Save
-          </button> -->
         </div>
       </div>
     </div>
@@ -212,13 +185,8 @@
           </div>
 
           <!-- Issue Type -->
-          <!-- [ngClass]="form.get('RAISED_BY')?.value === 'OTHER' ? 'col-3' : 'col-5'" -->
           <div class="col-3">
             <label class="w-50 label-13px">Issue Type</label>
-            <!-- <div class="floating-input">
-              <input type="text" class="form-control" formControlName="ISSUE_TYPE_CODE" placeholder="Enter Issue Type"
-                [attr.disabled]="viewflag ? '' : null">
-            </div> -->
             <div class="floating-input list-btn">
               <select
                 class="form-control selectpicker show-tick"
@@ -400,26 +368,6 @@
     <div  class="row row-gap" *ngIf="checkStatus === '40'">
       
       <!-- Delivery By -->
-      <!-- <div class="col-3">
-        <label class="w-50 label-13px">Delivery By</label>
-        <div class="floating-input">
-          <input
-            *ngIf="!viewflag"
-            type="date"
-            class="form-control"
-            placeholder="dd-mm-yyyy"
-            formControlName="DELIVERY_BY"
-            disabled
-          />
-          <input
-            *ngIf="viewflag"
-            type="date"
-            class="form-control"
-            [value]="form.get('DELIVERY_BY')?.value | date : 'yyyy-MM-dd'"
-            [attr.disabled]="viewflag ? '' : null"
-          />
-        </div>
-      </div> -->
         <div class="col-3">
           <label class="w-50 label-13px">Delivery By</label>
 							<div class="floating-input mb-2">
@@ -451,7 +399,7 @@
         </div>
       </div>
 
-      <!-- Priority -->
+      <!-- Resolution -->
       <div class="col-3">
         <label class="w-50 label-13px">Resolution</label>
         <div class="floating-input list-btn">
@@ -487,20 +435,6 @@
       </div>
 
           <div class="col-6">
-            <!-- <div class="col-12 pt-2">
-              <button
-                class="btn custom-file-uploader"
-                (click)="fileInput.click()"
-              >
-                <i class="pi pi-upload mr-2"></i>Add File
-              </button>
-              <input
-                type="file"
-                #fileInput
-                hidden
-                (change)="onFileSelected($event)"/>
-              <small class="mb-0">(Accepted file formats: PDF, JPG, PNG, Xls, Xlsx, Doc, Docx)</small>
-            </div> -->
             <label for="" class="">Uploaded Document List</label>
             <div class="  w-100">
               <table class="table-theam-1 row_bgcolor_1">
@@ -548,44 +482,8 @@
     </div>
   </form>
 
-  <!-- end of card -->
+  <!------------ end of card ------------>
 
- 
-
-  <!-- <div class="card mt-2 card-padding-none">
- 
-    <div class="card-body">
- 
-
-      <button class="btn prime-button secondary-button mb-2" (click)="fileInput.click()">
-        <i class="pi pi-upload mr-2"></i>Add File</button>
-      <input type="file" #fileInput hidden (change)="onFileSelected($event)" />
- 
-    
-      <table class="table table-bordered file-table">
-        <thead>
-          <tr>
-            <th class="file-table-th ">File Name</th>
-            <th class="file-table-action">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let file of DOCUMENT_ATTECHED_LIST; let i = index">
-            <td>{{ file.FILE_NAME }}</td>
-            <td>
-               <button class="btn btn-sm" (click)="viewDocument(file)">
-              <i class="pi pi-eye"></i>
-            </button>
-              <button class="btn btn-sm" (click)="deleteFile(i)">
-                <i class="pi pi-trash"></i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
- 
-    </div>
-  </div> -->
 
   <div
     class="modal fade"

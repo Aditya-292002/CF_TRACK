@@ -76,19 +76,8 @@ export class IssueRequestMasterComponent implements OnInit {
   STATUS_CODE: any;
   GET_STATUS_CODE: any;
   visibleHistoryFun: boolean = false;
-   COMMENT_HISTORY: any = [];
-   checkStatus:any
-   //= [{
-  //   status: '',
-  //   STATUS_COLOR_NAME: '',
-  //   Status_Name: '',
-  //   date: '',
-  //   EST_HOURS: '',
-  //   DELIVERY_BY: '',
-  //   PROPOSE_HOURS: '',
-  //   PROPOSE_DELIVERY_BY: '',
-  //   comment: ''
-  // }];
+  COMMENT_HISTORY: any = [];
+  checkStatus:any
   DELIVERY_BY: any;
   ISSUE_ID: any;
   SAMPEL_FUNCTION_LIST: any = [];
@@ -112,19 +101,9 @@ export class IssueRequestMasterComponent implements OnInit {
   product_code: any;
   otherName: string = '';
   displayHistory: boolean = false;
-RESOLUTION_LIST:any
-RESOLVE_DOC_LIST: any = [];
-INITIAL_DOC_LIST: any = [];
-
-  dropdownList: { PRIORITY_CODE: string; PRIORITY_DESC: string; }[];
-  dropdownList1 = [
-    { Value: 'A', Text: 'HOrizon ERP' },
-    { Value: 'B', Text: 'Salary Processing Service' },
-    // { Value: 'C', Text: 'Product C' },
-    // { Value: 'D', Text: 'Product D' }
-  ];
-  // dropdownList1: { Value: string; Text: string; }[];
-
+  RESOLUTION_LIST:any
+  RESOLVE_DOC_LIST: any = [];
+  INITIAL_DOC_LIST: any = [];
   uploadedFiles: any[] = [];
   userData: any;
   form: FormGroup;
@@ -132,8 +111,6 @@ INITIAL_DOC_LIST: any = [];
   historyData: { status: string; userName: string; time: string; comment: string; }[] = [];
   PROJECT_LIST: any;
   RAISED_BY_NAME: any;
-
-  
 
   deleteFile(index: number, fileInput?: HTMLInputElement): void {
   // Remove the file from the list
@@ -187,19 +164,19 @@ INITIAL_DOC_LIST: any = [];
       ISSUE_SUBJECT: [{ value: '', disabled: this.viewflag }],
       MODULE_CODE: [{ value: '', disabled: this.viewflag }],
       ISSUE_FUNCTION_CODE: [{ value: '', disabled: this.viewflag }],
-      PRIORITY_CODE: [{ value: '', disabled: this.viewflag }],
+      PRIORITY_CODE: [{ value: '01', disabled: this.viewflag }],
       REASON_ISSUE: [{ value: '', disabled: this.viewflag }],
       DESC_ISSUE: [{ value: '', disabled: this.viewflag }],
-DEVELOPER_COMMENT: [{ value: '', disabled: this.viewflag }],
-DELIVERY_BY: [{ value: '', disabled: this.viewflag }],
-EST_HOURS: [{ value: '', disabled: this.viewflag }],
-RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
+      DEVELOPER_COMMENT: [{ value: '', disabled: this.viewflag }],
+      DELIVERY_BY: [{ value: '', disabled: this.viewflag }],
+      EST_HOURS: [{ value: '', disabled: this.viewflag }],
+      RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
 
     });
-        this.form.get('REQUEST_DATE').setValue(today1);
+
+    this.form.get('REQUEST_DATE').setValue(today1);
     this.form.get('RAISED_BY').valueChanges.subscribe(value => {
       if (value === 'OTHER') {
-
         this.form.get('OTHER_NAME').reset();  // Clear the name when "Self" is selected
       }
       if (value === 'SELF') {
@@ -231,10 +208,6 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
     this.GETISSUEREQUESTMASTER();
     this.GetPMConfirmationList()
 
-    this.dropdownList = [
-      { PRIORITY_CODE: '01', PRIORITY_DESC: 'Low' },
-      { PRIORITY_CODE: '02', PRIORITY_DESC: 'Medium' }
-    ];
 
 
     if (this.MODE == 'A') {
@@ -256,8 +229,6 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
     this.USER_ID = this.userData[0].LOGIN_ID;
     this.USERID = this.userData[0].LOGIN_ID;
     console.log(' this.USER_ID', this.USER_ID);
-
-
 
     // this.GETISSUERAISEDHISTORY(0);
 
@@ -301,71 +272,7 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
     });
   }
 
-  //  GETISSUERAISEDDETAILSBYISSUENO(){
-  //   console.log('GETISSUERAISEDDETAILSBYISSUENO inside');
 
-  //   let data = {
-  //     "USER_ID": (+this.USERID),
-  //     "FUNCTION_CODE": ((this.FUNCTION_CODE == undefined || this.FUNCTION_CODE == null) ? "" : this.FUNCTION_CODE),
-  //     "ISSUE_NO":this.ISSUE_NO,
-  //      "MODE":this.MODE,
-  //   }
-  //   // console.log('data ->' , JSON.stringify(data))
-  //   this.http.PostRequest(this.apiurl.GETISSUERAISEDDETAILSBYISSUENO, data).then((res: any) => {
-  //     // console.log('res ->' , res )
-  //      this.IS_HISTORY = res.datalist[0].IS_HISTORY;
-  //      this.ISSUE_NO = res.datalist[0].ISSSUE_NO;
-  //      this.ISSUE_ID = res.datalist[0].ISSUE_ID;
-  //      this.IS_UPDATE = res.datalist[0].IS_UPDATE;
-  //      this.USERID = res.datalist[0].RAISED_BY;
-  //      this.PRIORITY_CODE = res.datalist[0].PRIORITY_CODE;
-  //      this.REQUESTER_NAME = res.datalist[0].REQUESTER_NAME;
-  //      this.REQUESTER = res.datalist[0].REQUESTER_NAME;
-  //      this.ISSUE_TYPE_CODE = res.datalist[0].ISSUE_TYPE_CODE;
-  //      let request_date = res.datalist[0].REQUEST_DATE;
-  //      this.REQUEST_DATE = new Date(request_date);
-  //      this.MODULE_CODE = res.datalist[0].MODULE_CODE;
-  //      this.MODULE_DESC = res.datalist[0].MODULE_DESC;
-  //      this.ISSUE_FUNCTION_CODE = res.datalist[0].FUNCTION_CODE;
-  //      this.FUNCTION_DESC = res.datalist[0].FUNCTION_DESC;
-  //      this.ISSUE_SUBJECT = res.datalist[0].ISSUE_SUBJECT;
-  //      this.REASON_ISSUE = res.datalist[0].ASREASON_OF_ISSUE_CR;
-  //      this.DESC_ISSUE = res.datalist[0].DESC_OF_ISSUE_CR;
-  //      this.ISSUE_ID = res.datalist[0].ISSUE_ID;
-  //      this.STATUS_CODE = res.datalist[0].STATUS_CODE;
-  //      this.STATUS_NAME = res.datalist[0].STATUS_NAME;
-  //      this.product_code = res.datalist[0].PRODUCT_CODE;
-
-  //     this.form.get("PRODUCT_CODE").setValue(this.product_code)
-  //      setTimeout(() => {
-  //       $('.selectpicker').selectpicker('refresh').trigger('change');
-  //     }, 100);
-  //     // this.form.get("USER_NAME").setValue(this.sharedService.loginUser[0].USER_NAME)
-
-  //     //  this.dropdownList1.forEach((element:any) => {  
-  //     //    if(element.Value == this.product_code){   
-  //     //      this.product_code = element;
-  //     //     } 
-  //     //   });
-  //       console.log('this.product_code',this.product_code);
-
-  //      if(this.ISSUE_TYPE_CODE == '02'){
-  //        this.isReasonofErrorCR = true;
-  //        this.isErrorLableChange = true;
-  //      }else if(this.ISSUE_TYPE_CODE == '01'){
-  //        this.isErrorLableChange = false;
-  //        this.isReasonofErrorCR = false;
-  //      }
-  //        this.GET_DOCUMENT_LIST = res.iteamlist;
-  //      if(this.GET_DOCUMENT_LIST.length > 0){
-  //        this.isUploadDocument = true;
-  //        this.DOCUMENT_ATTECHED_LIST = this.GET_DOCUMENT_LIST;
-  //      }
-  //   //this.MessageService.add({severity:'warn', summary:'If you want to see current Status ',detail:"Please Check a History"});
-
-  //   });
-
-  //  }\
   response1:any
   GETISSUERAISEDDETAILSBYISSUENO() {
     console.log('GETISSUERAISEDDETAILSBYISSUENO inside');
@@ -378,12 +285,13 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
     };
 
     this.http.PostRequest(this.apiurl.GETISSUERAISEDDETAILSBYISSUENO, data).then((res: any) => {
-  debugger
+      debugger
       const response = res.datalist[0];
 
-    //  if(this.response1){
+      // if(this.response1){
         this.checkStatus=response.STATUS_CODE
-//}
+      // }
+        
       // Save response values for non-form-related properties
       this.IS_HISTORY = response.IS_HISTORY;
       this.ISSUE_ID = response.ISSUE_ID;
@@ -414,16 +322,17 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
       });
 
       this.form.get('PRODUCT_CODE').setValue(response.PRODUCT_CODE);
-if(response.DELIVERY_BY!=""){
-  var date =this.datepipe.transform(new Date(response.DELIVERY_BY), 'dd-MMM-yyyy');
-}
-     this.form.patchValue({
+      if(response.DELIVERY_BY!="") {
+        var date =this.datepipe.transform(new Date(response.DELIVERY_BY), 'dd-MMM-yyyy');
+      }
+
+      this.form.patchValue({
         RESOLUTION_CODE:response.RESOLUTION_CODE,
         EST_HOURS:response.EST_HOURS,
         DELIVERY_BY:date,
         DEVELOPER_COMMENT:response.DEVELOPER_COMMENT
-     
-        });
+      });
+
       // Handle dynamic fields (like ReasonOfErrorCR toggle)
       if (response.ISSUE_TYPE_CODE === '02') {
         this.isReasonofErrorCR = true;
@@ -434,14 +343,14 @@ if(response.DELIVERY_BY!=""){
       }
 
       // Handle attached documents
-   this.GET_DOCUMENT_LIST = res.iteamlist || [];
-   if(this.GET_DOCUMENT_LIST.length>0){
-this.INITIAL_DOC_LIST = this.GET_DOCUMENT_LIST.filter((x: any) => x.TYPE === 'I');
-this.RESOLVE_DOC_LIST = this.GET_DOCUMENT_LIST.filter((x: any) => x.TYPE === 'R');
-   }else{
-    this.INITIAL_DOC_LIST = [];
-    this.RESOLVE_DOC_LIST = [];
-   }
+      this.GET_DOCUMENT_LIST = res.iteamlist || [];
+      if(this.GET_DOCUMENT_LIST.length>0){
+        this.INITIAL_DOC_LIST = this.GET_DOCUMENT_LIST.filter((x: any) => x.TYPE === 'I');
+        this.RESOLVE_DOC_LIST = this.GET_DOCUMENT_LIST.filter((x: any) => x.TYPE === 'R');
+      } else {
+        this.INITIAL_DOC_LIST = [];
+        this.RESOLVE_DOC_LIST = [];
+      }
       if (res.iteamlist.length > 0) {
         this.isUploadDocument = true;
         this.DOCUMENT_ATTECHED_LIST = res.iteamlist;
@@ -464,10 +373,7 @@ this.RESOLVE_DOC_LIST = this.GET_DOCUMENT_LIST.filter((x: any) => x.TYPE === 'R'
          this.form.get('RESOLUTION_CODE').setValue(response.RESOLUTION_CODE);
         $('.selectpicker').selectpicker('refresh').trigger('change');
       }, 100);
-    });
-
-
-      
+    }); 
   }
 
   GetissueSelect(code: any) {
@@ -582,39 +488,6 @@ this.RESOLVE_DOC_LIST = this.GET_DOCUMENT_LIST.filter((x: any) => x.TYPE === 'R'
   // }
   // })
 
-
-  //   let data = {
-  //     "ISSUE_NO": this.ISSUE_NO,
-  //     "DATE": this.datepipe.transform(this.REQUEST_DATE,'yyyy-MM-dd'),
-  //     "REQUESTER": this.USER_ID,
-  //     "PRODUCT_CODE":this.product_code,
-  //     "USERID": this.USERID,
-  //     "ISSUE_TYPE_CODE": this.ISSUE_TYPE_CODE,
-  //     "PRIORITY_CODE": this.PRIORITY_CODE,
-  //     "MODULE_CODE": this.MODULE_CODE,
-  //     "FUNCTION_CODE": this.ISSUE_FUNCTION_CODE,
-  //     "ISSUE_SUBJECT": this.ISSUE_SUBJECT,
-  //     "REASON_ISSUE": this.REASON_ISSUE,
-  //     // "DESC_ISSUE": this.DESC_ISSUE,
-  //     "MODE": this.MODE,
-  //     "STATUS_CODE": this.STATUS_CODE,
-  //     "REVERT_COMMENT": this.REVERT_COMMENT,
-  //     "DOCUMENT_ATTECHED_LIST": this.DOCUMENT_ATTECHED_LIST,
-
-  //   }
-  //     console.log('data ->' , data)
-
-  //     this.http.PostRequest(this.apiurl.SaveIssueDetails, data).then((res: any) => {
-  //     if (res.Resultlist[0].FLAG == 1) {
-  // this.SaveConfirmationPopUp = false;
-
-  //        this.toast.success(res.Resultlist[0].MSG)
-  //        this.router.navigate([`/issuerequestlist`]);
-  //     } else if (res.Resultlist[0].FLAG == 0) {
-  //       this.toast.error(res.Resultlist[0].MSG);
-  //     }
-  //   });
-  //  }
   SAVEISSUEREQUESTMASTER() {
 
     // 🚨 Validate form
@@ -660,9 +533,7 @@ this.RESOLVE_DOC_LIST = this.GET_DOCUMENT_LIST.filter((x: any) => x.TYPE === 'R'
       MODE: this.MODE,
       STATUS_CODE: this.STATUS_CODE,
       REVERT_COMMENT: this.REVERT_COMMENT,
-
       DOCUMENT_ATTECHED_LIST: this.DOCUMENT_ATTECHED_LIST,
-
     };
 
     console.log('data ->', data);
@@ -778,36 +649,8 @@ this.RESOLVE_DOC_LIST = this.GET_DOCUMENT_LIST.filter((x: any) => x.TYPE === 'R'
   //     console.error('Popup blocked. Please allow popups for this site.');
   //   }
   // }
+
   allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png', 'xls', 'xlsx', 'doc', 'docx'];
-  // allowedMimeTypes = this.allowedExtensions
-  // .map(ext => {
-  //   switch (ext) {
-  //     case 'pdf': return 'application/pdf';
-  //     case 'jpg':
-  //     case 'jpeg': return 'image/jpeg';
-  //     case 'png': return 'image/png';
-  //     case 'xls': return 'application/vnd.ms-excel';
-  //     case 'xlsx': return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-  //     case 'doc': return 'application/msword';
-  //     case 'docx': return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-  //     case 'txt': return 'text/plain';
-  //     default: return '';
-  //   }
-  // })
-  // .filter(Boolean)
-  // .join(',');
-  // viewDocument(data: any) {
-  //   if (!data.DOC_BASE64 || !data.EXTENSION) return;
-  //   const byteCharacters = atob(data.DOC_BASE64);
-  //   const byteNumbers = new Array(byteCharacters.length);
-  //   for (let i = 0; i < byteCharacters.length; i++) {
-  //     byteNumbers[i] = byteCharacters.charCodeAt(i);
-  //   }
-  //   const byteArray = new Uint8Array(byteNumbers);
-  //   const blob = new Blob([byteArray], { type: this.getMimeType(data.EXTENSION) });
-  //   const fileURL = URL.createObjectURL(blob);
-  //   window.open(fileURL, '_blank');
-  // }
 
   viewDocument(data: any) {
   if (!data.DOC_BASE64 || !data.FILE_EXTENSION) return;
@@ -833,24 +676,6 @@ this.RESOLVE_DOC_LIST = this.GET_DOCUMENT_LIST.filter((x: any) => x.TYPE === 'R'
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 
-
-
-  // convertFilesToBase64(files: File[]) {
-  //   files.forEach((file, index) => {
-  //     let name = file.name.split('.').pop();
-  //     const mimeType = this.getMimeType(name);
-  //     const reader = new FileReader();
-  //     reader.onload = (e:any) => {
-  //       this.DOCUMENT_ATTECHED_LIST.push({
-  //         FILE_NAME: file.name,
-  //         DOC_BASE64: e.target?.result,
-  //         SR_NO: this.DOCUMENT_ATTECHED_LIST.length + 1, 
-  //         FILE_EXTENSION: file.name.split('.').pop() 
-  //       });
-  //     };
-  //     reader.readAsDataURL(file); 
-  //   });
-  // }
   convertFilesToBase64(fileList: FileList) {
 
     const files = Array.from(fileList); // Convert FileList to actual array
@@ -1051,64 +876,6 @@ this.RESOLVE_DOC_LIST = this.GET_DOCUMENT_LIST.filter((x: any) => x.TYPE === 'R'
   }
 
   selectedFileName: string | null = null;
-
-  // onFileSelected(event: Event): void {
-  //   const input = event.target as HTMLInputElement;
-  //   if (input.files && input.files.length > 0) {
-  //     this.selectedFileName = input.files[0].name;
-  //     // You can also store the file object itself if needed:
-  //     // this.selectedFile = input.files[0];
-  //   }
-  // }
-
-  //  onFileSelected(event: any) {
-  //     const file = event.target.files[0];
-  //     if (file) {
-  //       this.DOCUMENT_ATTECHED_LIST.push(file);
-  //     }
-  //   }
-
-  // onFileSelected(event: Event) {
-  //   const input = event.target as HTMLInputElement;
-  //   console.log("input : ", input,input.files)
-  //   if (input.files) {
-  //      const allowedTypes = [
-  //   'application/pdf',
-  //   'application/msword',
-  //   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  //   'application/vnd.ms-excel',
-  //   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  //   'image/jpeg',
-  //   'image/png'
-  // ];
-  //     const filesArray :any= input.files;
-  //     console.log(filesArray,"filesArray")
-  // const validFiles = filesArray.filter(file => allowedTypes.includes(file.type));
-
-  // if (validFiles.length !== filesArray.length) {
-  //   alert('Only PDF, Excel, Word, and JPG/PNG image files are allowed.');
-  // }
-  //     this.convertFilesToBase64(filesArray);
-  //   }
-  // }
-
-    // getMimeType(extension: any): any {
-  //   switch (extension.toLowerCase()) {
-  //     case 'jpg':
-  //     case 'jpeg':
-  //       return 'image/jpeg';
-  //     case 'png':
-  //       return 'image/png';
-  //     case 'pdf':
-  //       return 'application/pdf';
-  //     case 'xlsx':
-  //       return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-  //     case 'docx':
-  //       return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-  //     default:
-  //       return 'application/octet-stream'; // Fallback for unknown types
-  //   }
-  // }
 
   onFileSelected(event: Event): void {
   const input = event.target as HTMLInputElement;
