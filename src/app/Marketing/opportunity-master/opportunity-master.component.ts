@@ -30,6 +30,9 @@ export class OpportunityMasterComponent implements OnInit {
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
   @ViewChild('email', { static: false }) email: ElementRef;
 
+  regx_AlphaSpace: RegExp = new RegExp(/^[^<>]*$/);
+  // regx_AlphaSpace: RegExp = new RegExp(/^[a-zA-Z0-9\s.,@&()_-]*$/);
+
   constructor(private sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
     private http: HttpRequestServiceService,
@@ -65,14 +68,14 @@ export class OpportunityMasterComponent implements OnInit {
     this.sharedService.formName = "Opportunity Master"
     // this.search_opportunity = "";
     this.form = this.formBuilder.group({
-      COMPANY_CODE: ["",Validators.required],
+      COMPANY_CODE: ["1000",Validators.required],
       OPPO_TYPE: ["",Validators.required],
       PROJECT_DATE: [""],
       OPPO_CODE: "",
-      OPPO_NAME: ["",Validators.required],
+      OPPO_NAME: ["",Validators.required, Validators.pattern(this.regx_AlphaSpace)],
       REFPROJ_CODE: ["",Validators.required],
       REFPROJ_NAME: [{ value: '', disabled: true }],
-      LOCATION_CODE: ["",Validators.required],
+      LOCATION_CODE: ["1100",Validators.required],
       CUST_CODE: ["",Validators.required],
       LEAD_CODE: ["",Validators.required],
       DIVISION_CODE: ["",Validators.required],
@@ -258,6 +261,13 @@ export class OpportunityMasterComponent implements OnInit {
         this.toast.warning(res.msg)
         this.spinner = false;
       }
+      // 
+      this.isSubmited = true;
+      if (this.form.invalid) { return; }
+      const rawValue = this.form.value;
+      const numericValue = rawValue.EST_VALUE ? rawValue.EST_VALUE.replace(/,/g, '') : '';
+      console.log('Clean numeric value:', numericValue);
+      // 
     }, err => {
       this.spinner = false;
     });
@@ -540,5 +550,29 @@ export class OpportunityMasterComponent implements OnInit {
     }
     return true;
   }
+
+  formatEstValue(event: any): void {
+  let input = event.target.value || '';
+
+  input = input.replace(/[^0-9]/g, '');
+
+  if (input !== '') {
+    // Convert string to number safely
+    const num = parseInt(input, 10);
+    const formatted = num.toLocaleString('en-IN');
+
+    // Update control safely (no optional chaining)
+    const estControl = this.form.get('EST_VALUE');
+    if (estControl) {
+      estControl.setValue(formatted, { emitEvent: false });
+    }
+  } else {
+    const estControl = this.form.get('EST_VALUE');
+    if (estControl) {
+      estControl.setValue('', { emitEvent: false });
+    }
+  }
+}
+
 
 }
