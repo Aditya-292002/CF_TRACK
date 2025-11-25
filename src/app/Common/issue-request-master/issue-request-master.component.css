@@ -470,3 +470,4 @@ line-height: 1rem;
 .file-upload-label{
     color: #666666f0;
 }
+.text-danger { color: #dc3545 !important; }

@@ -114,6 +114,7 @@ export class IssueRequestListComponent implements OnInit {
 
    AddIssueRequest(){
     this.router.navigate([`/issuerequestmaster`]);
+    localStorage.setItem('MODE' , 'A')
    }
 
    GetEditRequestRaised(col:any,rowData:any){
@@ -159,31 +160,31 @@ export class IssueRequestListComponent implements OnInit {
     });
    }
 
-   GetInputFilter(val:any){
-    const lowerSearchText = val.
-    console.log('test',val);
+  //  GetInputFilter(val:any){
+  //   const lowerSearchText = val.
+  //   console.log('test',val);
     
-    let result: any[] = [];
-    this.FILTER_ISSUE_REQUEST_LIST_DATA.forEach((element:any) => {
-      if(lowerSearchText.length == 0 || lowerSearchText == '' || lowerSearchText == null || lowerSearchText == undefined || lowerSearchText == 'undefined'){
-        this.ISSUE_REQUEST_LIST_DATA = [];
-        this.ISSUE_REQUEST_LIST_DATA  = this.FILTER_ISSUE_REQUEST_LIST_DATA;
-        return
-      }else if (element.ISSUE_TYPE_DESC.toLowerCase() == lowerSearchText) {
-        result.push(element); 
-    this.ISSUE_REQUEST_LIST_DATA = [];
-    this.ISSUE_REQUEST_LIST_DATA = result; 
-      }else if(element.MODULE_DESC.toLowerCase() == lowerSearchText){
-        result.push(element); 
-    this.ISSUE_REQUEST_LIST_DATA = [];
-    this.ISSUE_REQUEST_LIST_DATA = result; 
-      }else if(element.FUNCTION_CODE.toLowerCase() == lowerSearchText){
-        result.push(element); 
-    this.ISSUE_REQUEST_LIST_DATA = [];
-    this.ISSUE_REQUEST_LIST_DATA = result; 
-      }
-    });
-  } 
+  //   let result: any[] = [];
+  //   this.FILTER_ISSUE_REQUEST_LIST_DATA.forEach((element:any) => {
+  //     if(lowerSearchText.length == 0 || lowerSearchText == '' || lowerSearchText == null || lowerSearchText == undefined || lowerSearchText == 'undefined'){
+  //       this.ISSUE_REQUEST_LIST_DATA = [];
+  //       this.ISSUE_REQUEST_LIST_DATA  = this.FILTER_ISSUE_REQUEST_LIST_DATA;
+  //       return
+  //     }else if (element.ISSUE_TYPE_DESC.toLowerCase() == lowerSearchText) {
+  //       result.push(element); 
+  //   this.ISSUE_REQUEST_LIST_DATA = [];
+  //   this.ISSUE_REQUEST_LIST_DATA = result; 
+  //     }else if(element.MODULE_DESC.toLowerCase() == lowerSearchText){
+  //       result.push(element); 
+  //   this.ISSUE_REQUEST_LIST_DATA = [];
+  //   this.ISSUE_REQUEST_LIST_DATA = result; 
+  //     }else if(element.FUNCTION_CODE.toLowerCase() == lowerSearchText){
+  //       result.push(element); 
+  //   this.ISSUE_REQUEST_LIST_DATA = [];
+  //   this.ISSUE_REQUEST_LIST_DATA = result; 
+  //     }
+  //   });
+  // } 
 
    viewIssue(data:any){
     console.log('viewIssue');
@@ -229,6 +230,48 @@ setStatus(value: string) {
 
   this.GETISSUEREQUESTLIST();
 }
+
+GetInputFilter(val: any) {
+
+    console.log('val', val);
+
+  const searchText = (val || '').trim().toLowerCase();
+
+console.log('searchText', searchText);
+
+  // If no search text, show full list
+
+  if (!searchText) {
+
+    this.ISSUE_REQUEST_LIST_DATA = [...this.SAMPEL_ISSUE_REQUEST_LIST_DATA];
+
+    return;
+
+  }
+ 
+  // Filter logic
+
+  this.ISSUE_REQUEST_LIST_DATA = this.SAMPEL_ISSUE_REQUEST_LIST_DATA.filter((element: any) => {
+
+    return (
+
+      (element.ISSSUE_NO && element.ISSSUE_NO.toLowerCase().includes(searchText)) ||
+
+      (element.PROJ_NAME && element.PROJ_NAME.toLowerCase().includes(searchText)) ||
+
+      (element.ISSUE_TYPE_DESC && element.ISSUE_TYPE_DESC.toLowerCase().includes(searchText)) ||
+
+      (element.PRIORITY_CODE && element.PRIORITY_CODE.toLowerCase().includes(searchText)) ||
+
+      (element.STATUS_CODE && element.STATUS_CODE.toLowerCase().includes(searchText))
+ 
+    );
+
+  });
+
+}
+
+ 
 }
 
 

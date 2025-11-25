@@ -96,7 +96,8 @@
         <div class="row row-gap">
           <!-- Issue No -->
           <div class="col-3">
-            <label for="issue_no" class="w-50 label-13px">Issue No.</label>
+            <label for="issue_no" class="w-50 label-13px">Issue No. <span class="text-danger">*</span></label>
+    
             <div class="floating-input">
               <input
                 type="text"
@@ -112,7 +113,7 @@
           <!-- Request Date -->
 
            <div class="col-3">
-          <label class="w-50 label-13px">Date</label>
+          <label class="w-50 label-13px">Date <span class="text-danger">*</span></label>
 							<div class="floating-input mb-2">
 								<input type="text" class="form-control" placeholder="dd-mm-yyyy" formControlName="REQUEST_DATE" [(ngModel)]="REQUEST_DATE" (change)="ChangeFDate()" readonly>
 								<!-- <app-date-picker id="reqdate" [(ngModel)]="JV_DATE" #reqdate class="date-input" [ngModelOptions]="{standalone: true}"></app-date-picker> -->
@@ -130,7 +131,7 @@
 
           <!-- Project Name -->
           <div class="col-3">
-            <label class="w-50 label-13px">Project Name</label>
+            <label class="w-50 label-13px">Project Name<span class="text-danger">*</span></label>
             <div class="floating-input list-btn">
               <select
                 class="form-control selectpicker show-tick"
@@ -166,7 +167,7 @@
 
           <!-- Raised By -->
           <div class="col-3 d-flex flex-column">
-            <label class="w-50 label-13px">Raised By</label>
+            <label class="w-50 label-13px">Raised By<span class="text-danger">*</span></label>
             <div class="d-flex radio-btn-gap">
               <div class="d-flex align-items-center">
                 <input
@@ -193,7 +194,7 @@
 
           <!-- Other Name Input -->
           <div class="col-3">
-            <label class="small label-13px">Raised by</label>
+            <label class="small label-13px">Raised by<span class="text-danger">*</span></label>
             <div class="floating-input">
               <input
                 type="text"
@@ -214,7 +215,7 @@
           <!-- Issue Type -->
           <!-- [ngClass]="form.get('RAISED_BY')?.value === 'OTHER' ? 'col-3' : 'col-5'" -->
           <div class="col-3">
-            <label class="w-50 label-13px">Issue Type</label>
+            <label class="w-50 label-13px">Issue Type<span class="text-danger">*</span></label>
             <!-- <div class="floating-input">
               <input type="text" class="form-control" formControlName="ISSUE_TYPE_CODE" placeholder="Enter Issue Type"
                 [attr.disabled]="viewflag ? '' : null">
@@ -239,7 +240,7 @@
 
           <!-- Priority -->
           <div class="col-3">
-            <label class="w-50 label-13px">Priority</label>
+            <label class="w-50 label-13px">Priority <span class="text-danger">*</span></label>
             <div class="floating-input list-btn">
               <select
                 class="form-control selectpicker show-tick"
@@ -288,7 +289,7 @@
 
           <!-- Issue Subject -->
           <div class="col-6">
-            <label class="w-50 label-13px">Issue Subject</label>
+            <label class="w-50 label-13px">Issue Subject <span class="text-danger">*</span></label>
             <div class="floating-input">
               <input
                 type="text"
@@ -302,7 +303,7 @@
 
           <!-- CR Stock Issue -->
           <div class="col-6">
-            <label class="label-13px">CR/Issue</label>
+            <label class="label-13px">CR/Issue<span class="text-danger">*</span></label>
             <div class="floating-input">
               <textarea
                 class="form-control"
@@ -357,7 +358,7 @@
                       <button
                         type="button"
                         class="btn btn-sm card-padding-none"
-                        (click)="deleteFile(i, fileInput)"
+                        (click)="deleteFile(i)"
                         title="Delete file">
                         <i class="pi pi-trash"></i>
                       </button>
@@ -528,7 +529,7 @@
                       <button
                         type="button"
                         class="btn btn-sm card-padding-none"
-                        (click)="deleteFile(i, fileInput)"
+                        (click)="deleteFile(i)"
                         title="Delete file">
                         <i class="pi pi-trash"></i>
                       </button>

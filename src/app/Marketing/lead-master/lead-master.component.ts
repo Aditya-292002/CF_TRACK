@@ -66,9 +66,10 @@ LEAD_URL: [
   "",
   [
     Validators.required,
-    Validators.pattern(/^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/[^\s]*)?$/)
+    // Validators.pattern(/^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/[^\s]*)?$/)
+    Validators.pattern(/^(https?:\/\/)?www\.(?:[A-Za-z0-9-]+\.){1,}[A-Za-z]{2,}(\/[^\s]*)?$/i)
   ]
-],
+],                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
         LEAD_CURRENCY: ["INR",Validators.required],
         ACCT_MANAGER: ["",Validators.required],
         SALES_REGION_ID: ["",Validators.required],
@@ -442,7 +443,7 @@ LEAD_URL: [
       }else if (this.form.controls["LEAD_URL"].invalid) {
         const urlCtrl = this.form.controls["LEAD_URL"];
         if ( urlCtrl.errors.pattern ) {
-        this.toast.warning("Please enter a valid Lead URL (e.g. https://example.com).");
+        this.toast.warning("Please enter a valid Lead URL (e.g. www.example.com).");
       } else if (urlCtrl.errors.required) {
         this.toast.warning("Lead URL is required.");
       }

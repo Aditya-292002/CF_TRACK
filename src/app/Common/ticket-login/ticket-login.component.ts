@@ -102,7 +102,7 @@ input4: string = '';
                   if(this.login_user === '1001'){
                     this.route.changeRoute('/dashboard');
                   }
-                  else if(this.login_user === '1234'){
+                  else if(this.login_user === 'NA'){
                     this.route.changeRoute('/issuerequestlist');
                   }
                   else{

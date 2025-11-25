@@ -294,7 +294,7 @@ onLoadCheckAttendance() {
         this.ATT_DATE = res.Date;
         this.EMP_NAME = this.sharedService.loginUser[0].EMP_CODE +" - "+this.sharedService.loginUser[0].USER_NAME
         console.log(' EMP_NAME -> ',this.EMP_NAME)
-         if(this.EMP_NAME!='1234'){
+         if(this.EMP_NAME!='NA'){
           jQuery(this.attendance.nativeElement).modal('hide')
         }else{
           jQuery(this.attendance.nativeElement).modal('show')

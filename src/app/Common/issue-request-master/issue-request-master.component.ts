@@ -135,16 +135,16 @@ INITIAL_DOC_LIST: any = [];
 
   
 
-  deleteFile(index: number, fileInput?: HTMLInputElement): void {
+  deleteFile(index: number): void {
   // Remove the file from the list
   this.DOCUMENT_ATTECHED_LIST.splice(index, 1);
   console.log('After delete:', this.DOCUMENT_ATTECHED_LIST);
 
   // ✅ Force reset of file input so the same file can be re-uploaded
-  if (fileInput) {
-    fileInput.type = 'text';  // temporarily change the type
-    fileInput.type = 'file';  // revert it back to file (forces DOM refresh)
-  }
+  // if (fileInput) {
+  //   fileInput.type = 'text';  // temporarily change the type
+  //   fileInput.type = 'file';  // revert it back to file (forces DOM refresh)
+  // }
 }
 
 
@@ -184,11 +184,11 @@ INITIAL_DOC_LIST: any = [];
       SELF_NAME: [{ value: '', disabled: this.viewflag }],
       OTHER_NAME: [{ value: '', disabled: this.viewflag }],
       ISSUE_TYPE_CODE: [{ value: '02', disabled: this.viewflag }, Validators.required],
-      ISSUE_SUBJECT: [{ value: '', disabled: this.viewflag }],
+      ISSUE_SUBJECT: [{ value: '', disabled: this.viewflag }, Validators.required],
       MODULE_CODE: [{ value: '', disabled: this.viewflag }],
       ISSUE_FUNCTION_CODE: [{ value: '', disabled: this.viewflag }],
-      PRIORITY_CODE: [{ value: '', disabled: this.viewflag }],
-      REASON_ISSUE: [{ value: '', disabled: this.viewflag }],
+      PRIORITY_CODE: [{ value: '02', disabled: this.viewflag }, Validators.required],
+      REASON_ISSUE: [{ value: '', disabled: this.viewflag }, Validators.required],
       DESC_ISSUE: [{ value: '', disabled: this.viewflag }],
 DEVELOPER_COMMENT: [{ value: '', disabled: this.viewflag }],
 DELIVERY_BY: [{ value: '', disabled: this.viewflag }],
@@ -229,12 +229,12 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
     this.IS_REVERT = localStorage.getItem('IS_REVERT');
   
     this.GETISSUEREQUESTMASTER();
-    this.GetPMConfirmationList()
+    this.GetPMConfirmationList();
 
-    this.dropdownList = [
-      { PRIORITY_CODE: '01', PRIORITY_DESC: 'Low' },
-      { PRIORITY_CODE: '02', PRIORITY_DESC: 'Medium' }
-    ];
+    // this.dropdownList = [
+    //   { PRIORITY_CODE: '01', PRIORITY_DESC: 'Low' },
+    //   { PRIORITY_CODE: '02', PRIORITY_DESC: 'Medium' }
+    // ];
 
 
     if (this.MODE == 'A') {
@@ -249,6 +249,8 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
           this.form.get('REQUEST_DATE').setValue(today1);
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);
+
+    this.MODE=localStorage.getItem('MODE');
   }
   ngAfterViewInit(): void {
     console.log('ngAfterViewInit called');
@@ -258,7 +260,10 @@ RESOLUTION_CODE: [{ value: '', disabled: this.viewflag }],
     console.log(' this.USER_ID', this.USER_ID);
 
 
-
+   setTimeout(() => {
+       //   this.form.get('REQUEST_DATE').setValue(today1);
+      $('.selectpicker').selectpicker('refresh').trigger('change');
+    }, 100);
     // this.GETISSUERAISEDHISTORY(0);
 
   }
@@ -539,29 +544,33 @@ this.RESOLVE_DOC_LIST = this.GET_DOCUMENT_LIST.filter((x: any) => x.TYPE === 'R'
   SaveConfirmationPopUpOpen() {
     // Trigger form validation
     this.form.markAllAsTouched();
-
+   console.log('REASON_ISSUE',this.form.get('REASON_ISSUE').value);
+   
     // Stop if form is invalid
     if (this.form.invalid) {
       this.toast.error('Please fill all required fields');
+      this.SaveConfirmationPopUp = false;
       return;
     }
 
     // Conditional validations for CR type
-    if (this.isReasonofErrorCR && !this.form.get('REASON_ISSUE').value) {
-      this.toast.error('Enter a Reason Issue');
+    if (this.form.get('REASON_ISSUE').value=="") {
+      this.toast.error('Enter a  CR/Issue');
       return;
     }
-
-    // if (this.isDescofErrorCR && !this.form.get('DESC_ISSUE').value) {
-    //   this.toast.error('Enter a Desc Issue');
+   if (this.form.get('PRIORITY_CODE').value=="") {
+      this.toast.error('Enter a  Priority');
+      return;
+    }
+       if (this.form.get('ISSUE_SUBJECT').value=="") {
+      this.toast.error('Enter a  Issue Subject');
+      return;
+    }
+    // Conditional validation for revert comment
+    // if (this.IS_REVERT === 1 && !this.form.get('REVERT_COMMENT').value) {
+    //   this.toast.error('Enter a Comment');
     //   return;
     // }
-
-    // Conditional validation for revert comment
-    if (this.IS_REVERT === 1 && !this.form.get('REVERT_COMMENT').value) {
-      this.toast.error('Enter a Comment');
-      return;
-    }
 
     // ✅ All good — proceed
     this.SaveConfirmationPopUp = true;
@@ -616,12 +625,12 @@ this.RESOLVE_DOC_LIST = this.GET_DOCUMENT_LIST.filter((x: any) => x.TYPE === 'R'
   SAVEISSUEREQUESTMASTER() {
 
     // 🚨 Validate form
-    this.form.markAllAsTouched();
+    // this.form.markAllAsTouched();
 
-    if (this.form.invalid) {
-      this.toast.error('Please fill all required fields');
-      return;
-    }
+    // if (this.form.invalid) {
+    //   this.toast.error('Please fill all required fields');
+    //   return;
+    // }
 
     // 🎯 Remove base64 extensions from documents
     this.GetRemoveBase64DocumnetExtension(this.DOCUMENT_ATTECHED_LIST);
