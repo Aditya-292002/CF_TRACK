@@ -260,6 +260,8 @@ export class CustomerComponent implements OnInit {
       ACTIVE:1
     })
   }
+
+
   removeRow(index: number){
       if(this.customer_contact_detail[index].CUST_SRNO == 0){        
     this.customer_contact_detail.splice(index,1);
@@ -267,6 +269,8 @@ export class CustomerComponent implements OnInit {
         this.customer_contact_detail[index].ACTIVE=0;
           }
   }
+
+
   f_Add_Update(para: string = ''){
     if(para == 'C'){
       this.isUpdate = false;
@@ -276,6 +280,8 @@ export class CustomerComponent implements OnInit {
     }
   }
   isSubmited: boolean = false;
+
+  
   saveFormData(para: string = ''){
     this.isSubmited = true;
     if(this.form.valid){
@@ -332,6 +338,8 @@ export class CustomerComponent implements OnInit {
       this.f_validateForm();
     }
   }
+
+
   f_clearForm(){
     this.isSubmited = false;
     this.search_user = "";

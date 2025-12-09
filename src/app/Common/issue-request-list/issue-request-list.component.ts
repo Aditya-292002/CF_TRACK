@@ -77,7 +77,7 @@ export class IssueRequestListComponent implements OnInit {
       console.log('ngAfterViewInit called');
       this.userData = JSON.parse(sessionStorage.getItem('user_detail'));
       this.USER_ID = this.userData[0].LOGIN_ID;
-      console.log(' this.USER_ID', this.USER_ID);
+      console.log(' this.USERID', this.USER_ID);
     
     // You can now safely access the DOM element
 

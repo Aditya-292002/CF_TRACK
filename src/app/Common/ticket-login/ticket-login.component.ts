@@ -88,6 +88,7 @@ input4: string = '';
       console.log('data',_data);
       
       this.http.getToken(_data).then((res:any) => {
+
         if (res.flag) {
           this.http.PostRequest(this.apiurl.GetUserDetail, data).then((res:any) => {
             if (res.flag) {

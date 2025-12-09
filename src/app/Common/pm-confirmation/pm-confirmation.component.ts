@@ -74,6 +74,9 @@ export class PmConfirmationComponent implements OnInit {
   COMMENT_HISTORY:any
   INITIAL_DOC_LIST: any = [];
   RESOLVE_DOC_LIST: any = [];
+
+  CLOSED_STATUS_LIST: any = [];
+  RESOLVED_STATUS_LIST: any = [];
   constructor(
     private fb: FormBuilder,
     private route: RoutingService,
@@ -167,7 +170,12 @@ export class PmConfirmationComponent implements OnInit {
         this.developerStatus = value
       }
 
+      setTimeout(() => {
+          $('.selectpicker').selectpicker('refresh').trigger('change');
+       }, 100);
+
     });
+     
   }
   showHistoryDialog() {
     console.log("calling")
@@ -185,6 +193,8 @@ export class PmConfirmationComponent implements OnInit {
         
         const response = res.Resolution;
         this.RESOLUTION_LIST = response;
+        this.CLOSED_STATUS_LIST = res.statuslist;
+        this.RESOLVED_STATUS_LIST = res.closestatuslist;
 
       } else {
         this.RESOLUTION_LIST = []

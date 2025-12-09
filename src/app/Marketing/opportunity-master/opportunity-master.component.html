@@ -1,9 +1,78 @@
 <app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
 <form [formGroup]="form">
-    <div class="row">
-        <div class="col-md-12" *ngIf="UPDATE_RIGHTS || ADD_RIGHTS">
+<div class="row">
+<div class="col-md-12 mb-2">
+  <div class="d-flex flex-wrap justify-content-between">
+    <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
+
+    <div class="d-flex col-md-8 justify-content-end align-items-center">
+      <div class="floating-input list-btn mr-2" style="width: 65%;">
+        <!-- <select
+          class="form-control selectpicker show-tick"
+          (change)="f_searchUserData()"
+          [(ngModel)]="search_user"
+          data-live-search="true"
+          id="search"
+          title="Search Opportunity Master"
+          [ngModelOptions]="{standalone: true}"
+        >
+          <option
+            *ngFor="let opt of opportunity_list"
+            [value]="opt.OPPO_CODE"
+          >
+            {{ opt.OPPO_NAME }}
+          </option>
+        </select> -->
+        <select
+            class="form-control selectpicker show-tick"
+            [(ngModel)]="search_user"
+            id="search"
+            data-live-search="true"
+            title="Search Opportunity Master"
+            [ngModelOptions]="{standalone: true}"
+            (change)="f_searchUserData()"
+            >
+            <option *ngFor="let opt of opportunity_list; let i = index" 
+            [selected]="opt.OPPO_CODE == search_user"
+            [value]="opt.OPPO_CODE">
+                {{ opt.OPPO_NAME }}
+            </option>
+        </select>
+
+        <button
+          type="button"
+          class="close"
+          onclick="resetDropdown('search')"
+          (click)="search_user = ''; f_clearForm()"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <button 
+      class="btn btn-secondary   mr-1" 
+      *ngIf="isUpdate" 
+      (click)="f_clearForm()"   
+      title="Cancel">Cancel</button>
+      <button
+        class="btn btn-secondary mr-1"
+        *ngIf="!isUpdate && ADD_RIGHTS" 
+        (click)="SaveOpportunityMaster('INSERT')"
+        title="Save">Save</button>
+      <button 
+        class="btn btn-secondary float-right m-1 ml-1 mr-1" 
+        *ngIf="isUpdate && UPDATE_RIGHTS"
+        (click)="SaveOpportunityMaster('UPDATE')"  
+        title="Update">Update</button>
+    </div>
+  </div>
+</div>
+
+<!-- ---------------------------------------------------------------------------- -->
+        <!-- <div class="col-md-12" *ngIf="UPDATE_RIGHTS || ADD_RIGHTS"> -->
+        <!-- <button class="btn btn-secondary float-right m-1 ml-1 mr-1" *ngIf="UPDATE_RIGHTS && ADD_RIGHTS" (click)="SaveOpportunityMaster('INSERT')"  title="Save">Save</button> -->
             <!-- <button class="btn btn-secondary  float-right m-1 ml-1 mr-1" *ngIf="isUpdate" (click)="f_clearForm()"   title="Cancel">Cancel</button> -->
-            <button class="btn btn-secondary float-right m-1 ml-1 mr-1" *ngIf="UPDATE_RIGHTS && ADD_RIGHTS" (click)="SaveOpportunityMaster('INSERT')"  title="Save">Save</button>
             <!-- <button class="btn btn-secondary float-right m-1 ml-1 mr-1" *ngIf="isUpdate && UPDATE_RIGHTS" (click)="SaveOpportunityMaster('UPDATE')"  title="Save">Save</button> -->
 
             <!-- <div class="col-md-4 float-right m-1">
@@ -18,18 +87,18 @@
                     </button>
                 </div>
             </div> -->
-        </div>
+        <!-- </div> -->
         <div class="col-md-12">
             <div class="row card">
                 <div class="col-md-4">
                     <label>Company<span class="validator">*</span> :</label>
                     <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['COMPANY_CODE'].errors?.required}">
-                        <select class="form-control selectpicker show-tick" id="comanyList" formControlName="COMPANY_CODE" data-live-search="true" title="Select">
+                        <select class="form-control selectpicker show-tick" id="companyList" formControlName="COMPANY_CODE" data-live-search="true" title="Select">
                             <option *ngFor="let opt of company_list; let i=index" 
                             [selected]="opt.COMPANY_CODE == form.controls['COMPANY_CODE'].value"
                              [value]="opt.COMPANY_CODE" >{{ opt.COMPANY_NAME }}</option>                     
                         </select>
-                        <button type="button" class="close" onclick="resetDropdown('comanyList')" (click)="form.controls['COMPANY_CODE'].reset();" aria-label="Close">
+                        <button type="button" class="close" onclick="resetDropdown('companyList')" (click)="form.controls['COMPANY_CODE'].reset();" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -69,14 +138,14 @@
                 <div class="col-md-4">
                     <label>Opportunity Name<span class="validator">*</span> :</label>
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['OPPO_NAME'].errors?.required}">
-                        <input type="text" formControlName="OPPO_NAME" maxlength="100" placeholder="Opportunity Name" InputType="AlphaSpace" Uppercase class="form-control" />
+                        <input type="text" formControlName="OPPO_NAME" maxlength="100" placeholder="Opportunity Name" Uppercase class="form-control" />
                     </div>
                 </div>
                 <div class="col-md-4">
                     <label>Date :</label>
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['PROJECT_DATE'].errors?.required}">
                         <input type="text" [(ngModel)]="PROJECT_DATE" formControlName="PROJECT_DATE" class="form-control" readonly>
-                        <app-date-picker [(ngModel)]="PROJECT_DATE" class="date-input" [maxdate]="maxDate" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
+                        <app-date-picker [(ngModel)]="PROJECT_DATE" class="date-input" [mindate]="minDate" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
     
                     </div>
                 </div>
@@ -102,12 +171,24 @@
                     <label>Type :</label>
                     <div class="form-inline">
                         <div class="form-group radios mr-3">
-                            <input id="customer" type="radio"  class="mr-2" formControlName="PARTY_TYPE" checked value="C" (click)="showContent($event.target.value);">
+                            <input id="customer" 
+                            type="radio"  
+                            class="mr-2 selectpicker" 
+                            formControlName="PARTY_TYPE" 
+                            (change)="showContent('C'); resetLeadAutoFields()"
+                            value="C" 
+                            >
                             <label for="customer"><span class="span-txt">Customer
                                 </span></label>
                         </div>
                         <div class="form-group radios mr-3">
-                            <input id="Lead" type="radio"  class="mr-2" formControlName="PARTY_TYPE"  value="L"  (click)="showContent($event.target.value);">
+                            <input id="Lead" 
+                            type="radio"  
+                            class="mr-2 selectpicker" 
+                            formControlName="PARTY_TYPE" 
+                            (change)="showContent('L'); resetCustomerAutoFields()" 
+                            value="L"  
+                            >
                             <label for="Lead"><span class="span-txt">Lead
                                 </span></label>
                         </div>
@@ -117,9 +198,13 @@
                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                     <label *ngIf="radioSelected0">Customer :</label>
                     <label *ngIf="radioSelected1">Lead :</label>
+                    <!-- Customer Field -->
                     <div class="floating-input  list-btn"  *ngIf="radioSelected0">
-                        <select class="form-control selectpicker show-tick" id="_customer" formControlName="CUST_CODE"
-                        data-live-search="true" title="Select"  >
+                        <select class="form-control selectpicker show-tick" id="_customer" 
+                            formControlName="CUST_CODE"
+                            data-live-search="true" 
+                            (change)="onCustomerChange(form.controls['CUST_CODE'].value)" 
+                            title="Select">
                             <option *ngFor="let opt of customer_list; let i=index" 
                             [selected]="opt.CUST_CODE == form.controls['CUST_CODE'].value"
                             [value]="opt.CUST_CODE" >{{ opt.CUST_NAME }}</option>                     
@@ -128,14 +213,19 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div> 
+                    <!-- Lead Field -->
                     <div class="floating-input  list-btn"  *ngIf="radioSelected1">
-                        <select class="form-control selectpicker show-tick" id="_lead" formControlName="CUST_CODE"
-                        data-live-search="true" title="Select">
-                            <option *ngFor="let opt of lead_list; let i=index" 
-                            [selected]="opt.LEAD_CODE == form.controls['CUST_CODE'].value"
-                            [value]="opt.LEAD_CODE" >{{ opt.LEAD_NAME }}</option>                     
+                        <select class="form-control selectpicker show-tick"
+                            id="_lead"
+                            formControlName="LEAD_CODE"
+                            data-live-search="true"
+                            (change)="onLeadChange(form.controls['LEAD_CODE'].value)"
+                            title="Select">
+                            <option *ngFor="let opt of lead_list; let i=index"
+                            [selected]="opt.LEAD_CODE == form.controls['LEAD_CODE'].value"
+                            [value]="opt.LEAD_CODE">{{ opt.LEAD_NAME }}</option>
                         </select>
-                        <button type="button" class="close"  (click)="form.controls['CUST_CODE'].reset();" onclick="resetDropdown('_lead')"  aria-label="Close">
+                        <button type="button" class="close"  (click)="form.controls['LEAD_CODE'].reset();" onclick="resetDropdown('_lead')"  aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -155,14 +245,31 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <label>Customer Contact<span class="validator">*</span> :</label>
-                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['CUST_CONTACT'].errors?.required}">
-                        <select class="form-control selectpicker show-tick" id="custContact" formControlName="CUST_CONTACT" data-live-search="true" title="Select">
-                            <option *ngFor="let opt of customercontact_list; let i=index" 
-                            [selected]="opt.CUST_SRNO == form.controls['CUST_CONTACT'].value"
-                             [value]="opt.CUST_SRNO" >{{ opt.CONTACT_NAME }}</option>                     
+                    <!-- Customer Contact Start -->
+                    <label *ngIf="radioSelected0">Customer Contact<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn"  *ngIf="radioSelected0"
+                    [ngClass]="{'invalid-control':isSubmited && form.controls['CUST_CONTACT'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="_customerContact" formControlName="CUST_CONTACT"
+                            data-live-search="true" title="Select">
+                            <option *ngFor="let opt of filteredCustomerContacts; let i=index"
+                            [selected]="opt.CUST_CODE == form.controls['CUST_CONTACT'].value"
+                            [value]="opt.CUST_CODE" readonly>{{ opt.CONTACT_NAME }}</option>                     
                         </select>
-                        <button type="button" class="close" onclick="resetDropdown('custContact')" (click)="form.controls['CUST_CONTACT'].reset();" aria-label="Close">
+                        <button type="button" class="close"  (click)="form.controls['CUST_CONTACT'].reset();" onclick="resetDropdown('_customerContact')"  aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div> 
+                    <!-- Lead Contact Start -->
+                    <label *ngIf="radioSelected1">Lead Contact :<span class="validator">*</span></label>
+                    <div class="floating-input  list-btn"  *ngIf="radioSelected1"
+                    [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_CONTACT'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="_leadContact" formControlName="LEAD_CONTACT"
+                        data-live-search="true" title="Select">
+                        <option *ngFor="let opt of filteredLeadContacts; "
+                                [selected]="opt.LEAD_CODE == form.controls['LEAD_CONTACT'].value"
+                                [value]="opt.LEAD_CODE">{{ opt.CONTACT_NAME }}</option>
+                        </select>
+                        <button type="button" class="close"  (click)="form.controls['LEAD_CONTACT'].reset();" onclick="resetDropdown('_leadContact')"  aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -181,14 +288,35 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <label>Segment<span class="validator">*</span> :</label>
-                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['OPPO_SEGMENT'].errors?.required}">
-                        <select class="form-control selectpicker show-tick dd_size" id="segment" formControlName="OPPO_SEGMENT" data-live-search="true" title="Select">
-                            <option *ngFor="let opt of segment_list; let i=index" 
-                            [selected]="opt.OPPO_SEGMENT == form.controls['OPPO_SEGMENT'].value"
-                             [value]="opt.OPPO_SEGMENT" >{{ opt.SEGMENT_NAME }}</option>                     
+                    <label *ngIf="radioSelected0"> Customer Segment<span class="validator">*</span> :</label>
+                    <!-- Customer Segment -->
+                    <div *ngIf="radioSelected0" class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['CUST_SEGMENT'].errors?.required}">
+                        <select class="form-control selectpicker show-tick dd_size" 
+                            id="_custSegment" 
+                            formControlName="CUST_SEGMENT" 
+                            data-live-search="true" 
+                            title="Select"
+                            (change)="onSegmentChange()">
+                            <option *ngFor="let opt of filteredCustomerSegments; let i=index" 
+                             [value]="opt.CUST_SEGMENT">{{ opt.SEGMENT_NAME }}</option>                     
                         </select>
-                        <button type="button" class="close" onclick="resetDropdown('segment')" (click)="form.controls['OPPO_SEGMENT'].reset();" aria-label="Close">
+                        <button type="button" class="close" onclick="resetDropdown('_custSegment')" (click)="form.controls['CUST_SEGMENT'].reset();" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <!-- Lead Segment -->
+                    <label *ngIf="radioSelected1">Lead Segment<span class="validator">*</span> :</label>
+                    <div *ngIf="radioSelected1" class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_SEGMENT'].errors?.required}">
+                        <select class="form-control selectpicker show-tick dd_size" 
+                            id="_leadSegment" 
+                            formControlName="LEAD_SEGMENT" 
+                            data-live-search="true" 
+                            title="Select"
+                            (change)="onSegmentChange()">
+                            <option *ngFor="let opt of filteredLeadSegments" 
+                            [value]="opt.CUST_SEGMENT">{{ opt.SEGMENT_NAME }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('_leadSegment')" (click)="form.controls['LEAD_SEGMENT'].reset();" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -220,10 +348,24 @@
                     </div>
                 </div> -->
                 <div class="col-md-4">
-                    <label>Est.Order Value :</label>
+                    <!-- <label>Est.Order Value :</label>
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['EST_VALUE'].errors?.required}">
-                        <input type="text" formControlName="EST_VALUE"  maxlength="50" placeholder="Est.Order Value." class="form-control ">
+                        <input type="text" formControlName="EST_VALUE"  maxlength="50" placeholder="Est.Order Value." class="form-control text-right">
+                    </div> -->
+
+                    <label>Est. Order Value :</label>
+                    <div class="floating-input"
+                        [ngClass]="{'invalid-control': isSubmited && form.controls['EST_VALUE'].errors?.required}">
+                    <input
+                        type="text"
+                        formControlName="EST_VALUE"
+                        maxlength="50"
+                        placeholder=""
+                        class="form-control text-right selectpicker"
+                        (input)="formatEstValue($event)" />
                     </div>
+
+
                 </div>
                 <div class="col-md-4">
                     <label>Currency<span class="validator">*</span> :</label>
@@ -240,8 +382,13 @@
                 </div>
                 <div class="col-md-4">
                     <label>Ex Rate :</label>
-                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['OPPO_EXCHANGE_RATE'].errors?.required}">
-                        <input type="text" formControlName="OPPO_EXCHANGE_RATE"  maxlength="10" placeholder="Exchange Rate" class="form-control">
+                    <div class="floating-input " 
+                    [ngClass]="{'invalid-control':isSubmited && form.controls['OPPO_EXCHANGE_RATE'].errors?.required}">
+                        <input type="text" 
+                        formControlName="OPPO_EXCHANGE_RATE"  
+                        maxlength="10" 
+                        placeholder="Exchange Rate" 
+                        class="form-control text-right selectpicker">
                     </div>
                 </div>
                 <!-- <div class="col-md-4">
@@ -272,7 +419,7 @@
                 </div> -->
                 <div class="col-md-4">
                     <label>Account Manager :</label>
-                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['ACCOUNT_MGR'].errors?.required}">
+                    <!-- <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['ACCOUNT_MGR'].errors?.required}">
                         <select class="form-control selectpicker show-tick" id="accManager" formControlName="ACCOUNT_MGR" data-live-search="true" title="Select">
                             <option *ngFor="let opt of accountmgr_list; let i=index" 
                             [selected]="opt.EMP_NO == form.controls['ACCOUNT_MGR'].value"
@@ -281,16 +428,53 @@
                         <button type="button"  class="close" onclick="resetDropdown('accManager')" (click)="form.controls['ACCOUNT_MGR'].reset();" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
+                    </div> -->
+                    <!--  -->
+                    <div class="floating-input  list-btn"  *ngIf="radioSelected0"
+                    [ngClass]="{'invalid-control':isSubmited && form.controls['CUST_ACC_MANAGER'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" 
+                        id="_custAccManager" 
+                        formControlName="CUST_ACC_MANAGER"
+                        data-live-search="true" 
+                        title="Select">
+                            <option *ngFor="let opt of filteredCustomerAccountManager; let i=index" 
+                            [selected]="opt.ACCT_MANAGER == form.controls['CUST_ACC_MANAGER'].value"
+                            [value]="opt.ACCT_MANAGER" >{{ opt.ACCOUNT_MGR }}</option>                     
+                        </select>
+                        <button type="button" class="close"  (click)="form.controls['CUST_ACC_MANAGER'].reset();" onclick="resetDropdown('_custAccManager')"  aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
+                    <div class="floating-input  list-btn"  *ngIf="radioSelected1"
+                    [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_ACC_MANAGER'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" 
+                        id="_leadAccManager" 
+                        formControlName="LEAD_ACC_MANAGER"
+                        data-live-search="true" 
+                        title="Select">
+                            <option *ngFor="let opt of filteredLeadAccountManager; let i=index" 
+                            [selected]="opt.EMP_NO == form.controls['LEAD_ACC_MANAGER'].value"
+                            [value]="opt.EMP_NO" >{{ opt.ACCOUNT_MGR }}</option>                     
+                        </select>
+                        <button type="button" class="close"  (click)="form.controls['LEAD_ACC_MANAGER'].reset();" onclick="resetDropdown('_leadAccManager')"  aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <!--  -->
                 </div>
                 
                 <div class="col-md-4">
                     <label>Status<span class="validator">*</span> :</label>
                     <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['OPPO_STATUS'].errors?.required}">
-                        <select class="form-control selectpicker show-tick" id="projStatus" formControlName="OPPO_STATUS" data-live-search="true" title="Select">
+                        <select class="form-control selectpicker show-tick" 
+                            id="projStatus" 
+                            formControlName="OPPO_STATUS" 
+                            data-live-search="true" 
+                            (change)="onStatusChange(form.controls['OPPO_STATUS'].value)" 
+                            title="Select">
                             <option *ngFor="let opt of opportunity_status_list; let i=index" 
                             [selected]="opt.OPPO_STATUS == form.controls['OPPO_STATUS'].value"
-                             [value]="opt.OPPO_STATUS" >{{ opt.OPPO_STATUS_DESC }}</option>                     
+                             [value]="opt.OPPO_STATUS" >{{ opt.SUB_DESCRIPTION }}</option>                     
                         </select>
                         <button type="button" class="close" onclick="resetDropdown('projStatus')" (click)="form.controls['OPPO_STATUS'].reset();" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -301,10 +485,11 @@
                     <label>Sub Status<span class="validator">*</span> :</label>
                     <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['OPPO_SUB_STATUS'].errors?.required}">
                         <select class="form-control selectpicker show-tick" id="Sub_Status" formControlName="OPPO_SUB_STATUS" data-live-search="true" title="Select">
-                            <option *ngFor="let opt of opportunity_substatus_list; let i=index" 
+                            <option *ngFor="let opt of filteredSubStatus ; let i=index" 
                             [selected]="opt.OPPO_SUB_STATUS == form.controls['OPPO_SUB_STATUS'].value"
                              [value]="opt.OPPO_SUB_STATUS" >{{ opt.SUB_DESCRIPTION }}</option>                     
                         </select>
+                        <!-- let opt of opportunity_substatus_list -->
                         <button type="button" class="close" onclick="resetDropdown('Sub_Status ')" (click)="form.controls['OPPO_SUB_STATUS'].reset();" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -314,8 +499,8 @@
                 <div class="col-md-4">
                     <label>Expected Closure :</label>
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['EXPECTED_CLOSURE'].errors?.required}">
-                        <input type="text" [(ngModel)]="EXPECTED_CLOSURE" formControlName="EXPECTED_CLOSURE" class="form-control" readonly>
-                        <app-date-picker [(ngModel)]="EXPECTED_CLOSURE" class="date-input" [maxdate]="maxDate" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
+                        <input type="text" placeholder="dd-Mmm-yyyy" [(ngModel)]="EXPECTED_CLOSURE" formControlName="EXPECTED_CLOSURE" class="form-control" readonly>
+                        <app-date-picker [(ngModel)]="EXPECTED_CLOSURE" class="date-input" [mindate]="minDate" [maxdate]="expectedClosureMaxDate" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
     
                     </div>
                 </div>
@@ -334,8 +519,8 @@
                 </div>
                 <div class="col-md-12">
                     <label>Remarks :</label>
-                    <div class="floating-input " >
-                        <textarea name="" formControlName="OPP_REMARKS" placeholder="Remarks"  maxlength="500" id="" cols="10" rows="2" class="form-control" ></textarea>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['OPPO_REMARKS'].errors?.required}">
+                        <textarea maxlength="500" id="" cols="10" rows="2" class="form-control" formControlName="OPPO_REMARKS" placeholder="Enter Remarks"></textarea>
                     </div>
                 </div>
             </div>
@@ -391,7 +576,9 @@
                         </table>
                     </div>
                 </div> -->
-                <div class="col-md-7 mt-1">
+                <div class="col-md-8 mt-1">
+
+                    <!-- Very OLD UPLOAD DOCUMENT Start -->
                     <!-- <div class="head-2 form-inline">
                         <h5 class="text-left">Documents</h5>
                     </div>
@@ -428,9 +615,10 @@
                                 </ng-container>
                             </tbody>
                         </table>
-                    </div> -->
+                    </div>  -->
+                    <!-- Very OLD UPLOAD DOCUMENT END -->
     
-    
+                    <!-- Old Document Upload UI Start-->
                     <ul class="list-group">
                         <li class="list-group-item d-flex justify-content-between att-doc py-1">
                             <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input">
@@ -461,6 +649,64 @@
                             <h6 class="m-0"> No Documents</h6>
                         </li>
                     </ul>
+                    <!-- Old Document Upload UI End-->
+                    
+                    <!-- NEW UPLOAD DOCUMENT UI START -->
+                    <!-- <div class="col-12 d-flex flex-column">    
+                        <div class="custom-file-uploader-container">
+                            <div class="flex-box-col">
+                            <button
+                                class="btn btn-secondary"
+                                (click)="fileInput.click()"
+                                title="(Accepted file formats: PDF, JPG, PNG, Xls, Xlsx, Doc, Docx)"
+                            >
+                                <i class="pi pi-upload mr-2"></i>Add File
+                            </button>
+                            <input
+                                type="file"
+                                #fileInput
+                                hidden
+                                (change)="f_downloadDocument(file)"/>
+                                </div>
+                            <small class="mb-0 file-upload-label" >Any file for Explanation</small>
+                            </div>
+                            <div class=" pt-2">
+                            <table class="table-theam-1 row_bgcolor_1">
+                                <thead>
+                                <tr class="width-100percent">
+                                    <th class="width-85percent">File Name</th>
+                                    <th class="width-15percent">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr
+                                    *ngFor="let file of uploadedDocument;let i=index;"
+                                >
+                                    <td>{{ file.DOCUMENT_FILENAME }}</td>
+                                    <td>
+                                    <button
+                                        class="btn btn-sm card-padding-none mr-2"
+                                        (click)="viewDocument(file)"
+                                        title="View Document"
+                                    >
+                                        <i class="pi pi-eye"></i>
+                                    </button>
+                                    
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm card-padding-none"
+                                        (click)="removeDoc(i)"
+                                        title="Delete file">
+                                        <i class="pi pi-trash"></i>
+                                    </button>
+                
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> -->
+          <!-- NEW UPLOAD DOCUMENT UI END -->
                 </div>
             </div>
         </div>

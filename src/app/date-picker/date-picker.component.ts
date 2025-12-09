@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input, OnInit } from '@angular/core';
+import { Component, forwardRef, Input, OnInit,  Output, EventEmitter } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import * as moment from 'moment';
@@ -22,6 +22,7 @@ export class DatePickerComponent implements ControlValueAccessor  {
   @Input() public maxdate = null;
   @Input() public mindate = null;
   @Input() public isDisable: boolean = false;
+  @Output() ngModelChange = new EventEmitter<string>();
 
   setDisabledState?(isDisabled: boolean): void {
     throw new Error("Method not implemented.");

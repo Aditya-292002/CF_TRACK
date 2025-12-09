@@ -296,6 +296,20 @@
        
       <!-- Row 1: Radio Buttons -->
       <div class="d-flex align-items-center mb-3">
+         <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            id="statusAcknowledge"
+            name="developerStatus"
+            [attr.disabled]="isDisableRadioBtn ? '' : null"
+            formControlName="DEVELOPER_STATUS"
+            value="ACKNOWLEDGE"
+            (change)="developerStatus = 'ACKNOWLEDGE'"
+          />
+          <label class="form-check-label mt-2" for="statusOk">Acknowledge</label>
+        </div>
+
         <div class="form-check form-check-inline">
           <input
             class="form-check-input"
@@ -326,14 +340,37 @@
       </div>
 
       <!-- Row 2: Reason Field (Visible only when CLOSE is selected) -->
-      <div class="form-group mt-2" *ngIf="developerStatus === 'CLOSE'">
-        <label class="font-weight-bold small">Reason</label>
+      <div class="form-group mt-2 row row-gap" *ngIf="developerStatus === 'CLOSE'">
+        <div class="col-md-8">
+        <label class="label-13px">Reason <span class="text-danger">*</span></label>
         <textarea
           class="form-control"
           rows="2"
           formControlName="DEVELOPER_COMMENT"
           placeholder="Enter Reason"
         ></textarea>
+</div>
+         <div class="col-md-4">
+        <label class="w-50 label-13px">Status Update <span class="text-danger">*</span></label>
+        <div class="floating-input list-btn">
+          <select
+            class="form-control selectpicker show-tick"
+            data-live-search="true"
+            formControlName="CLOSURE_CODE"
+            title="Select Status"
+            [attr.disabled]="viewflag ? '' : null"
+          >
+            <option
+              *ngFor="let res of RESOLVED_STATUS_LIST"
+              [value]="res.CLOSURE_CODE"
+            >
+              {{ res.CLOSURE_NAME }}
+            </option>
+          </select>
+
+
+        </div>
+      </div>
       </div>
 
       <!-- Row 3: Other Fields (Visible only when OK is selected) -->
@@ -418,6 +455,29 @@
               {{ res.RESOLUTION_NAME }}
             </option>
           </select>
+
+
+        </div>
+      </div>
+      <div class="col-3">
+        <label class="w-50 label-13px">Status Update <span class="text-danger">*</span></label>
+        <div class="floating-input list-btn">
+          <select
+            class="form-control selectpicker show-tick"
+            data-live-search="true"
+            formControlName="STATUS_CODE"
+            title="Select Status"
+            [attr.disabled]="viewflag ? '' : null"
+          >
+            <option
+              *ngFor="let res of CLOSED_STATUS_LIST"
+              [value]="res.STATUS_CODE"
+            >
+              {{ res.STATUS_NAME }}
+            </option>
+          </select>
+
+
         </div>
       </div>
         </div>
