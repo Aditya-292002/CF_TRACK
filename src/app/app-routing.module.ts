@@ -147,7 +147,6 @@ const routes: Routes = [
       {path:"SelfAppraisalList",component:SelfAppraisalListComponent},
       {path: "issuerequestmaster", component: IssueRequestMasterComponent },
       {path: "issuerequestlist", component: IssueRequestListComponent },
-      // {path: "issuerequestlist", component: PmConfirmationComponent },
       {path: "pmconfirmationmaster", component: PmConfirmationComponent },
       {path: "pmconfirmation", component: PmConfirmationListComponent },
       {path: "leadmaster", component: LeadMasterComponent },

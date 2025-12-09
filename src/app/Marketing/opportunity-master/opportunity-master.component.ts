@@ -1178,18 +1178,19 @@ onStatusChange(status: any) {
   // Set OPPO_STATUS in form
   this.form.get('OPPO_STATUS').setValue(status);
   // Filter Sub Status List
-  this.opportunity_substatus_list.forEach((sElement: any) => {
-    if (status === sElement.OPPO_STATUS) {
-      this.filteredSubStatus.push(sElement);
-      this.form.get('OPPO_SUB_STATUS').setValue(sElement.OPPO_STATUS);
-    }
-  });
+  this.filteredSubStatus = this.opportunity_substatus_list.filter(
+    (sElement: any) => sElement.OPPO_STATUS === status
+  );
+  // 👉 Set the FIRST item of the filtered list (if exists)
+  if (this.filteredSubStatus.length > 0) {
+    this.form.get('OPPO_SUB_STATUS').setValue(this.filteredSubStatus[0].OPPO_SUB_STATUS);
+  }
   // Refresh Bootstrap Select UI
   setTimeout(() => $('.selectpicker')
     .selectpicker('refresh')
     .trigger('change'), 100);
 }
-
+ 
 resetCustomerAutoFields() {
   this.isEditModeFill = true;
   this.form.get('CUST_CODE').reset('', { emitEvent: false });
@@ -1199,8 +1200,8 @@ resetCustomerAutoFields() {
   this.filteredCustomerSegments = [];
   this.form.get('CUST_ACC_MANAGER').reset('', { emitEvent: false });
   this.filteredCustomerAccountManager = [];
-  this.form.get('OPPO_STATUS').reset('', {emitEvent: false});
-  this.filteredSubStatus = [];
+  // this.form.get('OPPO_STATUS').reset('', {emitEvent: false});
+  // this.filteredSubStatus = [];
   setTimeout(() => {
   this.isEditModeFill = false;
   this.refreshSelectPicker();
@@ -1216,8 +1217,8 @@ this.form.get('LEAD_SEGMENT').reset('', { emitEvent: false });
 this.filteredLeadSegments = [];
 this.form.get('LEAD_ACC_MANAGER').reset('', { emitEvent: false });
 this.filteredLeadAccountManager = [];
-this.form.get('OPPO_STATUS').reset('', {emitEvent: false});
-this.filteredSubStatus = [];
+// this.form.get('OPPO_STATUS').reset('', {emitEvent: false});
+// this.filteredSubStatus = [];
 setTimeout(() => {
   this.isEditModeFill = false;
   this.refreshSelectPicker();

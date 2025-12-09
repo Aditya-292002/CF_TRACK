@@ -203,13 +203,13 @@
                         <select class="form-control selectpicker show-tick" id="_customer" 
                             formControlName="CUST_CODE"
                             data-live-search="true" 
-                            (change)="onCustomerChange(form.controls['CUST_CODE'].value)" 
+                            (change)="onCustomerChange(form.controls['CUST_CODE'].value);" 
                             title="Select">
                             <option *ngFor="let opt of customer_list; let i=index" 
                             [selected]="opt.CUST_CODE == form.controls['CUST_CODE'].value"
                             [value]="opt.CUST_CODE" >{{ opt.CUST_NAME }}</option>                     
                         </select>
-                        <button type="button" class="close"  (click)="form.controls['CUST_CODE'].reset();" onclick="resetDropdown('_customer')"  aria-label="Close">
+                        <button type="button" class="close" (click)="resetCustomerAutoFields();"  aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div> 
@@ -225,7 +225,7 @@
                             [selected]="opt.LEAD_CODE == form.controls['LEAD_CODE'].value"
                             [value]="opt.LEAD_CODE">{{ opt.LEAD_NAME }}</option>
                         </select>
-                        <button type="button" class="close"  (click)="form.controls['LEAD_CODE'].reset();" onclick="resetDropdown('_lead')"  aria-label="Close">
+                        <button type="button" class="close"  (click)="resetLeadAutoFields()"  aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -476,7 +476,7 @@
                             [selected]="opt.OPPO_STATUS == form.controls['OPPO_STATUS'].value"
                              [value]="opt.OPPO_STATUS" >{{ opt.SUB_DESCRIPTION }}</option>                     
                         </select>
-                        <button type="button" class="close" onclick="resetDropdown('projStatus')" (click)="form.controls['OPPO_STATUS'].reset();" aria-label="Close">
+                        <button type="button" class="close" onclick="resetDropdown('projStatus'); resetDropdown('Sub_Status'); form.controls['OPPO_STATUS'].reset(); form.controls['OPPO_SUB_STATUS'].reset();" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
