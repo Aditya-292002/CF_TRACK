@@ -745,7 +745,18 @@ GetOpportunityMasterDetails() {
     if (res.flag && res.Opportunity_Master_Details.length > 0) {
       console.log("res.Opportunity_Master_Details -> ", JSON.stringify(res.Opportunity_Master_Details));
       this.isUpdate = true; // 👈 Enable Update mode
-      this.uploadedDocument = res.iteamlist || [];
+      // Existing documents from DB must be included in the save payload
+      this.DOCUMENT_ATTECHED_LIST = (res.iteamlist || []).map(d => ({
+      DOCUMENT_NAME: d.DOCUMENT_NAME,
+      DOCUMENT_FILENAME: d.DOCUMENT_FILENAME,
+      DOCUMENT_SYSFILENAME: d.DOCUMENT_SYSFILENAME,
+      FILE_EXTENSION: d.DOCUMENT_FILENAME.split('.').pop().toLowerCase(),
+      ACTIVE: d.ACTIVE ? 1 : 0,
+      ISNEW: 0,
+      DOC_BASE64: null
+    }));
+    // IMPORTANT — UI list
+    this.uploadedDocument = [...this.DOCUMENT_ATTECHED_LIST];
       this.fillOpportunityMasterData(res.Opportunity_Master_Details);
       // Make sure correct auto-fill applies based on PARTY_TYPE
       setTimeout(() => {
@@ -1405,30 +1416,30 @@ private updatePartyValidators() {
     window.open(fileURL, '_blank');
   }
 
-  stripBase64FromDocuments() {
-    // Make sure every DOC_BASE64 has no prefix
-    this.DOCUMENT_ATTECHED_LIST.forEach((file: any) => {
-      if (!file.DOC_BASE64) return;
-      if (file.FILE_EXTENSION === 'pdf') {
-        file.DOC_BASE64 = file.DOC_BASE64.replace(/^data:application\/pdf;base64,/, '');
-      } else if (file.FILE_EXTENSION === 'jpg') {
-        file.DOC_BASE64 = file.DOC_BASE64.replace(/^data:image\/jpg;base64,/, '');
-      } else if (file.FILE_EXTENSION === 'jpeg') {
-        file.DOC_BASE64 = file.DOC_BASE64.replace(/^data:image\/jpeg;base64,/, '');
-      } else if (file.FILE_EXTENSION === 'png') {
-        file.DOC_BASE64 = file.DOC_BASE64.replace(/^data:image\/png;base64,/, '');
-      } else {
-        // Generic: remove everything before comma
-        file.DOC_BASE64 = file.DOC_BASE64.replace(/^\s*[^,]+,\s*/, '').trim();
-      }
-    });
-  }
+  /**
+ * Normalize and prepare DOCUMENT_ATTECHED_LIST for saving.
+ *
+ * Rules:
+ *  - Only new files (ISNEW === 1) should carry base64 content to the server.
+ *  - For new files: normalize by removing any "data:...;base64," prefix.
+ *  - For existing files (ISNEW !== 1): ensure DOC_BASE64 is null (do not send binary).
+ *  - Support either `b64` (some code sets this) or `DOC_BASE64`.
+ */
+stripBase64FromDocuments() {
+  this.DOCUMENT_ATTECHED_LIST.forEach(file => {
+    
+    // For old files → keep DOC_BASE64 null, but ensure FILE_EXTENSION exists
+    if (file.ISNEW !== 1) {
+      file.DOC_BASE64 = null;
+      return;
+    }
 
-  GetRemoveBase64DocumnetExtension(data: any) {
-    // kept for compatibility with older code
-    this.stripBase64FromDocuments();
-    this.DOCUMENT_ATTECHED_LIST = data;
-  }
+    // For new files → clean only the base64
+    if (!file.DOC_BASE64) return;
+
+    file.DOC_BASE64 = file.DOC_BASE64.replace(/^data:.*;base64,/, '').trim();
+  });
+}
 
   f_validateForm() {
     // debugger
@@ -1615,18 +1626,17 @@ private updatePartyValidators() {
   uploadDoc() {
   for (let i = 0; i < this.uploadingFiles.length; i++) {
     this.uploadedDocument.push(this.uploadingFiles[i]);
-
     this.DOCUMENT_ATTECHED_LIST.push({
-      DOCUMENT_NAME: this.uploadingFiles[i].DOCUMENT_FILENAME,
-      DOCUMENT_FILENAME: this.uploadingFiles[i].DOCUMENT_FILENAME,
-      DOCUMENT_SYSFILENAME: this.uploadingFiles[i].DOCUMENT_SYSFILENAME,
-      DOCUMENT_FILETYPE: this.uploadingFiles[i].DOCUMENT_FILETYPE,
-      ISNEW: 1,
-      ACTIVE: 1,
-      UPLOAD_BY: this.uploadingFiles[i].UPLOAD_BY,
-      UPLOAD_BY_USERID: this.uploadingFiles[i].UPLOAD_BY_USERID,
-      DOC_BASE64: this.uploadingFiles[i].b64
-    });
+    DOCUMENT_NAME: this.uploadingFiles[i].DOCUMENT_FILENAME,
+    DOCUMENT_FILENAME: this.uploadingFiles[i].DOCUMENT_FILENAME,
+    DOCUMENT_SYSFILENAME: this.uploadingFiles[i].DOCUMENT_SYSFILENAME,
+    DOCUMENT_FILETYPE: this.uploadingFiles[i].DOCUMENT_FILETYPE,
+    ISNEW: 1,
+    ACTIVE: 1,
+    UPLOAD_BY: this.uploadingFiles[i].UPLOAD_BY,
+    UPLOAD_BY_USERID: this.uploadingFiles[i].UPLOAD_BY_USERID,
+    DOC_BASE64: this.uploadingFiles[i].b64
+  });
   }
 }
 
