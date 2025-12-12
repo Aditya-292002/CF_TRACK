@@ -41,10 +41,9 @@ export class OpportunityMasterComponent implements OnInit {
   NoDocs: number = 0;
   SelectedFileName: string = "";
   PROJECT_DATE: any = this.sharedService.getDDMMMYYYY(new Date());
-  uploadingFiles: Array<any> = []
-  uploadedDocument: Array<any> = []
-  partyType: any
-
+  uploadingFiles: Array<any> = [];
+  uploadedDocument: Array<any> = [];
+  partyType: any;
 
   regx_AlphaSpace: RegExp = new RegExp(/^[^<>]*$/);
   // regx_AlphaSpace: RegExp = new RegExp(/^[a-zA-Z0-9\s.,@&()_-]*$/);
@@ -526,20 +525,14 @@ export class OpportunityMasterComponent implements OnInit {
         this.UPDATE_RIGHTS = this.sharedService.form_rights.UPDATE_RIGHTS
       }
       this.NO_RIGHTS = this.ADD_RIGHTS || this.UPDATE_RIGHTS?false:true;
-
     }, 150);
     setTimeout(() => {
       this.maxDate = this.sharedService.loginUser[0].TO_DATE;
       this.FYEAR = this.sharedService.loginUser[0].FYEAR;
-      // this.COMPANY_CODE = this.sharedService.loginUser[0].COMPANY_CODE;
-      // this.LOCATION_CODE = this.sharedService.loginUser[0].LOCATION_CODE;
       this.COMPANY_CURRENCY = this.sharedService.loginUser[0].COMPANY_CURRENCY;
       this.form.get('PROJECT_DATE').setValue(this.sharedService.getTodayDate())
       this.PROJECT_DATE = this.sharedService.getTodayDate();
-      // this.form.get('PROJECT_DATE').setValue(this.PROJECT_DATE);
-      // this.form.get('LEADORCUST').setValue(this.form.getRawValue().PARTY_TYPE);
       this.GetOpportunityCommonList();
-      this.GetOpportunityMasterDetails();
     }, 150);
     this.GetOpportunityList();
      $('.selectpicker').selectpicker('refresh').trigger('change');
@@ -752,6 +745,7 @@ GetOpportunityMasterDetails() {
     if (res.flag && res.Opportunity_Master_Details.length > 0) {
       console.log("res.Opportunity_Master_Details -> ", JSON.stringify(res.Opportunity_Master_Details));
       this.isUpdate = true; // 👈 Enable Update mode
+      this.uploadedDocument = res.iteamlist || [];
       this.fillOpportunityMasterData(res.Opportunity_Master_Details);
       // Make sure correct auto-fill applies based on PARTY_TYPE
       setTimeout(() => {
@@ -1280,209 +1274,6 @@ private updatePartyValidators() {
   this.form.get('EST_VALUE').setValue(formattedValue, { emitEvent: false });
 }
 
-  // ============= DOCUMENTS (Unified flow) =============
-  // selectDocument(event: any) {
-  // // legacy function kept for single-file per selection path; prefer onFileSelected for multi-file
-  // this.onFileSelected(event);
-  // //--------------------------------------------------------
-  // this.uploadingFiles = [];
-  // let b64: string = "";
-  // let extension: string[] = [];
-  // let DOC_SRNO: string = "";
-
-  // for (let i = 0; i < event.target.files.length; i++) {
-  //   extension = event.target.files[i].name.split(".");
-  //   let _ext = extension[extension.length - 1].toUpperCase()
-
-  //   if(_ext === 'BAT' || _ext === 'GIF' || _ext === 'PNG' || _ext === 'JAVA' || _ext === 'XML' || _ext === 'ZIP' 
-  //   || _ext === 'RAR' || _ext === 'JAR' || _ext === 'EXE'){
-  //     this.toast.warning("Please select valid document (XLSX/ DOCS/ PDF/ TEXT File/ Image)")
-  //     return;
-  //   } 
-
-  //   let reader = new FileReader();
-  //   reader.readAsDataURL(event.target.files[i]);
-  //   reader.onload = () => {
-  //     b64 = reader.result.toString().split(",")[1];
-  //     extension = event.target.files[i].name.split(".");
-
-  //     this.uploadingFiles.push(
-  //       {
-  //         OPPO_CODE: this.form.getRawValue().OPPO_CODE,
-  //         DOCUMENT_NAME: "",
-  //         DOC_SRNO: "",
-  //         DOCUMENT_FILENAME: event.target.files[i].name,
-  //         DOCUMENT_SYSFILENAME: uuidv4() + '.' + extension[extension.length - 1],
-  //         DOCUMENT_FILETYPE: extension[extension.length - 1].toUpperCase(),
-  //         ISNEW: 1,
-  //         ACTIVE: 1,
-  //         UPLOAD_BY: this.sharedService.loginUser[0].USER_NAME,
-  //         UPLOAD_BY_USERID: this.sharedService.loginUser[0].USERID,
-  //         b64: b64
-
-  //       }
-  //     )
-  //     this.uploadDoc();
-  //   }
-  //   // this.SelectedFileName = event.target.files.length > 1 ? event.target.files.length + " Files selected" : event.target.files[i].name;
-  // }
-
-  // }
-
-  // uploadDoc() {
-  //   // For backward compatibility: move uploadingFiles -> uploadedDocument and DOCUMENT_ATTECHED_LIST
-  //   for (let i = 0; i < this.uploadingFiles.length; i++) {
-  //     this.uploadedDocument.push(this.uploadingFiles[i]);
-  //   }
-
-  //   // push into unified list for API
-  //   this.uploadedDocument.forEach(doc => {
-  //     const ext = (doc.DOCUMENT_SYSFILENAME || doc.DOCUMENT_FILENAME || '').split('.').pop();
-  //     this.DOCUMENT_ATTECHED_LIST.push({
-  //       DOCUMENT_NAME: doc.DOCUMENT_NAME || doc.DOCUMENT_FILENAME,
-  //       DOCUMENT_FILENAME: doc.DOCUMENT_FILENAME,
-  //       DOCUMENT_SYSFILENAME: doc.DOCUMENT_SYSFILENAME,
-  //       DOCUMENT_FILETYPE: ext ? ext.toLowerCase() : '',
-  //       ISNEW: doc.ISNEW || 1,
-  //       ACTIVE: typeof doc.ACTIVE !== 'undefined' ? doc.ACTIVE : 1,
-  //       UPLOAD_BY: doc.UPLOAD_BY || this.sharedService.loginUser[0].USER_NAME,
-  //       UPLOAD_BY_USERID: doc.UPLOAD_BY_USERID || this.sharedService.loginUser[0].USERID,
-  //       b64: doc.b64 || ''
-  //     });
-  //   });
-
-  //   if (this.fileInput && this.fileInput.nativeElement) {
-  //     this.fileInput.nativeElement.value = "";
-  //   }
-  //   this.uploadingFiles = [];
-  //   this.SelectedFileName = "";
-  //   this.NoDocs = 0;
-  //   this.DOCUMENT_ATTECHED_LIST.forEach(element => {
-  //     if (element.ACTIVE != 0) {
-  //       this.NoDocs += 1;
-  //     }
-  //   });
-  // }
-
-  // removeDoc(fileIndex: number = null) {
-  //   if (fileIndex === null || typeof fileIndex === 'undefined') return;
-  //   const file = this.DOCUMENT_ATTECHED_LIST[fileIndex];
-  //   if (!file) return;
-
-  //   if (file.ISNEW == 1) {
-  //     this.DOCUMENT_ATTECHED_LIST.splice(fileIndex, 1);
-  //   } else if (file.ACTIVE == 1) {
-  //     file.ACTIVE = 0;
-  //   } else {
-  //     file.ACTIVE = 0;
-  //   }
-
-  //   this.NoDocs = 0;
-  //   this.DOCUMENT_ATTECHED_LIST.forEach(element => {
-  //     if (element.ACTIVE != 0) {
-  //       this.NoDocs += 1;
-  //     }
-  //   });
-  // }
-commentbreaker3 = "/******************************************************";
-  // selectDocument(event: any) {
-  //   this.uploadingFiles = [];
-  //   let b64: string = "";
-  //   let extension: string[] = [];
-  //   let DOC_SRNO: string = "";
-
-  //   for (let i = 0; i < event.target.files.length; i++) {
-  //     extension = event.target.files[i].name.split(".");
-  //     let _ext = extension[extension.length - 1].toUpperCase()
-
-  //     if (_ext === 'BAT' || _ext === 'GIF' || _ext === 'PNG' || _ext === 'JAVA' || _ext === 'XML' || _ext === 'ZIP'
-  //       || _ext === 'RAR' || _ext === 'JAR' || _ext === 'EXE') {
-  //       this.toast.warning("Please select valid document (XLSX/ DOCS/ PDF/ TEXT File/ Image)")
-  //       return;
-  //     }
-
-  //     let reader = new FileReader();
-  //     reader.readAsDataURL(event.target.files[i]);
-  //     reader.onload = () => {
-  //       b64 = reader.result.toString().split(",")[1];
-  //       extension = event.target.files[i].name.split(".");
-
-  //       this.uploadingFiles.push(
-  //         {
-  //           OPPO_CODE: this.form.getRawValue().OPPO_CODE,
-  //           DOCUMENT_NAME: "",
-  //           DOC_SRNO: "",
-  //           DOCUMENT_FILENAME: event.target.files[i].name,
-  //           DOCUMENT_SYSFILENAME: uuidv4() + '.' + extension[extension.length - 1],
-  //           DOCUMENT_FILETYPE: extension[extension.length - 1].toUpperCase(),
-  //           ISNEW: 1,
-  //           ACTIVE: 1,
-  //           UPLOAD_BY: this.sharedService.loginUser[0].USER_NAME,
-  //           UPLOAD_BY_USERID: this.sharedService.loginUser[0].USERID,
-  //           b64: b64
-
-  //         }
-  //       )
-  //       this.uploadDoc();
-  //     }
-  //     // this.SelectedFileName = event.target.files.length > 1 ? event.target.files.length + " Files selected" : event.target.files[i].name;
-  //   }
-  // }
-
-  // uploadDoc() {
-  //   for (let i = 0; i < this.uploadingFiles.length; i++) {
-  //     this.uploadedDocument.push(this.uploadingFiles[i])
-  //   }
-
-  //   this.fileInput.nativeElement.value = "";
-  //   this.uploadingFiles = []
-  //   this.SelectedFileName = "";
-  //   this.NoDocs = 0;
-  //   this.uploadedDocument.forEach(element => {
-  //     if (element.ACTIVE != 0) {
-  //       this.NoDocs += 1
-  //     }
-  //   });
-  // }
-
-  // removeDoc(fileIndex: number = null) {
-  //   if (this.uploadedDocument[fileIndex].ISNEW == 1) {
-  //     this.uploadedDocument.splice(fileIndex, 1);
-  //   } else if (this.uploadedDocument[fileIndex].ACTIVE == 1) {
-  //     this.uploadedDocument[fileIndex].ACTIVE = 0;
-  //   } else {
-  //     this.uploadedDocument[fileIndex].ACTIVE = 0;
-  //   }
-  //   this.NoDocs = 0;
-  //   this.uploadedDocument.forEach(element => {
-  //     if (element.ACTIVE != 0) {
-  //       this.NoDocs += 1
-  //     }
-  //   });
-  // }
-  
-  // f_downloadDocument(file: any) {
-
-  //   if (file != undefined && file != null && file != "") {
-  //     this.spinner = true;
-  //     this.http.PostRequest(this.apiUrl.GetFile, { DOCUMENT_SYSFILENAME: file.DOCUMENT_SYSFILENAME }).then(res => {
-
-  //       if (res.flag) {
-  //         const byteString = atob(res.b64);
-  //         const arrayBuffer = new ArrayBuffer(byteString.length);
-  //         const int8Array = new Uint8Array(arrayBuffer);
-  //         for (let i = 0; i < byteString.length; i++) {
-  //           int8Array[i] = byteString.charCodeAt(i);
-  //         }
-  //         const data: Blob = new Blob([int8Array]);
-  //         saveAs(data, file.DOCUMENT_FILENAME);
-  //       }
-  //       this.spinner = false;
-
-  //     })
-  //   }
-  // }
-
   getMimeType(extension: string): string {
     switch (extension.toLowerCase()) {
       case 'pdf': return 'application/pdf';
@@ -1593,27 +1384,6 @@ commentbreaker3 = "/******************************************************";
       input.value = '';
     }
   }
-
-  // viewDocument(data: any) {
-  //   if (!data || (!data.DOC_BASE64 && !data.b64)) return;
-  //   const base64raw = data.DOC_BASE64 || data.b64 || '';
-  //   const base64Content = base64raw.includes(',') ? base64raw.split(',')[1] : base64raw;
-
-  //   try {
-  //     const byteCharacters = atob(base64Content);
-  //     const byteNumbers = new Array(byteCharacters.length);
-  //     for (let i = 0; i < byteCharacters.length; i++) {
-  //       byteNumbers[i] = byteCharacters.charCodeAt(i);
-  //     }
-  //     const byteArray = new Uint8Array(byteNumbers);
-  //     const blob = new Blob([byteArray], { type: this.getMimeType(data.FILE_EXTENSION || data.DOCUMENT_FILETYPE || '') });
-  //     const fileURL = URL.createObjectURL(blob);
-  //     window.open(fileURL, '_blank');
-  //   } catch (err) {
-  //     console.error('Error opening document', err);
-  //     this.toast.error('Unable to open document');
-  //   }
-  // }
 
   viewDocument(data: any) {
     if (!data.DOC_BASE64 || !data.FILE_EXTENSION) return;
@@ -1808,8 +1578,8 @@ commentbreaker3 = "/******************************************************";
         this.uploadingFiles.push(
           {
             OPPO_CODE: this.form.getRawValue().OPPO_CODE,
-            DOCUMENT_NAME: "",
-            DOC_SRNO: "",
+            DOCUMENT_NAME: event.target.files[i].name,
+            DOC_SRNO: this.uploadingFiles.length + 1,
             DOCUMENT_FILENAME: event.target.files[i].name,
             DOCUMENT_SYSFILENAME: uuidv4() + '.' + extension[extension.length - 1],
             DOCUMENT_FILETYPE: extension[extension.length - 1].toUpperCase(),
@@ -1817,7 +1587,7 @@ commentbreaker3 = "/******************************************************";
             ACTIVE: 1,
             UPLOAD_BY: this.sharedService.loginUser[0].USER_NAME,
             UPLOAD_BY_USERID: this.sharedService.loginUser[0].USERID,
-            b64: b64
+            DOC_BASE64: b64
 
           }
         )
@@ -1827,21 +1597,39 @@ commentbreaker3 = "/******************************************************";
     }
   }
 
-  uploadDoc() {
-    for (let i = 0; i < this.uploadingFiles.length; i++) {
-      this.uploadedDocument.push(this.uploadingFiles[i])
-    }
+  // uploadDoc() {
+  //   for (let i = 0; i < this.uploadingFiles.length; i++) {
+  //     this.uploadedDocument.push(this.uploadingFiles[i])
+  //   }
+  //   this.fileInput.nativeElement.value = "";
+  //   this.uploadingFiles = []
+  //   this.SelectedFileName = "";
+  //   this.NoDocs = 0;
+  //   this.uploadedDocument.forEach(element => {
+  //     if(element.ACTIVE != 0){
+  //       this.NoDocs += 1
+  //     }
+  //   });
+  // }
 
-    this.fileInput.nativeElement.value = "";
-    this.uploadingFiles = []
-    this.SelectedFileName = "";
-    this.NoDocs = 0;
-    this.uploadedDocument.forEach(element => {
-      if(element.ACTIVE != 0){
-        this.NoDocs += 1
-      }
+  uploadDoc() {
+  for (let i = 0; i < this.uploadingFiles.length; i++) {
+    this.uploadedDocument.push(this.uploadingFiles[i]);
+
+    this.DOCUMENT_ATTECHED_LIST.push({
+      DOCUMENT_NAME: this.uploadingFiles[i].DOCUMENT_FILENAME,
+      DOCUMENT_FILENAME: this.uploadingFiles[i].DOCUMENT_FILENAME,
+      DOCUMENT_SYSFILENAME: this.uploadingFiles[i].DOCUMENT_SYSFILENAME,
+      DOCUMENT_FILETYPE: this.uploadingFiles[i].DOCUMENT_FILETYPE,
+      ISNEW: 1,
+      ACTIVE: 1,
+      UPLOAD_BY: this.uploadingFiles[i].UPLOAD_BY,
+      UPLOAD_BY_USERID: this.uploadingFiles[i].UPLOAD_BY_USERID,
+      DOC_BASE64: this.uploadingFiles[i].b64
     });
   }
+}
+
 
   removeDoc(fileIndex: number = null) {
     if (this.uploadedDocument[fileIndex].ISNEW == 1) {
@@ -1921,11 +1709,6 @@ normalizeForm(skipKeys: string[] = []) {
     }
   });
 }
-
-// formatEstValue(val: any) {
-//   if (!val) return '';
-//   return Number(val.toString().replace(/[^0-9.]/g, '')).toLocaleString('en-IN');
-// }
 
 setVal(field: string, value: any) {
   var ctrl = this.form.get(field);
