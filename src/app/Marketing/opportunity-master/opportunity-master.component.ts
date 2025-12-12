@@ -757,6 +757,7 @@ GetOpportunityMasterDetails() {
     }));
     // IMPORTANT — UI list
     this.uploadedDocument = [...this.DOCUMENT_ATTECHED_LIST];
+    this.NoDocs = this.uploadedDocument.filter(x => x.ACTIVE != 0).length;
       this.fillOpportunityMasterData(res.Opportunity_Master_Details);
       // Make sure correct auto-fill applies based on PARTY_TYPE
       setTimeout(() => {
