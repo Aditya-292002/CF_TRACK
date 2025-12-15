@@ -764,7 +764,8 @@ GetOpportunityMasterDetails() {
     }));
     // IMPORTANT — UI list
     this.uploadedDocument = [...this.DOCUMENT_ATTECHED_LIST];
-    this.NoDocs = this.uploadedDocument.filter(x => x.ACTIVE != 0).length;
+    this.updateNoDocsCount();
+    // this.NoDocs = this.uploadedDocument.filter(x => x.ACTIVE != 0).length;
       this.fillOpportunityMasterData(res.Opportunity_Master_Details);
       // Make sure correct auto-fill applies based on PARTY_TYPE
       setTimeout(() => {
@@ -1024,7 +1025,8 @@ f_clearForm() {
   this.PROJECT_DATE = this.sharedService.getTodayDate();
   this.uploadedDocument = [];
   this.DOCUMENT_ATTECHED_LIST = [];
-  this.NoDocs = 0;
+  // this.NoDocs = 0;
+  this.updateNoDocsCount();
 
   setTimeout(() => this.refreshSelectPicker(), 80);
   // setTimeout(() => $('.selectpicker').selectpicker('refresh').trigger('change'), 100);
@@ -1361,6 +1363,7 @@ private updatePartyValidators() {
         });
         this.RESOLVE_DOC_LIST = this.DOCUMENT_ATTECHED_LIST;
         // update doc count
+        this.NoDocs == 1;
         this.NoDocs = this.DOCUMENT_ATTECHED_LIST.filter(d => d.ACTIVE != 0).length;
         console.log('All files processed:', this.DOCUMENT_ATTECHED_LIST);
       })
@@ -1613,7 +1616,8 @@ stripBase64FromDocuments() {
           }
         )
         this.uploadDoc();
-        this.NoDocs == 1;
+        // this.NoDocs == 1;
+        this.updateNoDocsCount();
       }
       // this.SelectedFileName = event.target.files.length > 1 ? event.target.files.length + " Files selected" : event.target.files[i].name;
     }
@@ -1809,5 +1813,10 @@ parseApiDate(dateStr: string): Date {
   return new Date(year, month - 1, day);
 }
 
+updateNoDocsCount() {
+  this.NoDocs = (this.uploadedDocument || [])
+    .filter(d => d.ACTIVE !== 0)
+    .length;
+}
 
 }
