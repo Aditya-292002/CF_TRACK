@@ -610,6 +610,12 @@ export class OpportunityMasterComponent implements OnInit {
   const selectedDate: Date = this.form.value.EXPECTED_CLOSURE;
   const formattedDate = this.datePipe.transform(selectedDate, 'dd-MMM-yyyy');
   var crmOpportunity = this.form.getRawValue();
+  // ---- PROJECT_DATE yyyyMMdd formatting ----
+const projectDate: Date = this.form.get('PROJECT_DATE').value;
+crmOpportunity.PROJECT_DATE = projectDate
+  ? this.datePipe.transform(projectDate, 'yyyy-MM-dd')
+  : null;
+  //--------------------------------------------
   crmOpportunity.LEADORCUST = this.partyType;
   crmOpportunity.CUST_CONTACT = crmOpportunity.CUST_CONTACT || null;
   crmOpportunity.CUST_CODE = crmOpportunity.CUST_CODE || null;
@@ -835,7 +841,11 @@ this.isEditModeFill = true;
 this.form.get('COMPANY_CODE').setValue(this.company_list[0].COMPANY_CODE);
 this.form.get('LOCATION_CODE').setValue(this.location_list[0].LOCATION_CODE);
 this.form.get('OPPO_TYPE').setValue(row.PROJECT_TYPE || "");
-this.form.get('PROJECT_DATE').setValue(row.PROJECT_DATE ? this.sharedService.getFormatedDate(row.PROJECT_DATE) : new Date());
+// this.form.get('PROJECT_DATE').setValue(row.PROJECT_DATE ? this.sharedService.getFormatedDate(row.PROJECT_DATE) : new Date());
+this.form.get('PROJECT_DATE').setValue(row.PROJECT_DATE ? this.parseApiDate(row.PROJECT_DATE) : new Date());
+// const raw = data[0].EXPECTED_CLOSURE; 
+// this.form.get('EXPECTED_CLOSURE').setValue(new Date(raw));
+this.form.get('EXPECTED_CLOSURE').setValue(this.parseApiDate(data[0].EXPECTED_CLOSURE));
 this.form.get('OPPO_CODE').setValue(row.OPPO_CODE || '');
 this.form.get('OPPO_NAME').setValue(row.OPPO_NAME || '');
 this.form.get('REFPROJ_CODE').setValue(row.REFPROJ_CODE || '');
@@ -855,8 +865,6 @@ this.form.get('OPPO_STATUS').setValue(row.OPPO_STATUS || '');
 this.form.get('OPPO_SUB_STATUS').setValue(row.OPPO_SUB_STATUS || '');
 this.form.get('OPPO_REMARKS').setValue(row.OPPO_REMARKS || '');
 this.form.get('PROBABILITY').setValue(row.PROBABILITY || '');
-const raw = data[0].EXPECTED_CLOSURE; 
-this.form.get('EXPECTED_CLOSURE').setValue(new Date(raw));
 // Documents
 if (Array.isArray(row.OPPORTUNITY_DOCUMENT_LIST)) {
   this.DOCUMENT_ATTECHED_LIST = row.OPPORTUNITY_DOCUMENT_LIST.map((d: any, idx: number) => ({
@@ -1605,6 +1613,7 @@ stripBase64FromDocuments() {
           }
         )
         this.uploadDoc();
+        this.NoDocs == 1;
       }
       // this.SelectedFileName = event.target.files.length > 1 ? event.target.files.length + " Files selected" : event.target.files[i].name;
     }
@@ -1788,5 +1797,17 @@ setVal(field: string, value: any) {
     ctrl.setValue(value != undefined ? value : null, { emitEvent: false });
   }
 }
+
+parseApiDate(dateStr: string): Date {
+  if (!dateStr) return null;
+
+  // Handles: 2025-12-15T00:00:00
+  const [datePart] = dateStr.split('T');
+  const [year, month, day] = datePart.split('-').map(Number);
+
+  // IMPORTANT: month - 1
+  return new Date(year, month - 1, day);
+}
+
 
 }
