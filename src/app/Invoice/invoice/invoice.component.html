@@ -587,7 +587,7 @@
         </div>
       </div>
       <div class="col-md-2">
-        <label>Expected Pay Date:</label>
+        <label>Expected Pay Date:<span class="validator">*</span></label>
         <div
           class="floating-input"
           [ngClass]="{
@@ -607,6 +607,7 @@
             [(ngModel)]="EXPECTED_DATE"
             id="excpaydate"
             #excpaydate
+            placeholder="DD-MMM-YYYY"
             class="date-input"
             [maxdate]="DUE_DATE"
             [mindate]="today_date"

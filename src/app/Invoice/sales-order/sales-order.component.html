@@ -8,6 +8,8 @@
         <div class="">
             <button class="btn btn-secondary  float-right ml-1 mr-1" *ngIf="!isViewSO"
             (click)="SaveSalesOrder()" title="Save">Save</button>
+            <button class="btn btn-secondary  float-right ml-1 mr-1" *ngIf="!isViewSO && !approveSOFlag" (click)="approveSo()"
+            title="view Leave Details"><i class="far fa-eye mr-1"></i> Approve S/O</button>
             <button class="btn btn-secondary  float-right ml-1 mr-1" *ngIf="!isViewSO && this.SO_list.length > 0" (click)="viewSOList()"
             title="view Leave Details"><i class="far fa-eye mr-1"></i> List</button>
                 <button class="btn btn-secondary  float-right ml-2  " *ngIf="isViewSO"  
@@ -166,6 +168,45 @@
                 </button>
               </div>
             </div>
+                            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+                    <label>Project Type<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['PROJECT_TYPE'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="projectType" formControlName="PROJECT_TYPE" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of proj_type_list; let i=index" 
+                            [selected]="opt.PROJECT_TYPE == form.controls['PROJECT_TYPE'].value"
+                             [value]="opt.PROJECT_TYPE" >{{ opt.PROJECT_TYPE_DESC }}</option>                     
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('projectType')" (click)="form.controls['PROJECT_TYPE'].reset();" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+                    <label>Lead Partner:</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_PARTNER_CODE'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="leadPartner" formControlName="LEAD_PARTNER_CODE" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of leadMaster_type_list; let i=index" 
+                            [selected]="opt.LEAD_PARTNER_CODE == form.controls['LEAD_PARTNER_CODE'].value"
+                             [value]="opt.LEAD_PARTNER_CODE" >{{ opt.LEAD_PARTNER_NAME }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('leadPartner')" (click)="form.controls['LEAD_PARTNER_CODE'].reset();" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                                <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+                    <label>Account Manager :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['ACCOUNT_MGR'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="accManager" formControlName="ACCOUNT_MGR" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of Account_manager_list; let i=index" 
+                            [selected]="opt.EMP_CODE == form.controls['ACCOUNT_MGR'].value"
+                             [value]="opt.EMP_CODE" >{{ opt.USER_NAME }}</option>                     
+                        </select>
+                        <!-- <button type="button"  class="close" onclick="resetDropdown('accManager')" (click)="form.controls['ACCOUNT_MGR'].reset();" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button> -->
+                    </div>
+                </div>
             <!-- <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
                             <label>Raise Invoice On :</label>
                             <div class="floating-input "
@@ -452,6 +493,7 @@
                       <th class="w-20">Expected Date</th>
                       <th class="w-20">Amount</th>
                       <th class="w-20">Base Amount</th>
+                       <th class="w-15">close</th>
                       <!-- <th class="w-20">Billed Value</th> -->
                     </tr>
                   </thead>
@@ -468,6 +510,7 @@
                               class="form-control"
                               [(ngModel)]="data.EXPECTED_DATE"
                               [ngModelOptions]="{ standalone: true }"
+                              [disabled]="data.IS_CLOSED"
                             />
                             <app-date-picker
                               id="EXPECTED_DATE"
@@ -493,6 +536,7 @@
                               [ngModelOptions]="{ standalone: true }"
                               (ngModelChange)="updateTotalAmount()"
                               (keypress)="keyPressNumbers($event)"
+                              [disabled]="data.IS_CLOSED"
                             />
                           </div>
                           <!-- <td class="w-20">
@@ -515,11 +559,14 @@
                                                             [ngModelOptions]="{standalone: true}" disabled> -->
                           </div>
                         </td>
+                         <td class="w-15"> <input class="ml-2" type="checkbox" title="Close Milestone" 
+                                                         [(ngModel)]="data.IS_CLOSED" [ngModelOptions]="{standalone: true}"
+                                                         [disabled]="true" ></td>
                       </tr>
 
                       <tr>
                         <td></td>
-                        <td class="" colspan="6">
+                        <td class="w-90" colspan="3">
                           <div class="floating-input d-flex">
                             <textarea
                               name=""
@@ -529,7 +576,10 @@
                               [(ngModel)]="data.REMARKS"
                               placeholder="Description"
                               [ngModelOptions]="{ standalone: true }"
+                              [disabled]="data.IS_CLOSED"
                             ></textarea>
+                                </div>
+                             </td>
                             <!-- <span class="del-red   ml-2 " >
                                                                 <i 
                                                                     class="fas fa-trash-alt"
@@ -537,6 +587,8 @@
                                                                     title="Delete Milestone"
                                                                 ></i>
                                                                 </span> -->
+                                                                <td class="">
+                                                                  <div class="d-flex pl-2">
                             <button
                               type="button"
                               class="close"
@@ -545,8 +597,11 @@
                             >
                               <span aria-hidden="true">&times;</span>
                             </button>
-                          </div>
-                        </td>
+                            </div>
+                            </td>
+                      
+                       
+                        <!-- <td></td> -->
                       </tr>
                     </ng-container>
                   </tbody>
@@ -595,6 +650,76 @@
             </div>
           </div>
         </div>
+        <!-- <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
+  <div class="row card">
+    <div class="col-md-12">
+
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div>
+          <h6 class="mb-0">
+            Document Upload <span class="validator">*</span>
+          </h6>
+          <small class="text-muted">(Upload PO received from client or approval screenshot.)</small>
+        </div>
+                <div>
+                  <label
+                    for="fileInput"
+                    class="text-primary"
+                    title="Add Document"
+                  >
+                    <i class="fa fa-paperclip"></i> Attach
+                  </label>
+                </div>
+      </div>
+
+<ul class="list-group">
+                <li
+                  class="list-group-item d-flex justify-content-between att-doc py-1"
+                >
+                  <input
+                    type="file"
+                    #fileInput
+                    id="fileInput"
+                    (change)="selectDocument($event)"
+                    class="doc-input"
+                    accept=".png,.jpg,.pdf"
+                  />
+                  <label class="att-doc-label" title="Documents">
+                    Documents
+                  </label>
+                </li>
+                <ng-container
+                  *ngFor="let file of uploadedDocument; let i = index"
+                >
+                  <li
+                    class="list-group-item d-flex justify-content-between py-2"
+                    *ngIf="file.ACTIVE != 0"
+                  >
+                    <label class="doc-label" (click)="f_downloadDocument(file)">
+                      <i class="fa fa-paperclip mr-2"></i>
+                      {{ file.DOCUMENT_FILENAME }}
+                    </label>
+                    <span class="del-red">
+                      <i
+                        class="fas fa-trash-alt"
+                        id="f_{{ i }}"
+                        (click)="removeDoc(file)"
+                        title="Delete Document"
+                      ></i>
+                    </span>
+                  </li>
+                </ng-container>
+                <li
+                  class="list-group-item text-center py-1 disabled"
+                  *ngIf="this.uploadedDocument.length == 0"
+                >
+                  <h6 class="m-0">No Documents</h6>
+                </li>
+              </ul>
+    </div>
+  </div>
+</div> -->
+
         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12">
           <div class="row card">
             <div class="col-md-12 mt-1">
@@ -602,7 +727,9 @@
                 <div>
                   <h6 class="mb-0 p-0">
                     Document Upload
-                    <!-- <span class="validator">*</span> -->
+                    <span class="validator">*</span>
+                     <i class="fas fa-info-circle text-info ml-3" pTooltip="Upload PO received from client or approval"></i>
+                    <!-- <p class="text-muted">Upload PO received from client or approval screenshot</p> -->
                   </h6>
                 </div>
                 <div>

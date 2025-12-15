@@ -72,3 +72,20 @@ table .date-input {
 .width-1{
     width: 53px !important;
 }
+/* added by hemant 12 dec 2025 */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.att-doc-label:hover,
+.doc-label:hover {
+  text-decoration: underline;
+}
+
+.list-group-item {
+  border-radius: 4px !important;
+}
+
+.card {
+  border-radius: 8px;
+}

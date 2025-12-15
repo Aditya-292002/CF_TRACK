@@ -533,6 +533,7 @@ export class OpportunityMasterComponent implements OnInit {
       this.form.get('PROJECT_DATE').setValue(this.sharedService.getTodayDate())
       this.PROJECT_DATE = this.sharedService.getTodayDate();
       this.GetOpportunityCommonList();
+      // this.GetOpportunityMasterDetails();
     }, 150);
     this.GetOpportunityList();
      $('.selectpicker').selectpicker('refresh').trigger('change');
@@ -634,7 +635,7 @@ export class OpportunityMasterComponent implements OnInit {
     DOCUMENT_ATTECHED_LIST: this.uploadedDocument
   };
   console.log("SaveOpportunityMaster Save Payload: ", data);
-  // return
+   //return
   // 🔹 4️⃣ Call API
   this.spinner = true;
   this.http.PostRequest(this.apiUrl.SaveOpportunityMaster, data).then(
