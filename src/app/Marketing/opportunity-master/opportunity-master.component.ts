@@ -1021,7 +1021,13 @@ f_clearForm() {
   this.form.get('OPPO_CURRENCY').setValue("INR");
   this.form.get('CUST_CODE').setValue("");
   this.form.get('PARTY_TYPE').setValue("C");
-  this.form.get('PROJECT_DATE').setValue(this.sharedService.getTodayDate())
+  this.form.get('PROJECT_DATE').setValue(this.sharedService.getTodayDate());
+  this.form.get('EXPECTED_CLOSURE').setValue("null");
+  // 🔥 FORCE DATE PICKER RESET
+  setTimeout(() => {
+    this.form.get('EXPECTED_CLOSURE').setValue(null, { emitEvent: false });
+    this.form.get('EXPECTED_CLOSURE').updateValueAndValidity();
+  });
   this.PROJECT_DATE = this.sharedService.getTodayDate();
   this.uploadedDocument = [];
   this.DOCUMENT_ATTECHED_LIST = [];
