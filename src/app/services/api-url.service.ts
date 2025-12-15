@@ -193,4 +193,6 @@ public SaveLead: string ='/Lead/SaveLead';
 public GetPMCommonList: string = '/TicketSystem/GetPMCommonList';
 public GetIssueRaisedHistoryList: string='/TicketSystem/GetIssueRaisedHistoryList'; 
 public ApproveSOForInvoiceList: string='/SO/ApproveSOForInvoiceList'; 
+
+public GetOppMasterFile: string='/Marketing/GetOppMasterFile';
 }

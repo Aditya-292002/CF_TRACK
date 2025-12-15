@@ -1595,7 +1595,7 @@ stripBase64FromDocuments() {
             DOC_SRNO: this.uploadingFiles.length + 1,
             DOCUMENT_FILENAME: event.target.files[i].name,
             DOCUMENT_SYSFILENAME: uuidv4() + '.' + extension[extension.length - 1],
-            DOCUMENT_FILETYPE: extension[extension.length - 1].toUpperCase(),
+            DOCUMENT_FILETYPE:  '.' + extension[extension.length - 1],
             ISNEW: 1,
             ACTIVE: 1,
             UPLOAD_BY: this.sharedService.loginUser[0].USER_NAME,
@@ -1723,10 +1723,10 @@ stripBase64FromDocuments() {
     // console.log('file.DOCUMENT_NAME ->' , file.DOCUMENT_NAME)
     // if (file != undefined && file != null && file != "") {
     //   this.spinner = true;
-      this.http.PostRequest(this.apiUrl.GetFile, { DOCUMENT_SYSFILENAME: file.DOCUMENT_SYSFILENAME }).then(res => {
+      this.http.PostRequest(this.apiUrl.GetOppMasterFile, { DOCUMENT_SYSFILENAME: file.DOCUMENT_SYSFILENAME }).then(res => {
         console.log("File : ", file);
         if (res.flag) {
-          const byteString = atob(file.b64);
+          const byteString = atob(res.b64);
           const arrayBuffer = new ArrayBuffer(byteString.length);
           const int8Array = new Uint8Array(arrayBuffer);
           for (let i = 0; i < byteString.length; i++) {
