@@ -315,7 +315,7 @@
                                                         </p-togglebutton> -->
                                                         <input class="ml-2" type="checkbox" title="Close Milestone" 
                                                          [(ngModel)]="data.IS_CLOSED" [ngModelOptions]="{standalone: true}"
-                                                         [disabled]="this.SO_STATUS == 'REJECT'">
+                                                         [disabled]="this.SO_STATUS == 'REJECT' || data.Active !=null" >
                                                     </div> 
                                                 </td>
                                             </tr>

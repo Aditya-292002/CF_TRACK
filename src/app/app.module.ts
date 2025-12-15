@@ -122,6 +122,7 @@ import { IssueRequestListComponent } from './Common/issue-request-list/issue-req
 import { PmConfirmationComponent } from './Common/pm-confirmation/pm-confirmation.component';
 import { PmConfirmationListComponent } from './Common/pm-confirmation-list/pm-confirmation-list.component';
 import { LeadMasterComponent } from './Marketing/lead-master/lead-master.component';
+import { SalesOrderApproveComponent } from './Common/sales-order-approve/sales-order-approve.component';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -238,7 +239,8 @@ export const MY_DATE_FORMATS = {
     IssueRequestListComponent,
     PmConfirmationComponent,
     PmConfirmationListComponent,
-    LeadMasterComponent
+    LeadMasterComponent,
+    SalesOrderApproveComponent
     
   ],
   imports: [

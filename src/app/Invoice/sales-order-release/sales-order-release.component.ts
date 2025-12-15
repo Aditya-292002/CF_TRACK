@@ -524,12 +524,17 @@ export class SalesOrderReleaseComponent implements OnInit {
   }
 
   editInvoice(data:any) {
-    // console.log('data ->' , data)
+    console.log('isViewSO',this.isViewSO);
+    
+     console.log('data ->' , data)
+      this.editing = true;
     this.GetSalesOrderReleaseDetail(data.REQ_ID,data.SO_ID)
-    this.editing = true;
+  
   }
 
   GetSalesOrderReleaseDetail(REQ_ID:any,SO_ID:any) {
+    console.log('inside GetSalesOrderReleaseDetail');
+    
     this.TOTAL_REQUEST_VALUE = 0;
     this.TOTAL_BILLED_VALUE = 0;
     this.TOTAL_AMOUNT_VALUE = 0;
@@ -538,6 +543,7 @@ export class SalesOrderReleaseComponent implements OnInit {
       SO_ID: SO_ID
     }
     this.http.PostRequest(this.apiUrl.GetSalesOrderReleaseDetail, data).then(res => {
+          console.log('calling API GetSalesOrderReleaseDetail');
       if (res.flag == 1) {
         this.SO_Detail_list = res.SO_Detail_list;
         this.SO_MILESTONE_T = res.SO_Milestone_list;
@@ -601,6 +607,8 @@ export class SalesOrderReleaseComponent implements OnInit {
     this.form.get("SO_STATUS").setValue(this.SO_Detail_list[0].SO_STATUS)
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);
+    console.log('data filled succesfully');
+    
     this.spinner = false;
   }
 

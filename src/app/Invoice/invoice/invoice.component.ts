@@ -89,7 +89,7 @@ export class InvoiceComponent implements OnInit {
   base64Image: any = '';
   base64Pdf: any = '';
   ViewDocumentDetailsList: boolean = false;
-  EXPECTED_DATE: any = new Date();
+  EXPECTED_DATE: any //= new Date();
 
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
@@ -538,6 +538,10 @@ export class InvoiceComponent implements OnInit {
       this.toast.warning('Please select currency');
       return false;
     }
+    else if (this.form.controls['EXPECTED_DATE'].invalid) {
+      this.toast.warning('Please select expected pay date');
+      return false;
+    }
 
     return true;
   }
@@ -601,11 +605,11 @@ export class InvoiceComponent implements OnInit {
     this.form.get('BILLING_DATE').setValue(this.sharedService.getTodayDate())
     this.form.get('DUE_DATE').setValue(this.sharedService.getTodayDate())
     this.form.get('PO_DATE').setValue(this.sharedService.getTodayDate())
-    this.form.get('EXPECTED_DATE').setValue(this.sharedService.getTodayDate())
+    // this.form.get('EXPECTED_DATE').setValue(this.sharedService.getTodayDate())
     this.BILLING_DATE = new Date();
     this.DUE_DATE = new Date();
     this.PO_DATE = new Date();
-    this.EXPECTED_DATE = new Date();
+    // this.EXPECTED_DATE = new Date();
     if (this.sharedService.loginUser[0].FYEAR == undefined) {
       this.sharedService.loginUser = sessionStorage.getItem('user_detail') ? JSON.parse(sessionStorage.getItem('user_detail')) : []
     }

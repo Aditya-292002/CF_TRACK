@@ -100,7 +100,10 @@ export class SalesOrderComponent implements OnInit {
    isExchangeRate:boolean = true;
    COMPANY_CURRENCY:any;
    IS_UPDATE:any = 0;
-
+   leadMaster_type_list:any = [];
+   Account_manager_list:any = [];
+   proj_type_list:any = [];
+  approveSOFlag: boolean;
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
     private http: HttpRequestServiceService,
@@ -146,6 +149,9 @@ export class SalesOrderComponent implements OnInit {
       RCVD_VALUE: 0,
       CANCEL_IND: "",
       TEMPLATE_CODE: ["", Validators.required],
+      LEAD_PARTNER_CODE: [""],
+      PROJECT_TYPE: [""],
+      ACCOUNT_MGR: [""],
       BILL_IND: "",
       SO_STATUS: ["PENDING", Validators.required],
       BILLED_VALUE: 0,
@@ -219,6 +225,9 @@ export class SalesOrderComponent implements OnInit {
         this.state_list = res.state_list;
         this.service_list = res.service_list;
         this.templete_list = res.templete_list;
+        this.Account_manager_list= res.acc_manager_list;
+        this.leadMaster_type_list=res.lead_partener_list;
+        this.proj_type_list=res.project_type_list;
         // console.log( this.invoice_type_list , this.currency_list," this.invoice_type_list ")
         //this.form.get('FYEAR').setValue(this.fyear_list[0].FYEAR)
         this.form.get('EXCHANGE_RATE').setValue(1);
@@ -397,16 +406,24 @@ export class SalesOrderComponent implements OnInit {
       this.toast.error('Please enter remarks ');
       return;
     }
+        if (this.form.controls['ACCOUNT_MGR'].invalid) {
+      this.toast.error('Please Select Account Manager ');
+      return;
+    }
+      if (this.form.controls['LEAD_PARTNER_CODE'].invalid) {
+      this.toast.error('Please Select Lead Partner ');
+      return;
+    }
     for (const element of this.SO_MILESTONE_T) {
       if (element.DOC_VALUE == 0 ) {
         this.toast.error('Enter a Amount Value');
         return false;
       }
-      if (!this.sharedService.isValid(element.REMARKS)) {
-        this.toast.error('Enter a Description');
+    }
+          if (this.uploadedDocument.length==0) {
+        this.toast.error('Please Select a Document');
         return false;
       }
-    }
     // if (this.uploadedDocument.length == 0) {
     //   this.toast.error('Please attach a Documnet ');
     //   return;
@@ -424,8 +441,8 @@ export class SalesOrderComponent implements OnInit {
         SO_DOCUMENT_LIST: this.uploadedDocument,
         TOTAL_AMOUNT_VALUE: +(this.TOTAL_AMOUNT_VALUE)
       }
-      // console.log('data ->' , JSON.stringify(data))
-      // return
+       //console.log('data ->' , data)
+       //return
       this.http.PostRequest(this.apiUrl.SaveSoDetails, data).then(res => {
         if (res.flag) {
           this.toast.success(res.msg)
@@ -556,6 +573,7 @@ export class SalesOrderComponent implements OnInit {
   backToForm() {
     this.editing = false;
     this.IS_UPDATE = 0;
+    this.approveSOFlag = true;
     this.isViewSO = !this.isViewSO;
     this.f_clearForm();
     if (this.form.get('CURRENCY_CODE').value == "INR") {
@@ -614,6 +632,7 @@ export class SalesOrderComponent implements OnInit {
 
   editInvoice(data:any) {
     this.IS_UPDATE = 1;
+    this.approveSOFlag=false;
     this.GetSODetail(data.SO_ID)
     this.editing = true;
   }
@@ -650,6 +669,7 @@ export class SalesOrderComponent implements OnInit {
   f_fillFormData() {
     this.isViewSO = false
     // this.spinner = true;
+     this.approveSOFlag = this.SO_list[0].IS_APPROVED;
     this.form.get("SO_ID").setValue(this.SO_list[0].SO_ID)
     this.form.get("SO_NO").setValue(this.SO_list[0].SO_NO)
     this.filterLocations();
@@ -702,6 +722,10 @@ export class SalesOrderComponent implements OnInit {
     // this.form.get("TDS_CODE").setValue(this.SO_list[0].TDS_CODE)
     this.form.get("SO_DATE").setValue(this.datepipe.transform(this.SO_list[0].SO_DATE, 'dd-MMM-yyyy'))
     this.form.get("PO_DATE").setValue(this.datepipe.transform(this.SO_list[0].PO_DATE, 'dd-MMM-yyyy'))
+
+     this.form.get("LEAD_PARTNER_CODE").setValue((this.SO_list[0].LEAD_PARTNER_CODE))
+    this.form.get("PROJECT_TYPE").setValue(this.SO_list[0].PROJECT_TYPE)
+    this.form.get("ACCOUNT_MGR").setValue(this.SO_list[0].ACCOUNT_MGR)
       // this.showContent();
       // this.form.get("VENDOR_NO").setValue(this.SO_list[0].VENDOR_NO)
       // this.form.get("EMP_NO").setValue(this.SO_list[0].EMP_NO)
@@ -903,7 +927,27 @@ export class SalesOrderComponent implements OnInit {
     this.TOTAL_AMOUNT_VALUE= this.TOTAL_AMOUNT_VALUE;
   }
 
+approveSo(){
+      let data = {
+      "SO_ID": this.form.get("SO_ID").value,
+      "USER_ID": this.sharedService.loginUser[0].USERID
+    }
+    this.approveSOFlag=false
+        this.http.PostRequest(this.apiUrl.ApproveSOForInvoiceList, data).then(res => {
+      if (res.flag == 1) {
+          this.approveSOFlag=true
+          this.toast.success(res.msg);
+        this.spinner = false;
+      } else {
 
+        this.spinner = false;
+      }
+    }, err => {
+      this.toast.success("cant approve so");
+      this.spinner = false;
+    });
+   // this.toast.success('Sales Order Approved Successfully');
+}
 }
 
 

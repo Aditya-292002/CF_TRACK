@@ -539,7 +539,7 @@ export class OpportunityMasterComponent implements OnInit {
       // this.form.get('PROJECT_DATE').setValue(this.PROJECT_DATE);
       // this.form.get('LEADORCUST').setValue(this.form.getRawValue().PARTY_TYPE);
       this.GetOpportunityCommonList();
-      this.GetOpportunityMasterDetails();
+      // this.GetOpportunityMasterDetails();
     }, 150);
     this.GetOpportunityList();
      $('.selectpicker').selectpicker('refresh').trigger('change');
@@ -638,10 +638,10 @@ export class OpportunityMasterComponent implements OnInit {
   var data = {
     USERID: this.sharedService.loginUser[0].USERID,
     CRM_OPPORTUNITY: crmOpportunity,
-    DOCUMENT_ATTECHED_LIST: this.DOCUMENT_ATTECHED_LIST
+    DOCUMENT_ATTECHED_LIST: this.uploadedDocument
   };
   console.log("SaveOpportunityMaster Save Payload: ", data);
-  // return
+   //return
   // 🔹 4️⃣ Call API
   this.spinner = true;
   this.http.PostRequest(this.apiUrl.SaveOpportunityMaster, data).then(
@@ -1178,12 +1178,13 @@ onStatusChange(status: any) {
   // Set OPPO_STATUS in form
   this.form.get('OPPO_STATUS').setValue(status);
   // Filter Sub Status List
-  this.opportunity_substatus_list.forEach((sElement: any) => {
-    if (status === sElement.OPPO_STATUS) {
-      this.filteredSubStatus.push(sElement);
-      this.form.get('OPPO_SUB_STATUS').setValue(sElement.OPPO_STATUS);
-    }
-  });
+  this.filteredSubStatus = this.opportunity_substatus_list.filter(
+    (sElement: any) => sElement.OPPO_STATUS === status
+  );
+  // 👉 Set the FIRST item of the filtered list (if exists)
+  if (this.filteredSubStatus.length > 0) {
+    this.form.get('OPPO_SUB_STATUS').setValue(this.filteredSubStatus[0].OPPO_SUB_STATUS);
+  }
   // Refresh Bootstrap Select UI
   setTimeout(() => $('.selectpicker')
     .selectpicker('refresh')
@@ -1807,8 +1808,8 @@ commentbreaker3 = "/******************************************************";
         this.uploadingFiles.push(
           {
             OPPO_CODE: this.form.getRawValue().OPPO_CODE,
-            DOCUMENT_NAME: "",
-            DOC_SRNO: "",
+            DOCUMENT_NAME: event.target.files[i].name,
+            DOC_SRNO: this.uploadingFiles.length + 1,
             DOCUMENT_FILENAME: event.target.files[i].name,
             DOCUMENT_SYSFILENAME: uuidv4() + '.' + extension[extension.length - 1],
             DOCUMENT_FILETYPE: extension[extension.length - 1].toUpperCase(),
@@ -1816,7 +1817,7 @@ commentbreaker3 = "/******************************************************";
             ACTIVE: 1,
             UPLOAD_BY: this.sharedService.loginUser[0].USER_NAME,
             UPLOAD_BY_USERID: this.sharedService.loginUser[0].USERID,
-            b64: b64
+            DOC_BASE64: b64
 
           }
         )
