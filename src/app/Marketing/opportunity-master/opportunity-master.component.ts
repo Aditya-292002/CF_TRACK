@@ -631,7 +631,7 @@ export class OpportunityMasterComponent implements OnInit {
   var data = {
     USERID: this.sharedService.loginUser[0].USERID,
     CRM_OPPORTUNITY: crmOpportunity,
-    DOCUMENT_ATTECHED_LIST: this.DOCUMENT_ATTECHED_LIST
+    DOCUMENT_ATTECHED_LIST: this.uploadedDocument
   };
   console.log("SaveOpportunityMaster Save Payload: ", data);
   // return
@@ -753,7 +753,7 @@ GetOpportunityMasterDetails() {
       FILE_EXTENSION: d.DOCUMENT_FILENAME.split('.').pop().toLowerCase(),
       ACTIVE: d.ACTIVE ? 1 : 0,
       ISNEW: 0,
-      DOC_BASE64: null
+      DOC_BASE64: d.DOC_BASE64
     }));
     // IMPORTANT — UI list
     this.uploadedDocument = [...this.DOCUMENT_ATTECHED_LIST];
@@ -1658,27 +1658,87 @@ stripBase64FromDocuments() {
     });
   }
 
+  // f_downloadDocument(file: any) {
+
+  //   if (file != undefined && file != null && file != "") {
+  //     this.spinner = true;
+  //     this.http.PostRequest(this.apiUrl.GetFile, { DOCUMENT_SYSFILENAME: file.DOCUMENT_SYSFILENAME }).then(res => {
+
+  //       if (res.flag) {
+  //         const byteString = atob(res.b64);
+  //         const arrayBuffer = new ArrayBuffer(byteString.length);
+  //         const int8Array = new Uint8Array(arrayBuffer);
+  //         for (let i = 0; i < byteString.length; i++) {
+  //           int8Array[i] = byteString.charCodeAt(i);
+  //         }
+  //         const data: Blob = new Blob([int8Array]);
+  //         saveAs(data, file.DOCUMENT_FILENAME);
+  //       }
+  //       this.spinner = false;
+
+  //     })
+  //   }
+  // }
+
+//   f_downloadDocument(file: any) {
+//     debugger
+//   if (!file) return;
+
+//   this.spinner = true;
+
+//   this.http.PostRequest(this.apiUrl.GetFile, { DOCUMENT_SYSFILENAME: file.DOCUMENT_SYSFILENAME })
+//     .then(res => {
+//       if (res.flag && res.b64) {
+
+//         // remove base64 prefix if present
+//         const cleanBase64 = res.b64.includes(',')
+//           ? res.b64.split(',')[1]
+//           : res.b64;
+
+//         const byteCharacters = atob(cleanBase64);
+//         const byteNumbers = new Array(byteCharacters.length);
+
+//         for (let i = 0; i < byteCharacters.length; i++) {
+//           byteNumbers[i] = byteCharacters.charCodeAt(i);
+//         }
+
+//         const byteArray = new Uint8Array(byteNumbers);
+
+//         // Extract extension from filename (IMPORTANT)
+//         const ext = file.DOCUMENT_FILENAME.split('.').pop();
+
+//         const blob = new Blob([byteArray], {
+//           type: this.getMimeType(ext)
+//         });
+
+//         saveAs(blob, file.DOCUMENT_FILENAME);
+//       }
+//     })
+//     .finally(() => this.spinner = false);
+// }
+
   f_downloadDocument(file: any) {
-
-    if (file != undefined && file != null && file != "") {
-      this.spinner = true;
+    console.log('file ->' , file)
+    // console.log('file.DOCUMENT_NAME ->' , file.DOCUMENT_NAME)
+    // if (file != undefined && file != null && file != "") {
+    //   this.spinner = true;
       this.http.PostRequest(this.apiUrl.GetFile, { DOCUMENT_SYSFILENAME: file.DOCUMENT_SYSFILENAME }).then(res => {
-
+        console.log("File : ", file);
         if (res.flag) {
-          const byteString = atob(res.b64);
+          const byteString = atob(file.b64);
           const arrayBuffer = new ArrayBuffer(byteString.length);
           const int8Array = new Uint8Array(arrayBuffer);
           for (let i = 0; i < byteString.length; i++) {
             int8Array[i] = byteString.charCodeAt(i);
-          }
+           }
           const data: Blob = new Blob([int8Array]);
           saveAs(data, file.DOCUMENT_FILENAME);
-        }
+         }
         this.spinner = false;
-
       })
-    }
+    //}
   }
+
   // ---------------------------OLD Document Code End---------------------------
   normalizeDDMMMYYYY(dateStr: string): string {
   if (!dateStr) return null;
