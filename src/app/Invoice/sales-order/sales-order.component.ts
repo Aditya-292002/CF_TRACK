@@ -428,7 +428,14 @@ export class SalesOrderComponent implements OnInit {
     //   this.toast.error('Please attach a Documnet ');
     //   return;
     // }
-
+      if (this.form.controls['ACCOUNT_MGR'].invalid) {
+        this.toast.error('Please Select a account manager ');
+        return ;
+      }
+            if (this.form.controls['PROJECT_TYPE'].invalid) {
+        this.toast.error('Please Select a project type ');
+        return ;
+      }
     this.SO_MILESTONE_T.forEach((element:any)=>{
       element.DOC_VALUE = +(this.currencyPipe.parse(element.DOC_VALUE));
     })
@@ -441,8 +448,8 @@ export class SalesOrderComponent implements OnInit {
         SO_DOCUMENT_LIST: this.uploadedDocument,
         TOTAL_AMOUNT_VALUE: +(this.TOTAL_AMOUNT_VALUE)
       }
-       //console.log('data ->' , data)
-       //return
+       console.log('data ->' , data)
+       return
       this.http.PostRequest(this.apiUrl.SaveSoDetails, data).then(res => {
         if (res.flag) {
           this.toast.success(res.msg)

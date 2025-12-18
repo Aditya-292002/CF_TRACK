@@ -44,7 +44,7 @@ export class OpportunityMasterComponent implements OnInit {
   uploadingFiles: Array<any> = [];
   uploadedDocument: Array<any> = [];
   partyType: any;
-
+  REMARKS: string = "";
   regx_AlphaSpace: RegExp = new RegExp(/^[^<>]*$/);
   // regx_AlphaSpace: RegExp = new RegExp(/^[a-zA-Z0-9\s.,@&()_-]*$/);
 
@@ -90,7 +90,7 @@ export class OpportunityMasterComponent implements OnInit {
   COMPANY_CODE: any;
   LOCATION_CODE: any;
   COMPANY_CURRENCY: any;
-
+displayHistory: boolean = false;
   // ngOnInit() {
   //   this.sharedService.formName = "Opportunity Master"
   //   // this.search_opportunity = "";
@@ -1617,11 +1617,12 @@ stripBase64FromDocuments() {
             ACTIVE: 1,
             UPLOAD_BY: this.sharedService.loginUser[0].USER_NAME,
             UPLOAD_BY_USERID: this.sharedService.loginUser[0].USERID,
-            DOC_BASE64: b64
+            DOC_BASE64: b64,
+            REMARKS: this.REMARKS
 
           }
         )
-        this.uploadDoc();
+        // this.uploadDoc();
         // this.NoDocs == 1;
         this.updateNoDocsCount();
       }
@@ -1645,6 +1646,13 @@ stripBase64FromDocuments() {
   // }
 
   uploadDoc() {
+
+    if(this.REMARKS==""){
+      this.toast.warning("Please enter remarks for the document");
+      return;
+    }
+    this.displayHistory=false;
+    this.REMARKS="";
   for (let i = 0; i < this.uploadingFiles.length; i++) {
     this.uploadedDocument.push(this.uploadingFiles[i]);
     this.DOCUMENT_ATTECHED_LIST.push({
@@ -1656,7 +1664,8 @@ stripBase64FromDocuments() {
     ACTIVE: 1,
     UPLOAD_BY: this.uploadingFiles[i].UPLOAD_BY,
     UPLOAD_BY_USERID: this.uploadingFiles[i].UPLOAD_BY_USERID,
-    DOC_BASE64: this.uploadingFiles[i].b64
+    DOC_BASE64: this.uploadingFiles[i].b64,
+    REMARKS: this.uploadingFiles[i].REMARKS
   });
   }
 }
@@ -1824,5 +1833,12 @@ updateNoDocsCount() {
     .filter(d => d.ACTIVE !== 0)
     .length;
 }
-
+addDocument(){
+  console.log('inside add document');
+  
+  this.displayHistory=true
+  console.log('displayHistory',this.displayHistory);
+  
 }
+
+} 

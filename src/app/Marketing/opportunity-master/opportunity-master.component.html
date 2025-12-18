@@ -90,7 +90,7 @@
         <!-- </div> -->
         <div class="col-md-12">
             <div class="row card">
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                     <label>Company<span class="validator">*</span> :</label>
                     <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['COMPANY_CODE'].errors?.required}">
                         <select class="form-control selectpicker show-tick" id="companyList" formControlName="COMPANY_CODE" data-live-search="true" title="Select">
@@ -102,7 +102,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                </div>
+                </div> -->
                 <div class="col-md-4">
                     <label>Opportunity Type<span class="validator">*</span> :</label>
                     <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['OPPO_TYPE'].errors?.required}">
@@ -116,7 +116,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                     <label>Location<span class="validator">*</span> :</label>
                     <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['LOCATION_CODE'].errors?.required}">
                         <select class="form-control selectpicker show-tick" id="location" formControlName="LOCATION_CODE" data-live-search="true" title="Select">
@@ -128,13 +128,13 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                </div>
-                <div class="col-md-4">
+                </div> -->
+                <!-- <div class="col-md-4">
                     <label>Opportunity Code :</label>
                     <div class="floating-input list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['OPPO_CODE'].errors?.required}">
                         <input type="text" formControlName="OPPO_CODE" maxlength="20" placeholder="Opportunity Code" InputType="AlphaNum" class="form-control" readonly />
                     </div>
-                </div>
+                </div> -->
                 <div class="col-md-4">
                     <label>Opportunity Name<span class="validator">*</span> :</label>
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['OPPO_NAME'].errors?.required}">
@@ -505,7 +505,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <label>Probability :<span class="validator">*</span> :</label>
+                    <label>Probability (%):<span class="validator">*</span> :</label>
                     <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['PROBABILITY'].errors?.required}">
                         <select class="form-control selectpicker show-tick" id="Probability" formControlName="PROBABILITY" data-live-search="true" title="Select">
                             <option *ngFor="let opt of probability_list; let i=index" 
@@ -577,6 +577,55 @@
                     </div>
                 </div> -->
                 <div class="col-md-8 mt-1">
+                     <button type="button" class="btn btn-secondary ml-2" (click)="addDocument()">  <i class="fa fa-paperclip"></i>Add</button>
+                    <!-- <div class="list-group-item d-flex justify-content-between">
+<div (click)="addDocument()">
+                            <span class="" *ngIf="!NO_RIGHTS">
+                                <label class="att-doc-label-add" title="Add Document">
+                                    <i class="fa fa-paperclip"></i> Add
+                                </label>
+                            </span>
+                            </div>
+                    </div> -->
+                    <!-- <ul>
+                      <li class="list-group-item d-flex justify-content-between att-doc py-1">
+                                 <label class="att-doc-label" title="Documents">
+                                Documents
+                            </label>
+                               <label class="att-doc-label" title="Remarks">
+                                Remarks
+                            </label>
+                            <div (click)="addDocument()">
+                            <span class="" *ngIf="!NO_RIGHTS">
+                                <label class="att-doc-label-add" title="Add Document">
+                                    <i class="fa fa-paperclip"></i> Add
+                                </label>
+                            </span>
+                            </div>
+                        </li>  
+                        </ul> -->
+                     <div class="tableFixHead mt-2">
+                        <table class="table-theam-1 row_bgcolor_1">
+                            <thead>
+                                <tr>
+                                    <th class="w-20">Document Name</th>
+                                    <th class="w-20">Remarks</th>
+                                    <th class="w-10">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let file of uploadedDocument; let i=index;">
+                                    <tr *ngIf="file.ACTIVE == 1">
+    
+                                        <td><a (click)="f_downloadDocument(file)">{{file.DOCUMENT_FILENAME}}</a></td>
+                                        <td>{{file.REMARKS}}</td>
+                                        <td><i class="fas fa-trash-alt" id=f_{{i}} (click)="removeDoc(i)"></i></td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div> 
+
 
                     <!-- Very OLD UPLOAD DOCUMENT Start -->
                     <!-- <div class="head-2 form-inline">
@@ -619,8 +668,25 @@
                     <!-- Very OLD UPLOAD DOCUMENT END -->
     
                     <!-- Old Document Upload UI Start-->
-                    <ul class="list-group">
-                        <li class="list-group-item d-flex justify-content-between att-doc py-1">
+                    <!-- <ul class="list-group"> -->
+<!-- 
+                         <li class="list-group-item d-flex justify-content-between att-doc py-1">
+                                 <label class="att-doc-label" title="Documents">
+                                Documents
+                            </label>
+                               <label class="att-doc-label" title="Remarks">
+                                Remarks
+                            </label>
+                            <div (click)="addDocument()">
+                            <span class="" *ngIf="!NO_RIGHTS">
+                                <label class="att-doc-label-add" title="Add Document">
+                                    <i class="fa fa-paperclip"></i> Add
+                                </label>
+                            </span>
+                            </div>
+                        </li> -->
+                 
+                        <!-- <li class="list-group-item d-flex justify-content-between att-doc py-1">
                             <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input">
                             <label class="att-doc-label" title="Documents">
                                 Documents
@@ -631,24 +697,28 @@
                                     <i class="fa fa-paperclip"></i> Attach
                                 </label>
                             </span>
-                        </li>
-                        <ng-container *ngFor="let file of uploadedDocument;let i=index;">
+                        </li> -->
+                        <!-- <ng-container *ngFor="let file of uploadedDocument;let i=index;">
                             <li class="list-group-item d-flex justify-content-between py-2" *ngIf="file.ACTIVE != 0">
                                 <label class="doc-label" (click)="f_downloadDocument(file)">
                                     <i class="fa fa-paperclip mr-2"></i>
                                     {{file.DOCUMENT_FILENAME}}
+                                </label>
+                                        <label class="doc-label">
+                                  
+                                    {{file.REMARKS}}
                                 </label>
     
                                 <span class="del-red">
                                     <i class="fas fa-trash-alt" id=f_{{i}} (click)="removeDoc(i)" title="Delete Document"></i>
                                 </span>
                             </li>
-                        </ng-container>
+                        </ng-container> -->
     
-                        <li class="list-group-item text-center py-1 disabled" *ngIf="NoDocs == 0">
+                        <!-- <li class="list-group-item text-center py-1 disabled" *ngIf="NoDocs == 0">
                             <h6 class="m-0"> No Documents</h6>
-                        </li>
-                    </ul>
+                        </li> -->
+                    <!-- </ul> -->
                     <!-- Old Document Upload UI End-->
                     
                     <!-- NEW UPLOAD DOCUMENT UI START -->
@@ -712,3 +782,53 @@
         </div>
     </div>
 </form>
+ <p-dialog
+  header="Add Document"
+  [(visible)]="displayHistory"
+  [modal]="true"
+  [style]="{ width: '40rem' }"
+>
+<div class="row">
+            <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-8">
+              <label>Remarks <span class="validator">*</span> :</label>
+              <div class="floating-input">
+                <!-- <textarea name="" id="" rows="1" class="form-control" [(ngModel)]="REMARKS"
+                                placeholder="Remarks" [ngModelOptions]="{standalone: true}"></textarea> -->
+                <textarea
+                  name=""
+                  id=""
+                  rows="2"
+                  class="form-control"
+                    [(ngModel)]="REMARKS"
+                  [ngModelOptions]="{ standalone: true }"
+                  placeholder="Remarks"
+                >
+                </textarea>
+              </div>
+            </div>
+<div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 att-doc" >
+     <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input">
+           <!-- <button type="button" class="btn btn-secondary"  (click)="uploadDoc()" title="Upload Document">
+        <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input">
+    </button> -->
+
+    <button type="button" class="btn btn-secondary" title="Upload Document">
+         <label for="fileInput" class="att-doc-label-add p-0 m-0" title="Add Document">
+                                    <i class="fa fa-paperclip"></i> Attach
+                                </label>
+        <!-- <i class="pi pi-upload mr-2"> <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input" disabled></i>Attach -->
+    </button>
+</div>
+
+
+</div>
+
+<div class="row">
+    <div class="col-12 text-right mt-3">
+        <!-- <button type="button" class="btn btn-primary" >Save</button> -->
+          <button type="button" class="btn btn-secondary ml-2" (click)="uploadDoc()">Save</button>
+        <button type="button" class="btn btn-secondary ml-2" (click)="this.displayHistory=false">Cancel</button>
+    </div>
+</div>
+
+</p-dialog>

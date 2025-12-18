@@ -195,7 +195,7 @@
                     </div>
                 </div>
                                 <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
-                    <label>Account Manager :</label>
+                    <label>Account Manager <span class="validator">*</span> :</label>
                     <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['ACCOUNT_MGR'].errors?.required}">
                         <select class="form-control selectpicker show-tick" id="accManager" formControlName="ACCOUNT_MGR" data-live-search="true" title="Select">
                             <option *ngFor="let opt of Account_manager_list; let i=index" 
