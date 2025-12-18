@@ -441,7 +441,7 @@
                             [selected]="opt.ACCT_MANAGER == form.controls['CUST_ACC_MANAGER'].value"
                             [value]="opt.ACCT_MANAGER" >{{ opt.ACCOUNT_MGR }}</option>                     
                         </select>
-                        <button type="button" class="close"  (click)="form.controls['CUST_ACC_MANAGER'].reset();" onclick="resetDropdown('_custAccManager')"  aria-label="Close">
+                        <button type="button" class="close"  (click)="form.controls['CUST_ACC_MANAGER'].reset();" (onChange)="resetDropdown('_custAccManager')"  aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -456,7 +456,7 @@
                             [selected]="opt.EMP_NO == form.controls['LEAD_ACC_MANAGER'].value"
                             [value]="opt.EMP_NO" >{{ opt.ACCOUNT_MGR }}</option>                     
                         </select>
-                        <button type="button" class="close"  (click)="form.controls['LEAD_ACC_MANAGER'].reset();" onclick="resetDropdown('_leadAccManager')"  aria-label="Close">
+                        <button type="button" class="close"  (click)="form.controls['LEAD_ACC_MANAGER'].reset();" (onChange)="resetDropdown('_leadAccManager')"  aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>

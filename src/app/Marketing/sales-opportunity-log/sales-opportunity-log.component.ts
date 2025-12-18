@@ -10,6 +10,7 @@ import { SharedServiceService } from 'src/app/services/shared-service.service';
 import { ValidationService } from 'src/app/services/validation.service';
 import { saveAs } from 'file-saver';
 import { v4 as uuidv4 } from 'uuid';
+import { Router } from '@angular/router';
 declare var $: any;
 
 @Component({
@@ -30,7 +31,7 @@ export class SalesOpportunityLogComponent implements OnInit {
   selectedEmp : boolean = false
   dropdownSelected1 : boolean = true
   dropdownSelected2 : boolean = false
-  
+  OPPO_CODE : any = '';
 
   constructor(private sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
@@ -40,6 +41,7 @@ export class SalesOpportunityLogComponent implements OnInit {
     private datePipe: DatePipe,
     public validationService: ValidationService,
     private pipeService: PipeService,
+    public router: Router,
     public datepipe: DatePipe) { }
 
     customer_list: Array<any> = [];
@@ -62,7 +64,7 @@ export class SalesOpportunityLogComponent implements OnInit {
 
 
   ngOnInit() {
-
+     
     this.sharedService.formName = "Sales Opportunity Log"
     this.form = this.formBuilder.group({
       OPPO_CODE: ["", Validators.required],
@@ -81,8 +83,16 @@ export class SalesOpportunityLogComponent implements OnInit {
       CONTACT_PERSONS:[""],
       
     });
-    
+    this.GetOpportunityLogCommonList();
+   this.OPPO_CODE= localStorage.getItem('OPPO_CODE');
+       if(localStorage.getItem('OPPO_CODE') != '' && localStorage.getItem('OPPO_CODE') != null || localStorage.getItem('OPPO_CODE') != undefined){
+        this.form.get('OPPO_CODE').setValue(this.OPPO_CODE);
+        this.isUpdate = true;
+      this.GetOpportunityLogDetails();
+    }
+
     $('.selectpicker').selectpicker('refresh').trigger('change');
+
   }
 
 
@@ -116,7 +126,7 @@ export class SalesOpportunityLogComponent implements OnInit {
 
       $('.selectpicker').selectpicker('refresh').trigger('change');
 
-      this.GetOpportunityLogCommonList() 
+      // this.GetOpportunityLogCommonList() 
       this
       
     }, 200);
@@ -143,6 +153,8 @@ export class SalesOpportunityLogComponent implements OnInit {
         this.probability_list = res.probability_list;
         this.Nextactivity_list = res.Nextactivity_list;
         this.lead_list = res.lead_list
+              this.form.get('COMPANY_CODE').setValue(this.company_list[0].COMPANY_CODE);
+      // this.form.get('LOCATION_CODE').setValue(this.location_list[0].LOCATION_CODE);
   
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh').trigger('change');
@@ -179,7 +191,7 @@ export class SalesOpportunityLogComponent implements OnInit {
     }
     console.log(data)
     this.http.PostRequest(this.apiUrl.GetOpportunityMasterLogDetails, data).then(res => {
-      console.log(res)
+      console.log('GetOpportunityLogDetails',res)
       if (res.flag) {
         this.f_fillData(res.Opportunity_Master_Log_Details)
         this.spinner = false;
@@ -366,7 +378,9 @@ export class SalesOpportunityLogComponent implements OnInit {
     }
     return true;
   }
-  
+  navigateToList(){
+    this.router.navigate(['/salesopportunitylog']);
+  }
   
 }
 

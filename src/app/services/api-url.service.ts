@@ -195,4 +195,5 @@ public GetIssueRaisedHistoryList: string='/TicketSystem/GetIssueRaisedHistoryLis
 public ApproveSOForInvoiceList: string='/SO/ApproveSOForInvoiceList'; 
 
 public GetOppMasterFile: string='/Marketing/GetOppMasterFile';
+public GetOpportunityLogList: string='/Marketing/GetOpportunityLogList';
 }

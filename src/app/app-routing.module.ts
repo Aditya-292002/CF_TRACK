@@ -73,6 +73,7 @@ import { IssueRequestListComponent } from './Common/issue-request-list/issue-req
 import { PmConfirmationComponent } from './Common/pm-confirmation/pm-confirmation.component';
 import { PmConfirmationListComponent } from './Common/pm-confirmation-list/pm-confirmation-list.component';
 import { LeadMasterComponent } from './Marketing/lead-master/lead-master.component';
+import { SalesOpportunityLogListComponent } from './Common/sales-opportunity-log-list/sales-opportunity-log-list.component';
 
 const routes: Routes = [
   {path: 'ForgotPasswordReset', component: ResetPasswordComponent },
@@ -128,7 +129,7 @@ const routes: Routes = [
       {path: 'salaryprocessapprove', component:SalaryProcessApproveComponent},
       {path: 'salesorder', component:SalesOrderComponent},
       {path: 'salaryinformation', component:SalaryInformationComponent},
-      {path: 'salesopportunitylog', component:SalesOpportunityLogComponent},
+      {path: 'salesopportunitylog', component:SalesOpportunityLogListComponent},
       {path: 'opportunitymaster', component:OpportunityMasterComponent},
       {path:'taxdeclaration',component:TaxDeclarationComponent},
       {path:'taxdeclarationapproval',component:TaxDeclarationApprovalComponent},
@@ -150,6 +151,7 @@ const routes: Routes = [
       {path: "pmconfirmationmaster", component: PmConfirmationComponent },
       {path: "pmconfirmation", component: PmConfirmationListComponent },
       {path: "leadmaster", component: LeadMasterComponent },
+      {path: "salesOpportunityLogDetails", component: SalesOpportunityLogComponent },
       {path: '**', component:Pnf400Component }
     ]
   },

@@ -623,6 +623,16 @@ crmOpportunity.PROJECT_DATE = projectDate
   crmOpportunity.OPPO_EXCHANGE_RATE = Number(crmOpportunity.OPPO_EXCHANGE_RATE || 1);
   crmOpportunity.PROBABILITY = Number(crmOpportunity.PROBABILITY || 0);
   crmOpportunity.EXPECTED_CLOSURE = formattedDate;
+console.log('crmOpportunity.CUST_ACC_MANAGER',crmOpportunity.CUST_ACC_MANAGER);
+
+  if(crmOpportunity.LEADORCUST=='C'){
+// this.form.controls['CUST_ACC_MANAGER'].reset();
+crmOpportunity.ACCOUNT_MGR = crmOpportunity.CUST_ACC_MANAGER;
+}else{ 
+crmOpportunity.ACCOUNT_MGR = crmOpportunity.LEAD_ACC_MANAGER;
+// this.form.controls['LEAD_ACC_MANAGER'].reset();
+}
+
   // Fix Dates
   // if (crmOpportunity.PROJECT_DATE) {
   //   crmOpportunity.PROJECT_DATE = new Date(crmOpportunity.PROJECT_DATE).toISOString().split("T")[0];
@@ -641,7 +651,7 @@ crmOpportunity.PROJECT_DATE = projectDate
     DOCUMENT_ATTECHED_LIST: this.uploadedDocument
   };
   console.log("SaveOpportunityMaster Save Payload: ", data);
-   //return
+  //  return
   // 🔹 4️⃣ Call API
   this.spinner = true;
   this.http.PostRequest(this.apiUrl.SaveOpportunityMaster, data).then(
@@ -1839,6 +1849,17 @@ addDocument(){
   this.displayHistory=true
   console.log('displayHistory',this.displayHistory);
   
+}
+resetDropdown(val:any){
+  console.log('val',val);
+  
+if(val=='_custAccManager'){
+this.form.controls['CUST_ACC_MANAGER'].reset();
+this.form.get('ACCOUNT_MGR').setValue(this.form.get('CUST_ACC_MANAGER').value);
+}else if(val=='_leadAccManager'){ 
+this.form.get('ACCOUNT_MGR').setValue(this.form.get('LEAD_ACC_MANAGER').value);
+this.form.controls['LEAD_ACC_MANAGER'].reset();
+}
 }
 
 } 
