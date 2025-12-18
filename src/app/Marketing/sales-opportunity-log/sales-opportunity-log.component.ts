@@ -204,6 +204,9 @@ export class SalesOpportunityLogComponent implements OnInit {
   }
 
   f_fillData(data: Array<any> = []) {
+    this.form.get('LEAD_CODE').reset();
+        this.form.get('CUST_CODE').reset();
+           this.form.get('OPPO_CODE').reset();
     console.log(data[0])
     this.form.get('COMPANY_CODE').setValue(data[0].COMPANY_CODE)
     // this.form.get('CUST_CODE').setValue(data[0].CUST_CODE)
