@@ -45,6 +45,7 @@ export class SalesOpportunityLogListComponent implements OnInit {
     private validationService: ValidationService) { }
 
   ngOnInit() {
+    this.sharedService.formName = "Sales Opportunity Log List";
     this.GetOpportunityLogCommonList();
     this.GetOpportunityLogList();
   }

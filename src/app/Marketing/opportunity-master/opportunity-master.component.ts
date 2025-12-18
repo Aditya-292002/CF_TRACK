@@ -842,11 +842,13 @@ this.showContent(party);
 if (party === 'C') {
   this.form.get('CUST_CODE').setValue(row.CUST_CODE);
   this.onCustomerChange(row.CUST_CODE);
+  this.onStatusChange(row.OPPO_STATUS)
   this.onStatusChange(row.OPPO_STATUS);
 }
 else if (party === 'L') {
   this.form.get('LEAD_CODE').setValue(row.LEAD_CODE);
   this.onLeadChange(row.LEAD_CODE);
+  this.onStatusChange(row.OPPO_STATUS)
   this.onStatusChange(row.OPPO_STATUS);
 }
 this.isEditMode = true;
