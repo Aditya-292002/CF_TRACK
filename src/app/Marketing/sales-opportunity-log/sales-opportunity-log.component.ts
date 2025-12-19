@@ -95,7 +95,6 @@ export class SalesOpportunityLogComponent implements OnInit {
       this.isUpdate = true;
       this.GetOpportunityLogDetails();
       this.GetLogDetailsView();
-      // this.GetDocumentListByLogId();
     }
 
     $('.selectpicker').selectpicker('refresh').trigger('change');
