@@ -34,6 +34,7 @@ export class SalesOpportunityLogComponent implements OnInit {
   dropdownSelected1 : boolean = true
   dropdownSelected2 : boolean = false
   OPPO_CODE : any = '';
+  LOGID : any = '';
 
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
@@ -88,12 +89,13 @@ export class SalesOpportunityLogComponent implements OnInit {
     const today = new Date();
     this.minDate = today.toISOString().substring(0, 10);
     this.GetOpportunityLogCommonList();
-   this.OPPO_CODE= localStorage.getItem('OPPO_CODE');
-       if(localStorage.getItem('OPPO_CODE') != '' && localStorage.getItem('OPPO_CODE') != null || localStorage.getItem('OPPO_CODE') != undefined){
-        this.form.get('OPPO_CODE').setValue(this.OPPO_CODE);
-        this.isUpdate = true;
+    this.OPPO_CODE= localStorage.getItem('OPPO_CODE');
+    if(localStorage.getItem('OPPO_CODE') != '' && localStorage.getItem('OPPO_CODE') != null || localStorage.getItem('OPPO_CODE') != undefined){
+      this.form.get('OPPO_CODE').setValue(this.OPPO_CODE);
+      this.isUpdate = true;
       this.GetOpportunityLogDetails();
-        this.GetLogDetailsView();
+      this.GetLogDetailsView();
+      // this.GetDocumentListByLogId();
     }
 
     $('.selectpicker').selectpicker('refresh').trigger('change');
@@ -132,21 +134,15 @@ export class SalesOpportunityLogComponent implements OnInit {
       $('.selectpicker').selectpicker('refresh').trigger('change');
 
       // this.GetOpportunityLogCommonList() 
-      this
-      
     }, 200);
   }
 
   GetOpportunityLogCommonList() {
     let data = {
-
       // LISTTYPE:'All',
       USERID:this.sharedService.loginUser[0].USERID,
-    
     }
-
     this.http.PostRequest(this.apiUrl.GetOpportunityLogCommonList, data).then(res => {
-
       console.log(res)
       if (res.flag) {
         this.customer_list = res.customer_list;
@@ -158,9 +154,8 @@ export class SalesOpportunityLogComponent implements OnInit {
         this.probability_list = res.probability_list;
         this.Nextactivity_list = res.Nextactivity_list;
         this.lead_list = res.lead_list
-              this.form.get('COMPANY_CODE').setValue(this.company_list[0].COMPANY_CODE);
+        this.form.get('COMPANY_CODE').setValue(this.company_list[0].COMPANY_CODE);
       // this.form.get('LOCATION_CODE').setValue(this.location_list[0].LOCATION_CODE);
-  
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh').trigger('change');
         }, 150);
@@ -171,7 +166,6 @@ export class SalesOpportunityLogComponent implements OnInit {
     }, err => {
       this.spinner = false;
     });
-  
   }
 
   searchOpportunity() {
@@ -213,8 +207,6 @@ export class SalesOpportunityLogComponent implements OnInit {
     this.form.get('COMPANY_CODE').setValue(data[0].COMPANY_CODE)
     // this.form.get('CUST_CODE').setValue(data[0].CUST_CODE)
     this.form.get('OPPO_CODE').setValue(data[0].OPPO_CODE)
-    // this.form.get('CRMACTIVITY_CODE').setValue(data[0].CRMACTIVITY_CODE)
-    // this.form.get('NEXT_CRMACTIVITY').setValue(data[0].NEXTACTIVITY_CODE)
     this.form.get('CONTACT_PERSONS').setValue(data[0].CONTACT_PERSONS)
     this.form.get('REMARKS').setValue(data[0].REMARKS)
     this.form.get('REVISED_ORDERVALUE').setValue(data[0].REVISED_ORDERVALUE)
@@ -223,7 +215,6 @@ export class SalesOpportunityLogComponent implements OnInit {
     this.form.get('REVISED_SUBSTATUS').setValue(data[0].REVISED_SUBSTATUS)
 
     if(data[0].LEADORCUST === "L"){
-      
       this.selectedCust = false;
       this.selectedEmp = true;
       this.dropdownSelected1 = false;
@@ -266,10 +257,6 @@ export class SalesOpportunityLogComponent implements OnInit {
   const latest = sortedList[0];
   this.form.get('CRMACTIVITY_CODE').setValue(latest.CRMACTIVITY_CODE);
   this.form.get('NEXT_CRMACTIVITY').setValue(latest.NEXT_CRMACTIVITY);
-  // this.form.patchValue({
-  //   CRMACTIVITY_CODE: latest.CRMACTIVITY_NAME,
-  //   NEXT_CRMACTIVITY: latest.NEXT_CRMACTIVITY
-  // });
 }
 
   f_downloadDocument(file: any) {
@@ -287,6 +274,25 @@ export class SalesOpportunityLogComponent implements OnInit {
          }
         this.spinner = false;
       })
+  }
+
+  GetDocumentListByLogId() {
+    let data = {
+      LOGID: this.LOGID,
+      OPPO_CODE: this.form.getRawValue().OPPO_CODE,
+    }
+    console.log("GetDocumentListByLogId Data :", data)
+    this.http.PostRequest(this.apiUrl.GetDocumentListByLogId, data).then(res => {
+      console.log('GetDocumentListByLogId :',res)
+      if (res.flag) {
+        // this.f_fillData(res.Opportunity_Master_Log_Details)
+        this.spinner = false;
+      } else {
+        this.spinner = false;
+      }
+    }, err => {
+      this.spinner = false;
+    });
   }
 
   SaveSalesOpportunityLog(para: string = '') {
@@ -333,7 +339,12 @@ export class SalesOpportunityLogComponent implements OnInit {
       console.log(res)
       if (res.flag) {
         this.log_view_list = res.LogDetailsView_List
-          this.applyLatestLogActivity(res.LogDetailsView_List);
+        if (res.LogDetailsView_List && res.LogDetailsView_List.length > 0) {
+          this.LOGID = res.LogDetailsView_List[0].LOGID;
+        }
+        console.log("this.LOGID :", this.LOGID);
+        this.GetDocumentListByLogId();
+        this.applyLatestLogActivity(res.LogDetailsView_List);
         this.spinner = false;
       } else {
         this.spinner = false;

@@ -344,24 +344,6 @@
                                 <td class="w-130">{{data.REMARKS}}</td>
                                 <td class="w-130">{{data.NEXT_FOLLOWUP | date:'dd-MMM-yyyy'}}</td>
                                 <td class="w-130">{{data.NEXT_CRMACTIVITY}}</td>
-                                <!-- <td class="w-130">
-                                    <i
-                                        class="fa fa-eye cursor-pointer"
-                                        (click)="f_downloadDocument(data)"
-                                        title="View Document">
-                                    </i>
-                                </td> -->
-
-                                <!-- <td class="w-130">
-                                    <i
-                                        class="fa fa-eye"
-                                        [class.disabled-icon]="!data?.DOCUMENT_SYSFILENAME"
-                                        [class.cursor-pointer]="data?.DOCUMENT_SYSFILENAME"
-                                        (click)="data?.DOCUMENT_SYSFILENAME && f_downloadDocument(data)"
-                                        [attr.title]="data?.DOCUMENT_SYSFILENAME ? 'View Document' : 'No Document Available'">
-                                    </i>
-                                </td> -->
-
                                 <td class="w-130">
                                     <i
                                         class="fa fa-eye cursor-pointer"
@@ -369,6 +351,17 @@
                                         title="View Document List">
                                     </i>
                                 </td>
+                                <!-- f_downloadDocument(data) -->
+                                
+                                <!-- <td class="w-130">
+                                    <i
+                                        class="fa fa-list"
+                                        [class.disabled-icon]="!data?.DOCUMENT_SYSFILENAME"
+                                        [class.cursor-pointer]="data?.DOCUMENT_SYSFILENAME"
+                                        (click)="data?.DOCUMENT_SYSFILENAME && viewDocument()"
+                                        [attr.title]="data?.DOCUMENT_SYSFILENAME ? 'View Document' : 'No Document Available'">
+                                    </i>
+                                </td> -->
                             </tr>
                         </tbody>
                     </table>
