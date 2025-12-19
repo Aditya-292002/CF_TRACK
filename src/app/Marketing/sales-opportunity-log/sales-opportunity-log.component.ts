@@ -261,7 +261,7 @@ export class SalesOpportunityLogComponent implements OnInit {
   );
   const latest = sortedList[0];
   this.form.get('CRMACTIVITY_CODE').setValue(latest.CRMACTIVITY_CODE);
-  this.form.get('NEXT_CRMACTIVITY').setValue(latest.NEXTACTIVITY_CODE);
+  this.form.get('NEXT_CRMACTIVITY').setValue(latest.NEXT_CRMACTIVITY);
   // this.form.patchValue({
   //   CRMACTIVITY_CODE: latest.CRMACTIVITY_NAME,
   //   NEXT_CRMACTIVITY: latest.NEXT_CRMACTIVITY
