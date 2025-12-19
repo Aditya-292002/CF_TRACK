@@ -111,18 +111,25 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="floating-input  list-btn" *ngIf="dropdownSelected2">
+                    <!-- <div class="floating-input  list-btn" *ngIf="dropdownSelected2">
                         <select class="form-control selectpicker show-tick " id="Customer" formControlName="LEAD_CODE"
                             data-live-search="true" title="Select">
                             <option *ngFor="let opt of lead_list; let i=index"
-                                [selected]="opt.LEAD_CODE == form.controls['LEAD_CODE'].value" [value]="opt.LEAD_CODE">
+                                [selected]="opt.LEAD_CODE === form.controls['LEAD_CODE'].value" [value]="opt.LEAD_CODE">
                                 {{ opt.LEAD_NAME }}</option>
-                        </select>
+                        </select> 
                         <button type="button" class="close" onclick="resetDropdown('Customer')"
                             (click)="form.controls['LEAD_CODE'].reset()" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
+                    </div> -->
+
+                    <div class="floating-input  list-btn" *ngIf="dropdownSelected2">
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_CODE'].errors?.required}">
+                        <input type="text" formControlName="LEAD_CODE" InputType="AlphaNum" class="form-control" placeholder="Lead Name" readonly>
                     </div>
+                </div>
+
                 </div>
                 <div class="col-md-4">
                     <label>Log Date :</label>
@@ -150,7 +157,7 @@
                 </div>
                 <div class="col-md-4">
                     <label>Contact Person :</label>
-                    <div class="floating-input ">
+                    <div class="floating-input" [ngClass]="{'invalid-control':isSubmited && form.controls['CONTACT_PERSONS'].errors?.required}">
                         <!-- <input type="text" maxlength="50" class="form-control" placeholder="Contact Person"> -->
                         <textarea name="" id="" rows="2" class="form-control" formControlName="CONTACT_PERSONS"
                             placeholder="Contact Person"></textarea>

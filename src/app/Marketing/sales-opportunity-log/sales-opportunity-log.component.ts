@@ -33,7 +33,7 @@ export class SalesOpportunityLogComponent implements OnInit {
   dropdownSelected2 : boolean = false
   OPPO_CODE : any = '';
 
-  constructor(private sharedService: SharedServiceService,
+  constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
     private http: HttpRequestServiceService,
     private formBuilder: FormBuilder,
@@ -204,14 +204,15 @@ export class SalesOpportunityLogComponent implements OnInit {
   }
 
   f_fillData(data: Array<any> = []) {
-    this.form.get('LEAD_CODE').reset();
-        this.form.get('CUST_CODE').reset();
-           this.form.get('OPPO_CODE').reset();
+    // this.form.get('LEAD_CODE').reset();
+        // this.form.get('CUST_CODE').reset();
+          //  this.form.get('OPPO_CODE').reset();
     console.log(data[0])
     this.form.get('COMPANY_CODE').setValue(data[0].COMPANY_CODE)
     // this.form.get('CUST_CODE').setValue(data[0].CUST_CODE)
+    this.form.get('OPPO_CODE').setValue(data[0].OPPO_CODE)
     this.form.get('CRMACTIVITY_CODE').setValue(data[0].CRMACTIVITY_CODE)
-    this.form.get('NEXT_CRMACTIVITY').setValue(data[0].NEXT_CRMACTIVITY)
+    this.form.get('NEXT_CRMACTIVITY').setValue(data[0].NEXTACTIVITY_CODE)
     this.form.get('CONTACT_PERSONS').setValue(data[0].CONTACT_PERSONS)
     this.form.get('REMARKS').setValue(data[0].REMARKS)
     this.form.get('REVISED_ORDERVALUE').setValue(data[0].REVISED_ORDERVALUE)
@@ -219,16 +220,16 @@ export class SalesOpportunityLogComponent implements OnInit {
     this.form.get('REVISED_STATUS').setValue(data[0].REVISED_STATUS)
     this.form.get('REVISED_SUBSTATUS').setValue(data[0].REVISED_SUBSTATUS)
 
-    if(data[0].LEADORCUST == "L"){
+    if(data[0].LEADORCUST === "L"){
       
       this.selectedCust = false;
       this.selectedEmp = true;
       this.dropdownSelected1 = false;
       this.dropdownSelected2 = true;  
-      this.form.get('LEAD_CODE').setValue(data[0].LEAD_CODE)
+      this.form.get('LEAD_CODE').setValue(data[0].LEAD_NAME)
       this.form.get('CUST_CODE').setValue("");
     }else{
-
+      this.form.get('CUST_CODE').reset();
       this.selectedCust = true;
       this.selectedEmp = false;
       this.dropdownSelected1 = true;
