@@ -387,13 +387,13 @@
             </tr>
         </thead>
         <tbody>
-            <ng-container *ngFor="let file of uploadedDocument; let i=index;">
+            <ng-container *ngFor="let file of document_List; let i=index;">
                 <tr>
-                    <td><a (click)="f_downloadDocument(data)">{{file.DOCUMENT_SYSFILENAME}}</a></td>
+                    <td>{{file.DOCUMENT_FILENAME}}</td>
                     <i
-                        class="fa fa-eye"
+                        class="fa fa-eye cursor-pointer"
                         (click)="f_downloadDocument(data)"
-                        title="View Document">
+                        title="View Document List">
                     </i>
                 </tr>
             </ng-container>

@@ -57,6 +57,7 @@ export class SalesOpportunityLogComponent implements OnInit {
     Nextactivity_list: Array<any> =[];
     log_view_list: Array<any> = []
     lead_list: Array<any> = [];
+    document_List: Array<any> = [];
 
     // NEXT_FOLLOWUP: string = "";
     // LOG_DATE: string = "";
@@ -284,7 +285,7 @@ export class SalesOpportunityLogComponent implements OnInit {
     this.http.PostRequest(this.apiUrl.GetDocumentListByLogId, data).then(res => {
       console.log('GetDocumentListByLogId :',res)
       if (res.flag) {
-        // this.f_fillData(res.Opportunity_Master_Log_Details)
+        this.document_List = res.document_List;
         this.spinner = false;
       } else {
         this.spinner = false;
