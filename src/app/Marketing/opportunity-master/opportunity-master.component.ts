@@ -1759,10 +1759,6 @@ stripBase64FromDocuments() {
 // }
 
   f_downloadDocument(file: any) {
-    console.log('file ->' , file)
-    // console.log('file.DOCUMENT_NAME ->' , file.DOCUMENT_NAME)
-    // if (file != undefined && file != null && file != "") {
-    //   this.spinner = true;
       this.http.PostRequest(this.apiUrl.GetOppMasterFile, { DOCUMENT_SYSFILENAME: file.DOCUMENT_SYSFILENAME }).then(res => {
         console.log("File : ", file);
         if (res.flag) {
@@ -1777,7 +1773,6 @@ stripBase64FromDocuments() {
          }
         this.spinner = false;
       })
-    //}
   }
 
   // ---------------------------OLD Document Code End---------------------------

@@ -89,6 +89,7 @@ export class SalesOpportunityLogComponent implements OnInit {
         this.form.get('OPPO_CODE').setValue(this.OPPO_CODE);
         this.isUpdate = true;
       this.GetOpportunityLogDetails();
+        this.GetLogDetailsView();
     }
 
     $('.selectpicker').selectpicker('refresh').trigger('change');
@@ -211,8 +212,8 @@ export class SalesOpportunityLogComponent implements OnInit {
     this.form.get('COMPANY_CODE').setValue(data[0].COMPANY_CODE)
     // this.form.get('CUST_CODE').setValue(data[0].CUST_CODE)
     this.form.get('OPPO_CODE').setValue(data[0].OPPO_CODE)
-    this.form.get('CRMACTIVITY_CODE').setValue(data[0].CRMACTIVITY_CODE)
-    this.form.get('NEXT_CRMACTIVITY').setValue(data[0].NEXTACTIVITY_CODE)
+    // this.form.get('CRMACTIVITY_CODE').setValue(data[0].CRMACTIVITY_CODE)
+    // this.form.get('NEXT_CRMACTIVITY').setValue(data[0].NEXTACTIVITY_CODE)
     this.form.get('CONTACT_PERSONS').setValue(data[0].CONTACT_PERSONS)
     this.form.get('REMARKS').setValue(data[0].REMARKS)
     this.form.get('REVISED_ORDERVALUE').setValue(data[0].REVISED_ORDERVALUE)
@@ -252,6 +253,39 @@ export class SalesOpportunityLogComponent implements OnInit {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 150);
 
+  }
+
+  private applyLatestLogActivity(list: any[]): void {
+  if (!Array.isArray(list) || list.length === 0) {
+    return;
+  }
+  const sortedList = [...list].sort((a, b) =>
+    Number(b.LOGID) - Number(a.LOGID)
+  );
+  const latest = sortedList[0];
+  this.form.get('CRMACTIVITY_CODE').setValue(latest.CRMACTIVITY_CODE);
+  this.form.get('NEXT_CRMACTIVITY').setValue(latest.NEXT_CRMACTIVITY);
+  // this.form.patchValue({
+  //   CRMACTIVITY_CODE: latest.CRMACTIVITY_NAME,
+  //   NEXT_CRMACTIVITY: latest.NEXT_CRMACTIVITY
+  // });
+}
+
+  f_downloadDocument(file: any) {
+    console.log(file,'file');
+      this.http.PostRequest(this.apiUrl.GetOppMasterFile, { DOCUMENT_SYSFILENAME: file.DOCUMENT_SYSFILENAME }).then(res => {
+        if (res.flag) {
+          const byteString = atob(res.b64);
+          const arrayBuffer = new ArrayBuffer(byteString.length);
+          const int8Array = new Uint8Array(arrayBuffer);
+          for (let i = 0; i < byteString.length; i++) {
+            int8Array[i] = byteString.charCodeAt(i);
+           }
+          const data: Blob = new Blob([int8Array]);
+          saveAs(data, file.DOCUMENT_FILENAME);
+         }
+        this.spinner = false;
+      })
   }
 
   SaveSalesOpportunityLog(para: string = '') {
@@ -297,7 +331,7 @@ export class SalesOpportunityLogComponent implements OnInit {
       console.log(res)
       if (res.flag) {
         this.log_view_list = res.LogDetailsView_List
-
+          this.applyLatestLogActivity(res.LogDetailsView_List);
         this.spinner = false;
       } else {
         this.spinner = false;
