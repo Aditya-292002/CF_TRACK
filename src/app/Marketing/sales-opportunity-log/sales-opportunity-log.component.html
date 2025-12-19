@@ -133,11 +133,9 @@
                 </div>
                 <div class="col-md-4">
                     <label>Log Date :</label>
-                    <div class="floating-input ">
-                        <input type="text" [(ngModel)]="LOG_DATE" formControlName="LOG_DATE" class="form-control"
-                            readonly>
-                        <app-date-picker [(ngModel)]="LOG_DATE" class="date-input" [maxdate]="maxDate"
-                            [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LOG_DATE'].errors?.required}">
+                        <input type="text" [(ngModel)]="LOG_DATE" formControlName="LOG_DATE" class="form-control" readonly>
+                        <app-date-picker [(ngModel)]="LOG_DATE" class="date-input" [mindate]="minDate" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -195,11 +193,9 @@
                 </div>
                 <div class="col-md-4">
                     <label>Next Follow Up :</label>
-                    <div class="floating-input">
-                        <input type="text" [(ngModel)]="NEXT_FOLLOWUP" formControlName="NEXT_FOLLOWUP"
-                            class="form-control" readonly>
-                        <app-date-picker [(ngModel)]="NEXT_FOLLOWUP" class="date-input" [maxdate]="maxDate"
-                            [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['NEXT_FOLLOWUP'].errors?.required}">
+                        <input type="text" placeholder="dd-mm-yyyy" [(ngModel)]="NEXT_FOLLOWUP" formControlName="NEXT_FOLLOWUP" class="form-control" readonly>
+                        <app-date-picker [(ngModel)]="NEXT_FOLLOWUP" class="date-input" [mindate]="minDate" [maxdate]="maxDate" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -355,13 +351,22 @@
                                         title="View Document">
                                     </i>
                                 </td> -->
-                                <td class="w-130">
+
+                                <!-- <td class="w-130">
                                     <i
                                         class="fa fa-eye"
                                         [class.disabled-icon]="!data?.DOCUMENT_SYSFILENAME"
                                         [class.cursor-pointer]="data?.DOCUMENT_SYSFILENAME"
                                         (click)="data?.DOCUMENT_SYSFILENAME && f_downloadDocument(data)"
                                         [attr.title]="data?.DOCUMENT_SYSFILENAME ? 'View Document' : 'No Document Available'">
+                                    </i>
+                                </td> -->
+
+                                <td class="w-130">
+                                    <i
+                                        class="fa fa-eye cursor-pointer"
+                                        (click)="viewDocument()"
+                                        title="View Document List">
                                     </i>
                                 </td>
                             </tr>
@@ -372,3 +377,41 @@
         </div>
     </div>
 </form>
+
+<p-dialog
+  header="Uploaded Documents"
+  [(visible)]="displayHistory"
+  [modal]="true"
+  [style]="{ width: '40rem' }"
+>
+
+<div class="tableFixHead mt-2">
+    <table class="table-theam-1 row_bgcolor_1">
+        <thead>
+            <tr>
+                <th class="w-20">Document Name</th>
+                <th class="w-20">View</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let file of uploadedDocument; let i=index;">
+                <tr>
+                    <td><a (click)="f_downloadDocument(data)">{{file.DOCUMENT_SYSFILENAME}}</a></td>
+                    <i
+                        class="fa fa-eye"
+                        (click)="f_downloadDocument(data)"
+                        title="View Document">
+                    </i>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+</div> 
+
+<div class="row">
+    <div class="col-12 text-right mt-3">
+        <button type="button" class="btn btn-secondary ml-2" (click)="this.displayHistory=false">Cancel</button>
+    </div>
+</div>
+
+</p-dialog>

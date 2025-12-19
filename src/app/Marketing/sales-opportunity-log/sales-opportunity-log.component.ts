@@ -25,7 +25,9 @@ export class SalesOpportunityLogComponent implements OnInit {
 
   isSubmited: boolean = false;
   maxDate: any ='';
+  minDate: any = '';
   isViewOpportunity:boolean = false;
+  displayHistory: boolean = false;
 
   selectedCust : boolean = true
   selectedEmp : boolean = false
@@ -83,6 +85,8 @@ export class SalesOpportunityLogComponent implements OnInit {
       CONTACT_PERSONS:[""],
       
     });
+    const today = new Date();
+    this.minDate = today.toISOString().substring(0, 10);
     this.GetOpportunityLogCommonList();
    this.OPPO_CODE= localStorage.getItem('OPPO_CODE');
        if(localStorage.getItem('OPPO_CODE') != '' && localStorage.getItem('OPPO_CODE') != null || localStorage.getItem('OPPO_CODE') != undefined){
@@ -115,7 +119,7 @@ export class SalesOpportunityLogComponent implements OnInit {
 
       this.NO_RIGHTS = this.ADD_RIGHTS || this.UPDATE_RIGHTS?false:true;
 
-      this.maxDate = this.sharedService.loginUser[0].TO_DATE;
+      // this.maxDate = this.sharedService.loginUser[0].TO_DATE;
 
       this.LOG_DATE = this.sharedService.getTodayDate();
 
@@ -297,7 +301,8 @@ export class SalesOpportunityLogComponent implements OnInit {
       console.log(res)
       if (res.flag) {
         this.toast.success(res.msg)
-        this.f_clearForm()
+        // this.f_clearForm()
+        this.GetLogDetailsView();
         this.spinner = false;
       } else {
         this.toast.warning(res.msg)
@@ -337,6 +342,12 @@ export class SalesOpportunityLogComponent implements OnInit {
       this.spinner = false;
     });
   }
+
+  viewDocument(){
+  console.log('viewDocument :');
+  this.displayHistory=true
+  console.log('displayHistory',this.displayHistory);
+}
 
   f_clearForm() {
     this.isSubmited = false;
