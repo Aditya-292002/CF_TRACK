@@ -33,7 +33,7 @@ export class SalesOpportunityLogComponent implements OnInit {
   dropdownSelected2 : boolean = false
   OPPO_CODE : any = '';
 
-  constructor(private sharedService: SharedServiceService,
+  constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
     private http: HttpRequestServiceService,
     private formBuilder: FormBuilder,
@@ -204,12 +204,13 @@ export class SalesOpportunityLogComponent implements OnInit {
   }
 
   f_fillData(data: Array<any> = []) {
-    this.form.get('LEAD_CODE').reset();
-        this.form.get('CUST_CODE').reset();
-           this.form.get('OPPO_CODE').reset();
+    // this.form.get('LEAD_CODE').reset();
+    // this.form.get('CUST_CODE').reset();
+    //  this.form.get('OPPO_CODE').reset();
     console.log(data[0])
     this.form.get('COMPANY_CODE').setValue(data[0].COMPANY_CODE)
     // this.form.get('CUST_CODE').setValue(data[0].CUST_CODE)
+    this.form.get('OPPO_CODE').setValue(data[0].OPPO_CODE)
     this.form.get('CRMACTIVITY_CODE').setValue(data[0].CRMACTIVITY_CODE)
     this.form.get('NEXT_CRMACTIVITY').setValue(data[0].NEXT_CRMACTIVITY)
     this.form.get('CONTACT_PERSONS').setValue(data[0].CONTACT_PERSONS)
@@ -219,7 +220,7 @@ export class SalesOpportunityLogComponent implements OnInit {
     this.form.get('REVISED_STATUS').setValue(data[0].REVISED_STATUS)
     this.form.get('REVISED_SUBSTATUS').setValue(data[0].REVISED_SUBSTATUS)
 
-    if(data[0].LEADORCUST == "L"){
+    if(data[0].LEADORCUST === "L"){
       
       this.selectedCust = false;
       this.selectedEmp = true;
