@@ -26,6 +26,7 @@ export class SalesOpportunityLogComponent implements OnInit {
   isSubmited: boolean = false;
   minDate: any ='';
   maxDate: any ='';
+  minDate: any = '';
   isViewOpportunity:boolean = false;
   displayHistory: boolean = false;
 
