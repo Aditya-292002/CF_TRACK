@@ -45,3 +45,9 @@ table.table-theam-1 {
            width: max-content; 
         }
 }
+
+.disabled-icon {
+    color: #b5b5b5;       /* greyed out */
+    cursor: not-allowed;
+    pointer-events: none; /* prevents click */
+}
