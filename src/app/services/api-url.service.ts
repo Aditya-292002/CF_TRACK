@@ -148,6 +148,7 @@ export class ApiUrlService {
   GetOpportunityList: string='/Marketing/GetOpportunityList';
   GetLogDetailsView: string='/Marketing/GetLogDetailsView';
   GetOpportunityMasterLogDetails: string='/Marketing/GetOpportunityMasterLogDetails';
+  GetDocumentListByLogId: string='/Marketing/GetDocumentListByLogId';
   SaveSalesOpportunityLog:string='/Marketing/SaveSalesOpportunityLog';
 //   GetFetchReportData: string = '/Report/GetFetchReportData';
 // GetFetchDrillReportData: string = '/Report/GetFetchDrillReportData';

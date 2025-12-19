@@ -146,7 +146,6 @@
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['PROJECT_DATE'].errors?.required}">
                         <input type="text" [(ngModel)]="PROJECT_DATE" formControlName="PROJECT_DATE" class="form-control" readonly>
                         <app-date-picker [(ngModel)]="PROJECT_DATE" class="date-input" [mindate]="minDate" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
-    
                     </div>
                 </div>
             </div>
@@ -571,7 +570,7 @@
                 <div class="col-md-8 mt-1">
                      <button type="button" class="btn btn-secondary ml-2" (click)="addDocument()">  <i class="fa fa-paperclip"></i>Add</button>
                     <!-- <div class="list-group-item d-flex justify-content-between">
-<div (click)="addDocument()">
+                        <div (click)="addDocument()">
                             <span class="" *ngIf="!NO_RIGHTS">
                                 <label class="att-doc-label-add" title="Add Document">
                                     <i class="fa fa-paperclip"></i> Add
