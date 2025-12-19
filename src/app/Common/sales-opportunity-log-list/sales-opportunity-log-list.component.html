@@ -5,20 +5,7 @@
     <div class="d-flex flex-wrap justify-content-between">
         <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
         <div class="row col-md-8 justify-content-end">
-            <div class="col-md-4 pb-2">
-                <!-- <label>Status<span class="validator">*</span> :</label> -->
-                <div class="floating-input  list-btn">
-                    <select class="form-control selectpicker show-tick" id="projStatus" data-live-search="true"
-                        [(ngModel)]="selectedStatus" title="Select status">
-                        <option *ngFor="let opt of opportunity_status_list; let i=index" [value]="opt.OPPO_STATUS">{{
-                            opt.OPPO_STATUS_DESC }}</option>
-                    </select>
-                    <button type="button" class="close" (click)="clear();GetOpportunityLogList();" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-            <div class="col-md-6 pb-2">
+                        <div class="col-md-6 pb-2">
                 <!-- <label>Status<span class="validator">*</span> :</label> -->
                 <div class="floating-input  list-btn">
                     <select class="form-control selectpicker show-tick" id="projStatus" data-live-search="true"
@@ -28,6 +15,19 @@
                     </select>
                     <button type="button" class="close" (click)="clearManager();GetOpportunityLogList();"
                         aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-4 pb-2">
+                <!-- <label>Status<span class="validator">*</span> :</label> -->
+                <div class="floating-input  list-btn">
+                    <select class="form-control selectpicker show-tick" id="projStatus" data-live-search="true"
+                        [(ngModel)]="selectedStatus" title="Select status">
+                        <option *ngFor="let opt of opportunity_status_list; let i=index" [value]="opt.OPPO_STATUS">{{
+                            opt.OPPO_STATUS_DESC }}</option>
+                    </select>
+                    <button type="button" class="close" (click)="clear();GetOpportunityLogList();" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>

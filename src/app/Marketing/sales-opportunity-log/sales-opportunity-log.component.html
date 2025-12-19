@@ -133,11 +133,9 @@
                 </div>
                 <div class="col-md-4">
                     <label>Log Date :</label>
-                    <div class="floating-input ">
-                        <input type="text" [(ngModel)]="LOG_DATE" formControlName="LOG_DATE" class="form-control"
-                            readonly>
-                        <app-date-picker [(ngModel)]="LOG_DATE" class="date-input" [maxdate]="maxDate"
-                            [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LOG_DATE'].errors?.required}">
+                        <input type="text" [(ngModel)]="LOG_DATE" formControlName="LOG_DATE" class="form-control" readonly>
+                        <app-date-picker [(ngModel)]="LOG_DATE" class="date-input" [mindate]="minDate" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -193,7 +191,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                     <label>Next Follow Up :</label>
                     <div class="floating-input">
                         <input type="text" [(ngModel)]="NEXT_FOLLOWUP" formControlName="NEXT_FOLLOWUP"
@@ -201,7 +199,16 @@
                         <app-date-picker [(ngModel)]="NEXT_FOLLOWUP" class="date-input" [maxdate]="maxDate"
                             [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
                     </div>
+                </div> -->
+                <!--  -->
+                <div class="col-md-4">
+                    <label>Next Follow Up :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['NEXT_FOLLOWUP'].errors?.required}">
+                        <input type="text" placeholder="dd-mm-yyyy" [(ngModel)]="NEXT_FOLLOWUP" formControlName="NEXT_FOLLOWUP" class="form-control" readonly>
+                        <app-date-picker [(ngModel)]="NEXT_FOLLOWUP" class="date-input" [mindate]="minDate" [maxdate]="maxDate" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
+                    </div>
                 </div>
+                <!--  -->
                 <div class="col-md-4">
                     <label>Next Activity :</label>
                     <div class="floating-input  list-btn">
@@ -347,7 +354,7 @@
                                 <td class="w-130">{{data.CONTACT_PERSONS}}</td>
                                 <td class="w-130">{{data.REMARKS}}</td>
                                 <td class="w-130">{{data.NEXT_FOLLOWUP | date:'dd-MMM-yyyy'}}</td>
-                                <td class="w-130">{{data.NEXT_CRMACTIVITY}}</td>
+                                <td class="w-130">{{data.NEXT_CRMACTIVITY1}}</td>
                                 <!-- <td class="w-130">
                                     <i
                                         class="fa fa-eye cursor-pointer"
