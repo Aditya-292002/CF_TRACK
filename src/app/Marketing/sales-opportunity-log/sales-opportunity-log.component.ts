@@ -26,7 +26,6 @@ export class SalesOpportunityLogComponent implements OnInit {
   isSubmited: boolean = false;
   minDate: any ='';
   maxDate: any ='';
-  minDate: any = '';
   isViewOpportunity:boolean = false;
   displayHistory: boolean = false;
 
@@ -282,13 +281,15 @@ export class SalesOpportunityLogComponent implements OnInit {
 
   GetDocumentListByLogId() {
     let data = {
-      LOGID: this.LOGID,
+      LOGID: this.LOGID?this.LOGID:'',
       OPPO_CODE: this.form.getRawValue().OPPO_CODE,
     }
     console.log("GetDocumentListByLogId Data :", data)
     this.http.PostRequest(this.apiUrl.GetDocumentListByLogId, data).then(res => {
       console.log('GetDocumentListByLogId :',res)
+              this.document_List=[];
       if (res.flag) {
+
         this.document_List = res.document_List;
         this.spinner = false;
       } else {
@@ -344,7 +345,7 @@ export class SalesOpportunityLogComponent implements OnInit {
       if (res.flag) {
         this.log_view_list = res.LogDetailsView_List
         if (res.LogDetailsView_List && res.LogDetailsView_List.length > 0) {
-          this.LOGID = res.LogDetailsView_List[0].LOGID;
+         // this.LOGID = res.LogDetailsView_List[0].LOGID;
         }
         console.log("this.LOGID :", this.LOGID);
         this.GetDocumentListByLogId();
@@ -358,8 +359,10 @@ export class SalesOpportunityLogComponent implements OnInit {
     });
   }
 
-  viewDocument(){
-  console.log('viewDocument :');
+  viewDocument(val:any){
+  console.log('viewDocument',val);
+  this.LOGID = val;
+  this.GetDocumentListByLogId();
   this.displayHistory=true
   console.log('displayHistory',this.displayHistory);
 }

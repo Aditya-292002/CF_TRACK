@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12">
+        <div class="col-sm-12 col-md-12 col-lg-12">
             <div class="row card">
                 <div class="col-md-6">
                     <!-- <label>Company :</label>
@@ -136,10 +136,11 @@
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LOG_DATE'].errors?.required}">
                         <input type="text" [(ngModel)]="LOG_DATE" formControlName="LOG_DATE" class="form-control" readonly>
                         <app-date-picker [(ngModel)]="LOG_DATE" class="date-input" [mindate]="minDate" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
-                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LOG_DATE'].errors?.required}">
+                    <!-- <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LOG_DATE'].errors?.required}">
                         <input type="text" [(ngModel)]="LOG_DATE" formControlName="LOG_DATE" class="form-control" readonly>
                         <app-date-picker [(ngModel)]="LOG_DATE" class="date-input" [mindate]="minDate" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
-                    </div>
+                    </div> -->
+                </div>
                 </div>
                 <div class="col-md-4">
                     <label>Activity :</label>
@@ -260,7 +261,7 @@
                         <i class='fas fa-plus-circle mr-2'></i>View</button>
                 </div>
             </div>
-        </div>
+       
 
         <!-- < <div class="col-md-12 mt-2"> 
         <div class="row card">
@@ -363,17 +364,16 @@
                                         title="View Document List">
                                     </i>
                                 </td>
-                                <!-- f_downloadDocument(data) -->
+                               f_downloadDocument(data) -->
                                 
-                                <!-- <td class="w-130">
+                                <td class="w-130">
                                     <i
-                                        class="fa fa-list"
-                                        [class.disabled-icon]="!data?.DOCUMENT_SYSFILENAME"
-                                        [class.cursor-pointer]="data?.DOCUMENT_SYSFILENAME"
-                                        (click)="data?.DOCUMENT_SYSFILENAME && viewDocument()"
+                                        class="fa fa-eye cursor-pointer"
+                                       
+                                        (click)="viewDocument(data.LOGID)"
                                         [attr.title]="data?.DOCUMENT_SYSFILENAME ? 'View Document' : 'No Document Available'">
                                     </i>
-                                </td> -->
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -381,6 +381,7 @@
             </div>
         </div>
     </div>
+     </div>
 </form>
 
 <p-dialog
@@ -404,7 +405,7 @@
                     <td>{{file.DOCUMENT_FILENAME}}</td>
                     <i
                         class="fa fa-eye cursor-pointer"
-                        (click)="f_downloadDocument(data)"
+                        (click)="f_downloadDocument(file)"
                         title="View Document List">
                     </i>
                 </tr>
