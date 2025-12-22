@@ -421,3 +421,42 @@
 </div>
 
 </p-dialog>
+
+<form [formGroup]="form">
+<div class="col-sm-12 col-md-12 col-lg-12" style="padding-left: 0px; padding-right: 0px;">
+    <div class="row card" style="border-top-width: 10px; margin-top: 10px; padding-top: 10px; top: 10px;">
+        <div class="col-md-8 mt-1">
+            <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 att-doc" style="padding-left: 0px;">
+                <input type="file" #fileInput id="fileInput" (change)="onFileChange($event)" class="doc-input">
+                    <button type="button" class="btn btn-secondary" title="Upload Document">
+                    <label for="fileInput" class="att-doc-label-add p-0 m-0" title="Add Document">
+                        <i class="fa fa-paperclip"></i> Attach
+                    </label>
+                    </button>
+            </div>  
+    <div class="tableFixHead mt-2">
+    <table class="table-theam-1 row_bgcolor_1">
+        <thead>
+        <tr>
+          <th class="w-20">Document Name</th>
+          <th class="w-20">Remarks</th>
+          <th class="w-10">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tbody>
+                <ng-container *ngFor="let file of uploadedDocument; let i=index;">
+                    <tr *ngIf="file.ACTIVE == 1">
+
+                        <td><a (click)="f_downloadDocument(file)">{{file.DOCUMENT_FILENAME}}</a></td>
+                        <td>{{file.REMARKS}}</td>
+                        <td><i class="fas fa-trash-alt" id=f_{{i}} (click)="removeDoc(i)"></i></td>
+                    </tr>
+                </ng-container>
+        </tbody>
+    </table>
+  </div>
+</div>
+</div>
+</div>
+</form>
