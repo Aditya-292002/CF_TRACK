@@ -597,7 +597,7 @@ select.form-control {
 }
 .JVDropDown .filter-option-inner .filter-option-inner-inner {
     font-size: 0.9rem;
-    width: 190px;
+    /* width: 190px; */
 }
 
 .list-btn .close {

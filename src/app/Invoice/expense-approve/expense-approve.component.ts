@@ -543,6 +543,7 @@ export class ExpenseApproveComponent implements OnInit {
     this.LISTTYPE = val;
     let data = {
       LISTTYPE: this.LISTTYPE,
+      FYEAR: this.sharedService.loginUser[0].FYEAR
     }
 
     this.spinner = true;
