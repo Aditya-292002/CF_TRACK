@@ -168,7 +168,7 @@ table.table-theam-1 th {
     position: sticky;
     top: 0;
     font-size: 0.9em;
-    /* z-index: 20; */
+     z-index: 20;
 }
 
 table.table-theam-1 th,
