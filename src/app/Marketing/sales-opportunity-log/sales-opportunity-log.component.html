@@ -34,45 +34,30 @@
                 </div> -->
                     <label>Opportunity :</label>
                     <div class="floating-input  list-btn">
-                        <!--    <select class="form-control selectpicker show-tick" id="Opportunity"  data-live-search="true" title="Select">
-                        <option ></option>                     
-                    </select>
-                   <button type="button" class="close" onclick="resetDropdown('Opportunity')"  aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>-->
-                        <!-- (change)="searchOpportunity()" -->
-                        <select class="form-control selectpicker show-tick " id="OPPO_CODE" data-live-search="true"
+                    <!-- (change)="searchOpportunity()" -->
+                        <!-- <select class="form-control selectpicker show-tick " id="OPPO_CODE" data-live-search="true"
                             formControlName="OPPO_CODE" title="Select">
                             <option *ngFor="let opt of opportunity_list; let i=index"
-                                [selected]="opt.OPPO_CODE == form.controls['OPPO_CODE'].value" [value]="opt.OPPO_CODE">
-                                {{ opt.OPPO_NAME }}</option>
+                                [selected]="opt.OPPO_CODE == form.controls['OPPO_CODE'].value" [value]="opt.OPPO_CODE" disabled>
+                                {{ opt.OPPO_CODE }} - {{opt.OPPO_NAME}}</option>
                         </select>
                         <button type="button" class="close" onclick="resetDropdown('OPPO_CODE')"
                             (click)="form.controls['OPPO_CODE'].reset()" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
-                        </button>
+                        </button> -->
+                        <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['OPPO_CODE'].errors?.required}">
+                            <input type="hidden" formControlName="OPPO_CODE" InputType="AlphaNum" class="form-control" placeholder="Lead Name" readonly>
+                        </div>
+                        <input
+                            type="text"
+                            class="form-control"
+                            [value]="oppoDisplay"
+                            readonly
+                            />
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <!-- <label>Customer Name :</label>
-                <div class="floating-input  list-btn">
-                    <select class="form-control selectpicker show-tick" id="CUST_NAME"  data-live-search="true" title="Select">
-                        <option ></option>                     
-                    </select>
-                    <button type="button" class="close" onclick="resetDropdown('CUST_NAME')"  aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div> -->
-                    <!-- <label>Opportunity :</label>
-                <div class="floating-input  list-btn">
-                    <select class="form-control selectpicker show-tick" id="Opportunity"  data-live-search="true" title="Select">
-                        <option ></option>                     
-                    </select>
-                    <button type="button" class="close" onclick="resetDropdown('Opportunity')"  aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div> -->
-                    <label>Company :</label>
+                    <!-- <label>Company :</label>
                     <div class="floating-input  list-btn">
                         <select class="form-control selectpicker show-tick " id="Company" formControlName="COMPANY_CODE"
                             data-live-search="true" title="Select">
@@ -85,18 +70,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
 
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <!-- <label>Opportunity :</label>
-                <div class="floating-input  list-btn">
-                    <select class="form-control selectpicker show-tick" id="Opportunity"  data-live-search="true" title="Select">
-                        <option ></option>                     
-                    </select>
-                    <button type="button" class="close" onclick="resetDropdown('Opportunity')"  aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div> -->
+                    </div> -->
                     <label *ngIf="selectedCust">Customer Name :</label>
                     <label *ngIf="selectedEmp">Lead Name :</label>
                     <div class="floating-input  list-btn" *ngIf="dropdownSelected1">
@@ -147,6 +121,7 @@
                     </div> -->
                     </div>
                 </div>
+
                 <div class="col-md-4">
                     <label>Activity :</label>
                     <div class="floating-input  list-btn">
@@ -163,6 +138,21 @@
                     </div>
                 </div>
                 <div class="col-md-4">
+                    <label>Opportunity Type :</label>
+                    <div class="floating-input  list-btn">
+                        <select class="form-control selectpicker show-tick " id="OppoType"
+                            formControlName="OPPO_TYPE" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of opportunitytype_list; let i=index"
+                                [selected]="opt.OPPO_TYPE == form.controls['OPPO_TYPE'].value"
+                                [value]="opt.OPPO_TYPE">{{ opt.OPPO_DESC }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('OppoType')"
+                            (click)="form.controls['OPPO_TYPE'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
                     <label>Contact Person :</label>
                     <div class="floating-input"
                         [ngClass]="{'invalid-control':isSubmited && form.controls['CONTACT_PERSONS'].errors?.required}">
@@ -172,10 +162,10 @@
                     </div>
                 </div>
                 <div class="col-md-8">
-                    <label>Remarks :</label>
+                    <label>Activity Details :</label>
                     <div class="floating-input ">
                         <textarea name="" id="" rows="2" class="form-control" formControlName="REMARKS"
-                            placeholder="Remarks"></textarea>
+                            placeholder="Please Enter Activity Details"></textarea>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -186,17 +176,18 @@
                             placeholder="Revised Value." class="form-control ">
                     </div>
                 </div>
+                <!--  -->
                 <div class="col-md-4">
-                    <label>Probability :</label>
+                    <label>Next Activity :</label>
                     <div class="floating-input  list-btn">
-                        <select class="form-control selectpicker show-tick " id="Probability"
-                            formControlName="REVISED_PROBABILITY" data-live-search="true" title="Select">
-                            <option *ngFor="let opt of probability_list; let i=index"
-                                [selected]="opt.Probability == form.controls['REVISED_PROBABILITY'].value"
-                                [value]="opt.Probability">{{ opt.Probability }}</option>
+                        <select class="form-control selectpicker show-tick " id="NextActivity"
+                            formControlName="NEXT_CRMACTIVITY" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of Nextactivity_list; let i=index"
+                                [selected]="opt.NEXTACTIVITY_CODE == form.controls['NEXT_CRMACTIVITY'].value"
+                                [value]="opt.NEXTACTIVITY_CODE">{{ opt.NEXTACTIVITY_NAME }}</option>
                         </select>
-                        <button type="button" class="close" onclick="resetDropdown('Probability')"
-                            (click)="form.controls['REVISED_PROBABILITY'].reset()" aria-label="Close">
+                        <button type="button" class="close" onclick="resetDropdown('NextActivity')"
+                            (click)="form.controls['NEXT_CRMACTIVITY'].reset()" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -222,20 +213,21 @@
                 </div>
                 <!--  -->
                 <div class="col-md-4">
-                    <label>Next Activity :</label>
+                    <label>Probability :</label>
                     <div class="floating-input  list-btn">
-                        <select class="form-control selectpicker show-tick " id="NextActivity"
-                            formControlName="NEXT_CRMACTIVITY" data-live-search="true" title="Select">
-                            <option *ngFor="let opt of Nextactivity_list; let i=index"
-                                [selected]="opt.NEXTACTIVITY_CODE == form.controls['NEXT_CRMACTIVITY'].value"
-                                [value]="opt.NEXTACTIVITY_CODE">{{ opt.NEXTACTIVITY_NAME }}</option>
+                        <select class="form-control selectpicker show-tick " id="Probability"
+                            formControlName="REVISED_PROBABILITY" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of probability_list; let i=index"
+                                [selected]="opt.Probability == form.controls['REVISED_PROBABILITY'].value"
+                                [value]="opt.Probability">{{ opt.Probability }}</option>
                         </select>
-                        <button type="button" class="close" onclick="resetDropdown('NextActivity')"
-                            (click)="form.controls['NEXT_CRMACTIVITY'].reset()" aria-label="Close">
+                        <button type="button" class="close" onclick="resetDropdown('Probability')"
+                            (click)="form.controls['REVISED_PROBABILITY'].reset()" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                 </div>
+                <!--  -->
                 <div class="col-md-4">
                     <label>Status :</label>
                     <div class="floating-input  list-btn">

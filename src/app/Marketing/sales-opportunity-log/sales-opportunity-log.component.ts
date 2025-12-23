@@ -11,6 +11,7 @@ import { ValidationService } from 'src/app/services/validation.service';
 import { saveAs } from 'file-saver';
 import { v4 as uuidv4 } from 'uuid';
 import { Router } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
 declare var $: any;
 
 @Component({
@@ -23,6 +24,7 @@ export class SalesOpportunityLogComponent implements OnInit {
   form: FormGroup;
   spinner: boolean = false;
 
+  oppoDisplay: any;
   isSubmited: boolean = false;
   minDate: any ='';
   maxDate: any ='';
@@ -48,7 +50,9 @@ export class SalesOpportunityLogComponent implements OnInit {
     public validationService: ValidationService,
     private pipeService: PipeService,
     public router: Router,
-    public datepipe: DatePipe) { }
+    public datepipe: DatePipe,
+    public cdr: ChangeDetectorRef) { }
+    
 
     customer_list: Array<any> = [];
     company_list:Array<any>=[];
@@ -56,6 +60,7 @@ export class SalesOpportunityLogComponent implements OnInit {
     opportunity_activity_list: Array<any> =[];
     opportunity_status_list: Array<any> =[];
     opportunity_substatus_list: Array<any> =[];
+    opportunitytype_list: Array<any> =[];
     probability_list: Array<any> =[];
     Nextactivity_list: Array<any> =[];
     log_view_list: Array<any> = []
@@ -82,6 +87,7 @@ export class SalesOpportunityLogComponent implements OnInit {
       LEAD_CODE :[""],
       LOG_DATE: ["", Validators.required],
       CRMACTIVITY_CODE: [""],
+      OPPO_TYPE: [""],
       REMARKS: ["", Validators.required],
       REVISED_ORDERVALUE: [""],
       REVISED_PROBABILITY: ["", Validators.required],
@@ -102,9 +108,8 @@ export class SalesOpportunityLogComponent implements OnInit {
       this.GetOpportunityLogDetails();
       this.GetLogDetailsView();
     }
-
+    
     $('.selectpicker').selectpicker('refresh').trigger('change');
-
   }
 
 
@@ -153,9 +158,17 @@ export class SalesOpportunityLogComponent implements OnInit {
         this.customer_list = res.customer_list;
         this.company_list = res.company_list;
         this.opportunity_list = res.opportunity_list;
+        // UPDATE Opportunity DISPLAY HERE
+        const code = this.form.get('OPPO_CODE').value;
+        const opp = this.opportunity_list.find(o => o.OPPO_CODE === code);
+        this.oppoDisplay = `${opp.OPPO_CODE} - ${opp.OPPO_NAME}`;
+        this.cdr.detectChanges(); // 🔑 REQUIRED
+        this.oppoDisplay = opp ? `${opp.OPPO_CODE} - ${opp.OPPO_NAME}` : '';
+        // 
         this.opportunity_activity_list = res.opportunity_activity_list;
         this.opportunity_status_list = res.opportunity_status_list;
         this.opportunity_substatus_list = res.opportunity_substatus_list;
+        this.opportunitytype_list = res.opportunitytype_list;
         this.probability_list = res.probability_list;
         this.Nextactivity_list = res.Nextactivity_list;
         this.document_type_list = res.document_type_list;
@@ -234,6 +247,7 @@ export class SalesOpportunityLogComponent implements OnInit {
     this.form.get('REVISED_PROBABILITY').setValue(data[0].REVISED_PROBABILITY)
     this.form.get('REVISED_STATUS').setValue(data[0].REVISED_STATUS)
     this.form.get('REVISED_SUBSTATUS').setValue(data[0].REVISED_SUBSTATUS)
+    this.form.get('OPPO_TYPE').setValue(data[0].OPPO_TYPE)
 
     if(data[0].LEADORCUST === "L"){
       this.selectedCust = false;
@@ -422,6 +436,10 @@ export class SalesOpportunityLogComponent implements OnInit {
 
     } else if(this.form.controls["CRMACTIVITY_CODE"].invalid){
       this.toast.warning("Please select Activity.");
+      return false;
+
+    } else if(this.form.controls["OPPO_TYPE"].invalid){
+      this.toast.warning("Please select Opportunity Type.");
       return false;
 
     } else if(this.form.controls["CONTACT_PERSON"].invalid){
