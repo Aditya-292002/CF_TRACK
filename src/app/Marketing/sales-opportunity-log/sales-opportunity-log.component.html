@@ -46,8 +46,14 @@
                             <span aria-hidden="true">&times;</span>
                         </button> -->
                         <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['OPPO_CODE'].errors?.required}">
-                            <input type="text" formControlName="OPPO_CODE" InputType="AlphaNum" class="form-control" placeholder="Lead Name" readonly>
+                            <input type="hidden" formControlName="OPPO_CODE" InputType="AlphaNum" class="form-control" placeholder="Lead Name" readonly>
                         </div>
+                        <input
+                            type="text"
+                            class="form-control"
+                            [value]="oppoDisplay"
+                            readonly
+                            />
                     </div>
                 </div>
                 <div class="col-md-6">

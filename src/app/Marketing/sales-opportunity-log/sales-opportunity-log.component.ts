@@ -86,6 +86,7 @@ export class SalesOpportunityLogComponent implements OnInit {
       LEAD_CODE :[""],
       LOG_DATE: ["", Validators.required],
       CRMACTIVITY_CODE: [""],
+      OPPO_TYPE: [""],
       REMARKS: ["", Validators.required],
       REVISED_ORDERVALUE: [""],
       REVISED_PROBABILITY: ["", Validators.required],
@@ -161,8 +162,8 @@ export class SalesOpportunityLogComponent implements OnInit {
         const opp = this.opportunity_list.find(o => o.OPPO_CODE === code);
         this.oppoDisplay = `${opp.OPPO_CODE} - ${opp.OPPO_NAME}`;
         this.cdr.detectChanges(); // 🔑 REQUIRED
-        // 
         this.oppoDisplay = opp ? `${opp.OPPO_CODE} - ${opp.OPPO_NAME}` : '';
+        // 
         this.opportunity_activity_list = res.opportunity_activity_list;
         this.opportunity_status_list = res.opportunity_status_list;
         this.opportunity_substatus_list = res.opportunity_substatus_list;
@@ -237,14 +238,14 @@ export class SalesOpportunityLogComponent implements OnInit {
     console.log(data[0])
     this.form.get('COMPANY_CODE').setValue(data[0].COMPANY_CODE)
     // this.form.get('CUST_CODE').setValue(data[0].CUST_CODE)
-    // this.form.get('OPPO_CODE').setValue(data[0].OPPO_CODE)
-    this.form.get('OPPO_CODE').setValue(this.oppoDisplay);
+    this.form.get('OPPO_CODE').setValue(data[0].OPPO_CODE)
     this.form.get('CONTACT_PERSONS').setValue(data[0].CONTACT_PERSONS)
     this.form.get('REMARKS').setValue(data[0].REMARKS)
     this.form.get('REVISED_ORDERVALUE').setValue(data[0].REVISED_ORDERVALUE)
     this.form.get('REVISED_PROBABILITY').setValue(data[0].REVISED_PROBABILITY)
     this.form.get('REVISED_STATUS').setValue(data[0].REVISED_STATUS)
     this.form.get('REVISED_SUBSTATUS').setValue(data[0].REVISED_SUBSTATUS)
+    this.form.get('OPPO_TYPE').setValue(data[0].OPPO_TYPE)
 
     if(data[0].LEADORCUST === "L"){
       this.selectedCust = false;
@@ -433,6 +434,10 @@ export class SalesOpportunityLogComponent implements OnInit {
 
     } else if(this.form.controls["CRMACTIVITY_CODE"].invalid){
       this.toast.warning("Please select Activity.");
+      return false;
+
+    } else if(this.form.controls["OPPO_TYPE"].invalid){
+      this.toast.warning("Please select Opportunity Type.");
       return false;
 
     } else if(this.form.controls["CONTACT_PERSON"].invalid){
