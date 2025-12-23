@@ -23,7 +23,7 @@
             {{ opt.OPPO_NAME }}
           </option>
         </select> -->
-        <select
+        <!-- <select
             class="form-control selectpicker show-tick"
             [(ngModel)]="search_user"
             id="search"
@@ -37,9 +37,9 @@
             [value]="opt.OPPO_CODE">
                 {{ opt.OPPO_NAME }}
             </option>
-        </select>
+        </select> -->
 
-        <button
+        <!-- <button
           type="button"
           class="close"
           onclick="resetDropdown('search')"
@@ -47,7 +47,7 @@
           aria-label="Close"
         >
           <span aria-hidden="true">&times;</span>
-        </button>
+        </button> -->
       </div>
 
       <button 
@@ -723,7 +723,9 @@
   [style]="{ width: '40rem' }"
 >
 <div class="row">
-    <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-8">
+        <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 ">
+              <label>{{fileInput.files[0]?.name}}</label>  </div>
+    <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-8">
         <label>Remarks <span class="validator">*</span> :</label>
         <div class="floating-input">
         <!-- <textarea name="" id="" rows="1" class="form-control" [(ngModel)]="REMARKS"
@@ -735,8 +737,15 @@
         </textarea>
         </div>
     </div>
-<div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 att-doc" >
-    <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input">
+<!-- <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 att-doc" >
+</div> -->
+
+
+</div>
+
+<div class="row">
+    <div class="col-12 text-right mt-3">
+          <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input">
            <!-- <button type="button" class="btn btn-secondary"  (click)="uploadDoc()" title="Upload Document">
         <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input">
     </button> -->
@@ -745,15 +754,9 @@
          <label for="fileInput" class="att-doc-label-add p-0 m-0" title="Add Document">
             <i class="fa fa-paperclip"></i> Attach
         </label>
+       
         <!-- <i class="pi pi-upload mr-2"> <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input" disabled></i>Attach -->
     </button>
-</div>
-
-
-</div>
-
-<div class="row">
-    <div class="col-12 text-right mt-3">
         <!-- <button type="button" class="btn btn-primary" >Save</button> -->
           <button type="button" class="btn btn-secondary ml-2" (click)="uploadDoc()">Save</button>
         <button type="button" class="btn btn-secondary ml-2" (click)="this.displayHistory=false">Cancel</button>

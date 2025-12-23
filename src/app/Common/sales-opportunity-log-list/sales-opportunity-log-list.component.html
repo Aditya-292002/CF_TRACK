@@ -59,7 +59,7 @@
                     <tbody>
                         <tr *ngFor="let data of all_log_detail;let i=index;">
                             <td>{{data.OPPO_CODE}}</td>
-                            <td>{{data.LOG_DATE }}</td>
+                            <td>{{data.PROJECT_DATE | date:'dd-MMM-yyyy' }}</td>
                             <td>{{data.OPPO_NAME}}</td>
                             <td>{{data.ACCOUNT_MGR}}</td>
                             <td>{{data.CUST_NAME}}</td>

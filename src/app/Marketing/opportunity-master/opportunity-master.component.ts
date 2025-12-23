@@ -462,7 +462,7 @@ displayHistory: boolean = false;
       PROJECT_DATE: [""],
       OPPO_CODE: [""],
       OPPO_NAME: ["", [Validators.required, Validators.pattern(this.regx_AlphaSpace)]],
-      REFPROJ_CODE: ["", Validators.required],
+      REFPROJ_CODE: [""],
       REFPROJ_NAME: [{ value: '', disabled: true }],
       LEAD_CODE: [""],
       LEAD_CONTACT: [""],
@@ -1557,13 +1557,14 @@ stripBase64FromDocuments() {
     } else if (this.form.controls["PROJECT_DATE"].invalid) {
       this.toast.warning("Please enter Date");
       return false;
-    } else if (this.form.controls["REFPROJ_CODE"].invalid) {
-      this.toast.warning("Please enter Ref Project Name");
-      return false;
     } else if (this.form.controls["LEAD_ACC_MANAGER"].invalid) {
       this.toast.warning("Please enter Lead Account Manager");
       return false;
     }
+    // else if (this.form.controls["REFPROJ_CODE"].invalid) {
+    //   this.toast.warning("Please enter Ref Project Name");
+    //   return false;
+    // } 
     return true;
   }
 

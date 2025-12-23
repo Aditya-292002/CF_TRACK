@@ -28,7 +28,7 @@ export class SalesOpportunityLogComponent implements OnInit {
   maxDate: any ='';
   isViewOpportunity:boolean = false;
   displayHistory: boolean = false;
-
+  displayAttach: boolean = false;
   selectedCust : boolean = true
   selectedEmp : boolean = false
   dropdownSelected1 : boolean = true
@@ -37,6 +37,7 @@ export class SalesOpportunityLogComponent implements OnInit {
   LOGID : any = '';
   NoDocs: number = 0;
   DOCUMENT_ATTECHED_LIST: any = [];
+  document_type_list: any = [];
 
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
@@ -69,7 +70,7 @@ export class SalesOpportunityLogComponent implements OnInit {
     NEXT_FOLLOWUP : any = this.sharedService.getDDMMMYYYY(new Date());
 
     LOG_DATE: any = this.sharedService.getDDMMMYYYY(new Date());
-
+    typeofdocument: any = '';
 
   ngOnInit() {
      
@@ -157,6 +158,7 @@ export class SalesOpportunityLogComponent implements OnInit {
         this.opportunity_substatus_list = res.opportunity_substatus_list;
         this.probability_list = res.probability_list;
         this.Nextactivity_list = res.Nextactivity_list;
+        this.document_type_list = res.document_type_list;
         this.lead_list = res.lead_list
         this.form.get('COMPANY_CODE').setValue(this.company_list[0].COMPANY_CODE);
       // this.form.get('LOCATION_CODE').setValue(this.location_list[0].LOCATION_CODE);
@@ -728,7 +730,10 @@ getMimeType(extension: string): string {
   // reset input so same file can be reselected
   input.value = '';
 }
-
+addDocument(){
+  console.log('inside add document');
   
+  this.displayAttach=true
+  console.log('displayAttach',this.displayAttach);
+  }
 }
-
