@@ -296,8 +296,9 @@
                             data-live-search="true" 
                             title="Select"
                             (change)="onSegmentChange()">
-                            <option *ngFor="let opt of filteredCustomerSegments; let i=index" 
-                             [value]="opt.CUST_SEGMENT">{{ opt.SEGMENT_NAME }}</option>                     
+                            <option *ngFor="let opt of segment_list; let i=index" 
+                              [selected]="opt.OPPO_SEGMENT == form.controls['CUST_SEGMENT'].value"
+                             [value]="opt.OPPO_SEGMENT">{{ opt.SEGMENT_NAME }}</option>                     
                         </select>
                         <button type="button" class="close" onclick="resetDropdown('_custSegment')" (click)="form.controls['CUST_SEGMENT'].reset();" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -312,8 +313,9 @@
                             data-live-search="true" 
                             title="Select"
                             (change)="onSegmentChange()">
-                            <option *ngFor="let opt of filteredLeadSegments" 
-                            [value]="opt.CUST_SEGMENT">{{ opt.SEGMENT_NAME }}</option>
+                            <option *ngFor="let opt of segment_list" 
+                            [selected]="opt.OPPO_SEGMENT == form.controls['LEAD_SEGMENT'].value"
+                            [value]="opt.OPPO_SEGMENT">{{ opt.SEGMENT_NAME }}</option>
                         </select>
                         <button type="button" class="close" onclick="resetDropdown('_leadSegment')" (click)="form.controls['LEAD_SEGMENT'].reset();" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -381,9 +383,9 @@
                         formControlName="CUST_ACC_MANAGER"
                         data-live-search="true" 
                         title="Select">
-                            <option *ngFor="let opt of filteredCustomerAccountManager; let i=index" 
-                            [selected]="opt.ACCT_MANAGER == form.controls['CUST_ACC_MANAGER'].value"
-                            [value]="opt.ACCT_MANAGER" >{{ opt.ACCOUNT_MGR }}</option>                     
+                            <option *ngFor="let opt of accountmgr_list; let i=index" 
+                            [selected]="opt.EMP_NO == form.controls['CUST_ACC_MANAGER'].value"
+                            [value]="opt.EMP_NO" >{{ opt.FULL_NAME }}</option>                     
                         </select>
                         <button type="button" class="close"  (click)="form.controls['CUST_ACC_MANAGER'].reset();" (onChange)="resetDropdown('_custAccManager')"  aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -396,9 +398,9 @@
                         formControlName="LEAD_ACC_MANAGER"
                         data-live-search="true" 
                         title="Select">
-                            <option *ngFor="let opt of filteredLeadAccountManager; let i=index" 
+                            <option *ngFor="let opt of accountmgr_list; let i=index" 
                             [selected]="opt.EMP_NO == form.controls['LEAD_ACC_MANAGER'].value"
-                            [value]="opt.EMP_NO" >{{ opt.ACCOUNT_MGR }}</option>                     
+                            [value]="opt.EMP_NO" >{{ opt.FULL_NAME }}</option>                     
                         </select>
                         <button type="button" class="close"  (click)="form.controls['LEAD_ACC_MANAGER'].reset();" (onChange)="resetDropdown('_leadAccManager')"  aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -508,7 +510,7 @@
                              [value]="opt.OPPO_SUB_STATUS" >{{ opt.SUB_DESCRIPTION }}</option>                     
                         </select>
                         <!-- let opt of opportunity_substatus_list -->
-                        <button type="button" class="close" onclick="resetDropdown('Sub_Status ')" (click)="form.controls['OPPO_SUB_STATUS'].reset();" aria-label="Close">
+                        <button type="button" class="close" onclick="resetDropdown('Sub_Status')" (click)="form.controls['OPPO_SUB_STATUS'].reset();" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>

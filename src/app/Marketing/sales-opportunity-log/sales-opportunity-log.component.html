@@ -180,8 +180,12 @@
                     <label>Revised Value :</label>
                     <div class="floating-input "
                         [ngClass]="{'invalid-control':isSubmited && form.controls['REVISED_ORDERVALUE'].errors?.required}">
-                        <input type="text" formControlName="REVISED_ORDERVALUE" maxlength="50"
-                            placeholder="Revised Value." class="form-control ">
+                        <input
+                        type="text"
+                        formControlName="REVISED_ORDERVALUE"
+                        maxlength="50"
+                        placeholder="Revised Value."
+                        class="form-control text-right selectpicker">
                     </div>
                 </div>
                 <!--  -->
