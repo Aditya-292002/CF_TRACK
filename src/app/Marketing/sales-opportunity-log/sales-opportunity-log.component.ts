@@ -41,6 +41,12 @@ export class SalesOpportunityLogComponent implements OnInit {
   DOCUMENT_ATTECHED_LIST: any = [];
   document_type_list: any = [];
 REMARKS: string = '';
+viewcustomberdetails: boolean = false;
+  TYPE: any;
+  LEAD_CODE: any;
+  viewleadetails: boolean;
+  viewLeadetails: boolean;
+  Master_contact_detail: any;
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
     private http: HttpRequestServiceService,
@@ -96,6 +102,7 @@ REMARKS: string = '';
       REVISED_STATUS:[""],
       REVISED_SUBSTATUS:[""],
       CONTACT_PERSONS:[""],
+      COMFLEX_ATTENDTIES:[""],
       
     });
     const today = new Date();
@@ -245,15 +252,17 @@ REMARKS: string = '';
     this.form.get('REMARKS').setValue(data[0].REMARKS)
     this.form.get('REVISED_ORDERVALUE').setValue(data[0].REVISED_ORDERVALUE)
     this.form.get('REVISED_PROBABILITY').setValue(data[0].REVISED_PROBABILITY)
-    this.form.get('REVISED_STATUS').setValue(data[0].REVISED_STATUS)
+    this.form.get('REVISED_STATUS').setValue(data[0].REVISED_STATUS)  
     this.form.get('REVISED_SUBSTATUS').setValue(data[0].REVISED_SUBSTATUS)
-    this.form.get('OPPO_TYPE').setValue(data[0].OPPO_TYPE)
-
+    this.form.get('OPPO_TYPE').setValue(data[0].PROJECT_TYPE)
+      this.form.get('COMFLEX_ATTENDTIES').setValue(data[0].COMFLEX_ATTENDTIES)
+      this.TYPE = data[0].LEADORCUST;
     if(data[0].LEADORCUST === "L"){
       this.selectedCust = false;
       this.selectedEmp = true;
       this.dropdownSelected1 = false;
       this.dropdownSelected2 = true;  
+      this.LEAD_CODE = data[0].LEAD_CODE;
       this.form.get('LEAD_CODE').setValue(data[0].LEAD_NAME)
       this.form.get('CUST_CODE').setValue("");
     }else{
@@ -342,7 +351,7 @@ REMARKS: string = '';
       OPPO_CODE: this.form.getRawValue().OPPO_CODE,
     }
     console.log('data',data)
-    // return
+    //  return
     this.http.PostRequest(this.apiUrl.SaveSalesOpportunityLog, data).then(res => {
       console.log(res)
       if (res.flag) {
@@ -754,8 +763,47 @@ addDocument(){
   this.displayAttach=true
   console.log('displayAttach',this.displayAttach);
   }
-  removeRow(i){
+  removeRow(i){}
 
+    getContactDetails() {
+    this.isSubmited = true;
+    // if(this.f_validateForm()){
+    let data = {
+      USERID:this.sharedService.loginUser[0].USERID,
+      LEAD_CODE:this.LEAD_CODE,
+      CUST_CODE:this.form.getRawValue().CUST_CODE,
+      LEADORCUST:this.TYPE,
+      // CRM_OPPO_LOG:this.form.value,
+      // DOCUMENT_ATTECHED_LIST: this.uploadedDocument,
+      // OPPO_CODE: this.form.getRawValue().OPPO_CODE,
+    }
+    console.log('data',data)
+    // return
+    this.http.PostRequest(this.apiUrl.GetLeadAndCustContactDetails, data).then(res => {
+      console.log(res)
+      if (res.flag) {
+        this.toast.success(res.msg)
+       this.Master_contact_detail=res.contact_details
+        
+        this.spinner = false;
+      } else {
+        this.toast.warning(res.msg)
+        this.spinner = false;
+      }
+    }, err => {
+      this.spinner = false;
+    });
+  //  }
   }
+  openDialogue(VAL:any){
+    if(VAL=='C'){
+      this.viewcustomberdetails = true;
+
+    }else{
+     this.viewLeadetails = true;
+    }
+    this.getContactDetails();
+  }
+
   
 }

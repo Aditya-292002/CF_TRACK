@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="">
             <div class="row card">
                 <div class="col-md-6">
                     <!-- <label>Company :</label>
@@ -34,7 +34,7 @@
                 </div> -->
                     <label>Opportunity :</label>
                     <div class="floating-input  list-btn">
-                    <!-- (change)="searchOpportunity()" -->
+                        <!-- (change)="searchOpportunity()" -->
                         <!-- <select class="form-control selectpicker show-tick " id="OPPO_CODE" data-live-search="true"
                             formControlName="OPPO_CODE" title="Select">
                             <option *ngFor="let opt of opportunity_list; let i=index"
@@ -45,15 +45,12 @@
                             (click)="form.controls['OPPO_CODE'].reset()" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button> -->
-                        <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['OPPO_CODE'].errors?.required}">
-                            <input type="hidden" formControlName="OPPO_CODE" InputType="AlphaNum" class="form-control" placeholder="Lead Name" readonly>
+                        <div class="floating-input "
+                            [ngClass]="{'invalid-control':isSubmited && form.controls['OPPO_CODE'].errors?.required}">
+                            <input type="hidden" formControlName="OPPO_CODE" InputType="AlphaNum" class="form-control"
+                                placeholder="Lead Name" readonly>
                         </div>
-                        <input
-                            type="text"
-                            class="form-control"
-                            [value]="oppoDisplay"
-                            readonly
-                            />
+                        <input type="text" class="form-control" [value]="oppoDisplay" readonly />
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -140,11 +137,11 @@
                 <div class="col-md-4">
                     <label>Opportunity Type :</label>
                     <div class="floating-input  list-btn">
-                        <select class="form-control selectpicker show-tick " id="OppoType"
-                            formControlName="OPPO_TYPE" data-live-search="true" title="Select">
+                        <select class="form-control selectpicker show-tick " id="OppoType" formControlName="OPPO_TYPE"
+                            data-live-search="true" title="Select">
                             <option *ngFor="let opt of opportunitytype_list; let i=index"
-                                [selected]="opt.OPPO_TYPE == form.controls['OPPO_TYPE'].value"
-                                [value]="opt.OPPO_TYPE">{{ opt.OPPO_DESC }}</option>
+                                [selected]="opt.OPPO_TYPE == form.controls['OPPO_TYPE'].value" [value]="opt.OPPO_TYPE">
+                                {{ opt.OPPO_DESC }}</option>
                         </select>
                         <button type="button" class="close" onclick="resetDropdown('OppoType')"
                             (click)="form.controls['OPPO_TYPE'].reset()" aria-label="Close">
@@ -153,7 +150,11 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <label>Contact Person :</label>
+
+                    <label>Contact Person :<button type="submit" class="addbtn btn-primary ml-2" *ngIf="TYPE=='L'"
+                            (click)="openDialogue('L')">view contact</button>
+                        <button type="submit" class="addbtn btn-primary ml-2" *ngIf="TYPE=='C'"
+                            (click)="openDialogue('C')">view contact</button></label>
                     <div class="floating-input"
                         [ngClass]="{'invalid-control':isSubmited && form.controls['CONTACT_PERSONS'].errors?.required}">
                         <!-- <input type="text" maxlength="50" class="form-control" placeholder="Contact Person"> -->
@@ -161,10 +162,17 @@
                             placeholder="Contact Person"></textarea>
                     </div>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-4">
                     <label>Activity Details :</label>
                     <div class="floating-input ">
                         <textarea name="" id="" rows="2" class="form-control" formControlName="REMARKS"
+                            placeholder="Please Enter Activity Details"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Comflex Attendties:</label>
+                    <div class="floating-input ">
+                        <textarea name="" id="" rows="2" class="form-control" formControlName="COMFLEX_ATTENDTIES"
                             placeholder="Please Enter Activity Details"></textarea>
                     </div>
                 </div>
@@ -258,6 +266,52 @@
                         </button>
                     </div>
                 </div>
+                            <div class="col-md-12">
+                <form [formGroup]="form">
+                    <div class="col-sm-12 col-md-12 col-lg-12" style="padding-left: 0px; padding-right: 0px;">
+                        <div class="row card"
+                            style="border-top-width: 10px; margin-top: 10px; padding-top: 10px; top: 10px;">
+                            <div class="col-md-8 mt-1">
+                                <button type="button" class="btn btn-secondary ml-2" (click)="addDocument()"> <i
+                                        class="fa fa-paperclip"></i>Attach</button>
+                                <!-- <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 att-doc" style="padding-left: 0px;">
+                <input type="file" #fileInput id="fileInput" (change)="onFileChange($event)" class="doc-input">
+                    <button type="button" class="btn btn-secondary" title="Upload Document">
+                    <label for="fileInput" class="att-doc-label-add p-0 m-0" title="Add Document">
+                        <i class="fa fa-paperclip"></i> Attach
+                    </label>
+                </button>
+            </div>   -->
+                                <div class="tableFixHead mt-2">
+                                    <table class="table-theam-1 row_bgcolor_1">
+                                        <thead>
+                                            <tr>
+                                                <th class="w-20">Document Name</th>
+                                                <th class="w-20">Remarks</th>
+                                                <th class="w-10">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tbody>
+                                            <ng-container *ngFor="let file of uploadedDocument; let i=index;">
+                                                <tr *ngIf="file.ACTIVE == 1">
+
+                                                    <td><a
+                                                            (click)="f_downloadDocument(file)">{{file.DOCUMENT_FILENAME}}</a>
+                                                    </td>
+                                                    <td>{{file.REMARKS}}</td>
+                                                    <td><i class="fas fa-trash-alt" id=f_{{i}}
+                                                            (click)="removeDoc(i)"></i></td>
+                                                </tr>
+                                            </ng-container>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
                 <div class="row-add col-md-6 text-right p-0">
                     <button type="button" class="btn text-primary pb-0" (click)="viewOpportunity()">
                         <i class='fas fa-plus-circle mr-2'></i>View</button>
@@ -336,7 +390,7 @@
         </div>
      </div> -->
 
-            <div class="page-content mt-2" *ngIf="isViewOpportunity">
+            <div class="page-content mt-2" *ngIf="false">
                 <div class="col-md-12">
                     <div class="tableFixHead ">
                         <table class="table-theam-1 row_bgcolor_1">
@@ -379,10 +433,10 @@
                     </div>
                 </div>
             </div>
-            <div class="page-content mt-2 col-md-12 mt-2" *ngIf="isViewOpportunity">
+            <div class="col-md-12 mt-2" *ngIf="isViewOpportunity">
                 <div class="row card">
                     <div class="form-inline col-md-12">
-                        <h6 class="mb-0 col-md-6 p-0">Customer Details</h6>
+                        <h6 class="mb-0 col-md-6 p-0">Log Details</h6>
                         <hr class="m-0 mb-2">
                     </div>
                     <div class="col-md-12">
@@ -417,12 +471,11 @@
                                                         [ngModelOptions]="{standalone: true}">
                                                 </div> -->
                                                 <div class="float-label">
-                                                    <label for="on_label">Next Follow Up</label>
-                                                    <input Uppercase class="form-control float-input"  [(ngModel)]="data.LOG_DATE"
-                                                        type="text" [ngModelOptions]="{standalone: true}"
-                                                        id="on_label"
-                                                        name="on_label"
-                                                    />
+                                                    <label for="on_label">log Date</label>
+                                                    <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.LOG_DATE" type="text" [value]="data.LOG_DATE"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled />
                                                 </div>
                                             </td>
                                             <td class="">
@@ -431,13 +484,12 @@
                                                         [(ngModel)]="data.CRMACTIVITY_NAME" placeholder="Mobile No."
                                                         [ngModelOptions]="{standalone: true}">
                                                 </div> -->
-                                                 <div class="float-label">
+                                                <div class="float-label">
                                                     <label for="on_label">Activity</label>
-                                                    <input Uppercase class="form-control float-input"  [(ngModel)]="data.CRMACTIVITY_NAME"
-                                                        type="text" [ngModelOptions]="{standalone: true}"
-                                                        id="on_label"
-                                                        name="on_label"
-                                                    />
+                                                    <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.CRMACTIVITY_NAME" type="text"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled />
                                                 </div>
                                             </td>
                                             <td class="">
@@ -446,13 +498,12 @@
                                                         [(ngModel)]="data.CONTACT_PERSONS" placeholder="Designation"
                                                         [ngModelOptions]="{standalone: true}">
                                                 </div> -->
-                                                 <div class="float-label">
+                                                <div class="float-label">
                                                     <label for="on_label">Contact Persons</label>
-                                                    <input Uppercase class="form-control float-input"  [(ngModel)]="data.CONTACT_PERSONS"
-                                                        type="text" [ngModelOptions]="{standalone: true}"
-                                                        id="on_label"
-                                                        name="on_label"
-                                                    />
+                                                    <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.CONTACT_PERSONS" type="text"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled />
                                                 </div>
                                             </td>
                                             <td class="text-left">
@@ -461,13 +512,12 @@
                                                     <input type="text" placeholder="Remarks" [(ngModel)]="data.REMARKS"
                                                         class="form-control" [ngModelOptions]="{standalone: true}">
                                                 </div> -->
-                                                  <div class="float-label">
+                                                <div class="float-label">
                                                     <label for="on_label">Activity Details</label>
-                                                    <input Uppercase class="form-control float-input"  [(ngModel)]="data.REMARKS"
-                                                        type="text" [ngModelOptions]="{standalone: true}"
-                                                        id="on_label"
-                                                        name="on_label"
-                                                    />
+                                                    <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.REMARKS" type="text"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled />
                                                 </div>
                                             </td>
                                             <td class="text-left">
@@ -475,13 +525,12 @@
                                                     <input type="text" [(ngModel)]="data.NEXT_FOLLOWUP"
                                                         class="form-control" [ngModelOptions]="{standalone: true}">
                                                 </div> -->
-                                                 <div class="float-label">
+                                                <div class="float-label">
                                                     <label for="on_label">Next Follow Up</label>
-                                                    <input Uppercase class="form-control float-input"  [(ngModel)]="data.NEXT_FOLLOWUP"
-                                                        type="text" [ngModelOptions]="{standalone: true}"
-                                                        id="on_label"
-                                                        name="on_label"
-                                                    />
+                                                    <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.NEXT_FOLLOWUP" type="text"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled />
                                                 </div>
                                             </td>
                                         </tr>
@@ -493,33 +542,39 @@
                                                         [(ngModel)]="data.NEXT_CRMACTIVITY" placeholder="Email"
                                                         [ngModelOptions]="{standalone: true}">
                                                 </div> -->
-                                                  <div class="float-label">
+                                                <div class="float-label">
                                                     <label for="on_label">Next Activity</label>
-                                                    <input Uppercase class="form-control float-input"  [(ngModel)]="data.NEXT_CRMACTIVITY"
-                                                        type="text" [ngModelOptions]="{standalone: true}"
-                                                        id="on_label"
-                                                        name="on_label"
-                                                    />
+                                                    <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.NEXT_CRMACTIVITY1" type="text"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled />
                                                 </div>
                                             </td>
                                             <td colspan="1" class="pt-0">
                                                 <div class="float-label">
                                                     <label for="on_label">Revised Value</label>
-                                                    <input Uppercase class="form-control float-input"  [(ngModel)]="data.REVISED_ORDERVALUE"
-                                                        type="text" [ngModelOptions]="{standalone: true}"
-                                                        id="on_label"
-                                                        name="on_label"
-                                                    />
+                                                    <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.REVISED_ORDERVALUE" type="text"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled />
                                                 </div>
                                             </td>
                                             <td colspan="1" class="pt-0">
                                                 <div class="float-label">
                                                     <label for="on_label">Probability</label>
-                                                    <input Uppercase class="form-control float-input"  [(ngModel)]="data.REVISED_ORDERVALUE"
-                                                        type="text" [ngModelOptions]="{standalone: true}"
-                                                        id="on_label"
-                                                        name="on_label"
-                                                    />
+                                                    <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.REVISED_PROBABILITY" type="text"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled />
+                                                </div>
+                                            </td>
+                                            <td colspan="1" class="pt-0">
+                                                <div class="float-label">
+                                                    <label for="on_label">Comflex Attendties</label>
+                                                    <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.COMFLEX_ATTENDTIES" type="text"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled />
                                                 </div>
                                             </td>
                                             <!-- <td colspan="2" class="text-left">
@@ -536,9 +591,10 @@
                     </div>
                 </div>
             </div>
-            
+
 
         </div>
+
     </div>
 </form>
 
@@ -573,46 +629,6 @@
 
 </p-dialog>
 
-<form [formGroup]="form">
-    <div class="col-sm-12 col-md-12 col-lg-12" style="padding-left: 0px; padding-right: 0px;">
-        <div class="row card" style="border-top-width: 10px; margin-top: 10px; padding-top: 10px; top: 10px;">
-            <div class="col-md-8 mt-1">
-                <button type="button" class="btn btn-secondary ml-2" (click)="addDocument()"> <i
-                        class="fa fa-paperclip"></i>Attach</button>
-                <!-- <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 att-doc" style="padding-left: 0px;">
-                <input type="file" #fileInput id="fileInput" (change)="onFileChange($event)" class="doc-input">
-                    <button type="button" class="btn btn-secondary" title="Upload Document">
-                    <label for="fileInput" class="att-doc-label-add p-0 m-0" title="Add Document">
-                        <i class="fa fa-paperclip"></i> Attach
-                    </label>
-                </button>
-            </div>   -->
-                <div class="tableFixHead mt-2">
-                    <table class="table-theam-1 row_bgcolor_1">
-                        <thead>
-                            <tr>
-                                <th class="w-20">Document Name</th>
-                                <th class="w-20">Remarks</th>
-                                <th class="w-10">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <tbody>
-                            <ng-container *ngFor="let file of uploadedDocument; let i=index;">
-                                <tr *ngIf="file.ACTIVE == 1">
-
-                                    <td><a (click)="f_downloadDocument(file)">{{file.DOCUMENT_FILENAME}}</a></td>
-                                    <td>{{file.REMARKS}}</td>
-                                    <td><i class="fas fa-trash-alt" id=f_{{i}} (click)="removeDoc(i)"></i></td>
-                                </tr>
-                            </ng-container>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
 <p-dialog header="Add Document" [(visible)]="displayAttach" [modal]="true" [style]="{ width: '40rem' }">
     <div class="row">
         <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 ">
@@ -620,8 +636,7 @@
 
             <label>Document Type:</label>
             <div class="floating-input  list-btn">
-                <select class="form-control show-tick " id="DOCUMENT_TYPE_ID" data-live-search="true"
-                    title="Select">
+                <select class="form-control show-tick " id="DOCUMENT_TYPE_ID" data-live-search="true" title="Select">
                     <option *ngFor="let opt of document_type_list; let i=index" [selected]="opt.DOCUMENT_TYPE_ID"
                         [(ngModel)]="typeofdocument" [value]="opt.DOCUMENT_TYPE_ID">{{ opt.DOCUMENT_DESC }}</option>
                 </select>
@@ -642,15 +657,13 @@
         </div>
         <!-- <label>{{fileInput.files[0]?.name}}</label> -->
         <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12">
-        <label>Remarks <span class="validator">*</span> :</label>
-        <div class="floating-input">
-        <textarea
-            name="" id=""
-            rows="2" class="form-control"
-            [(ngModel)]="REMARKS" [ngModelOptions]="{ standalone: true }" placeholder="Remarks">
+            <label>Remarks <span class="validator">*</span> :</label>
+            <div class="floating-input">
+                <textarea name="" id="" rows="2" class="form-control" [(ngModel)]="REMARKS"
+                    [ngModelOptions]="{ standalone: true }" placeholder="Remarks">
         </textarea>
+            </div>
         </div>
-    </div>
         <!-- <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 att-doc" >
 </div> -->
 
@@ -662,7 +675,7 @@
             <!-- <button type="button" class="btn btn-secondary"  (click)="uploadDoc()" title="Upload Document">
         <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input">
     </button> -->
-            <!-- <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input"> -->
+            <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input">
             <button type="button" class="btn btn-secondary" title="Upload Document">
                 <label for="fileInput" class="att-doc-label-add p-0 m-0" title="Add Document">
                     <i class="fa fa-paperclip"></i> Attach
@@ -676,4 +689,203 @@
         </div>
     </div>
 
+</p-dialog>
+
+<p-dialog header="Contact Details" [(visible)]="viewcustomberdetails" [modal]="true" [style]="{ width: '60rem' }">
+
+    <div class="col-md-12 mt-2">
+        <div class="row card">
+            <div class="form-inline col-md-12">
+                <h6 class="mb-0 col-md-6 p-0">Customer Details</h6>
+                <div class="row-add col-md-6  text-right">
+                    <!-- <button type="button" class="btn text-primary pb-0" (click)="addRow()">
+                        <i class='fas fa-plus-circle mr-2'></i>Add
+                    </button> -->
+                </div>
+                <hr class="m-0 mb-2">
+            </div>
+            <div class="col-md-12">
+                <div class="tableFixHead">
+                    <table class="table-theam-1 row_bgcolor_2">
+                        <thead>
+                            <tr>
+                                <th class="w-20 ">Sr.No</th>
+                                <th class="w-15 ">Contact Name/Email</th>
+                                <th class="w-20 ">Mobile/Phone No.</th>
+                                <th class="w-20 ">Designation/Department</th>
+                                <!-- <th class="w-10 text-center">Bill Email</th>
+                                <th class="w-10 text-center">Rcpt Email</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let data of Master_contact_detail; let i=index;">
+                                <tr *ngIf="data.ACTIVE != 0">
+                                    <td class="pb-0 ">{{i+1}}</td>
+                                    <td class="w-15">
+                                        <div class="floating-input">
+                                            <input type="text" InputType="AlphaSpace" Uppercase class="form-control"
+                                                [(ngModel)]="data.CONTACT_NAME" placeholder="Contact Name"
+                                                [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <td class="">
+                                        <div class="floating-input">
+                                            <input type="text" class="form-control" [(ngModel)]="data.CONTACT_MOBILE"
+                                                placeholder="Mobile No." [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <td class="">
+                                        <div class="floating-input">
+                                            <input type="text" class="form-control" [(ngModel)]="data.CONTACT_DESIG"
+                                                placeholder="Designation" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <td class="text-left">
+                                        <div class="floating-input">
+                                            <input type="checkbox" [(ngModel)]="data.SEND_INVOICEEMAIL"
+                                                class="form-control" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <td class="text-left">
+                                        <div class="floating-input">
+                                            <input type="checkbox" [(ngModel)]="data.SEND_RECEIPTEMAIL"
+                                                class="form-control" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="data.ACTIVE != 0">
+                                    <td class="pt-0"></td>
+                                    <td colspan="1" class="w-15 pt-0">
+                                        <div class="floating-input">
+                                            <input type="text" class="form-control" [(ngModel)]="data.CONTACT_EMAIL"
+                                                placeholder="Email" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <td colspan="1" class="pt-0">
+                                        <div class="floating-input">
+                                            <input type="text" class="form-control" [(ngModel)]="data.CONTACT_PHONE"
+                                                placeholder="Phone No" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <!-- <td colspan="1" class="pt-0">
+                                        <div class="floating-input">
+                                            <input type="text" class="form-control" [(ngModel)]="data.CONTACT_DEPT"
+                                                placeholder="Department" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td> -->
+                                    <!-- <td colspan="2" class="text-left">
+                                        <div class="floating-inpu text-center">
+                                            <i class='fas fa-trash-alt text-danger' (click)=removeRow(i)
+                                                id="i_{{i}}"></i>
+                                        </div>
+                                    </td> -->
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</p-dialog>
+
+<p-dialog header="Contact Details" [(visible)]="viewLeadetails" [modal]="true" [style]="{ width: '60rem' }">
+    <div class="col-md-12 mt-2">
+        <div class="row card">
+            <div class="form-inline col-md-12">
+                <h6 class="mb-0 col-md-6 p-0">Lead Contact Details<span class="validator">*</span></h6>
+                <!-- <div class="row-add col-md-6  text-right">
+                    <button type="button" class="btn text-primary pb-0" (click)="addRow()">
+                        <i class='fas fa-plus-circle mr-2'></i>Add
+                    </button>
+                </div> -->
+                <hr class="m-0 mb-2">
+            </div>
+            <div class="col-md-12">
+                <div class="tableFixHead">
+                    <table class="table-theam-1 row_bgcolor_2">
+                        <thead>
+                            <tr>
+                                <th class="w-20 ">Sr.No</th>
+                                <th class="w-15 ">Contact Name/Email <span class="validator">*</span></th>
+                                <th class="w-20 ">Mobile/Phone No.<span class="validator">*</span></th>
+                                <th class="w-20 ">Designation/Department <span class="validator">*</span></th>
+                                <!-- <th class="w-10 text-center">Action</th> -->
+                                <!-- <th class="w-10 text-center"></th> -->
+                                <!-- <th class="w-10 text-center">Rcpt Email</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let data of Master_contact_detail; let i=index;">
+                                <tr *ngIf="data.ACTIVE != 0">
+                                    <td class="pb-0 ">{{i+1}}</td>
+                                    <td class="w-15">
+                                        <div class="floating-input">
+                                            <input type="text" InputType="AlphaSpace" Uppercase class="form-control"
+                                                [(ngModel)]="data.CONTACT_NAME" placeholder="Contact Name"
+                                                [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <td class="">
+                                        <div class="floating-input">
+                                            <input type="text" class="form-control" [(ngModel)]="data.CONTACT_MOBILE"
+                                                placeholder="Mobile No." [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <td class="">
+                                        <div class="floating-input">
+                                            <input type="text" class="form-control" [(ngModel)]="data.CONTACT_DESIG"
+                                                placeholder="Designation" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                    <!-- <td></td> -->
+                                    <!-- <td class="text-left">
+                                            <div class="floating-input">
+                                                <input type="checkbox" [(ngModel)]="data.SEND_INVOICEEMAIL" class="form-control" [ngModelOptions]="{standalone: true}">
+                                            </div>
+                                        </td>
+                                        <td class="text-left">
+                                            <div class="floating-input">
+                                                <input type="checkbox" [(ngModel)]="data.SEND_RECEIPTEMAIL" class="form-control" [ngModelOptions]="{standalone: true}">
+                                            </div>
+                                        </td> -->
+                                </tr>
+                                <tr *ngIf="data.ACTIVE != 0">
+                                    <td class="pt-0"></td>
+                                    <td colspan="1" class="w-15 pt-0">
+                                        <div class="floating-input">
+                                            <input type="text" class="form-control" [(ngModel)]="data.CONTACT_EMAIL"
+                                                placeholder="Email" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <td colspan="1" class="pt-0">
+                                        <div class="floating-input">
+                                            <input type="text" class="form-control" [(ngModel)]="data.CONTACT_PHONE"
+                                                minlength="10" maxlength="13" placeholder="Phone No"
+                                                [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <td colspan="1" class="pt-0">
+                                        <div class="floating-input">
+                                            <input type="text" class="form-control" [(ngModel)]="data.CONTACT_DEPT"
+                                                placeholder="Department" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <!-- <td colspan="1" class="text-left">
+                                        <div class="floating-inpu text-center">
+                                            <i class='fas fa-trash-alt text-danger' (click)=removeRow(i)
+                                                id="i_{{i}}"></i>
+                                        </div>
+                                    </td> -->
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </p-dialog>

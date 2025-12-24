@@ -86,3 +86,15 @@ table.table-theam-1 {
 /* .float-input{
 
 } */
+ .addbtn .btn-primary {
+    color: #fff;
+    background-color: #424a5a;
+    /* border-color: #3f6ad8; */
+    border: 0;
+    padding: 0px 8px !important;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    outline: 0;
+}
+
