@@ -40,7 +40,7 @@ export class SalesOpportunityLogComponent implements OnInit {
   NoDocs: number = 0;
   DOCUMENT_ATTECHED_LIST: any = [];
   document_type_list: any = [];
-
+REMARKS: string = '';
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
     private http: HttpRequestServiceService,
@@ -171,7 +171,7 @@ export class SalesOpportunityLogComponent implements OnInit {
         this.opportunitytype_list = res.opportunitytype_list;
         this.probability_list = res.probability_list;
         this.Nextactivity_list = res.Nextactivity_list;
-        this.document_type_list = res.document_type_list;
+        this.document_type_list = res.doc_type_list;
         this.lead_list = res.lead_list
         this.form.get('COMPANY_CODE').setValue(this.company_list[0].COMPANY_CODE);
       // this.form.get('LOCATION_CODE').setValue(this.location_list[0].LOCATION_CODE);
@@ -536,7 +536,7 @@ export class SalesOpportunityLogComponent implements OnInit {
             UPLOAD_BY: this.sharedService.loginUser[0].USER_NAME,
             UPLOAD_BY_USERID: this.sharedService.loginUser[0].USERID,
             DOC_BASE64: b64,
-            // REMARKS: this.REMARKS
+             REMARKS: this.REMARKS
 
           }
         )
@@ -575,7 +575,7 @@ uploadDoc() {
     UPLOAD_BY: this.uploadingFiles[i].UPLOAD_BY,
     UPLOAD_BY_USERID: this.uploadingFiles[i].UPLOAD_BY_USERID,
     DOC_BASE64: this.uploadingFiles[i].b64,
-    // REMARKS: this.uploadingFiles[i].REMARKS
+     REMARKS: this.uploadingFiles[i].REMARKS
   });
   }
   console.log("DOCUMENT_ATTECHED_LIST :", this.DOCUMENT_ATTECHED_LIST);
@@ -754,4 +754,8 @@ addDocument(){
   this.displayAttach=true
   console.log('displayAttach',this.displayAttach);
   }
+  removeRow(i){
+
+  }
+  
 }
