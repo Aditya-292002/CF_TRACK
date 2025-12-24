@@ -390,19 +390,19 @@
                             <table class="table-theam-1 row_bgcolor_2">
                                 <thead>
                                     <tr>
-                                        <th class="w-20 ">Sr.No</th>
+                                        <!-- <th class="w-20 ">Sr.No</th> -->
                                         <!-- <th class="w-15 ">Contact Name/Email</th>
                                     <th class="w-20 ">Mobile/Phone No.</th>
                                     <th class="w-20 ">Designation/Department</th>
                                     <th class="w-10 text-center">Bill Email</th>
                                     <th class="w-10 text-center">Rcpt Email</th> -->
-                                        <th class="w-20">Log Date</th>
+                                        <!-- <th class="w-20">Log Date</th>
                                         <th class="w-20">Activity</th>
                                         <th class="w-30">Contact Person</th>
                                         <th class="w-30">Remarks</th>
                                         <th class="w-20">Next Follow Up</th>
                                         <th class="w-20">Next Activity</th>
-                                        <th class="w-20">Document</th>
+                                        <th class="w-20">Document</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -410,70 +410,124 @@
                                         <tr *ngIf="data.ACTIVE != 0">
                                             <td class="pb-0 ">{{i+1}}</td>
                                             <td class="w-15">
-                                                <div class="floating-input">
+                                                <!-- <div class="floating-input">
                                                     <input type="text" InputType="AlphaSpace" Uppercase
                                                         class="form-control" [(ngModel)]="data.LOG_DATE"
                                                         placeholder="Contact Name"
                                                         [ngModelOptions]="{standalone: true}">
+                                                </div> -->
+                                                <div class="float-label">
+                                                    <label for="on_label">Next Follow Up</label>
+                                                    <input Uppercase class="form-control float-input"  [(ngModel)]="data.LOG_DATE"
+                                                        type="text" [ngModelOptions]="{standalone: true}"
+                                                        id="on_label"
+                                                        name="on_label"
+                                                    />
                                                 </div>
                                             </td>
                                             <td class="">
-                                                <div class="floating-input">
+                                                <!-- <div class="floating-input">
                                                     <input type="text" class="form-control"
                                                         [(ngModel)]="data.CRMACTIVITY_NAME" placeholder="Mobile No."
                                                         [ngModelOptions]="{standalone: true}">
+                                                </div> -->
+                                                 <div class="float-label">
+                                                    <label for="on_label">Activity</label>
+                                                    <input Uppercase class="form-control float-input"  [(ngModel)]="data.CRMACTIVITY_NAME"
+                                                        type="text" [ngModelOptions]="{standalone: true}"
+                                                        id="on_label"
+                                                        name="on_label"
+                                                    />
                                                 </div>
                                             </td>
                                             <td class="">
-                                                <div class="floating-input">
+                                                <!-- <div class="floating-input">
                                                     <input type="text" class="form-control"
                                                         [(ngModel)]="data.CONTACT_PERSONS" placeholder="Designation"
                                                         [ngModelOptions]="{standalone: true}">
+                                                </div> -->
+                                                 <div class="float-label">
+                                                    <label for="on_label">Contact Persons</label>
+                                                    <input Uppercase class="form-control float-input"  [(ngModel)]="data.CONTACT_PERSONS"
+                                                        type="text" [ngModelOptions]="{standalone: true}"
+                                                        id="on_label"
+                                                        name="on_label"
+                                                    />
                                                 </div>
                                             </td>
                                             <td class="text-left">
-                                                <div class="floating-input">
+                                                <!-- <div class="floating-input">
 
                                                     <input type="text" placeholder="Remarks" [(ngModel)]="data.REMARKS"
                                                         class="form-control" [ngModelOptions]="{standalone: true}">
+                                                </div> -->
+                                                  <div class="float-label">
+                                                    <label for="on_label">Activity Details</label>
+                                                    <input Uppercase class="form-control float-input"  [(ngModel)]="data.REMARKS"
+                                                        type="text" [ngModelOptions]="{standalone: true}"
+                                                        id="on_label"
+                                                        name="on_label"
+                                                    />
                                                 </div>
                                             </td>
                                             <td class="text-left">
-                                                <div class="floating-input">
+                                                <!-- <div class="floating-input">
                                                     <input type="text" [(ngModel)]="data.NEXT_FOLLOWUP"
                                                         class="form-control" [ngModelOptions]="{standalone: true}">
+                                                </div> -->
+                                                 <div class="float-label">
+                                                    <label for="on_label">Next Follow Up</label>
+                                                    <input Uppercase class="form-control float-input"  [(ngModel)]="data.NEXT_FOLLOWUP"
+                                                        type="text" [ngModelOptions]="{standalone: true}"
+                                                        id="on_label"
+                                                        name="on_label"
+                                                    />
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr *ngIf="data.ACTIVE != 0">
                                             <td class="pt-0"></td>
                                             <td colspan="1" class="w-15 pt-0">
-                                                <div class="floating-input">
+                                                <!-- <div class="floating-input">
                                                     <input type="text" class="form-control"
                                                         [(ngModel)]="data.NEXT_CRMACTIVITY" placeholder="Email"
                                                         [ngModelOptions]="{standalone: true}">
+                                                </div> -->
+                                                  <div class="float-label">
+                                                    <label for="on_label">Next Activity</label>
+                                                    <input Uppercase class="form-control float-input"  [(ngModel)]="data.NEXT_CRMACTIVITY"
+                                                        type="text" [ngModelOptions]="{standalone: true}"
+                                                        id="on_label"
+                                                        name="on_label"
+                                                    />
                                                 </div>
                                             </td>
                                             <td colspan="1" class="pt-0">
-                                                <div class="floating-input">
-                                                    <input type="text" class="form-control"
-                                                        [(ngModel)]="data.CONTACT_PHONE" placeholder="Phone No"
-                                                        [ngModelOptions]="{standalone: true}">
+                                                <div class="float-label">
+                                                    <label for="on_label">Revised Value</label>
+                                                    <input Uppercase class="form-control float-input"  [(ngModel)]="data.REVISED_ORDERVALUE"
+                                                        type="text" [ngModelOptions]="{standalone: true}"
+                                                        id="on_label"
+                                                        name="on_label"
+                                                    />
                                                 </div>
                                             </td>
                                             <td colspan="1" class="pt-0">
-                                                <div class="floating-input">
-                                                    <input type="text" class="form-control"
-                                                        [(ngModel)]="data.CONTACT_DEPT" placeholder="Department"
-                                                        [ngModelOptions]="{standalone: true}">
+                                                <div class="float-label">
+                                                    <label for="on_label">Probability</label>
+                                                    <input Uppercase class="form-control float-input"  [(ngModel)]="data.REVISED_ORDERVALUE"
+                                                        type="text" [ngModelOptions]="{standalone: true}"
+                                                        id="on_label"
+                                                        name="on_label"
+                                                    />
                                                 </div>
                                             </td>
-                                            <td colspan="2" class="text-left">
+                                            <!-- <td colspan="2" class="text-left">
                                                 <div class="floating-inpu text-center">
                                                     <i class='fas fa-trash-alt text-danger' (click)=removeRow(i)
                                                         id="i_{{i}}"></i>
                                                 </div>
-                                            </td>
+                                            </td> -->
                                         </tr>
                                     </ng-container>
                                 </tbody>
