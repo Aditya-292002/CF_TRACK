@@ -179,6 +179,7 @@ viewcustomberdetails: boolean = false;
         this.probability_list = res.probability_list;
         this.Nextactivity_list = res.Nextactivity_list;
         this.document_type_list = res.doc_type_list;
+        console.log(this.document_type_list);
         this.lead_list = res.lead_list
         this.form.get('COMPANY_CODE').setValue(this.company_list[0].COMPANY_CODE);
       // this.form.get('LOCATION_CODE').setValue(this.location_list[0].LOCATION_CODE);
@@ -511,6 +512,8 @@ viewcustomberdetails: boolean = false;
   }
 
   selectDocument(event: any) {
+   console.log(this.typeofdocument,'upload save');
+    this.typeofdocument
     this.uploadingFiles = [];
     let b64: string = "";
     let extension: string[] = [];
@@ -564,6 +567,7 @@ viewcustomberdetails: boolean = false;
 }
 
 uploadDoc() {
+console.log(this.typeofdocument,'test');
 
     // if(this.REMARKS==""){
     //   this.toast.warning("Please enter remarks for the document");
@@ -587,6 +591,7 @@ uploadDoc() {
      REMARKS: this.uploadingFiles[i].REMARKS
   });
   }
+  this.displayAttach=false
   console.log("DOCUMENT_ATTECHED_LIST :", this.DOCUMENT_ATTECHED_LIST);
   console.log("Uploaded Document List :", this.uploadedDocument);
 }
@@ -782,12 +787,12 @@ addDocument(){
     this.http.PostRequest(this.apiUrl.GetLeadAndCustContactDetails, data).then(res => {
       console.log(res)
       if (res.flag) {
-        this.toast.success(res.msg)
+        // this.toast.success(res.msg)
        this.Master_contact_detail=res.contact_details
         
         this.spinner = false;
       } else {
-        this.toast.warning(res.msg)
+        // this.toast.warning(res.msg)
         this.spinner = false;
       }
     }, err => {
