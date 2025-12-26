@@ -70,7 +70,7 @@
                     </div> -->
                     <label *ngIf="selectedCust">Customer Name :</label>
                     <label *ngIf="selectedEmp">Lead Name :</label>
-                    <div class="floating-input  list-btn" *ngIf="dropdownSelected1">
+                    <!-- <div class="floating-input  list-btn" *ngIf="dropdownSelected1">
                         <select class="form-control selectpicker show-tick " id="Customer" formControlName="CUST_CODE"
                             data-live-search="true" title="Select">
                             <option *ngFor="let opt of customer_list; let i=index"
@@ -81,7 +81,8 @@
                             (click)="form.controls['CUST_CODE'].reset()" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                    </div>
+                    </div> -->
+                    <!--  -->
                     <!-- <div class="floating-input  list-btn" *ngIf="dropdownSelected2">
                         <select class="form-control selectpicker show-tick " id="Customer" formControlName="LEAD_CODE"
                             data-live-search="true" title="Select">
@@ -94,7 +95,15 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div> -->
-
+                    <!--  -->
+                    <div class="floating-input  list-btn" *ngIf="dropdownSelected1">
+                        <div class="floating-input "
+                            [ngClass]="{'invalid-control':isSubmited && form.controls['CUST_CODE'].errors?.required}">
+                            <input type="text" formControlName="CUST_CODE" InputType="AlphaNum" class="form-control"
+                                placeholder="Customer Name" readonly>
+                        </div>
+                    </div>
+                    <!--  -->
                     <div class="floating-input  list-btn" *ngIf="dropdownSelected2">
                         <div class="floating-input "
                             [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_CODE'].errors?.required}">
@@ -178,14 +187,15 @@
                 </div>
                 <div class="col-md-4">
                     <label>Revised Value :</label>
-                    <div class="floating-input "
-                        [ngClass]="{'invalid-control':isSubmited && form.controls['REVISED_ORDERVALUE'].errors?.required}">
-                        <input
+                    <div class="floating-input"
+                        [ngClass]="{'invalid-control': isSubmited && form.controls['REVISED_ORDERVALUE'].errors?.required}">
+                    <input
                         type="text"
                         formControlName="REVISED_ORDERVALUE"
                         maxlength="50"
-                        placeholder="Revised Value."
-                        class="form-control text-right selectpicker">
+                        placeholder="Revised Value :"
+                        class="form-control text-right selectpicker"
+                        (input)="formatRevisedValue($event)" />
                     </div>
                 </div>
                 <!--  -->
@@ -244,6 +254,7 @@
                     <label>Status :</label>
                     <div class="floating-input  list-btn">
                         <select class="form-control selectpicker show-tick " id="Status"
+                            (change)="onStatusChange(form.controls['REVISED_STATUS'].value)"
                             formControlName="REVISED_STATUS" data-live-search="true" title="Select">
                             <option *ngFor="let opt of opportunity_status_list; let i=index"
                                 [selected]="opt.OPPO_STATUS == form.controls['REVISED_STATUS'].value"
@@ -260,7 +271,7 @@
                     <div class="floating-input  list-btn">
                         <select class="form-control selectpicker show-tick " id="Sub_Status"
                             formControlName="REVISED_SUBSTATUS" data-live-search="true" title="Select">
-                            <option *ngFor="let opt of opportunity_substatus_list; let i=index"
+                            <option *ngFor="let opt of filteredSubStatus; let i=index"
                                 [selected]="opt.OPPO_SUB_STATUS == form.controls['REVISED_SUBSTATUS'].value"
                                 [value]="opt.OPPO_SUB_STATUS">{{ opt.SUB_DESCRIPTION }}</option>
                         </select>
@@ -651,7 +662,7 @@
 
             <label>Document Type:</label>
             <div class="floating-input  list-btn">
-                <select class="form-control selectpicker show-tick " id="DOCUMENT_TYPE_ID" data-live-search="true" title="Select">
+                <select class="form-control selectpicker show-tick " id="DOCUMENT_TYPE_ID" data-live-search="true" title="Select" style="height: 44px">
                     <option *ngFor="let opt of document_type_list; let i=index" [selected]="opt.DOCUMENT_TYPE_ID"
                         [(ngModel)]="typeofdocument">{{ opt.DOCUMENT_DESC }}</option>
                 </select>

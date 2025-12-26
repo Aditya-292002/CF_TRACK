@@ -43,6 +43,7 @@ export class SalesOpportunityLogComponent implements OnInit {
 REMARKS: string = '';
 viewcustomberdetails: boolean = false;
   TYPE: any;
+  CUST_CODE: any;
   LEAD_CODE: any;
   viewleadetails: boolean;
   viewLeadetails: boolean;
@@ -74,6 +75,7 @@ viewcustomberdetails: boolean = false;
     document_List: Array<any> = [];
     uploadedDocument: Array<any> = [];
     uploadingFiles: Array<any> = [];
+    filteredSubStatus: Array<any> = [];
 
     // NEXT_FOLLOWUP: string = "";
     // LOG_DATE: string = "";
@@ -243,8 +245,8 @@ viewcustomberdetails: boolean = false;
 
   f_fillData(data: Array<any> = []) {
     this.form.get('LEAD_CODE').reset();
-        this.form.get('CUST_CODE').reset();
-           this.form.get('OPPO_CODE').reset();
+    this.form.get('CUST_CODE').reset();
+    this.form.get('OPPO_CODE').reset();
     console.log(data[0])
     this.form.get('COMPANY_CODE').setValue(data[0].COMPANY_CODE)
     // this.form.get('CUST_CODE').setValue(data[0].CUST_CODE)
@@ -253,11 +255,12 @@ viewcustomberdetails: boolean = false;
     this.form.get('REMARKS').setValue(data[0].REMARKS)
     this.form.get('REVISED_ORDERVALUE').setValue(data[0].REVISED_ORDERVALUE)
     this.form.get('REVISED_PROBABILITY').setValue(data[0].REVISED_PROBABILITY)
-    this.form.get('REVISED_STATUS').setValue(data[0].REVISED_STATUS)  
-    this.form.get('REVISED_SUBSTATUS').setValue(data[0].REVISED_SUBSTATUS)
+    this.onStatusChange(data[0].REVISED_STATUS)
+    this.form.get('REVISED_STATUS').setValue(data[0].REVISED_STATUS || '')  
+    this.form.get('REVISED_SUBSTATUS').setValue(data[0].REVISED_SUB_STATUS || '')
     this.form.get('OPPO_TYPE').setValue(data[0].PROJECT_TYPE)
-      this.form.get('COMFLEX_ATTENDTIES').setValue(data[0].COMFLEX_ATTENDTIES)
-      this.TYPE = data[0].LEADORCUST;
+    this.form.get('COMFLEX_ATTENDTIES').setValue(data[0].COMFLEX_ATTENDTIES)
+    this.TYPE = data[0].LEADORCUST;
     if(data[0].LEADORCUST === "L"){
       this.selectedCust = false;
       this.selectedEmp = true;
@@ -266,14 +269,17 @@ viewcustomberdetails: boolean = false;
       this.LEAD_CODE = data[0].LEAD_CODE;
       this.form.get('LEAD_CODE').setValue(data[0].LEAD_NAME)
       this.form.get('CUST_CODE').setValue("");
+      this.onStatusChange(data[0].REVISED_STATUS);
     }else{
       this.form.get('CUST_CODE').reset();
       this.selectedCust = true;
       this.selectedEmp = false;
       this.dropdownSelected1 = true;
       this.dropdownSelected2 = false;  
-      this.form.get('CUST_CODE').setValue(data[0].CUST_CODE)
+      this.CUST_CODE = data[0].CUST_CODE;
+      this.form.get('CUST_CODE').setValue(data[0].CUST_NAME)
       this.form.get('LEAD_CODE').setValue("");
+      this.onStatusChange(data[0].REVISED_STATUS);
     }
     // this.form.get('LOG_DATE').setValue(this.sharedService.getFormatedDate(data[0].LOG_DATE))
     // this.form.get('NEXT_FOLLOWUP').setValue(this.sharedService.getFormatedDate(data[0].NEXT_FOLLOWUP))
@@ -810,5 +816,65 @@ addDocument(){
     this.getContactDetails();
   }
 
+  formatRevisedValue(event: any) {
+  let value: string = event.target.value;
+  // Only keep digits & decimal
+  value = value.replace(/[^0-9.]/g, '');
+  // Prevent lone decimal
+  if (value === '.') {
+    this.form.get('REVISED_ORDERVALUE').setValue('0.', { emitEvent: false });
+    return;
+  }
+  // 🔥 Prevent multiple decimals
+  if ((value.match(/\./g) || []).length > 1) {
+    value = value.replace(/\.+$/, ""); // remove extra decimals
+  }
+  // Split into integer + decimal portion
+  let [integerPart, decimalPart] = value.split('.');
+  // Remove leading 0s except single 0
+  integerPart = integerPart.replace(/^0+(?!$)/, '');
+  // 🔥 Apply Indian formatting
+  if (integerPart) {
+    let lastThree = integerPart.slice(-3);
+    let rest = integerPart.slice(0, -3);
+    if (rest !== "") {
+      integerPart =
+        rest.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + "," + lastThree;
+    }
+  }
+  let formattedValue = integerPart || '0';
+  if (decimalPart !== undefined) {
+    formattedValue += '.' + decimalPart;
+  }
+  this.form.get('REVISED_ORDERVALUE').setValue(formattedValue, { emitEvent: false });
+}
   
+  onStatusChange(status: any) {
+    debugger;
+   console.log('status',status);
+   console.log('opportunity_substatus_list',this.opportunity_substatus_list);
+  // 🔥 Clear previous filtered lists BEFORE applying new filters
+  this.filteredSubStatus.length = 0;
+  // 🔥 Optionally reset form fields);
+  this.form.get('REVISED_STATUS').reset();
+  this.form.get('REVISED_SUBSTATUS').reset();
+  // Set OPPO_STATUS in form
+  this.form.get('REVISED_STATUS').setValue(status);
+  // Filter Sub Status List
+  this.filteredSubStatus = this.opportunity_substatus_list.filter(
+    (sElement: any) => sElement.OPPO_STATUS == status
+  );
+
+  console.log('filteredSubStatus',this.filteredSubStatus);
+  // this.form.get('OPPO_SUB_STATUS').setValue(10);
+  // 👉 Set the FIRST item of the filtered list (if exists)
+  if (this.filteredSubStatus.length > 0) {
+    this.form.get('REVISED_SUBSTATUS').setValue(this.filteredSubStatus[0].OPPO_SUB_STATUS);
+  }
+  // Refresh Bootstrap Select UI
+  setTimeout(() => $('.selectpicker')
+    .selectpicker('refresh')
+    .trigger('change'), 100);
+}
+
 }
