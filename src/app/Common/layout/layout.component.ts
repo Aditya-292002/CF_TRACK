@@ -10,7 +10,7 @@ import { HttpRequestServiceService } from 'src/app/services/http-request-service
 import { RoutingService } from 'src/app/services/routing.service';
 import { SharedServiceService } from 'src/app/services/shared-service.service';
 declare var jQuery: any;
-//declare var $$: any;
+// declare var $: any;
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
@@ -47,7 +47,7 @@ export class LayoutComponent implements OnInit {
   location_list:any = [];
   LOCATION_NAME:any;
   FYEAR_DESC:any;
-
+  role_id: any;
   ngOnInit() {
     $(document).ready(function(){
         var window_width=$(window).width();
@@ -134,6 +134,7 @@ export class LayoutComponent implements OnInit {
         this.FYEAR = this.sharedService.loginUser[0].FYEAR
         this.FYEAR_DESC = this.sharedService.loginUser[0].FYEAR_DESC
         this.COMPANY_CODE = this.sharedService.loginUser[0].COMPANY_CODE
+       this.role_id=this.sharedService.loginUser[0].ROLE_ID
         this.getUserMenu();
         this.getFyear();
         this.onLoadCheckAttendance();
@@ -190,31 +191,61 @@ export class LayoutComponent implements OnInit {
   attendance_type: string = 'TIME_IN'
   isAttendance: boolean=false;
   EMP_NAME: string = ''
-  onLoadCheckAttendance() {
-    this.spinner = true;
+  // onLoadCheckAttendance() {
+  //   this.spinner = true;
+  //   this.SYS_DATE_TIME = this.datePipe.transform(new Date(), 'dd-MMM-yyyy hh:mm:ss')
+  //   let data = {  }
+  //   this.http.PostRequest(this.apiUrl.Check_Attendance, data).then(res => {
+  //     if(this.role_name == "MANAGEMENT"){
+  //       this.isAttendance = true;        
+  //       this.spinner = false;
+  //     }
+  //     else if (res.flag  && res.today_flag != 1) {
+  //       this.attendance_type = res.attendance_type
+  //       this.ATT_DATE = res.Date;
+  //       this.EMP_NAME = this.sharedService.loginUser[0].EMP_CODE +" - "+this.sharedService.loginUser[0].USER_NAME
+        
+  //       jQuery(this.attendance.nativeElement).modal('show')
+  //       this.isAttendance = false;
+  //       this.spinner = false;
+  //     } else {
+  //       this.isAttendance = true;        
+  //       this.spinner = false;
+  //     }
+  //   }, err => {
+  //     this.spinner = false;
+  //   });
+  // }
+   
+onLoadCheckAttendance() {
     this.SYS_DATE_TIME = this.datePipe.transform(new Date(), 'dd-MMM-yyyy hh:mm:ss')
     let data = {  }
     this.http.PostRequest(this.apiUrl.Check_Attendance, data).then(res => {
+      if(this.role_id==10){
+        this.isAttendance = false;        
+      }
       if(this.role_name == "MANAGEMENT"){
-        this.isAttendance = true;        
-        this.spinner = false;
+        this.isAttendance = true;
       }
       else if (res.flag  && res.today_flag != 1) {
         this.attendance_type = res.attendance_type
         this.ATT_DATE = res.Date;
-        this.EMP_NAME = this.sharedService.loginUser[0].EMP_CODE +" - "+this.sharedService.loginUser[0].USER_NAME
-        
-        jQuery(this.attendance.nativeElement).modal('show')
+        //this.EMP_NAME = this.sharedService.loginUser[0].EMP_CODE +" - "+this.sharedService.loginUser[0].USER_NAME
+        var ROLE_ID =  this.sharedService.loginUser[0].ROLE_ID
+       
+       
+         if(ROLE_ID == 10){
+          jQuery(this.attendance.nativeElement).modal('hide')
+        }else{
+          jQuery(this.attendance.nativeElement).modal('show')
+        }
         this.isAttendance = false;
-        this.spinner = false;
       } else {
-        this.isAttendance = true;        
-        this.spinner = false;
+        this.isAttendance = true;
       }
-    }, err => {
-      this.spinner = false;
     });
-  }
+}
+ 
   CheckAttendance(para: number = null) {
     this.f_clearPopup();
     this.spinner = true;
