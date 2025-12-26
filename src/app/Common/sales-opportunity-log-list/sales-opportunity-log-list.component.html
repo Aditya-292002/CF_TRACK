@@ -47,11 +47,12 @@
                     <thead>
                         <tr>
                             <th>Oppo Code</th>
-                            <th> Date</th>
+                            <th>Log Date</th>
                             <th>Oppo Name</th>
-                            <th>Account MGR</th>
+                            <th>Next Follow Up</th>
                             <th>Cust Name</th>
                             <th>Status</th>
+                            <th>Account MGR</th>
                             <th class="w-110">Action</th>
 
                         </tr>
@@ -61,9 +62,10 @@
                             <td>{{data.OPPO_CODE}}</td>
                             <td>{{data.PROJECT_DATE | date:'dd-MMM-yyyy' }}</td>
                             <td>{{data.OPPO_NAME}}</td>
-                            <td>{{data.ACCOUNT_MGR}}</td>
+                            <td>{{data.NEXT_FOLLOWUP | date:'dd-MMM-yyyy' }}</td>
                             <td>{{data.CUST_NAME}}</td>
                             <td>{{data.OPPO_STATUS_DESC}}</td>
+                            <td><i class="fas fa-info-circle text-info ml-3" pTooltip={{data.ACCOUNT_MGR}}></i></td>
                             <td class="w-110">
                                 <a>
                                     <i class="fa fa-edit" (click)="getopportunityLogDetails(data);" title="Edit"></i>
