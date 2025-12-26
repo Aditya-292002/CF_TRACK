@@ -1199,12 +1199,30 @@ onLeadChange(leadCode: any) {
     .trigger('change'), 100);
 }
 
+// onCustSegmentAccManagerChange(custSegmentAccManager: any) {
+//   // 🔥 Clear previous filtered lists BEFORE applying new filters
+//   this.filteredCustomerSegments.length = 0;
+//   this.filteredCustomerAccountManager.length = 0;
+//   // 🔥 Optionally reset form fields);
+//   this.form.get('CUST_SEGMENT').reset();
+//   this.form.get('CUST_ACC_MANAGER').reset();
+//   // Filter Sub Status List
+//   this.filteredCustomerSegments = this.segment_list.filter(
+//     (sElement: any) => sElement.CUST_SEGMENT === custSegmentAccManager
+//   );
+//   // 👉 Set the FIRST item of the filtered list (if exists)
+//   if (this.filteredCustomerSegments.length > 0) {
+//     this.form.get('CUST_SEGMENT').setValue(this.filteredCustomerSegments[0].CUST_SEGMENT);
+//   }
+//   setTimeout(() => $('.selectpicker').selectpicker('refresh').trigger('change'), 50);
+// }
+
 onSegmentChange() {
   setTimeout(() => $('.selectpicker').selectpicker('refresh').trigger('change'), 50);
 }
 
 onStatusChange(status: any) {
-  debugger;
+  // debugger;
   // 🔥 Clear previous filtered lists BEFORE applying new filters
   this.filteredSubStatus.length = 0;
   // 🔥 Optionally reset form fields);

@@ -296,7 +296,7 @@
                             data-live-search="true" 
                             title="Select"
                             (change)="onSegmentChange()">
-                            <option *ngFor="let opt of filteredCustomerSegments; let i=index" 
+                            <option *ngFor="let opt of segment_list; let i=index" 
                              [value]="opt.CUST_SEGMENT">{{ opt.SEGMENT_NAME }}</option>                     
                         </select>
                         <button type="button" class="close" onclick="resetDropdown('_custSegment')" (click)="form.controls['CUST_SEGMENT'].reset();" aria-label="Close">
@@ -312,7 +312,7 @@
                             data-live-search="true" 
                             title="Select"
                             (change)="onSegmentChange()">
-                            <option *ngFor="let opt of filteredLeadSegments" 
+                            <option *ngFor="let opt of segment_list" 
                             [value]="opt.CUST_SEGMENT">{{ opt.SEGMENT_NAME }}</option>
                         </select>
                         <button type="button" class="close" onclick="resetDropdown('_leadSegment')" (click)="form.controls['LEAD_SEGMENT'].reset();" aria-label="Close">
