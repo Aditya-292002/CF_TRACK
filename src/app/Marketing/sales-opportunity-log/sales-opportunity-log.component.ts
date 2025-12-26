@@ -279,7 +279,7 @@ viewcustomberdetails: boolean = false;
       this.dropdownSelected1 = true;
       this.dropdownSelected2 = false;  
       this.CUST_CODE = data[0].CUST_CODE;
-      this.form.get('CUST_CODE').setValue(data[0].CUST_CODE)
+      this.form.get('CUST_CODE').setValue(data[0].CUST_NAME)
       this.form.get('LEAD_CODE').setValue("");
       this.onStatusChange(data[0].REVISED_STATUS);
       this.formatRevisedValue(data[0].REVISED_ORDERVALUE);
