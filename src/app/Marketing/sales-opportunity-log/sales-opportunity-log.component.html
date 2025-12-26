@@ -151,9 +151,9 @@
                 </div>
                 <div class="col-md-4">
 
-                    <label>Contact Person :<button type="submit" class="addbtn btn-primary ml-2" *ngIf="TYPE=='L'"
+                    <label>Contact Person :<button type="submit" class="btn btn-secondary  ml-2" *ngIf="TYPE=='L'"
                             (click)="openDialogue('L')">view contact</button>
-                        <button type="submit" class="addbtn btn-primary ml-2" *ngIf="TYPE=='C'"
+                        <button type="submit" class="btn btn-secondary  ml-2" *ngIf="TYPE=='C'"
                             (click)="openDialogue('C')">view contact</button></label>
                     <div class="floating-input"
                         [ngClass]="{'invalid-control':isSubmited && form.controls['CONTACT_PERSONS'].errors?.required}">
@@ -180,8 +180,12 @@
                     <label>Revised Value :</label>
                     <div class="floating-input "
                         [ngClass]="{'invalid-control':isSubmited && form.controls['REVISED_ORDERVALUE'].errors?.required}">
-                        <input type="text" formControlName="REVISED_ORDERVALUE" maxlength="50"
-                            placeholder="Revised Value." class="form-control ">
+                        <input
+                        type="text"
+                        formControlName="REVISED_ORDERVALUE"
+                        maxlength="50"
+                        placeholder="Revised Value."
+                        class="form-control text-right selectpicker">
                     </div>
                 </div>
                 <!--  -->
@@ -266,14 +270,15 @@
                         </button>
                     </div>
                 </div>
-                            <!-- <div class="col-md-12"> -->
-                <!-- <form [formGroup]="form"> -->
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="padding-left: 0px;padding-right: 0px;top: 5px;">
-                        <!-- <div class="row card" style="border-top-width: 10px; margin-top: 10px; padding-top: 10px; top: 10px;"> -->
-                            <div class="col-md-8 mt-1">
-                                <button type="button" class="btn btn-secondary ml-0" (click)="addDocument()"> <i
-                                        class="fa fa-paperclip"></i>Attach</button>
-                                <!-- <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 att-doc" style="padding-left: 0px;">
+                <div class="col-md-12">
+                    <form [formGroup]="form">
+                        <div class="col-sm-12 col-md-12 col-lg-12" style="padding-left: 0px; padding-right: 0px;">
+                            <div class="row"
+                                style="border-top-width: 10px; margin-top: 10px; padding-top: 10px; top: 10px;">
+                                <div class="col-md-8 mt-1">
+                                    <button type="button" class="btn btn-secondary ml-2" (click)="addDocument()"> <i
+                                            class="fa fa-paperclip"></i>Attach</button>
+                                    <!-- <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 att-doc" style="padding-left: 0px;">
                 <input type="file" #fileInput id="fileInput" (change)="onFileChange($event)" class="doc-input">
                     <button type="button" class="btn btn-secondary" title="Upload Document">
                     <label for="fileInput" class="att-doc-label-add p-0 m-0" title="Add Document">
@@ -281,38 +286,38 @@
                     </label>
                 </button>
             </div>   -->
-                                <div class="tableFixHead mt-2">
-                                    <table class="table-theam-1 row_bgcolor_1">
-                                        <thead>
-                                            <tr>
-                                                <th class="w-20">Document Name</th>
-                                                <th class="w-20">Remarks</th>
-                                                <th class="w-10">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tbody>
-                                            <ng-container *ngFor="let file of uploadedDocument; let i=index;">
-                                                <tr *ngIf="file.ACTIVE == 1">
-
-                                                    <td><a
-                                                            (click)="f_downloadDocument(file)">{{file.DOCUMENT_FILENAME}}</a>
-                                                    </td>
-                                                    <td>{{file.REMARKS}}</td>
-                                                    <td><i class="fas fa-trash-alt" id=f_{{i}}
-                                                            (click)="removeDoc(i)"></i></td>
+                                    <div class="tableFixHead mt-2">
+                                        <table class="table-theam-1 row_bgcolor_1">
+                                            <thead>
+                                                <tr>
+                                                    <th class="w-20">Document Name</th>
+                                                    <th class="w-20">Remarks</th>
+                                                    <th class="w-10">Action</th>
                                                 </tr>
-                                            </ng-container>
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                            <tbody>
+                                                <ng-container *ngFor="let file of uploadedDocument; let i=index;">
+                                                    <tr *ngIf="file.ACTIVE == 1">
+
+                                                        <td><a
+                                                                (click)="f_downloadDocument(file)">{{file.DOCUMENT_FILENAME}}</a>
+                                                        </td>
+                                                        <td>{{file.REMARKS}}</td>
+                                                        <td><i class="fas fa-trash-alt" id=f_{{i}}
+                                                                (click)="removeDoc(i)"></i></td>
+                                                    </tr>
+                                                </ng-container>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-                        <!-- </div> -->
-                    </div>
-                <!-- </form> -->
-            <!-- </div> -->
-                <div class="row-add col-md-6 text-right p-0">
-                    <button type="button" class="btn text-primary pb-0" (click)="viewOpportunity()" style="margin-top: 10px;">
+                        </div>
+                    </form>
+                </div>
+                <div class="row-add col-md-6 text-right pt-2">
+                    <button type="button" class="btn text-primary pb-0" (click)="viewOpportunity()">
                         <i class='fas fa-plus-circle mr-2'></i>View</button>
                 </div>
             </div>
@@ -432,7 +437,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 mt-2" *ngIf="isViewOpportunity">
+            <div class=" mt-2" *ngIf="isViewOpportunity">
                 <div class="row card">
                     <div class="form-inline col-md-12">
                         <h6 class="mb-0 col-md-6 p-0">Log Details</h6>
@@ -460,8 +465,8 @@
                                 </thead>
                                 <tbody>
                                     <ng-container *ngFor="let data of log_view_list; let i=index;">
-                                        <tr *ngIf="data.ACTIVE != 0">
-                                            <td class="pb-0 ">{{i+1}}</td>
+                                        <tr *ngIf="data.ACTIVE != 0 " class="tr-padding">
+                                            <td class="pb-0">{{i+1}}</td>
                                             <td class="w-15">
                                                 <!-- <div class="floating-input">
                                                     <input type="text" InputType="AlphaSpace" Uppercase
@@ -470,7 +475,7 @@
                                                         [ngModelOptions]="{standalone: true}">
                                                 </div> -->
                                                 <div class="float-label">
-                                                    <label for="on_label">log Date</label>
+                                                    <label for="on_label">Log Date</label>
                                                     <input Uppercase class="form-control float-input"
                                                         [(ngModel)]="data.LOG_DATE" type="text" [value]="data.LOG_DATE"
                                                         [ngModelOptions]="{standalone: true}" id="on_label"
@@ -533,7 +538,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <tr *ngIf="data.ACTIVE != 0">
+                                        <tr *ngIf="data.ACTIVE != 0 " class="tr-padding">
                                             <td class="pt-0"></td>
                                             <td colspan="1" class="w-15 pt-0">
                                                 <!-- <div class="floating-input">
@@ -576,6 +581,17 @@
                                                         name="on_label" disabled />
                                                 </div>
                                             </td>
+                                            <td colspan="1" class="pt-0">
+                                                <div class="float-label">
+                                                    <!-- <td class="w-130"> -->
+                                                    <i class="fa fa-eye cursor-pointer"
+                                                        (click)="viewDocument(data.LOGID)"
+                                                        [attr.title]="data?.DOCUMENT_SYSFILENAME ? 'View Document' : 'No Document Available'">
+                                                    </i>
+                                                     </div>
+                                                    <!-- </td> -->
+                                            </td>
+
                                             <!-- <td colspan="2" class="text-left">
                                                 <div class="floating-inpu text-center">
                                                     <i class='fas fa-trash-alt text-danger' (click)=removeRow(i)
@@ -635,13 +651,17 @@
 
             <label>Document Type:</label>
             <div class="floating-input  list-btn">
-                <select class="form-control show-tick " id="DOCUMENT_TYPE_ID" data-live-search="true" title="Select" style="height: 44px;">
+                <select class="form-control selectpicker show-tick " id="DOCUMENT_TYPE_ID" data-live-search="true" title="Select">
                     <option *ngFor="let opt of document_type_list; let i=index" [selected]="opt.DOCUMENT_TYPE_ID"
-                        [(ngModel)]="typeofdocument" [value]="opt.DOCUMENT_TYPE_ID">{{ opt.DOCUMENT_DESC }}</option>
+                        [(ngModel)]="typeofdocument">{{ opt.DOCUMENT_DESC }}</option>
                 </select>
+                 <button type="button" class="close" onclick="resetDropdown('DOCUMENT_TYPE_ID')"
+                            (click)="form.controls['DOCUMENT_TYPE_ID'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
             </div>
-            <!-- <div class="floating-input  list-btn">
-                        <select class="form-control selectpicker show-tick " id="DOCUMENT_TYPE_ID"
+              <!-- <div class="floating-input  list-btn">
+                        <select class="form-control selectpicker show-tick " id="Sub_Status"
                             formControlName="REVISED_SUBSTATUS" data-live-search="true" title="Select">
                             <option *ngFor="let opt of opportunity_substatus_list; let i=index"
                                 [selected]="opt.OPPO_SUB_STATUS == form.controls['REVISED_SUBSTATUS'].value"
@@ -652,6 +672,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div> -->
+           
 
         </div>
         <!-- <label>{{fileInput.files[0]?.name}}</label> -->
@@ -693,9 +714,9 @@
 <p-dialog header="Contact Details" [(visible)]="viewcustomberdetails" [modal]="true" [style]="{ width: '60rem' }">
 
     <div class="col-md-12 mt-2">
-        <div class="row card">
+        <div class="row">
             <div class="form-inline col-md-12">
-                <h6 class="mb-0 col-md-6 p-0">Customer Details</h6>
+                <!-- <h6 class="mb-0 col-md-6 p-0">Customer Details</h6> -->
                 <div class="row-add col-md-6  text-right">
                     <!-- <button type="button" class="btn text-primary pb-0" (click)="addRow()">
                         <i class='fas fa-plus-circle mr-2'></i>Add
@@ -739,18 +760,18 @@
                                                 placeholder="Designation" [ngModelOptions]="{standalone: true}">
                                         </div>
                                     </td>
-                                    <td class="text-left">
+                                    <!-- <td class="text-left">
                                         <div class="floating-input">
                                             <input type="checkbox" [(ngModel)]="data.SEND_INVOICEEMAIL"
                                                 class="form-control" [ngModelOptions]="{standalone: true}">
                                         </div>
-                                    </td>
-                                    <td class="text-left">
+                                    </td> -->
+                                    <!-- <td class="text-left">
                                         <div class="floating-input">
                                             <input type="checkbox" [(ngModel)]="data.SEND_RECEIPTEMAIL"
                                                 class="form-control" [ngModelOptions]="{standalone: true}">
                                         </div>
-                                    </td>
+                                    </td> -->
                                 </tr>
                                 <tr *ngIf="data.ACTIVE != 0">
                                     <td class="pt-0"></td>
@@ -792,9 +813,9 @@
 
 <p-dialog header="Contact Details" [(visible)]="viewLeadetails" [modal]="true" [style]="{ width: '60rem' }">
     <div class="col-md-12 mt-2">
-        <div class="row card">
+        <div class="row">
             <div class="form-inline col-md-12">
-                <h6 class="mb-0 col-md-6 p-0">Lead Contact Details<span class="validator">*</span></h6>
+                <!-- <h6 class="mb-0 col-md-6 p-0">Lead Contact Details<span class="validator">*</span></h6> -->
                 <!-- <div class="row-add col-md-6  text-right">
                     <button type="button" class="btn text-primary pb-0" (click)="addRow()">
                         <i class='fas fa-plus-circle mr-2'></i>Add

@@ -477,8 +477,8 @@ displayHistory: boolean = false;
       OPPO_CURRENCY: ["INR"],
       OPPO_EXCHANGE_RATE: ["1"],
       ACCOUNT_MGR: [""],
-      OPPO_STATUS: [""],
-      OPPO_SUB_STATUS: [""],
+      OPPO_STATUS: ["10"],
+      OPPO_SUB_STATUS: ["10"],
       OPPO_REMARKS: [""],
       OPPO_SEGMENT: [""],
       SEGMENT_CODE: [""],
@@ -487,6 +487,8 @@ displayHistory: boolean = false;
       PROBABILITY: [""],
       LEADORCUST: [""],
     });
+       this.GetOpportunityCommonList();
+     
     // Date restrictions
     const today = new Date();
     this.minDate = today.toISOString().substring(0, 10);
@@ -512,6 +514,7 @@ displayHistory: boolean = false;
     //     this.resetLeadAutoFields();
     //   }
     // });
+   
     $('.selectpicker').selectpicker('refresh').trigger('change');
  
   }
@@ -532,7 +535,7 @@ displayHistory: boolean = false;
       this.COMPANY_CURRENCY = this.sharedService.loginUser[0].COMPANY_CURRENCY;
       this.form.get('PROJECT_DATE').setValue(this.sharedService.getTodayDate())
       this.PROJECT_DATE = this.sharedService.getTodayDate();
-      this.GetOpportunityCommonList();
+      // this.GetOpportunityCommonList();
       // this.GetOpportunityMasterDetails();
     }, 150);
     this.GetOpportunityList();
@@ -721,6 +724,7 @@ GetOpportunityCommonList() {
       this.accountmgr_list = res.accountmgr_list || [];
       this.form.get('COMPANY_CODE').setValue(this.company_list[0].COMPANY_CODE);
       this.form.get('LOCATION_CODE').setValue(this.location_list[0].LOCATION_CODE);
+      this.onStatusChange(10);
       // Refresh selects after lists loaded
       setTimeout(() => {
         this.refreshSelectPicker();
@@ -1130,12 +1134,13 @@ onCustomerChange(customerCode: any) {
   this.form.get('CUST_CODE').setValue(customerCode);
 
   // Filter Customer Master List
+  // segment_list
   this.customer_list.forEach((cElement: any) => {
     if (customerCode === cElement.CUST_CODE) {
       console.log("cElement:", cElement);
-
-      this.filteredCustomerSegments.push(cElement);
-      this.filteredCustomerAccountManager.push(cElement);
+       
+      // this.filteredCustomerSegments.push(cElement);
+      // this.filteredCustomerAccountManager.push(cElement);
 
       this.form.get('CUST_ACC_MANAGER').setValue(cElement.ACCT_MANAGER);
       this.form.get('CUST_SEGMENT').setValue(cElement.CUST_SEGMENT);
@@ -1222,7 +1227,10 @@ onSegmentChange() {
 }
 
 onStatusChange(status: any) {
-  // debugger;
+   console.log('status',status);
+   console.log('opportunity_substatus_list',this.opportunity_substatus_list);
+   
+   
   // 🔥 Clear previous filtered lists BEFORE applying new filters
   this.filteredSubStatus.length = 0;
   // 🔥 Optionally reset form fields);
@@ -1232,11 +1240,14 @@ onStatusChange(status: any) {
   this.form.get('OPPO_STATUS').setValue(status);
   // Filter Sub Status List
   this.filteredSubStatus = this.opportunity_substatus_list.filter(
-    (sElement: any) => sElement.OPPO_STATUS === status
+    (sElement: any) => sElement.OPPO_STATUS == status
   );
+
+  console.log('filteredSubStatus',this.filteredSubStatus);
+  this.form.get('OPPO_SUB_STATUS').setValue(10);
   // 👉 Set the FIRST item of the filtered list (if exists)
   if (this.filteredSubStatus.length > 0) {
-    this.form.get('OPPO_SUB_STATUS').setValue(this.filteredSubStatus[0].OPPO_SUB_STATUS);
+    // this.form.get('OPPO_SUB_STATUS').setValue(this.filteredSubStatus[0].OPPO_SUB_STATUS);
   }
   // Refresh Bootstrap Select UI
   setTimeout(() => $('.selectpicker')
@@ -1653,6 +1664,7 @@ stripBase64FromDocuments() {
 
           }
         )
+        this.toast.success('Document Added Sucessfully')
         // this.uploadDoc();
         // this.NoDocs == 1;
         this.updateNoDocsCount();
