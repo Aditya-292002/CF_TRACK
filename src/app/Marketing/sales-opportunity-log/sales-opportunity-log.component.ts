@@ -254,7 +254,15 @@ viewcustomberdetails: boolean = false;
     this.form.get('OPPO_CODE').setValue(data[0].OPPO_CODE)
     this.form.get('CONTACT_PERSONS').setValue(data[0].CONTACT_PERSONS)
     this.form.get('REMARKS').setValue(data[0].REMARKS)
-    this.form.get('REVISED_ORDERVALUE').setValue(data[0].REVISED_ORDERVALUE)
+    // this.form.get('REVISED_ORDERVALUE').setValue(data[0].REVISED_ORDERVALUE)
+    // EST_VALUE formatting
+    let estValue = data[0].REVISED_ORDERVALUE;
+    if (estValue) {
+      estValue = estValue.toString().replace(/[^0-9.]/g, '');
+      this.form.get('REVISED_ORDERVALUE').setValue(Number(estValue).toLocaleString('en-IN'));
+    } else {
+      this.form.get('REVISED_ORDERVALUE').setValue('');
+    }
     this.form.get('REVISED_PROBABILITY').setValue(data[0].REVISED_PROBABILITY)
     this.onStatusChange(data[0].REVISED_STATUS)
     this.form.get('REVISED_STATUS').setValue(data[0].REVISED_STATUS || '')  
@@ -271,7 +279,7 @@ viewcustomberdetails: boolean = false;
       this.form.get('LEAD_CODE').setValue(data[0].LEAD_NAME)
       this.form.get('CUST_CODE').setValue("");
       this.onStatusChange(data[0].REVISED_STATUS);
-      this.formatRevisedValue(data[0].REVISED_ORDERVALUE);
+      // this.formatRevisedValue(data[0].REVISED_ORDERVALUE);
     }else{
       this.form.get('CUST_CODE').reset();
       this.selectedCust = true;
@@ -282,7 +290,7 @@ viewcustomberdetails: boolean = false;
       this.form.get('CUST_CODE').setValue(data[0].CUST_CODE)
       this.form.get('LEAD_CODE').setValue("");
       this.onStatusChange(data[0].REVISED_STATUS);
-      this.formatRevisedValue(data[0].REVISED_ORDERVALUE);
+      // this.formatRevisedValue(data[0].REVISED_ORDERVALUE);
     }
     // this.form.get('LOG_DATE').setValue(this.sharedService.getFormatedDate(data[0].LOG_DATE))
     // this.form.get('NEXT_FOLLOWUP').setValue(this.sharedService.getFormatedDate(data[0].NEXT_FOLLOWUP))
@@ -408,6 +416,10 @@ viewcustomberdetails: boolean = false;
       console.log(res)
       if (res.flag) {
         this.log_view_list = res.LogDetailsView_List
+         this.log_view_list.forEach((element: any) => { 
+          //  console.log('REVISED_ORDERVALUE',this.pipeService.setCommaseprated((TOTAL_ADJUST).toFixed(2))));
+          element.REVISED_ORDERVALUE = this.pipeService.setCommaseprated((element.REVISED_ORDERVALUE).toFixed(2));
+          });
         if (res.LogDetailsView_List && res.LogDetailsView_List.length > 0) {
          // this.LOGID = res.LogDetailsView_List[0].LOGID;
         }
@@ -864,7 +876,6 @@ addDocument(){
 }
   
   onStatusChange(status: any) {
-    debugger;
    console.log('status',status);
    console.log('opportunity_substatus_list',this.opportunity_substatus_list);
   // 🔥 Clear previous filtered lists BEFORE applying new filters
