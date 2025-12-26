@@ -607,7 +607,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <ng-container *ngFor="let file of uploadedDocument; let i=index;">
+                                <ng-container *ngFor="let file of DOCUMENT_ATTECHED_LIST; let i=index;">
                                     <tr *ngIf="file.ACTIVE == 1">
     
                                         <td><a (click)="f_downloadDocument(file)">{{file.DOCUMENT_FILENAME}}</a></td>
@@ -751,6 +751,23 @@
         </label>
        
             </button> -->
+            <table class="table-theam-1 row_bgcolor_1">
+                            <thead>
+                                <tr>
+                                    <th class="w-20">Document Name</th>
+                                    <th class="w-10">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let file of uploadedDocument; let i=index;">
+                                    <tr *ngIf="file.ACTIVE == 1">
+    
+                                        <td><a (click)="f_downloadDocument(file)">{{file.DOCUMENT_FILENAME}}</a></td>
+                                        <td><i class="fas fa-trash-alt" id=f_{{i}} (click)="removeDoc(i)"></i></td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
              <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input">
             <button type="button" class="btn btn-secondary" title="Upload Document">
                 <label for="fileInput" class="att-doc add p-0 m-0" title="Add Document">

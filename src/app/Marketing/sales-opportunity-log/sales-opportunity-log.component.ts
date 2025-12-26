@@ -554,7 +554,7 @@ viewcustomberdetails: boolean = false;
             UPLOAD_BY: this.sharedService.loginUser[0].USER_NAME,
             UPLOAD_BY_USERID: this.sharedService.loginUser[0].USERID,
             DOC_BASE64: b64,
-             REMARKS: this.REMARKS
+            // REMARKS: this.REMARKS
 
           }
         )
@@ -594,7 +594,8 @@ console.log(this.typeofdocument,'test');
     UPLOAD_BY: this.uploadingFiles[i].UPLOAD_BY,
     UPLOAD_BY_USERID: this.uploadingFiles[i].UPLOAD_BY_USERID,
     DOC_BASE64: this.uploadingFiles[i].b64,
-     REMARKS: this.uploadingFiles[i].REMARKS
+    REMARKS: this.REMARKS,
+    TYPE:this.typeofdocument
   });
   }
   this.displayAttach=false

@@ -44,12 +44,13 @@ export class OpportunityMasterComponent implements OnInit {
   uploadingFiles: Array<any> = [];
   uploadedDocument: Array<any> = [];
   partyType: any;
-  REMARKS: string = "";
+  REMARKS: any;
   regx_AlphaSpace: RegExp = new RegExp(/^[^<>]*$/);
   // regx_AlphaSpace: RegExp = new RegExp(/^[a-zA-Z0-9\s.,@&()_-]*$/);
 
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
   @ViewChild('email', { static: false }) email: ElementRef;
+  typeofdocument: any;
 
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
@@ -651,7 +652,7 @@ crmOpportunity.ACCOUNT_MGR = crmOpportunity.LEAD_ACC_MANAGER;
   var data = {
     USERID: this.sharedService.loginUser[0].USERID,
     CRM_OPPORTUNITY: crmOpportunity,
-    DOCUMENT_ATTECHED_LIST: this.uploadedDocument
+    DOCUMENT_ATTECHED_LIST: this.DOCUMENT_ATTECHED_LIST
   };
   console.log("SaveOpportunityMaster Save Payload: ", data);
   //  return
@@ -1129,6 +1130,7 @@ onCustomerChange(customerCode: any) {
   this.form.get('CUST_ACC_MANAGER').reset();
   this.form.get('CUST_SEGMENT').reset();
   this.form.get('CUST_CONTACT').reset();
+  this.form.get('OPPO_CURRENCY').reset();
 
   // Set CUST_CODE in form
   this.form.get('CUST_CODE').setValue(customerCode);
@@ -1141,7 +1143,7 @@ onCustomerChange(customerCode: any) {
        
       // this.filteredCustomerSegments.push(cElement);
       // this.filteredCustomerAccountManager.push(cElement);
-
+      this.form.get('OPPO_CURRENCY').setValue(cElement.CUST_CURRENCY);
       this.form.get('CUST_ACC_MANAGER').setValue(cElement.ACCT_MANAGER);
       this.form.get('CUST_SEGMENT').setValue(cElement.CUST_SEGMENT);
     }
@@ -1173,13 +1175,13 @@ onLeadChange(leadCode: any) {
   this.form.get('LEAD_ACC_MANAGER').reset();
   this.form.get('LEAD_SEGMENT').reset();
   this.form.get('LEAD_CONTACT').reset();
-
+  this.form.get('OPPO_CURRENCY').reset();
   // Filter Lead Master List
   this.lead_list.forEach((lElement: any) => {
     if (leadCode === lElement.LEAD_CODE) {
       this.filteredLeadSegments.push(lElement);
       this.filteredLeadAccountManager.push(lElement);
-
+       this.form.get('OPPO_CURRENCY').setValue(lElement.LEAD_CURRENCY);
       this.form.get('LEAD_ACC_MANAGER').setValue(lElement.EMP_NO);
       this.form.get('LEAD_SEGMENT').setValue(lElement.CUST_SEGMENT);
     }
@@ -1646,7 +1648,8 @@ stripBase64FromDocuments() {
       reader.onload = () => {
         b64 = reader.result.toString().split(",")[1];
         extension = event.target.files[i].name.split(".");
-
+      //  console.log('REMARKS1',this.REMARKS);
+       
         this.uploadingFiles.push(
           {
             OPPO_CODE: this.form.getRawValue().OPPO_CODE,
@@ -1660,10 +1663,11 @@ stripBase64FromDocuments() {
             UPLOAD_BY: this.sharedService.loginUser[0].USER_NAME,
             UPLOAD_BY_USERID: this.sharedService.loginUser[0].USERID,
             DOC_BASE64: b64,
-            REMARKS: this.REMARKS
+            //  REMARKS: this.REMARKS
 
           }
         )
+              //  console.log('REMARKS',this.REMARKS);
         this.toast.success('Document Added Sucessfully')
         // this.uploadDoc();
         // this.NoDocs == 1;
@@ -1690,12 +1694,12 @@ stripBase64FromDocuments() {
 
   uploadDoc() {
 
-    if(this.REMARKS==""){
+    if(this.REMARKS==""  || this.REMARKS==undefined || this.REMARKS==null){
       this.toast.warning("Please enter remarks for the document");
       return;
     }
     this.displayHistory=false;
-    this.REMARKS="";
+    // this.REMARKS="";
   for (let i = 0; i < this.uploadingFiles.length; i++) {
     this.uploadedDocument.push(this.uploadingFiles[i]);
     this.DOCUMENT_ATTECHED_LIST.push({
@@ -1708,7 +1712,8 @@ stripBase64FromDocuments() {
     UPLOAD_BY: this.uploadingFiles[i].UPLOAD_BY,
     UPLOAD_BY_USERID: this.uploadingFiles[i].UPLOAD_BY_USERID,
     DOC_BASE64: this.uploadingFiles[i].b64,
-    REMARKS: this.uploadingFiles[i].REMARKS
+    REMARKS: this.REMARKS ,
+    TYPE:this.typeofdocument
   });
   }
 }
