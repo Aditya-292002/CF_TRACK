@@ -12,6 +12,7 @@ import { saveAs } from 'file-saver';
 import { v4 as uuidv4 } from 'uuid';
 import { Router } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
+import { event } from 'jquery';
 declare var $: any;
 
 @Component({
@@ -270,6 +271,7 @@ viewcustomberdetails: boolean = false;
       this.form.get('LEAD_CODE').setValue(data[0].LEAD_NAME)
       this.form.get('CUST_CODE').setValue("");
       this.onStatusChange(data[0].REVISED_STATUS);
+      this.formatRevisedValue(data[0].REVISED_ORDERVALUE);
     }else{
       this.form.get('CUST_CODE').reset();
       this.selectedCust = true;
@@ -277,9 +279,10 @@ viewcustomberdetails: boolean = false;
       this.dropdownSelected1 = true;
       this.dropdownSelected2 = false;  
       this.CUST_CODE = data[0].CUST_CODE;
-      this.form.get('CUST_CODE').setValue(data[0].CUST_NAME)
+      this.form.get('CUST_CODE').setValue(data[0].CUST_CODE)
       this.form.get('LEAD_CODE').setValue("");
       this.onStatusChange(data[0].REVISED_STATUS);
+      this.formatRevisedValue(data[0].REVISED_ORDERVALUE);
     }
     // this.form.get('LOG_DATE').setValue(this.sharedService.getFormatedDate(data[0].LOG_DATE))
     // this.form.get('NEXT_FOLLOWUP').setValue(this.sharedService.getFormatedDate(data[0].NEXT_FOLLOWUP))
@@ -351,6 +354,16 @@ viewcustomberdetails: boolean = false;
   SaveSalesOpportunityLog(para: string = '') {
     this.isSubmited = true;
     // if(this.f_validateForm()){
+    const lEstControl = this.form.get('REVISED_ORDERVALUE');
+    if (lEstControl && lEstControl.value) {
+      const cleanValue = lEstControl.value.toString().replace(/,/g, '');
+      lEstControl.setValue(Number(cleanValue), { emitEvent: false });
+    }
+    const cEstControl = this.form.get('REVISED_ORDERVALUE');
+        if (cEstControl && cEstControl.value) {
+          const cleanValue = cEstControl.value.toString().replace(/,/g, '');
+          cEstControl.setValue(Number(cleanValue), { emitEvent: false });
+        }
     let data = {
       USERID:this.sharedService.loginUser[0].USERID,
       CRM_OPPO_LOG:this.form.value,
