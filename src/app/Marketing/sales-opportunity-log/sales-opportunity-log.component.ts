@@ -41,8 +41,9 @@ export class SalesOpportunityLogComponent implements OnInit {
   NoDocs: number = 0;
   DOCUMENT_ATTECHED_LIST: any = [];
   document_type_list: any = [];
-REMARKS: string = '';
-viewcustomberdetails: boolean = false;
+  DOCUMENT_TYPE_ID: any = '';
+  REMARKS: string = '';
+  viewcustomberdetails: boolean = false;
   TYPE: any;
   CUST_CODE: any;
   LEAD_CODE: any;
@@ -297,11 +298,13 @@ viewcustomberdetails: boolean = false;
 
     this.LOG_DATE = this.sharedService.getTodayDate();
 
-    this.form.get('LOG_DATE').setValue(this.LOG_DATE)
+    this.form.get('LOG_DATE').setValue(this.LOG_DATE);
 
     this.NEXT_FOLLOWUP = this.sharedService.getTodayDate();
 
-    this.form.get('NEXT_FOLLOWUP').setValue(this.NEXT_FOLLOWUP)
+    this.form.get('NEXT_FOLLOWUP').setValue(this.NEXT_FOLLOWUP);
+
+    this.form.get('DOCUMENT_TYPE_ID').setValue(data[0].DOCUMENT_TYPE_ID);
 
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
@@ -543,10 +546,10 @@ viewcustomberdetails: boolean = false;
   }
 
   selectDocument(event: any) {
-   console.log(this.typeofdocument,'upload save');
-    this.typeofdocument
+   
+    // this.typeofdocument= [];
     this.uploadingFiles = [];
-    let b64: string = "";
+    let b64: string = ""
     let extension: string[] = [];
     let DOC_SRNO: string = "";
 
@@ -578,6 +581,7 @@ viewcustomberdetails: boolean = false;
             ACTIVE: 1,
             UPLOAD_BY: this.sharedService.loginUser[0].USER_NAME,
             UPLOAD_BY_USERID: this.sharedService.loginUser[0].USERID,
+            DOCUMENT_TYPE_ID: this.form.getRawValue().DOCUMENT_TYPE_ID,
             DOC_BASE64: b64,
             // REMARKS: this.REMARKS
 
@@ -586,6 +590,7 @@ viewcustomberdetails: boolean = false;
         // this.uploadDoc();
         // this.NoDocs == 1;
         this.updateNoDocsCount();
+        console.log('Type of document :', this.DOCUMENT_TYPE_ID);
       }
       // this.SelectedFileName = event.target.files.length > 1 ? event.target.files.length + " Files selected" : event.target.files[i].name;
     }
@@ -598,7 +603,7 @@ viewcustomberdetails: boolean = false;
 }
 
 uploadDoc() {
-console.log(this.typeofdocument,'test');
+console.log(this.DOCUMENT_TYPE_ID,'test');
 
     // if(this.REMARKS==""){
     //   this.toast.warning("Please enter remarks for the document");
@@ -620,9 +625,10 @@ console.log(this.typeofdocument,'test');
     UPLOAD_BY_USERID: this.uploadingFiles[i].UPLOAD_BY_USERID,
     DOC_BASE64: this.uploadingFiles[i].b64,
     REMARKS: this.REMARKS,
-    TYPE:this.typeofdocument
+    TYPE:this.DOCUMENT_TYPE_ID
   });
   }
+  console.log('uploadDoc Type of document :', this.DOCUMENT_TYPE_ID);
   this.displayAttach=false
   console.log("DOCUMENT_ATTECHED_LIST :", this.DOCUMENT_ATTECHED_LIST);
   console.log("Uploaded Document List :", this.uploadedDocument);
@@ -799,7 +805,11 @@ addDocument(){
   
   this.displayAttach=true
   console.log('displayAttach',this.displayAttach);
+  setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh').trigger('change');
+    }, 150);
   }
+
   removeRow(i){}
 
     getContactDetails() {
@@ -832,6 +842,7 @@ addDocument(){
     });
   //  }
   }
+
   openDialogue(VAL:any){
     if(VAL=='C'){
       this.viewcustomberdetails = true;
