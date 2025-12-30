@@ -304,7 +304,7 @@ export class SalesOpportunityLogComponent implements OnInit {
 
     this.form.get('NEXT_FOLLOWUP').setValue(this.NEXT_FOLLOWUP);
 
-    this.form.get('DOCUMENT_TYPE_ID').setValue(data[0].DOCUMENT_TYPE_ID);
+    // this.form.get('DOCUMENT_TYPE_ID').setValue(data[0].DOCUMENT_TYPE_ID);
 
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
@@ -590,7 +590,7 @@ export class SalesOpportunityLogComponent implements OnInit {
         // this.uploadDoc();
         // this.NoDocs == 1;
         this.updateNoDocsCount();
-        console.log('Type of document :', this.DOCUMENT_TYPE_ID);
+        console.log('Type of document :', this.DOCUMENT_TYPE_ID, this.uploadingFiles);
       }
       // this.SelectedFileName = event.target.files.length > 1 ? event.target.files.length + " Files selected" : event.target.files[i].name;
     }
