@@ -679,7 +679,7 @@
             <label>Document Type:</label>
             <div class="floating-input  list-btn">
                 <!-- <select class="form-control selectpicker show-tick"
-                    id="DOCUMENT_TYPE_ID"
+                    id="documentTypeId"
                     formControlName="DOCUMENT_TYPE_ID"
                     data-live-search="true"
                     title="Select"
@@ -690,15 +690,15 @@
                         {{ opt.DOCUMENT_DESC }}
                     </option>
                 </select>
-                <button type="button" class="close" onclick="resetDropdown('DOCUMENT_TYPE_ID')"
+                <button type="button" class="close" onclick="resetDropdown('documentTypeId')"
                     (click)="form.controls['DOCUMENT_TYPE_ID'].reset()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
-                </button> -->
-                <select class=" form-control selectpicker show-tick" [(ngModel)]="DOCUMENT_TYPE_ID" data-container="body" data-size="5" id="DOCUMENT_TYPE_ID" data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}">
+                </button> -->    
+                <select class=" form-control selectpicker show-tick" [(ngModel)]="DOCUMENT_TYPE_ID" data-container="body" data-size="5" id="documentTypeId" data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}">
                     <option *ngFor="let opt of document_type_list; let i=index" [value]="opt.DOCUMENT_TYPE_ID">
                         {{ opt.DOCUMENT_DESC }}</option>
                 </select>
-                <button type="button" class="close" onclick="resetDropdown('DOCUMENT_TYPE_ID')"
+                <button type="button" class="close" onclick="resetDropdown('documentTypeId')"
                     (click)="form.controls['DOCUMENT_TYPE_ID'].reset()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
