@@ -179,7 +179,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <label>Comflex Attendties:</label>
+                    <label>Comflex Attendee:</label>
                     <div class="floating-input ">
                         <textarea name="" id="" rows="2" class="form-control" formControlName="COMFLEX_ATTENDTIES"
                             placeholder="Please Enter Activity Details"></textarea>
@@ -189,13 +189,9 @@
                     <label>Revised Value :</label>
                     <div class="floating-input"
                         [ngClass]="{'invalid-control': isSubmited && form.controls['REVISED_ORDERVALUE'].errors?.required}">
-                    <input
-                        type="text"
-                        formControlName="REVISED_ORDERVALUE"
-                        maxlength="50"
-                        placeholder="Revised Value :"
-                        class="form-control text-right selectpicker"
-                        (input)="formatRevisedValue($event)" />
+                        <input type="text" formControlName="REVISED_ORDERVALUE" maxlength="50"
+                            placeholder="Revised Value :" class="form-control text-right selectpicker"
+                            (input)="formatRevisedValue($event)" />
                     </div>
                 </div>
                 <!--  -->
@@ -480,7 +476,7 @@
                                     <ng-container *ngFor="let data of log_view_list; let i=index;">
                                         <tr *ngIf="data.ACTIVE != 0 " class="tr-padding">
                                             <td class="pb-0">{{i+1}}</td>
-                                            <td class="w-15">
+                                            <td class="w-15 pt-0">
                                                 <!-- <div class="floating-input">
                                                     <input type="text" InputType="AlphaSpace" Uppercase
                                                         class="form-control" [(ngModel)]="data.LOG_DATE"
@@ -495,7 +491,7 @@
                                                         name="on_label" disabled />
                                                 </div>
                                             </td>
-                                            <td class="">
+                                            <td class=" w-15 pt-0">
                                                 <!-- <div class="floating-input">
                                                     <input type="text" class="form-control"
                                                         [(ngModel)]="data.CRMACTIVITY_NAME" placeholder="Mobile No."
@@ -509,50 +505,6 @@
                                                         name="on_label" disabled />
                                                 </div>
                                             </td>
-                                            <td class="">
-                                                <!-- <div class="floating-input">
-                                                    <input type="text" class="form-control"
-                                                        [(ngModel)]="data.CONTACT_PERSONS" placeholder="Designation"
-                                                        [ngModelOptions]="{standalone: true}">
-                                                </div> -->
-                                                <div class="float-label">
-                                                    <label for="on_label">Contact Persons</label>
-                                                    <input Uppercase class="form-control float-input"
-                                                        [(ngModel)]="data.CONTACT_PERSONS" type="text"
-                                                        [ngModelOptions]="{standalone: true}" id="on_label"
-                                                        name="on_label" disabled />
-                                                </div>
-                                            </td>
-                                            <td class="text-left">
-                                                <!-- <div class="floating-input">
-
-                                                    <input type="text" placeholder="Remarks" [(ngModel)]="data.REMARKS"
-                                                        class="form-control" [ngModelOptions]="{standalone: true}">
-                                                </div> -->
-                                                <div class="float-label">
-                                                    <label for="on_label">Activity Details</label>
-                                                    <input Uppercase class="form-control float-input"
-                                                        [(ngModel)]="data.REMARKS" type="text"
-                                                        [ngModelOptions]="{standalone: true}" id="on_label"
-                                                        name="on_label" disabled />
-                                                </div>
-                                            </td>
-                                            <td class="text-left">
-                                                <!-- <div class="floating-input">
-                                                    <input type="text" [(ngModel)]="data.NEXT_FOLLOWUP"
-                                                        class="form-control" [ngModelOptions]="{standalone: true}">
-                                                </div> -->
-                                                <div class="float-label">
-                                                    <label for="on_label">Next Follow Up</label>
-                                                    <input Uppercase class="form-control float-input"
-                                                        [(ngModel)]="data.NEXT_FOLLOWUP" type="text"
-                                                        [ngModelOptions]="{standalone: true}" id="on_label"
-                                                        name="on_label" disabled />
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr *ngIf="data.ACTIVE != 0 " class="tr-padding">
-                                            <td class="pt-0"></td>
                                             <td colspan="1" class="w-15 pt-0">
                                                 <!-- <div class="floating-input">
                                                     <input type="text" class="form-control"
@@ -569,15 +521,6 @@
                                             </td>
                                             <td colspan="1" class="pt-0">
                                                 <div class="float-label">
-                                                    <label for="on_label">Revised Value</label>
-                                                    <input Uppercase class="form-control float-input"
-                                                        [(ngModel)]="data.REVISED_ORDERVALUE" type="text"
-                                                        [ngModelOptions]="{standalone: true}" id="on_label"
-                                                        name="on_label" disabled/>
-                                                </div>
-                                            </td>
-                                            <td colspan="1" class="pt-0">
-                                                <div class="float-label">
                                                     <label for="on_label">Probability</label>
                                                     <input Uppercase class="form-control float-input"
                                                         [(ngModel)]="data.REVISED_PROBABILITY" type="text"
@@ -585,24 +528,91 @@
                                                         name="on_label" disabled />
                                                 </div>
                                             </td>
-                                            <td colspan="1" class="pt-0">
+                                            <td class="text-left pt-0">
+                                                <!-- <div class="floating-input">
+                                                    <input type="text" [(ngModel)]="data.NEXT_FOLLOWUP"
+                                                        class="form-control" [ngModelOptions]="{standalone: true}">
+                                                </div> -->
                                                 <div class="float-label">
-                                                    <label for="on_label">Comflex Attendties</label>
+                                                    <label for="on_label">Next Follow Up</label>
                                                     <input Uppercase class="form-control float-input"
-                                                        [(ngModel)]="data.COMFLEX_ATTENDTIES" type="text"
+                                                        [(ngModel)]="data.NEXT_FOLLOWUP" type="text"
                                                         [ngModelOptions]="{standalone: true}" id="on_label"
                                                         name="on_label" disabled />
                                                 </div>
                                             </td>
-                                            <td colspan="1" class="pt-0">
+                                        </tr>
+                                        <tr *ngIf="data.ACTIVE != 0 " class="tr-padding">
+                                            <td class="pt-0"></td>
+                                            <td colspan="1">
+                                                <div class="float-label">
+                                                    <label for="on_label">Revised Value</label>
+                                                    <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.REVISED_ORDERVALUE" type="text"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled />
+                                                </div>
+                                            </td>
+                                            <td class="text-left">
+                                                <!-- <div class="floating-input">
+
+                                                    <input type="text" placeholder="Remarks" [(ngModel)]="data.REMARKS"
+                                                        class="form-control" [ngModelOptions]="{standalone: true}">
+                                                </div> -->
+                                                <div class="float-label">
+                                                    <label for="on_label">Activity Details</label>
+                                                    <!-- <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.REMARKS" type="text"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled > -->
+                                                    <textarea name="" id="" rows="2" class="form-control float-input"
+                                                        [(ngModel)]="data.REMARKS" style="min-height: 60px !important;"
+                                                        [ngModelOptions]="{ standalone: true }" disabled>
+                                                </textarea>
+                                                </div>
+                                            </td>
+                                            <td class="">
+                                                <!-- <div class="floating-input">
+                                                    <input type="text" class="form-control"
+                                                        [(ngModel)]="data.CONTACT_PERSONS" placeholder="Designation"
+                                                        [ngModelOptions]="{standalone: true}">
+                                                </div> -->
+                                                <div class="float-label">
+                                                    <label for="on_label">Contact Persons</label>
+                                                    <!-- <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.CONTACT_PERSONS" type="text"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled /> -->
+                                                    <textarea name="" id="" rows="2" class="form-control float-input"
+                                                        [(ngModel)]="data.CONTACT_PERSONS"
+                                                        style="min-height: 60px !important;"
+                                                        [ngModelOptions]="{ standalone: true }" disabled>
+                                                </textarea>
+                                                </div>
+                                            </td>
+                                            <td colspan="1" >
+                                                <div class="float-label">
+                                                    <label for="on_label">Comflex Attendee</label>
+                                                    <textarea name="" id="" rows="2" class="form-control float-input"
+                                                        [(ngModel)]="data.COMFLEX_ATTENDTIES"
+                                                        style="min-height: 60px !important;"
+                                                        [ngModelOptions]="{ standalone: true }" disabled>
+                                                </textarea>
+                                                    <!-- <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.COMFLEX_ATTENDTIES" type="text"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled /> -->
+                                                </div>
+                                            </td>
+                                            <td colspan="1">
                                                 <div class="float-label">
                                                     <!-- <td class="w-130"> -->
                                                     <i class="fa fa-eye cursor-pointer"
                                                         (click)="viewDocument(data.LOGID)"
                                                         [attr.title]="data?.DOCUMENT_SYSFILENAME ? 'View Document' : 'No Document Available'">
                                                     </i>
-                                                     </div>
-                                                    <!-- </td> -->
+                                                </div>
+                                                <!-- </td> -->
                                             </td>
 
                                             <!-- <td colspan="2" class="text-left">
@@ -664,16 +674,17 @@
 
             <label>Document Type:</label>
             <div class="floating-input  list-btn">
-                <select class="form-control selectpicker show-tick " id="DOCUMENT_TYPE_ID" data-live-search="true" title="Select" style="height: 44px">
+                <select class="form-control selectpicker show-tick " id="DOCUMENT_TYPE_ID" data-live-search="true"
+                    title="Select" style="height: 44px">
                     <option *ngFor="let opt of document_type_list; let i=index" [selected]="opt.DOCUMENT_TYPE_ID"
                         [(ngModel)]="typeofdocument">{{ opt.DOCUMENT_DESC }}</option>
                 </select>
-                 <button type="button" class="close" onclick="resetDropdown('DOCUMENT_TYPE_ID')"
-                            (click)="form.controls['DOCUMENT_TYPE_ID'].reset()" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                <button type="button" class="close" onclick="resetDropdown('DOCUMENT_TYPE_ID')"
+                    (click)="form.controls['DOCUMENT_TYPE_ID'].reset()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-              <!-- <div class="floating-input  list-btn">
+            <!-- <div class="floating-input  list-btn">
                         <select class="form-control selectpicker show-tick " id="Sub_Status"
                             formControlName="REVISED_SUBSTATUS" data-live-search="true" title="Select">
                             <option *ngFor="let opt of opportunity_substatus_list; let i=index"
@@ -685,7 +696,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div> -->
-           
+
 
         </div>
         <!-- <label>{{fileInput.files[0]?.name}}</label> -->
