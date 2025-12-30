@@ -225,7 +225,7 @@ export class ProjectComponent implements OnInit {
     }
     this.http.PostRequest(this.apiUrl.GetProjectDetail, data).then(res => {
       if (res.flag) {
-        this.project_payment_detail = res.project_payment_detail;
+        this.project_assign_emp_detail = res.project_payment_detail;
         this.f_fillData(res.project_detail)
         this.spinner = false;
       } else {
@@ -490,7 +490,7 @@ export class ProjectComponent implements OnInit {
       }
       console.log(data,'data');
       
-      return
+      // return
       this.http.PostRequest(this.apiUrl.SaveProjectDetail, data).then(res => {
         if (res.flag) {
           this.toast.success(res.msg)
@@ -536,6 +536,7 @@ export class ProjectComponent implements OnInit {
     this.form.get('PO_CURRENCY').setValue("INR")
     this.form.get('PROJECT_DATE').setValue(this.sharedService.getTodayDate())
     this.PROJECT_DATE = this.sharedService.getTodayDate();
+    this.project_assign_emp_detail=[]
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);
