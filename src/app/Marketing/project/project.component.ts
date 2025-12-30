@@ -67,6 +67,7 @@ export class ProjectComponent implements OnInit {
       PO_EXCHANGE_RATE: ["1"],
       PROJ_MGR: ["",Validators.required],
       ACCOUNT_MGR: [""],
+      SUPPORT_MANAGER:[""],
       PROJ_STATUS: ["",Validators.required],
       SUB_STATUS: ["",Validators.required],
       CUST_CONTACT: ["",Validators.required],
@@ -251,6 +252,7 @@ export class ProjectComponent implements OnInit {
     this.form.get('PO_EXCHANGE_RATE').setValue(data[0].PO_EXCHANGE_RATE)
     this.form.get('PROJ_MGR').setValue(data[0].PROJ_MGR)
     this.form.get('ACCOUNT_MGR').setValue(data[0].ACCOUNT_MGR)
+     this.form.get('SUPPORT_MANAGER').setValue(data[0].SUPPORT_MANAGER)
     this.form.get('PROJ_STATUS').setValue(data[0].PROJ_STATUS)
     this.form.get('SUB_STATUS').setValue(data[0].SUB_STATUS)
     this.form.get('CUST_CONTACT').setValue(data[0].CUST_CONTACT)
@@ -324,37 +326,37 @@ export class ProjectComponent implements OnInit {
     }, 100);
 
   }
-  filterAccountMgr() {
-    /**Filter Account manager Dropdown and auto Set Based on Customer Selection and also set Segment */
-    this.Account_manager_list = [];
-    let acct_mgr_id = 0;
-    let seg_id = 0;
+  // filterAccountMgr() {
+  //   /**Filter Account manager Dropdown and auto Set Based on Customer Selection and also set Segment */
+  //   this.Account_manager_list = [];
+  //   let acct_mgr_id = 0;
+  //   let seg_id = 0;
 
-    for(let data of this.customer_list){
-      if(data.CUST_CODE == this.form.getRawValue().CUST_CODE){
-        acct_mgr_id = data.ACCT_MANAGER
-        seg_id = data.CUST_SEGMENT
-      }
-    }
+  //   for(let data of this.customer_list){
+  //     if(data.CUST_CODE == this.form.getRawValue().CUST_CODE){
+  //       acct_mgr_id = data.ACCT_MANAGER
+  //       seg_id = data.CUST_SEGMENT
+  //     }
+  //   }
     
-    for (let data of this.all_Account_manager_list) {
-      if (data.USERID == acct_mgr_id) {
-        this.Account_manager_list.push(data)
-        this.form.get('ACCOUNT_MGR').setValue(data.USERID)
-      }
-    }
+  //   for (let data of this.all_Account_manager_list) {
+  //     if (data.USERID == acct_mgr_id) {
+  //       this.Account_manager_list.push(data)
+  //       this.form.get('SUPPORT_MANAGER').setValue(data.USERID)
+  //     }
+  //   }
     
-    for (let data of this.segment_list) {
-      if (data.SEGMENT_CODE == seg_id) {
-        this.form.get('PROJ_SEGMENT').setValue(data.SEGMENT_CODE)
-      }
-    }
+  //   for (let data of this.segment_list) {
+  //     if (data.SEGMENT_CODE == seg_id) {
+  //       this.form.get('PROJ_SEGMENT').setValue(data.SEGMENT_CODE)
+  //     }
+  //   }
 
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh').trigger('change');
-    }, 100);
+  //   setTimeout(() => {
+  //     $('.selectpicker').selectpicker('refresh').trigger('change');
+  //   }, 100);
 
-  }
+  // }
 
   
   SelectedFileName: string = "";
@@ -566,9 +568,11 @@ export class ProjectComponent implements OnInit {
       this.toast.warning("Please enter PO Date");
     } else if(this.form.controls["PO_VALUE"].invalid){
       this.toast.warning("Please enter PO Value");
-    } else if(this.form.controls["ACCOUNT_MGR"].invalid){
-      this.toast.warning("Please enter Account Manager");
-    }  else if(this.form.controls["PROJ_REMARKS"].invalid){
+    } 
+    // else if(this.form.controls["ACCOUNT_MGR"].invalid){
+    //   this.toast.warning("Please enter Account Manager");
+    // }  
+    else if(this.form.controls["PROJ_REMARKS"].invalid){
       this.toast.warning("Please enter Remarks");
     }  else if(this.form.controls["VALID_UPTO"].invalid){
       this.toast.warning("Please enter Valid Upto");
