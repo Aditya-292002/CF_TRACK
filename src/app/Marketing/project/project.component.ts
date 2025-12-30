@@ -483,10 +483,14 @@ export class ProjectComponent implements OnInit {
       //   _formData.PO_VALUE = _formData.PO_VALUE == ""? null:_formData.PO_VALUE
 
       let data = {
+        USERID:this.sharedService.loginUser[0].USERID,
         project_detail: _formData,
         project_payment_detail: this.project_payment_detail,
         project_assign_emp_detail:this.project_assign_emp_detail
       }
+      console.log(data,'data');
+      
+      return
       this.http.PostRequest(this.apiUrl.SaveProjectDetail, data).then(res => {
         if (res.flag) {
           this.toast.success(res.msg)
