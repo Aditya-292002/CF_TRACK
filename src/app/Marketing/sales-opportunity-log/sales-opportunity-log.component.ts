@@ -107,8 +107,11 @@ export class SalesOpportunityLogComponent implements OnInit {
       REVISED_SUBSTATUS:[""],
       CONTACT_PERSONS:[""],
       COMFLEX_ATTENDTIES:[""],
+      DOCUMENT_TYPE_ID: [""],
       
     });
+    console.log('Form controls:', Object.keys(this.form.controls));
+    // this.form.get('DOCUMENT_TYPE_ID').valueChanges.subscribe(val => {console.log('DOCUMENT_TYPE_ID valueChanges:', val);});
     const today = new Date();
     this.minDate = today.toISOString().substring(0, 10);
     this.GetOpportunityLogCommonList();
@@ -120,7 +123,7 @@ export class SalesOpportunityLogComponent implements OnInit {
       this.GetLogDetailsView();
     }
     
-    $('.selectpicker').selectpicker('refresh').trigger('change');
+    // $('.selectpicker').selectpicker('refresh').trigger('change');
   }
 
 
@@ -304,13 +307,20 @@ export class SalesOpportunityLogComponent implements OnInit {
 
     this.form.get('NEXT_FOLLOWUP').setValue(this.NEXT_FOLLOWUP);
 
-    // this.form.get('DOCUMENT_TYPE_ID').setValue(data[0].DOCUMENT_TYPE_ID);
+    this.form.get('DOCUMENT_TYPE_ID').setValue(data[0].DOCUMENT_TYPE_ID);
 
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 150);
 
-  }
+  };
+
+  onDocumentTypeChange(event:any) {
+this.DOCUMENT_TYPE_ID= event.target.value;
+  console.log('DOCUMENT_TYPE_ID (on change):',this.form.get('DOCUMENT_TYPE_ID').value
+  );
+}
+
 
   private applyLatestLogActivity(list: any[]): void {
   if (!Array.isArray(list) || list.length === 0) {
@@ -546,8 +556,6 @@ export class SalesOpportunityLogComponent implements OnInit {
   }
 
   selectDocument(event: any) {
-   
-    // this.typeofdocument= [];
     this.uploadingFiles = [];
     let b64: string = ""
     let extension: string[] = [];
@@ -581,7 +589,7 @@ export class SalesOpportunityLogComponent implements OnInit {
             ACTIVE: 1,
             UPLOAD_BY: this.sharedService.loginUser[0].USER_NAME,
             UPLOAD_BY_USERID: this.sharedService.loginUser[0].USERID,
-            DOCUMENT_TYPE_ID: this.form.getRawValue().DOCUMENT_TYPE_ID,
+            DOCUMENT_TYPE_ID: this.DOCUMENT_TYPE_ID,
             DOC_BASE64: b64,
             // REMARKS: this.REMARKS
 
@@ -590,7 +598,6 @@ export class SalesOpportunityLogComponent implements OnInit {
         // this.uploadDoc();
         // this.NoDocs == 1;
         this.updateNoDocsCount();
-        console.log('Type of document :', this.DOCUMENT_TYPE_ID, this.uploadingFiles);
       }
       // this.SelectedFileName = event.target.files.length > 1 ? event.target.files.length + " Files selected" : event.target.files[i].name;
     }
@@ -603,8 +610,6 @@ export class SalesOpportunityLogComponent implements OnInit {
 }
 
 uploadDoc() {
-console.log(this.DOCUMENT_TYPE_ID,'test');
-
     // if(this.REMARKS==""){
     //   this.toast.warning("Please enter remarks for the document");
     //   return;
@@ -625,10 +630,10 @@ console.log(this.DOCUMENT_TYPE_ID,'test');
     UPLOAD_BY_USERID: this.uploadingFiles[i].UPLOAD_BY_USERID,
     DOC_BASE64: this.uploadingFiles[i].b64,
     REMARKS: this.REMARKS,
-    TYPE:this.DOCUMENT_TYPE_ID
+    // TYPE: this.uploadingFiles[i].DOCUMENT_TYPE_ID,
+    TYPE:this.DOCUMENT_TYPE_ID,
   });
   }
-  console.log('uploadDoc Type of document :', this.DOCUMENT_TYPE_ID);
   this.displayAttach=false
   console.log("DOCUMENT_ATTECHED_LIST :", this.DOCUMENT_ATTECHED_LIST);
   console.log("Uploaded Document List :", this.uploadedDocument);

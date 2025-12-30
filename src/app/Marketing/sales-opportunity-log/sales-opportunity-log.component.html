@@ -667,6 +667,7 @@
 
 </p-dialog>
 
+<form [formGroup]="form">
 <p-dialog
   header="Add Document"
   [(visible)]="displayAttach"
@@ -677,10 +678,25 @@
         <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 ">
             <label>Document Type:</label>
             <div class="floating-input  list-btn">
-                <select class="form-control selectpicker show-tick " id="DOCUMENT_TYPE_ID" data-live-search="true"
-                    title="Select" style="height: 44px">
-                    <option *ngFor="let opt of document_type_list; let i=index" [selected]="opt.DOCUMENT_TYPE_ID"
-                        [(ngModel)]="typeofdocument">{{ opt.DOCUMENT_DESC }}</option>
+                <!-- <select class="form-control selectpicker show-tick"
+                    id="DOCUMENT_TYPE_ID"
+                    formControlName="DOCUMENT_TYPE_ID"
+                    data-live-search="true"
+                    title="Select"
+                    (change)="onDocumentTypeChange($event)"
+                    >
+                    <option *ngFor="let opt of document_type_list"
+                            [value]="opt.DOCUMENT_TYPE_ID">
+                        {{ opt.DOCUMENT_DESC }}
+                    </option>
+                </select>
+                <button type="button" class="close" onclick="resetDropdown('DOCUMENT_TYPE_ID')"
+                    (click)="form.controls['DOCUMENT_TYPE_ID'].reset()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> -->
+                <select class=" form-control selectpicker show-tick" [(ngModel)]="DOCUMENT_TYPE_ID" data-container="body" data-size="5" id="emp" #emp data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}">
+                    <option *ngFor="let opt of document_type_list; let i=index" [value]="opt.DOCUMENT_TYPE_ID">
+                        {{ opt.DOCUMENT_DESC }}</option>
                 </select>
                 <button type="button" class="close" onclick="resetDropdown('DOCUMENT_TYPE_ID')"
                     (click)="form.controls['DOCUMENT_TYPE_ID'].reset()" aria-label="Close">
@@ -737,6 +753,7 @@
     </div>
 
 </p-dialog>
+</form>
 
 <p-dialog header="Contact Details" [(visible)]="viewcustomberdetails" [modal]="true" [style]="{ width: '60rem' }">
 
