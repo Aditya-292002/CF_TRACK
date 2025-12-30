@@ -630,8 +630,8 @@ uploadDoc() {
     UPLOAD_BY_USERID: this.uploadingFiles[i].UPLOAD_BY_USERID,
     DOC_BASE64: this.uploadingFiles[i].b64,
     REMARKS: this.REMARKS,
-    // TYPE: this.uploadingFiles[i].DOCUMENT_TYPE_ID,
-    TYPE:this.DOCUMENT_TYPE_ID,
+    DOCUMENT_TYPE_ID: this.uploadingFiles[i].DOCUMENT_TYPE_ID,
+    // DOCUMENT_TYPE_ID:this.DOCUMENT_TYPE_ID,
   });
   }
   this.displayAttach=false
