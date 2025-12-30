@@ -667,7 +667,6 @@
 
 </p-dialog>
 
-<form [formGroup]="PDialogueForm">
 <p-dialog
   header="Add Document"
   [(visible)]="displayAttach"
@@ -694,12 +693,26 @@
                     (click)="form.controls['DOCUMENT_TYPE_ID'].reset()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button> -->    
-                <select class=" form-control selectpicker show-tick" [(ngModel)]="DOCUMENT_TYPE_ID" data-container="body" data-size="5" id="documentTypeId" data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}">
-                    <option *ngFor="let opt of document_type_list; let i=index" [value]="opt.DOCUMENT_TYPE_ID">
-                        {{ opt.DOCUMENT_DESC }}</option>
+                <select class=" form-control selectpicker show-tick" [(ngModel)]="DOCUMENT_TYPE_ID" data-container="body" data-size="5" id="documentTypeId" #emp data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}"   (change)="onDocumentTypeChange($event)">
+                    <option *ngFor="let opt of document_type_list; let i=index" [value]="opt | json">
+                       {{ opt.DOCUMENT_DESC }}</option>
                 </select>
+
+
+                <!-- <select class=" form-control selectpicker show-tick" 
+                [(ngModel)]="DOCUMENT_TYPE_ID" 
+                data-container="body" 
+                data-size="5"
+                id="documentTypeId" 
+                (change)="onDocumentTypeChange($event)"
+                data-live-search="true" 
+                title="Select" 
+                [ngModelOptions]="{standalone: true}">
+                    <option *ngFor="let opt of document_type_list; let i=index" >
+                        {{ opt.DOCUMENT_DESC }}</option>
+                </select> -->
                 <button type="button" class="close" onclick="resetDropdown('documentTypeId')"
-                    (click)="form.controls['DOCUMENT_TYPE_ID'].reset()" aria-label="Close">
+                    aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -753,7 +766,6 @@
     </div>
 
 </p-dialog>
-</form>
 
 <p-dialog header="Contact Details" [(visible)]="viewcustomberdetails" [modal]="true" [style]="{ width: '60rem' }">
 

@@ -318,7 +318,10 @@ export class SalesOpportunityLogComponent implements OnInit {
   onDocumentTypeChange(event:any) {
 this.DOCUMENT_TYPE_ID= event.target.value;
   console.log('DOCUMENT_TYPE_ID (on change):',this.form.get('DOCUMENT_TYPE_ID').value
+
   );
+  console.log("event.target.value", event.target.value);
+  
 }
 
 
@@ -630,8 +633,8 @@ uploadDoc() {
     UPLOAD_BY_USERID: this.uploadingFiles[i].UPLOAD_BY_USERID,
     DOC_BASE64: this.uploadingFiles[i].b64,
     REMARKS: this.REMARKS,
-    DOCUMENT_TYPE_ID: this.uploadingFiles[i].DOCUMENT_TYPE_ID,
-    // DOCUMENT_TYPE_ID:this.DOCUMENT_TYPE_ID,
+    // DOCUMENT_TYPE_ID: this.uploadingFiles[i].DOCUMENT_TYPE_ID,
+    DOCUMENT_TYPE_ID:this.DOCUMENT_TYPE_ID,
   });
   }
   this.displayAttach=false
@@ -916,6 +919,10 @@ addDocument(){
   setTimeout(() => $('.selectpicker')
     .selectpicker('refresh')
     .trigger('change'), 100);
+}
+resetDocumentDropdown(){
+  this.DOCUMENT_TYPE_ID=''
+  $('#emp').selectpicker('refresh').trigger('change');
 }
 
 }
