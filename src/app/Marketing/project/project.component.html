@@ -165,7 +165,7 @@
         <!--  -->
         <div class="col-md-12 mt-2">
             <div class="row card">
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                     <label>PO No. :</label>
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['PO_NO'].errors?.required}">
                         <input type="text" formControlName="PO_NO"  maxlength="50" placeholder="PO No." class="form-control">
@@ -211,16 +211,16 @@
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['PO_EXCHANGE_RATE'].errors?.required}">
                         <input type="text" formControlName="PO_EXCHANGE_RATE"  maxlength="10" placeholder="Exchange Rate" class="form-control" OnlyNumber='true'>
                     </div>
-                </div>
+                </div> -->
                 <div class="col-md-4">
                     <label>Project Manager<span class="validator">*</span> :</label>
                     <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['PROJ_MGR'].errors?.required}">
-                        <select class="form-control selectpicker show-tick" id="projectMgr" formControlName="PROJ_MGR" data-live-search="true" title="Select">
+                        <select class="form-control selectpicker show-tick" id="projectMgr" formControlName="PROJ_MGR" data-live-search="true" title="Select"    (change)="onManagerChange(form.controls['PROJ_MGR'].value)">
                             <option *ngFor="let opt of project_manager_list; let i=index" 
                             [selected]="opt.EMP_CODE == form.controls['PROJ_MGR'].value"
                              [value]="opt.EMP_CODE" >{{ opt.USER_NAME }}</option>                     
                         </select>
-                        <button type="button" class="close" onclick="resetDropdown('projectMgr')" (click)="form.controls['PROJ_MGR'].reset();" aria-label="Close">
+                        <button type="button" class="close" onclick="resetDropdown('projectMgr')" (click)="remove( form.controls['PROJ_MGR'].value,'PROJ_MGR');" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -228,12 +228,12 @@
                 <div class="col-md-4">
                     <label>Tech Owner :</label>
                     <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['TECHNICAL_OWNER'].errors?.required}">
-                        <select class="form-control selectpicker show-tick dd_size" id="techOwner" formControlName="TECHNICAL_OWNER" data-live-search="true" title="Select">
+                        <select class="form-control selectpicker show-tick dd_size" id="techOwner" formControlName="TECHNICAL_OWNER" data-live-search="true" title="Select" (change)="onManagerChange(form.controls['TECHNICAL_OWNER'].value)">
                             <option *ngFor="let opt of technical_owner_list; let i=index" 
                             [selected]="opt.EMP_CODE == form.controls['TECHNICAL_OWNER'].value"
                              [value]="opt.EMP_CODE" >{{ opt.USER_NAME }}</option>                     
                         </select>
-                        <button type="button" class="close" onclick="resetDropdown('techOwner')" (click)="form.controls['TECHNICAL_OWNER'].reset();" aria-label="Close">
+                        <button type="button" class="close" onclick="resetDropdown('techOwner')" (click)="remove( form.controls['TECHNICAL_OWNER'].value,'TECHNICAL_OWNER');" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -241,14 +241,14 @@
                 <div class="col-md-4">
                     <label>Support Manager :</label>
                     <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['SUPPORT_MANAGER'].errors?.required}">
-                        <select class="form-control selectpicker show-tick" id="accManager" formControlName="SUPPORT_MANAGER" data-live-search="true" title="Select">
+                        <select class="form-control selectpicker show-tick" id="accManager" formControlName="SUPPORT_MANAGER" data-live-search="true" title="Select" (change)="onManagerChange(form.controls['SUPPORT_MANAGER'].value)">
                             <option *ngFor="let opt of Account_manager_list; let i=index" 
                             [selected]="opt.EMP_CODE == form.controls['SUPPORT_MANAGER'].value"
                              [value]="opt.EMP_CODE" >{{ opt.USER_NAME }}</option>                     
                         </select>
-                        <!-- <button type="button"  class="close" onclick="resetDropdown('accManager')" (click)="form.controls['ACCOUNT_MGR'].reset();" aria-label="Close">
+                        <button type="button"  class="close" onclick="resetDropdown('accManager')" (click)="remove( form.controls['SUPPORT_MANAGER'].value,'SUPPORT_MANAGER');" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
-                        </button> -->
+                        </button>
                     </div>
                 </div>
                 <!-- <div class="col-md-4">
@@ -309,11 +309,90 @@
        <!--  -->
        <div class="col-md-12 mt-2">
             <div class="row card">
-                <div class="col-md-12">
-                    <!-- <div class="head-2 form-inline">
-                        <h5 class="text-left">Milestone Details</h5>
+                  <div class="col-md-6">
+                   
+                    <div class="form-inline">
+                        <h6 class="mb-0 col-md-6 p-0">Add Employees</h6>
+                        <div class="row-add col-md-6 text-right p-0">
+                                    <div class="" >
+            <!-- <label>Employee :</label> -->
+            <div class="d-flex " >
+                <select class=" form-control selectpicker show-tick" [(ngModel)]="selected_emp" data-container="body" data-size="5" id="emp" #emp data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}">
+                    <option *ngFor="let opt of Account_manager_list; let i=index" [value]="opt | json">
+                        {{ opt.EMP_CODE }} - {{ opt.USER_NAME }}</option>
+                </select>
+                    <button type="button" class="btn text-primary" style="margin-top: -5px;margin-left:4px" (click)="addRow()">
+                        <i class='fa fa-plus-square icon-big '></i>
+                    </button>
+             </div>
+        </div>
+
+                            <!-- <button type="button" class="btn text-primary pb-0" (click)="addRow()"  title="Add">
+                                <i class='fas fa-plus-circle mr-2'></i>Add</button> -->
+                        </div>
+                        <hr class="m-0 mb-2">
+                    </div>
+                    <div class="tableFixHead">
+                                <!-- <div class="tableFixHead v_400scroll mt-2"> -->
+            <table class="table-theam-1 row-bgcolor_1">
+                <thead>
+                    <tr>
+                        <th class="">Name </th>
+                        <th class="w-5">Active</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of project_assign_emp_detail; let i=index;">
+                        <td class="">
+                            {{ data.EMP_CODE }} - {{ data.FULL_NAME }}
+                        </td>
+                        <td class="w-5">
+                            <p-checkbox class="mb-1"  [(ngModel)]="data.ACTIVE" [binary]="true" inputId="view" ></p-checkbox>    
+                            <button type="button" class="btn text-primary p-0" (click)="removeRow(data)">
+                                <i class='fas fa-trash-alt text-danger ml-2'></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        <!-- </div> -->
+                        <!-- <table class="table-theam-1 row_bgcolor_1">
+                            <thead>
+                                <tr>
+                                    <th class="w-sr">Sr.No</th>
+                                    <th class="w-20">Milestone</th>
+                                   
+                                    <th class="w-11d">Expected Value</th>
+                                    <th class="w-11d">Billed Value</th>
+                                    <th class="w-date">Expected Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of project_payment_detail;let i=index;">
+                                    <td class="w-sr">{{i+1}}</td>
+                                    <td>
+                                        <input type="text" placeholder="Milestone" [(ngModel)]="data.MILESTONE_DESC" class="form-control" [ngModelOptions]="{standalone: true}">
+                                    </td>
+                                    
+                                    <td class="w-11d">
+                                        <input type="text" placeholder="0" [(ngModel)]="data.EXPECTED_VALUE" class="form-control text-right" OnlyNumber='true' [ngModelOptions]="{standalone: true}">
+                                    </td>
+                                    <td class="w-11d">
+                                        <input type="text" placeholder="0" [(ngModel)]="data.BILL_VALUE" class="form-control text-right" OnlyNumber='true' [ngModelOptions]="{standalone: true}">
+                                    </td>
+                                    <td class="w-date">
     
-                    </div> -->
+                                        <input type="text" placeholder="dd-mm-yyyy" [(ngModel)]="data.EXPECTED_DATE" id="d_{{i}}" class="form-control" readonly [ngModelOptions]="{standalone: true}">
+                                        <app-date-picker [(ngModel)]="data.EXPECTED_DATE" id="d_{{i}}" class="date-input" [maxdate]="maxDate" [isDisable]='false' [ngModelOptions]="{standalone: true}">
+                                        </app-date-picker>
+    
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table> -->
+                    </div>
+                </div>
+                <!-- <div class="col-md-12">
+                   
                     <div class="form-inline">
                         <h6 class="mb-0 col-md-6 p-0">Milestone Details</h6>
                         <div class="row-add col-md-6 text-right p-0">
@@ -358,12 +437,12 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-                <div class="col-md-7 mt-1">
-                    <!-- <div class="head-2 form-inline">
-                        <h5 class="text-left">Documents</h5>
+                </div> -->
+                <div class="col-md-6 mt-1">
+                    <div class="form-inline">
+                        <h5 class="text-left">Upload Documents</h5>
                     </div>
-                    <div class="col-md-8" *ngIf="!NO_RIGHTS">
+                     <!--<div class="col-md-8" *ngIf="!NO_RIGHTS">
                         <div class="row">
                             <div class="input-group">
                                 <div class="custom-file mr-2">
@@ -397,7 +476,7 @@
                             </tbody>
                         </table>
                     </div> -->
-    
+                     <hr class="m-0 mb-2">
     
                     <ul class="list-group">
                         <li class="list-group-item d-flex justify-content-between att-doc py-1">
@@ -434,3 +513,70 @@
         </div>
     </div>
 </form>
+<div
+  class="modal fade"
+  #UpdateTaskassignEmployee
+  id="UpdateTaskassignEmployee"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog " role="document">
+    <div class="modal-content mt-5" style="width: 500px;">
+      <div class="modal-header header-background py-1">
+        <h5 class="modal-title" id="exampleModalLabel">Employee Details</h5>
+      </div>
+      <div class="modal-body">
+        <div class="" >
+            <label>Employee :</label>
+            <div class="d-flex " >
+                <select class=" form-control selectpicker show-tick" [(ngModel)]="selected_emp" data-container="body" data-size="5" id="emp" #emp data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}">
+                    <option *ngFor="let opt of all_emp_list; let i=index" [value]="opt | json">
+                        {{ opt.EMP_CODE }} - {{ opt.USER_NAME }}</option>
+                </select>
+                    <button type="button" class="btn text-primary" style="margin-top: -5px;margin-left:4px" (click)="addRow()">
+                        <i class='fa fa-plus-square icon-big '></i>
+                    </button>
+             </div>
+        </div>
+        <div class="tableFixHead v_400scroll mt-2">
+            <table class="table-theam-1 row-bgcolor_1">
+                <thead>
+                    <tr>
+                        <th class="">Name </th>
+                        <th class="w-5">Active</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of project_assign_emp_detail; let i=index;">
+                        <td class="">
+                            {{ data.EMP_NO }} - {{ data.FULL_NAME }}
+                        </td>
+                        <td class="w-5">
+                            <p-checkbox class="mb-1"  [(ngModel)]="data.ACTIVE" [binary]="true" inputId="view" ></p-checkbox>    
+                            <button type="button" class="btn text-primary p-0" (click)="removeRow(data)">
+                                <i class='fas fa-trash-alt text-danger ml-2'></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+      <div class="modal-footer py-0">
+        <button
+          type="button"
+          class="btn btn-primary py-1"
+          data-dismiss="modal"
+          (click)="UpdateTaskEmployeeDetails()"
+        >
+          Save
+        </button>
+        <button type="button" class="btn btn-danger py-1" data-dismiss="modal">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
