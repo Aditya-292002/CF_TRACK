@@ -569,16 +569,7 @@
                     </div>
                 </div> -->
                 <div class="col-md-8 mt-1">
-                     <button type="button" class="btn btn-secondary ml-2 selectpicker" (click)="addDocument()">  <i class="fa fa-paperclip"></i>Add</button>
-                    <!-- <div class="list-group-item d-flex justify-content-between">
-                        <div (click)="addDocument()">
-                            <span class="" *ngIf="!NO_RIGHTS">
-                                <label class="att-doc-label-add" title="Add Document">
-                                    <i class="fa fa-paperclip"></i> Add
-                                </label>
-                            </span>
-                            </div>
-                    </div> -->
+                     <button type="button" class="btn btn-secondary ml-1 selectpicker" (click)="addDocument()">  <i class="fa fa-paperclip"></i>Add</button>
                     <!-- <ul>
                       <li class="list-group-item d-flex justify-content-between att-doc py-1">
                                  <label class="att-doc-label" title="Documents">
@@ -641,12 +632,12 @@
                     <option *ngFor="let opt of document_type_list; let i=index" [ngValue]="opt">
                        {{ opt.DOCUMENT_DESC }}</option>
                 </select> -->
-                <select id="documentTypeId"
+                <select id="documentTypeId" title="Select"
                     class="form-control selectpicker show-tick"
                     [(ngModel)]="DOCUMENT_TYPE_ID"
                     [ngModelOptions]="{standalone: true}"
                     data-live-search="true">
-                    <option value="">Select</option>
+                    <!-- <option value="">Select</option> -->
                     <option *ngFor="let opt of document_type_list"
                         [attr.data-tokens]="opt.DOCUMENT_DESC"
                         [value]="opt.DOCUMENT_TYPE_ID">
