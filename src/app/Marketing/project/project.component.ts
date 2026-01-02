@@ -40,6 +40,7 @@ export class ProjectComponent implements OnInit {
   technical_owner_list: Array<any> = [];
   all_location_list: Array<any> = [];
   all_proj_sub_status_list: Array<any> = [];
+  all_emp_list: Array<any> = [];
 
   search_project: string = "";
 
@@ -127,7 +128,7 @@ export class ProjectComponent implements OnInit {
         this.proj_sub_status_list = res.proj_sub_status_list;
         this.proj_type_list = res.proj_type_list;
         this.segment_list = res.segment_list;
-
+        this.all_emp_list = res.all_emp_list;
 
         this.all_location_list = res.location_list;
         this.all_proj_sub_status_list = res.proj_sub_status_list;
@@ -669,5 +670,8 @@ remove(emp_no: string,name:string) {
     $("#emp").selectpicker("refresh").trigger("change");
   }
 
+  UpdateTaskEmployeeDetails() {
+    console.log('project_assign_emp_detail',this.project_assign_emp_detail);
+  }
 }
  

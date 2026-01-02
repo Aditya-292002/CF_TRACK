@@ -46,6 +46,7 @@ export class OpportunityMasterComponent implements OnInit {
   partyType: any;
   REMARKS: any;
   DOCUMENT_TYPE_ID: any = '';
+  DOCUMENT_DESC: any = '';
   regx_AlphaSpace: RegExp = new RegExp(/^[^<>]*$/);
   // regx_AlphaSpace: RegExp = new RegExp(/^[a-zA-Z0-9\s.,@&()_-]*$/);
 
@@ -503,6 +504,13 @@ export class OpportunityMasterComponent implements OnInit {
       console.log("Switched PARTY_TYPE:", type);
       this.showContent(type);
     });
+    // --------------------------------
+    ($('#documentTypeId') as any).on('changed.bs.select',(e: any, clickedIndex: number) => {
+      const selected = this.document_type_list[clickedIndex];
+      if (selected) {
+        this.DOCUMENT_TYPE_ID = selected.DOCUMENT_TYPE_ID;
+        this.DOCUMENT_DESC = selected.DOCUMENT_DESC;
+      }});
     // Conditionally listen for CUST_CODE or LEAD_CODE changes only when appropriate
     // this.form.get('CUST_CODE').valueChanges.subscribe((customerCode: any) => {
     //   if (this.form.get('PARTY_TYPE').value === 'C' && customerCode) {
@@ -799,7 +807,8 @@ export class OpportunityMasterComponent implements OnInit {
           FILE_EXTENSION: d.DOCUMENT_FILENAME.split('.').pop().toLowerCase(),
           ACTIVE: d.ACTIVE ? 1 : 0,
           ISNEW: 0,
-          DOC_BASE64: d.DOC_BASE64
+          DOC_BASE64: d.DOC_BASE64,
+          DOCUMENT_TYPE_ID: d.DOCUMENT_TYPE_ID,
         }));
         // IMPORTANT — UI list
         this.uploadedDocument = [...this.DOCUMENT_ATTECHED_LIST];
@@ -923,7 +932,8 @@ export class OpportunityMasterComponent implements OnInit {
         ISNEW: 0,
         UPLOAD_BY: d.UPLOAD_BY || '',
         UPLOAD_BY_USERID: d.UPLOAD_BY_USERID || '',
-        b64: d.b64 || ''
+        b64: d.b64 || '',
+        DOCUMENT_TYPE_ID:d.DOCUMENT_TYPE_ID || '',
       }));
     }
     this.form.updateValueAndValidity();
@@ -1719,13 +1729,18 @@ export class OpportunityMasterComponent implements OnInit {
   // }
 
   uploadDoc() {
-
     if (this.REMARKS == "" || this.REMARKS == undefined || this.REMARKS == null) {
       this.toast.warning("Please enter remarks for the document");
       return;
     }
+    if (!this.DOCUMENT_TYPE_ID) {
+    this.toast.warning("Please select a document type");
+    return;
+    }
     this.displayHistory = false;
-    // this.REMARKS="";
+    const selectedDocType = this.document_type_list.find(
+    d => d.DOCUMENT_TYPE_ID == this.DOCUMENT_TYPE_ID
+    );
     for (let i = 0; i < this.uploadingFiles.length; i++) {
       this.uploadedDocument.push(this.uploadingFiles[i]);
       this.DOCUMENT_ATTECHED_LIST.push({
@@ -1739,8 +1754,13 @@ export class OpportunityMasterComponent implements OnInit {
         UPLOAD_BY_USERID: this.uploadingFiles[i].UPLOAD_BY_USERID,
         DOC_BASE64: this.uploadingFiles[i].b64,
         REMARKS: this.REMARKS,
-        DOCUMENT_TYPE_ID:this.DOCUMENT_TYPE_ID,
-      });
+        // DOCUMENT_TYPE_ID:this.DOCUMENT_TYPE_ID,
+        DOCUMENT_TYPE_ID: this.DOCUMENT_TYPE_ID,
+        DOCUMENT_DESC: selectedDocType ? selectedDocType.DOCUMENT_DESC : '',
+        });
+        console.log('Selected ID:', this.DOCUMENT_TYPE_ID);
+        console.log('Resolved Desc:', selectedDocType.DOCUMENT_DESC);
+        console.log('Document Attached List:', this.DOCUMENT_ATTECHED_LIST);
     }
   }
 
@@ -1926,6 +1946,10 @@ export class OpportunityMasterComponent implements OnInit {
   this.DOCUMENT_TYPE_ID= event.target.value;
     console.log('DOCUMENT_TYPE_ID (on change):',this.form.get('DOCUMENT_TYPE_ID').value);
     console.log("event.target.value", event.target.value);
-  }                                   
+  }     
+  
+  onDialogShow() {
+  ($('#documentTypeId') as any).selectpicker('refresh');
+}
 
 } 
