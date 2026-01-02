@@ -722,12 +722,28 @@
         </textarea>
             </div>
         </div>
-        <!-- <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 att-doc" >
-</div> -->
-
-
     </div>
+
     <div class="row">
+        <div class="col-12 text-right mt-3 att-doc">
+        <table class="table-theam-1 row_bgcolor_1">
+            <thead>
+                <tr>
+                    <th class="w-20">Document Name</th>
+                    <!-- <th class="w-10">Action</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let file of uploadingFiles.concat(uploadedDocument); let i=index;">
+                    <tr *ngIf="file.ACTIVE == 1">
+
+                        <td><a>{{file.DOCUMENT_FILENAME}}</a></td>
+                        <!-- <td><i class="fas fa-trash-alt" id=f_{{i}} (click)="removeDoc(i)"></i></td> -->
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
         <div class="col-12 text-right mt-3 att-doc">
             <!-- <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input"> -->
             <!-- <button type="button" class="btn btn-secondary"  (click)="uploadDoc()" title="Upload Document">

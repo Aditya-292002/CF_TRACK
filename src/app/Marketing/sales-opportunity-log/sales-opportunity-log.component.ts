@@ -619,12 +619,15 @@ export class SalesOpportunityLogComponent implements OnInit {
 }
 
 uploadDoc() {
-    // if(this.REMARKS==""){
-    //   this.toast.warning("Please enter remarks for the document");
-    //   return;
-    // }
+    if (this.REMARKS == "" || this.REMARKS == undefined || this.REMARKS == null) {
+      this.toast.warning("Please enter remarks for the document");
+      return;
+    }
+    if (!this.DOCUMENT_TYPE_ID) {
+    this.toast.warning("Please select a document type");
+    return;
+    }
     // this.displayHistory=false;
-    // this.REMARKS="";
     const selectedDocType = this.document_type_list.find(
     d => d.DOCUMENT_TYPE_ID == this.DOCUMENT_TYPE_ID
     );
