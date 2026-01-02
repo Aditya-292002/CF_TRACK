@@ -42,6 +42,7 @@ export class SalesOpportunityLogComponent implements OnInit {
   DOCUMENT_ATTECHED_LIST: any = [];
   document_type_list: any = [];
   DOCUMENT_TYPE_ID: any = '';
+  DOCUMENT_DESC: any = '';
   REMARKS: string = '';
   viewcustomberdetails: boolean = false;
   TYPE: any;
@@ -110,6 +111,14 @@ export class SalesOpportunityLogComponent implements OnInit {
       DOCUMENT_TYPE_ID: [""],
       
     });
+    // -------------------------------
+    ($('#documentTypeId') as any).on('changed.bs.select',(e: any, clickedIndex: number) => {
+      const selected = this.document_type_list[clickedIndex];
+      if (selected) {
+        this.DOCUMENT_TYPE_ID = selected.DOCUMENT_TYPE_ID;
+        this.DOCUMENT_DESC = selected.DOCUMENT_DESC;
+      }});
+    // -------------------------------
     console.log('Form controls:', Object.keys(this.form.controls));
     // this.form.get('DOCUMENT_TYPE_ID').valueChanges.subscribe(val => {console.log('DOCUMENT_TYPE_ID valueChanges:', val);});
     const today = new Date();
@@ -616,6 +625,9 @@ uploadDoc() {
     // }
     // this.displayHistory=false;
     // this.REMARKS="";
+    const selectedDocType = this.document_type_list.find(
+    d => d.DOCUMENT_TYPE_ID == this.DOCUMENT_TYPE_ID
+    );
   for (let i = 0; i < this.uploadingFiles.length; i++) {
     this.uploadedDocument.push(this.uploadingFiles[i]);
     this.DOCUMENT_ATTECHED_LIST.push({
@@ -631,7 +643,8 @@ uploadDoc() {
     DOC_BASE64: this.uploadingFiles[i].b64,
     REMARKS: this.REMARKS,
     // DOCUMENT_TYPE_ID: this.uploadingFiles[i].DOCUMENT_TYPE_ID,
-    DOCUMENT_TYPE_ID:this.DOCUMENT_TYPE_ID,
+    DOCUMENT_TYPE_ID: this.DOCUMENT_TYPE_ID,
+    DOCUMENT_DESC: selectedDocType ? selectedDocType.DOCUMENT_DESC : '',
   });
   }
   this.displayAttach=false

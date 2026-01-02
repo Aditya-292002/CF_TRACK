@@ -298,7 +298,7 @@
                                             <thead>
                                                 <tr>
                                                     <th class="w-20">Document Name</th>
-                                                    <th class="w-10"></th>
+                                                    <th class="w-20">Document Type</th>
                                                     <th class="w-20">Remarks</th>
                                                     <th class="w-10">Action</th>
                                                 </tr>
@@ -311,7 +311,7 @@
                                                         <td><a
                                                                 (click)="f_downloadDocument(file)">{{file.DOCUMENT_FILENAME}}</a>
                                                         </td>
-                                                        <td>{{file.TYPE}}</td>
+                                                        <td>{{file.DOCUMENT_DESC}}</td>
                                                         <td>{{file.REMARKS}}</td>
                                                         <td><i class="fas fa-trash-alt" id=f_{{i}}
                                                                 (click)="removeDoc(i)"></i></td>
@@ -677,40 +677,22 @@
         <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 ">
             <label>Document Type:</label>
             <div class="floating-input  list-btn">
-                <!-- <select class="form-control selectpicker show-tick"
-                    id="documentTypeId"
-                    formControlName="DOCUMENT_TYPE_ID"
-                    data-live-search="true"
-                    title="Select"
-                    (change)="onDocumentTypeChange($event)"
-                    >
+                <!-- <select class=" form-control selectpicker show-tick" [(ngModel)]="DOCUMENT_TYPE_ID" data-container="body" data-size="5" id="documentTypeId" #emp data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}"   (change)="onDocumentTypeChange($event)">
+                    <option *ngFor="let opt of document_type_list; let i=index" [value]="opt | json">
+                       {{ opt.DOCUMENT_DESC }}</option>
+                </select> -->
+                <select id="documentTypeId" title="Select"
+                    class="form-control selectpicker show-tick"
+                    [(ngModel)]="DOCUMENT_TYPE_ID"
+                    [ngModelOptions]="{standalone: true}"
+                    data-live-search="true">
+                    <!-- <option value="">Select</option> -->
                     <option *ngFor="let opt of document_type_list"
-                            [value]="opt.DOCUMENT_TYPE_ID">
+                        [attr.data-tokens]="opt.DOCUMENT_DESC"
+                        [value]="opt.DOCUMENT_TYPE_ID">
                         {{ opt.DOCUMENT_DESC }}
                     </option>
                 </select>
-                <button type="button" class="close" onclick="resetDropdown('documentTypeId')"
-                    (click)="form.controls['DOCUMENT_TYPE_ID'].reset()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button> -->    
-                <select class=" form-control selectpicker show-tick" [(ngModel)]="DOCUMENT_TYPE_ID" data-container="body" data-size="5" id="documentTypeId" #emp data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}"   (change)="onDocumentTypeChange($event)">
-                    <option *ngFor="let opt of document_type_list; let i=index" [value]="opt | json">
-                       {{ opt.DOCUMENT_DESC }}</option>
-                </select>
-
-
-                <!-- <select class=" form-control selectpicker show-tick" 
-                [(ngModel)]="DOCUMENT_TYPE_ID" 
-                data-container="body" 
-                data-size="5"
-                id="documentTypeId" 
-                (change)="onDocumentTypeChange($event)"
-                data-live-search="true" 
-                title="Select" 
-                [ngModelOptions]="{standalone: true}">
-                    <option *ngFor="let opt of document_type_list; let i=index" >
-                        {{ opt.DOCUMENT_DESC }}</option>
-                </select> -->
                 <button type="button" class="close" onclick="resetDropdown('documentTypeId')"
                     aria-label="Close">
                     <span aria-hidden="true">&times;</span>
