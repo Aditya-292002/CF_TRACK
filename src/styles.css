@@ -892,3 +892,7 @@ li.att-doc {
   .card-header .collapse{
     background-color: #fff;
    }
+
+p-dialog .floating-input.list-btn > button.close {
+  line-height: 16px; /* match your select close button height */
+}
