@@ -45,6 +45,7 @@ export class OpportunityMasterComponent implements OnInit {
   uploadedDocument: Array<any> = [];
   partyType: any;
   REMARKS: any;
+  DOCUMENT_TYPE_ID: any = '';
   regx_AlphaSpace: RegExp = new RegExp(/^[^<>]*$/);
   // regx_AlphaSpace: RegExp = new RegExp(/^[a-zA-Z0-9\s.,@&()_-]*$/);
 
@@ -78,6 +79,7 @@ export class OpportunityMasterComponent implements OnInit {
   customercontact_list: Array<any> = [];
   leadcontact_list: Array<any> = [];
   accountmgr_list: Array<any> = [];
+  document_type_list: Array<any> = [];
   DOCUMENT_ATTECHED_LIST: any = [];
   RESOLVE_DOC_LIST: any = [];
   filteredCustomerContacts: any[] = [];
@@ -487,9 +489,10 @@ export class OpportunityMasterComponent implements OnInit {
       PARTY_TYPE: ["C"],
       PROBABILITY: [""],
       LEADORCUST: [""],
+      DOCUMENT_TYPE_ID: [""],
     });
     this.GetOpportunityCommonList();
-
+    this.GetOpportunityLogCommonList();    
     // Date restrictions
     const today = new Date();
     this.minDate = today.toISOString().substring(0, 10);
@@ -723,6 +726,7 @@ export class OpportunityMasterComponent implements OnInit {
         this.customercontact_list = res.customercontact_list || [];
         this.leadcontact_list = res.leadcontact_list || [];
         this.accountmgr_list = res.accountmgr_list || [];
+        this.document_type_list = res.doc_type_list || [];
         this.form.get('COMPANY_CODE').setValue(this.company_list[0].COMPANY_CODE);
         this.form.get('LOCATION_CODE').setValue(this.location_list[0].LOCATION_CODE);
         this.onStatusChange(10);
@@ -730,6 +734,26 @@ export class OpportunityMasterComponent implements OnInit {
         setTimeout(() => {
           this.refreshSelectPicker();
         }, 50);
+      }
+    }, err => {
+      this.spinner = false;
+    });
+  }
+
+  GetOpportunityLogCommonList() {
+    let data = {
+      USERID:this.sharedService.loginUser[0].USERID,
+    }
+    this.http.PostRequest(this.apiUrl.GetOpportunityLogCommonList, data).then(res => {
+      console.log(res)
+      if (res.flag) {
+        this.document_type_list = res.doc_type_list;
+        setTimeout(() => {
+          $('.selectpicker').selectpicker('refresh').trigger('change');
+        }, 150);
+        this.spinner = false;
+      } else {
+        this.spinner = false;
       }
     }, err => {
       this.spinner = false;
@@ -883,6 +907,7 @@ export class OpportunityMasterComponent implements OnInit {
     this.form.get('OPPO_SUB_STATUS').setValue(row.OPPO_SUB_STATUS || '');
     this.form.get('OPPO_REMARKS').setValue(row.OPPO_REMARKS || '');
     this.form.get('PROBABILITY').setValue(row.PROBABILITY || '');
+    this.form.get('DOCUMENT_TYPE_ID').setValue(row.DOCUMENT_TYPE_ID);
     // Documents
     if (Array.isArray(row.OPPORTUNITY_DOCUMENT_LIST)) {
       this.DOCUMENT_ATTECHED_LIST = row.OPPORTUNITY_DOCUMENT_LIST.map((d: any, idx: number) => ({
@@ -1662,6 +1687,7 @@ export class OpportunityMasterComponent implements OnInit {
             ACTIVE: 1,
             UPLOAD_BY: this.sharedService.loginUser[0].USER_NAME,
             UPLOAD_BY_USERID: this.sharedService.loginUser[0].USERID,
+            DOCUMENT_TYPE_ID: this.DOCUMENT_TYPE_ID,
             DOC_BASE64: b64,
             //  REMARKS: this.REMARKS
 
@@ -1713,7 +1739,7 @@ export class OpportunityMasterComponent implements OnInit {
         UPLOAD_BY_USERID: this.uploadingFiles[i].UPLOAD_BY_USERID,
         DOC_BASE64: this.uploadingFiles[i].b64,
         REMARKS: this.REMARKS,
-        TYPE: this.typeofdocument
+        DOCUMENT_TYPE_ID:this.DOCUMENT_TYPE_ID,
       });
     }
   }
@@ -1875,6 +1901,7 @@ export class OpportunityMasterComponent implements OnInit {
       .filter(d => d.ACTIVE !== 0)
       .length;
   }
+
   addDocument() {
     console.log('inside add document');
 
@@ -1882,6 +1909,7 @@ export class OpportunityMasterComponent implements OnInit {
     console.log('displayHistory', this.displayHistory);
 
   }
+
   resetDropdown(val: any) {
     console.log('val', val);
 
@@ -1893,5 +1921,11 @@ export class OpportunityMasterComponent implements OnInit {
       this.form.controls['LEAD_ACC_MANAGER'].reset();
     }
   }
+
+  onDocumentTypeChange(event:any) {
+  this.DOCUMENT_TYPE_ID= event.target.value;
+    console.log('DOCUMENT_TYPE_ID (on change):',this.form.get('DOCUMENT_TYPE_ID').value);
+    console.log("event.target.value", event.target.value);
+  }                                   
 
 } 

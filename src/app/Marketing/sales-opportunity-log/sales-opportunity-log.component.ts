@@ -316,13 +316,10 @@ export class SalesOpportunityLogComponent implements OnInit {
   };
 
   onDocumentTypeChange(event:any) {
-this.DOCUMENT_TYPE_ID= event.target.value;
-  console.log('DOCUMENT_TYPE_ID (on change):',this.form.get('DOCUMENT_TYPE_ID').value
-
-  );
-  console.log("event.target.value", event.target.value);
-  
-}
+  this.DOCUMENT_TYPE_ID= event.target.value;
+    console.log('DOCUMENT_TYPE_ID (on change):',this.form.get('DOCUMENT_TYPE_ID').value);
+    console.log("event.target.value", event.target.value);
+  }
 
 
   private applyLatestLogActivity(list: any[]): void {
