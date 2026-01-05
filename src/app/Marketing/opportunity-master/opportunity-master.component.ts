@@ -1662,7 +1662,11 @@ export class OpportunityMasterComponent implements OnInit {
   }
 
   // ---------------------------OLD Document Code Start---------------------------
-  selectDocument(event: any) {
+  selectDocument(
+  event: any,
+  fileInput?: HTMLInputElement,
+  clearUiList?: HTMLInputElement
+) {
     this.uploadingFiles = [];
     let b64: string = "";
     let extension: string[] = [];
@@ -1681,6 +1685,10 @@ export class OpportunityMasterComponent implements OnInit {
       let reader = new FileReader();
       reader.readAsDataURL(event.target.files[i]);
       reader.onload = () => {
+        /* ✅ SHOW UI AGAIN */
+        if (clearUiList) {
+          clearUiList.checked = false;
+        }
         b64 = reader.result.toString().split(",")[1];
         extension = event.target.files[i].name.split(".");
         //  console.log('REMARKS1',this.REMARKS);
@@ -1708,6 +1716,10 @@ export class OpportunityMasterComponent implements OnInit {
         // this.uploadDoc();
         // this.NoDocs == 1;
         this.updateNoDocsCount();
+        /* ✅ RESET FILE INPUT (CORRECT TIMING) */
+        if (fileInput) {
+          fileInput.value = '';
+        }
       }
       // this.SelectedFileName = event.target.files.length > 1 ? event.target.files.length + " Files selected" : event.target.files[i].name;
     }
@@ -1728,7 +1740,7 @@ export class OpportunityMasterComponent implements OnInit {
   //   });
   // }
 
-  uploadDoc() {
+  uploadDoc(clearUiList?: HTMLInputElement) {
     if (this.REMARKS == "" || this.REMARKS == undefined || this.REMARKS == null) {
       this.toast.warning("Please enter remarks for the document");
       return;
@@ -1762,7 +1774,21 @@ export class OpportunityMasterComponent implements OnInit {
         console.log('Resolved Desc:', selectedDocType.DOCUMENT_DESC);
         console.log('Document Attached List:', this.DOCUMENT_ATTECHED_LIST);
     }
+    /* ✅ CLEAR ALL UI + MODEL STATE */
+    this.REMARKS = '';
+    this.DOCUMENT_TYPE_ID = null;
+    this.uploadingFiles = [];
+    if (clearUiList) {
+      clearUiList.checked = true; // clears filename table
+    }
+    setTimeout(() => {($('#documentTypeId') as any).selectpicker('refresh');}, 0);
   }
+
+  onFileChange(event: any, fileInput: HTMLInputElement) {
+  this.selectDocument(event);
+  fileInput.value = ''; // 🔥 allows same file to be selected again
+}
+
   removeDoc(fileIndex: number = null) {
     if (this.DOCUMENT_ATTECHED_LIST[fileIndex].ISNEW == 1) {
       this.DOCUMENT_ATTECHED_LIST.splice(fileIndex, 1);

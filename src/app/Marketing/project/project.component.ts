@@ -492,7 +492,7 @@ export class ProjectComponent implements OnInit {
       }
       console.log(data,'data');
       
-       return
+      //  return
       this.http.PostRequest(this.apiUrl.SaveProjectDetail, data).then(res => {
         if (res.flag) {
           this.toast.success(res.msg)
