@@ -283,8 +283,12 @@
                             <div class="row"
                                 style="border-top-width: 10px; margin-top: 10px; padding-top: 10px; top: 10px;">
                                 <div class="col-md-8 mt-1">
-                                    <button type="button" class="btn btn-secondary ml-1" (click)="addDocument()"> <i
-                                            class="fa fa-paperclip"></i>Attach</button>
+                                    <button
+                                        type="button"
+                                        class="btn btn-secondary ml-1 selectpicker"
+                                        (click)="clearUiList.checked = true; addDocument()">
+                                        <i class="fa fa-paperclip"></i> Attach
+                                    </button>
                                     <!-- <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 att-doc" style="padding-left: 0px;">
                 <input type="file" #fileInput id="fileInput" (change)="onFileChange($event)" class="doc-input">
                     <button type="button" class="btn btn-secondary" title="Upload Document">
@@ -726,6 +730,7 @@
 
     <div class="row">
         <div class="col-12 text-right mt-3 att-doc">
+        <input type="checkbox" #clearUiList hidden>
         <table class="table-theam-1 row_bgcolor_1">
             <thead>
                 <tr>
@@ -734,12 +739,15 @@
                 </tr>
             </thead>
             <tbody>
-                <ng-container *ngFor="let file of uploadingFiles.concat(uploadedDocument); let i=index;">
+                <ng-container *ngIf="!clearUiList.checked">
+                    <ng-container
+                    *ngFor="let file of (uploadingFiles.concat(uploadedDocument) | slice:-1)">
                     <tr *ngIf="file.ACTIVE == 1">
-
-                        <td><a>{{file.DOCUMENT_FILENAME}}</a></td>
-                        <!-- <td><i class="fas fa-trash-alt" id=f_{{i}} (click)="removeDoc(i)"></i></td> -->
+                        <td>
+                        <a>{{ file.DOCUMENT_FILENAME }}</a>
+                        </td>
                     </tr>
+                    </ng-container>
                 </ng-container>
             </tbody>
         </table>
@@ -749,7 +757,12 @@
             <!-- <button type="button" class="btn btn-secondary"  (click)="uploadDoc()" title="Upload Document">
         <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input">
     </button> -->
-            <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input">
+            <input
+            type="file"
+            #fileInput
+            id="fileInput"
+            class="doc-input"
+            (change)="clearUiList.checked = false; selectDocument($event)">
             <button type="button" class="btn btn-secondary" title="Upload Document">
                 <label for="fileInput" class="att-doc-label-add p-0 m-0" title="Add Document">
                     <i class="fa fa-paperclip"></i> Attach
