@@ -666,7 +666,7 @@ export class OpportunityMasterComponent implements OnInit {
       DOCUMENT_ATTECHED_LIST: this.DOCUMENT_ATTECHED_LIST
     };
     console.log("SaveOpportunityMaster Save Payload: ", data);
-    //  return
+    // return
     // 🔹 4️⃣ Call API
     this.spinner = true;
     this.http.PostRequest(this.apiUrl.SaveOpportunityMaster, data).then(
@@ -1752,7 +1752,7 @@ export class OpportunityMasterComponent implements OnInit {
         ACTIVE: 1,
         UPLOAD_BY: this.uploadingFiles[i].UPLOAD_BY,
         UPLOAD_BY_USERID: this.uploadingFiles[i].UPLOAD_BY_USERID,
-        DOC_BASE64: this.uploadingFiles[i].b64,
+        DOC_BASE64: this.uploadingFiles[i].DOC_BASE64,
         REMARKS: this.REMARKS,
         // DOCUMENT_TYPE_ID:this.DOCUMENT_TYPE_ID,
         DOCUMENT_TYPE_ID: this.DOCUMENT_TYPE_ID,
@@ -1763,17 +1763,16 @@ export class OpportunityMasterComponent implements OnInit {
         console.log('Document Attached List:', this.DOCUMENT_ATTECHED_LIST);
     }
   }
-
   removeDoc(fileIndex: number = null) {
-    if (this.uploadedDocument[fileIndex].ISNEW == 1) {
-      this.uploadedDocument.splice(fileIndex, 1);
-    } else if (this.uploadedDocument[fileIndex].ACTIVE == 1) {
-      this.uploadedDocument[fileIndex].ACTIVE = 0;
+    if (this.DOCUMENT_ATTECHED_LIST[fileIndex].ISNEW == 1) {
+      this.DOCUMENT_ATTECHED_LIST.splice(fileIndex, 1);
+    } else if (this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE == 1) {
+      this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE = 0;
     } else {
-      this.uploadedDocument[fileIndex].ACTIVE = 0;
+      this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE = 0;
     }
     this.NoDocs = 0;
-    this.uploadedDocument.forEach(element => {
+    this.DOCUMENT_ATTECHED_LIST.forEach(element => {
       if (element.ACTIVE != 0) {
         this.NoDocs += 1
       }

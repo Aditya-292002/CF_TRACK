@@ -401,7 +401,7 @@ export class SalesOpportunityLogComponent implements OnInit {
       OPPO_CODE: this.form.getRawValue().OPPO_CODE,
     }
     console.log('data',data)
-    //  return
+    // return 
     this.http.PostRequest(this.apiUrl.SaveSalesOpportunityLog, data).then(res => {
       console.log(res)
       if (res.flag) {
@@ -549,15 +549,15 @@ export class SalesOpportunityLogComponent implements OnInit {
   }
 
   removeDoc(fileIndex: number = null) {
-    if (this.uploadedDocument[fileIndex].ISNEW == 1) {
-      this.uploadedDocument.splice(fileIndex, 1);
-    } else if (this.uploadedDocument[fileIndex].ACTIVE == 1) {
-      this.uploadedDocument[fileIndex].ACTIVE = 0;
+    if (this.DOCUMENT_ATTECHED_LIST[fileIndex].ISNEW == 1) {
+      this.DOCUMENT_ATTECHED_LIST.splice(fileIndex, 1);
+    } else if (this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE == 1) {
+      this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE = 0;
     } else {
-      this.uploadedDocument[fileIndex].ACTIVE = 0;
+      this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE = 0;
     }
     this.NoDocs = 0;
-    this.uploadedDocument.forEach(element => {
+    this.DOCUMENT_ATTECHED_LIST.forEach(element => {
       if(element.ACTIVE != 0){
         this.NoDocs += 1
       }
