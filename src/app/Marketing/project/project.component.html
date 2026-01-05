@@ -12,7 +12,7 @@
                                 [selected]="opt.PROJ_CODE == search_project"
                                 [value]="opt.PROJ_CODE" >{{ opt.PROJ_NAME }}</option>                     
                             </select>
-                            <button type="button" class="close" onclick="resetDropdown('search')" (click)="search_project='';f_clearForm()" aria-label="Close">
+                            <button type="button" class="close" onclick="resetDropdown('search')" (click)="f_clearForm()" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
