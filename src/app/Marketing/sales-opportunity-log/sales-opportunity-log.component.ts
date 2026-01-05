@@ -604,6 +604,7 @@ export class SalesOpportunityLogComponent implements OnInit {
 
           }
         )
+        this.toast.success('Document Added Sucessfully')
         // this.uploadDoc();
         // this.NoDocs == 1;
         this.updateNoDocsCount();
