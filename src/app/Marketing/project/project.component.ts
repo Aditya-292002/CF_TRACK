@@ -528,6 +528,8 @@ export class ProjectComponent implements OnInit {
   // }
   // }
   f_clearForm() {
+              this.GetProjectList();
+          // this.f_clearForm()
     this.fileInput.nativeElement.value = "";
     this.isSubmited = false;
     this.form.reset();
@@ -535,14 +537,17 @@ export class ProjectComponent implements OnInit {
     this.project_payment_detail=[];
     this.search_project = "";
     this.isUpdate= false;
-    this.form.get('PO_EXCHANGE_RATE').setValue("1")
-    this.form.get('PO_CURRENCY').setValue("INR")
-    this.form.get('PROJECT_DATE').setValue(this.sharedService.getTodayDate())
     this.PROJECT_DATE = this.sharedService.getTodayDate();
     this.project_assign_emp_detail=[]
     setTimeout(() => {
+         this.form.get('PO_EXCHANGE_RATE').setValue("1")
+    this.form.get('PO_CURRENCY').setValue("INR")
+    this.form.get('PROJECT_DATE').setValue(this.sharedService.getTodayDate())
+
       $('.selectpicker').selectpicker('refresh').trigger('change');
+      
     }, 100);
+    
   }
   
   f_validateForm() { 
