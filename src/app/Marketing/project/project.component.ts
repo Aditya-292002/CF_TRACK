@@ -93,6 +93,7 @@ export class ProjectComponent implements OnInit {
   isUpdate: boolean = false;
   NO_RIGHTS: boolean = false;
   isNewAdd: boolean = false;
+
   ngAfterViewInit() {
     setTimeout(() => {
       if (this.sharedService.form_rights.ADD_RIGHTS) {
@@ -144,6 +145,7 @@ export class ProjectComponent implements OnInit {
       this.spinner = false;
     });
   }
+
   GetProjectList() {
     let data = {
       LISTTYPE: "all"
@@ -165,22 +167,20 @@ export class ProjectComponent implements OnInit {
   project_manager_list: Array<any> = [];
   Account_manager_list: Array<any> = [];
   all_Account_manager_list: Array<any> = [];
+
   getEmployee() {
     let data = {
       LISTTYPE: ""
     }
-
     this.http.PostRequest(this.apiUrl.GetEmployeeList, data).then(res => {
       if (res.flag) {
         this.project_manager_list = res.employee_list;
         this.Account_manager_list = res.employee_list;
         this.all_Account_manager_list = res.employee_list;
         this.technical_owner_list = res.employee_list;
-
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh').trigger('change');
         }, 100);
-
         this.spinner = false;
       } else {
         this.spinner = false;
@@ -189,7 +189,9 @@ export class ProjectComponent implements OnInit {
       this.spinner = false;
     });
   }
+
   customer_list: Array<any> = [];
+
   GetCustomerList() {
     let data = {
       LISTTYPE: "all"
@@ -209,6 +211,7 @@ export class ProjectComponent implements OnInit {
       this.spinner = false;
     });
   }
+
   searchProject() {
     this.isUpdate = false;
     if (this.search_project != "" || this.search_project != undefined) {
@@ -219,7 +222,9 @@ export class ProjectComponent implements OnInit {
       this.f_clearForm();
     }
   }
+
   project_payment_detail: Array<any> = [];
+
   GetProjectDetail() {
     let data = {
       PROJ_CODE: this.search_project
@@ -236,6 +241,7 @@ export class ProjectComponent implements OnInit {
       this.spinner = false;
     });
   }
+
   f_fillData(data: any = []) {
     console.log(data[0])
     this.form.get('COMPANY_CODE').setValue(data[0].COMPANY_CODE)
@@ -261,7 +267,7 @@ export class ProjectComponent implements OnInit {
     this.form.get('CUST_CONTACT').setValue(data[0].CUST_CONTACT)
     this.form.get('PROJ_REMARKS').setValue(data[0].PROJ_REMARKS)
     this.form.get('BILLED_VALUE').setValue(data[0].BILLED_VALUE)
-    this.form.get('EXPECTED_CLOSURE').setValue(data[0].EXPECTED_CLOSURE)
+    this.form.get('EXPECTED_CLOSURE').setValue(this.sharedService.getFormatedDate(data[0].EXPECTED_CLOSURE));
     // this.form.get('VALID_UPTO').setValue(data[0].VALID_UPTO)
     this.form.get('TECHNICAL_OWNER').setValue(data[0].TECHNICAL_OWNER)
     this.GetCustomerDetail();
@@ -528,8 +534,8 @@ export class ProjectComponent implements OnInit {
   // }
   // }
   f_clearForm() {
-              this.GetProjectList();
-          // this.f_clearForm()
+    this.GetProjectList();
+    // this.f_clearForm()
     this.fileInput.nativeElement.value = "";
     this.isSubmited = false;
     this.form.reset();
@@ -540,16 +546,12 @@ export class ProjectComponent implements OnInit {
     this.PROJECT_DATE = this.sharedService.getTodayDate();
     this.project_assign_emp_detail=[]
     setTimeout(() => {
-         this.form.get('PO_EXCHANGE_RATE').setValue("1")
+    this.form.get('PO_EXCHANGE_RATE').setValue("1")
     this.form.get('PO_CURRENCY').setValue("INR")
     this.form.get('PROJECT_DATE').setValue(this.sharedService.getTodayDate())
-
-      $('.selectpicker').selectpicker('refresh').trigger('change');
-      
-    }, 100);
-    
+    $('.selectpicker').selectpicker('refresh').trigger('change');}, 100);
   }
-  
+
   f_validateForm() { 
     if(this.form.controls["COMPANY_CODE"].invalid){
       this.toast.warning("Please select Company");

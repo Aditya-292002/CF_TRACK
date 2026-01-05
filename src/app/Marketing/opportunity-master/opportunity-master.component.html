@@ -413,7 +413,6 @@
                     <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['EXPECTED_CLOSURE'].errors?.required}">
                         <input type="text" placeholder="dd-mm-yyyy" [(ngModel)]="EXPECTED_CLOSURE" formControlName="EXPECTED_CLOSURE" class="form-control" readonly>
                         <app-date-picker [(ngModel)]="EXPECTED_CLOSURE" class="date-input" [mindate]="minDate" [maxdate]="expectedClosureMaxDate" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
-    
                     </div>
                 </div>
                 <div class="col-md-12">
