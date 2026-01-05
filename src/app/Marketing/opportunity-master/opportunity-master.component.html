@@ -700,13 +700,19 @@
             #fileInput
             id="fileInput"
             class="doc-input"
-            (change)="clearUiList.checked = false; selectDocument($event)">
+            (change)="selectDocument($event, fileInput, clearUiList)">
         <button type="button" class="btn btn-secondary" title="Upload Document">
             <label for="fileInput" class="att-doc add p-0 m-0" title="Add Document">
                 <i class="fa fa-paperclip"></i> Attach
             </label>
         </button>
-        <button type="button" class="btn btn-secondary ml-2" (click)="uploadDoc()">Save</button>
+        <!-- <button type="button" class="btn btn-secondary ml-2" (click)="uploadDoc()">Save</button> -->
+        <button
+            type="button"
+            class="btn btn-secondary ml-2"
+            (click)="uploadDoc(clearUiList)">
+            Save
+        </button>
         <button type="button" class="btn btn-secondary ml-2" (click)="this.displayHistory=false">Cancel</button>
     </div>
 </div>

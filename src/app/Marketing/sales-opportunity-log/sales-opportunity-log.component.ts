@@ -564,7 +564,11 @@ export class SalesOpportunityLogComponent implements OnInit {
     });
   }
 
-  selectDocument(event: any) {
+  selectDocument(
+  event: any,
+  fileInput?: HTMLInputElement,
+  clearUiList?: HTMLInputElement
+) {
     this.uploadingFiles = [];
     let b64: string = ""
     let extension: string[] = [];
@@ -583,6 +587,10 @@ export class SalesOpportunityLogComponent implements OnInit {
       let reader = new FileReader();
       reader.readAsDataURL(event.target.files[i]);
       reader.onload = () => {
+        /* ✅ SHOW UI AGAIN */
+        if (clearUiList) {
+          clearUiList.checked = false;
+        }
         b64 = reader.result.toString().split(",")[1];
         extension = event.target.files[i].name.split(".");
 
@@ -608,6 +616,10 @@ export class SalesOpportunityLogComponent implements OnInit {
         // this.uploadDoc();
         // this.NoDocs == 1;
         this.updateNoDocsCount();
+        /* ✅ RESET FILE INPUT (CORRECT TIMING) */
+        if (fileInput) {
+          fileInput.value = '';
+        }
       }
       // this.SelectedFileName = event.target.files.length > 1 ? event.target.files.length + " Files selected" : event.target.files[i].name;
     }
@@ -619,7 +631,7 @@ export class SalesOpportunityLogComponent implements OnInit {
     .length;
 }
 
-uploadDoc() {
+uploadDoc(clearUiList?: HTMLInputElement) {
     if (this.REMARKS == "" || this.REMARKS == undefined || this.REMARKS == null) {
       this.toast.warning("Please enter remarks for the document");
       return;
@@ -654,6 +666,19 @@ uploadDoc() {
   this.displayAttach=false
   console.log("DOCUMENT_ATTECHED_LIST :", this.DOCUMENT_ATTECHED_LIST);
   console.log("Uploaded Document List :", this.uploadedDocument);
+  /* ✅ CLEAR ALL UI + MODEL STATE */
+    this.REMARKS = '';
+    this.DOCUMENT_TYPE_ID = null;
+    this.uploadingFiles = [];
+    if (clearUiList) {
+      clearUiList.checked = true; // clears filename table
+    }
+    setTimeout(() => {($('#documentTypeId') as any).selectpicker('refresh');}, 0);
+}
+
+onFileChangeAgain(event: any, fileInput: HTMLInputElement) {
+  this.selectDocument(event);
+  fileInput.value = ''; // 🔥 allows same file to be selected again
 }
 
 getMimeType(extension: string): string {

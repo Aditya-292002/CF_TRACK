@@ -762,7 +762,7 @@
             #fileInput
             id="fileInput"
             class="doc-input"
-            (change)="clearUiList.checked = false; selectDocument($event)">
+            (change)="selectDocument($event, fileInput, clearUiList)">
             <button type="button" class="btn btn-secondary" title="Upload Document">
                 <label for="fileInput" class="att-doc-label-add p-0 m-0" title="Add Document">
                     <i class="fa fa-paperclip"></i> Attach
@@ -771,7 +771,12 @@
                 <!-- <i class="pi pi-upload mr-2"> <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input" disabled></i>Attach -->
             </button>
             <!-- <button type="button" class="btn btn-primary" >Save</button> -->
-            <button type="button" class="btn btn-secondary ml-2" (click)="uploadDoc()">Save</button>
+            <button
+                type="button"
+                class="btn btn-secondary ml-2"
+                (click)="uploadDoc(clearUiList)">
+                Save
+            </button>
             <button type="button" class="btn btn-secondary ml-2" (click)="this.displayAttach=false">Cancel</button>
         </div>
     </div>
