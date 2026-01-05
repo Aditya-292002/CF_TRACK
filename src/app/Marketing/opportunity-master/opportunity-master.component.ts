@@ -45,6 +45,8 @@ export class OpportunityMasterComponent implements OnInit {
   uploadedDocument: Array<any> = [];
   partyType: any;
   REMARKS: any;
+  DOCUMENT_TYPE_ID: any = '';
+  DOCUMENT_DESC: any = '';
   regx_AlphaSpace: RegExp = new RegExp(/^[^<>]*$/);
   // regx_AlphaSpace: RegExp = new RegExp(/^[a-zA-Z0-9\s.,@&()_-]*$/);
 
@@ -78,6 +80,7 @@ export class OpportunityMasterComponent implements OnInit {
   customercontact_list: Array<any> = [];
   leadcontact_list: Array<any> = [];
   accountmgr_list: Array<any> = [];
+  document_type_list: Array<any> = [];
   DOCUMENT_ATTECHED_LIST: any = [];
   RESOLVE_DOC_LIST: any = [];
   filteredCustomerContacts: any[] = [];
@@ -487,9 +490,10 @@ export class OpportunityMasterComponent implements OnInit {
       PARTY_TYPE: ["C"],
       PROBABILITY: [""],
       LEADORCUST: [""],
+      DOCUMENT_TYPE_ID: [""],
     });
     this.GetOpportunityCommonList();
-
+    this.GetOpportunityLogCommonList();    
     // Date restrictions
     const today = new Date();
     this.minDate = today.toISOString().substring(0, 10);
@@ -500,6 +504,13 @@ export class OpportunityMasterComponent implements OnInit {
       console.log("Switched PARTY_TYPE:", type);
       this.showContent(type);
     });
+    // --------------------------------
+    ($('#documentTypeId') as any).on('changed.bs.select',(e: any, clickedIndex: number) => {
+      const selected = this.document_type_list[clickedIndex];
+      if (selected) {
+        this.DOCUMENT_TYPE_ID = selected.DOCUMENT_TYPE_ID;
+        this.DOCUMENT_DESC = selected.DOCUMENT_DESC;
+      }});
     // Conditionally listen for CUST_CODE or LEAD_CODE changes only when appropriate
     // this.form.get('CUST_CODE').valueChanges.subscribe((customerCode: any) => {
     //   if (this.form.get('PARTY_TYPE').value === 'C' && customerCode) {
@@ -652,10 +663,10 @@ export class OpportunityMasterComponent implements OnInit {
     var data = {
       USERID: this.sharedService.loginUser[0].USERID,
       CRM_OPPORTUNITY: crmOpportunity,
-      DOCUMENT_ATTECHED_LIST: this.DOCUMENT_ATTECHED_LIST
+      DOCUMENT_ATTECHED_LIST: this.uploadedDocument
     };
     console.log("SaveOpportunityMaster Save Payload: ", data);
-    //  return
+    // return
     // 🔹 4️⃣ Call API
     this.spinner = true;
     this.http.PostRequest(this.apiUrl.SaveOpportunityMaster, data).then(
@@ -723,6 +734,7 @@ export class OpportunityMasterComponent implements OnInit {
         this.customercontact_list = res.customercontact_list || [];
         this.leadcontact_list = res.leadcontact_list || [];
         this.accountmgr_list = res.accountmgr_list || [];
+        this.document_type_list = res.doc_type_list || [];
         this.form.get('COMPANY_CODE').setValue(this.company_list[0].COMPANY_CODE);
         this.form.get('LOCATION_CODE').setValue(this.location_list[0].LOCATION_CODE);
         this.onStatusChange(10);
@@ -730,6 +742,26 @@ export class OpportunityMasterComponent implements OnInit {
         setTimeout(() => {
           this.refreshSelectPicker();
         }, 50);
+      }
+    }, err => {
+      this.spinner = false;
+    });
+  }
+
+  GetOpportunityLogCommonList() {
+    let data = {
+      USERID:this.sharedService.loginUser[0].USERID,
+    }
+    this.http.PostRequest(this.apiUrl.GetOpportunityLogCommonList, data).then(res => {
+      console.log(res)
+      if (res.flag) {
+        this.document_type_list = res.doc_type_list;
+        setTimeout(() => {
+          $('.selectpicker').selectpicker('refresh').trigger('change');
+        }, 150);
+        this.spinner = false;
+      } else {
+        this.spinner = false;
       }
     }, err => {
       this.spinner = false;
@@ -775,7 +807,8 @@ export class OpportunityMasterComponent implements OnInit {
           FILE_EXTENSION: d.DOCUMENT_FILENAME.split('.').pop().toLowerCase(),
           ACTIVE: d.ACTIVE ? 1 : 0,
           ISNEW: 0,
-          DOC_BASE64: d.DOC_BASE64
+          DOC_BASE64: d.DOC_BASE64,
+          DOCUMENT_TYPE_ID: d.DOCUMENT_TYPE_ID,
         }));
         // IMPORTANT — UI list
         this.uploadedDocument = [...this.DOCUMENT_ATTECHED_LIST];
@@ -883,6 +916,7 @@ export class OpportunityMasterComponent implements OnInit {
     this.form.get('OPPO_SUB_STATUS').setValue(row.OPPO_SUB_STATUS || '');
     this.form.get('OPPO_REMARKS').setValue(row.OPPO_REMARKS || '');
     this.form.get('PROBABILITY').setValue(row.PROBABILITY || '');
+    this.form.get('DOCUMENT_TYPE_ID').setValue(row.DOCUMENT_TYPE_ID);
     // Documents
     if (Array.isArray(row.OPPORTUNITY_DOCUMENT_LIST)) {
       this.DOCUMENT_ATTECHED_LIST = row.OPPORTUNITY_DOCUMENT_LIST.map((d: any, idx: number) => ({
@@ -898,7 +932,8 @@ export class OpportunityMasterComponent implements OnInit {
         ISNEW: 0,
         UPLOAD_BY: d.UPLOAD_BY || '',
         UPLOAD_BY_USERID: d.UPLOAD_BY_USERID || '',
-        b64: d.b64 || ''
+        b64: d.b64 || '',
+        DOCUMENT_TYPE_ID:d.DOCUMENT_TYPE_ID || '',
       }));
     }
     this.form.updateValueAndValidity();
@@ -1662,6 +1697,7 @@ export class OpportunityMasterComponent implements OnInit {
             ACTIVE: 1,
             UPLOAD_BY: this.sharedService.loginUser[0].USER_NAME,
             UPLOAD_BY_USERID: this.sharedService.loginUser[0].USERID,
+            DOCUMENT_TYPE_ID: this.DOCUMENT_TYPE_ID,
             DOC_BASE64: b64,
             //  REMARKS: this.REMARKS
 
@@ -1693,13 +1729,18 @@ export class OpportunityMasterComponent implements OnInit {
   // }
 
   uploadDoc() {
-
     if (this.REMARKS == "" || this.REMARKS == undefined || this.REMARKS == null) {
       this.toast.warning("Please enter remarks for the document");
       return;
     }
+    if (!this.DOCUMENT_TYPE_ID) {
+    this.toast.warning("Please select a document type");
+    return;
+    }
     this.displayHistory = false;
-    // this.REMARKS="";
+    const selectedDocType = this.document_type_list.find(
+    d => d.DOCUMENT_TYPE_ID == this.DOCUMENT_TYPE_ID
+    );
     for (let i = 0; i < this.uploadingFiles.length; i++) {
       this.uploadedDocument.push(this.uploadingFiles[i]);
       this.DOCUMENT_ATTECHED_LIST.push({
@@ -1711,23 +1752,27 @@ export class OpportunityMasterComponent implements OnInit {
         ACTIVE: 1,
         UPLOAD_BY: this.uploadingFiles[i].UPLOAD_BY,
         UPLOAD_BY_USERID: this.uploadingFiles[i].UPLOAD_BY_USERID,
-        DOC_BASE64: this.uploadingFiles[i].b64,
+        DOC_BASE64: this.uploadingFiles[i].DOC_BASE64,
         REMARKS: this.REMARKS,
-        TYPE: this.typeofdocument
-      });
+        // DOCUMENT_TYPE_ID:this.DOCUMENT_TYPE_ID,
+        DOCUMENT_TYPE_ID: this.DOCUMENT_TYPE_ID,
+        DOCUMENT_DESC: selectedDocType ? selectedDocType.DOCUMENT_DESC : '',
+        });
+        console.log('Selected ID:', this.DOCUMENT_TYPE_ID);
+        console.log('Resolved Desc:', selectedDocType.DOCUMENT_DESC);
+        console.log('Document Attached List:', this.DOCUMENT_ATTECHED_LIST);
     }
   }
-
   removeDoc(fileIndex: number = null) {
-    if (this.uploadedDocument[fileIndex].ISNEW == 1) {
-      this.uploadedDocument.splice(fileIndex, 1);
-    } else if (this.uploadedDocument[fileIndex].ACTIVE == 1) {
-      this.uploadedDocument[fileIndex].ACTIVE = 0;
+    if (this.DOCUMENT_ATTECHED_LIST[fileIndex].ISNEW == 1) {
+      this.DOCUMENT_ATTECHED_LIST.splice(fileIndex, 1);
+    } else if (this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE == 1) {
+      this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE = 0;
     } else {
-      this.uploadedDocument[fileIndex].ACTIVE = 0;
+      this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE = 0;
     }
     this.NoDocs = 0;
-    this.uploadedDocument.forEach(element => {
+    this.DOCUMENT_ATTECHED_LIST.forEach(element => {
       if (element.ACTIVE != 0) {
         this.NoDocs += 1
       }
@@ -1875,6 +1920,7 @@ export class OpportunityMasterComponent implements OnInit {
       .filter(d => d.ACTIVE !== 0)
       .length;
   }
+
   addDocument() {
     console.log('inside add document');
 
@@ -1882,6 +1928,7 @@ export class OpportunityMasterComponent implements OnInit {
     console.log('displayHistory', this.displayHistory);
 
   }
+
   resetDropdown(val: any) {
     console.log('val', val);
 
@@ -1893,5 +1940,15 @@ export class OpportunityMasterComponent implements OnInit {
       this.form.controls['LEAD_ACC_MANAGER'].reset();
     }
   }
+
+  onDocumentTypeChange(event:any) {
+  this.DOCUMENT_TYPE_ID= event.target.value;
+    console.log('DOCUMENT_TYPE_ID (on change):',this.form.get('DOCUMENT_TYPE_ID').value);
+    console.log("event.target.value", event.target.value);
+  }     
+  
+  onDialogShow() {
+  ($('#documentTypeId') as any).selectpicker('refresh');
+}
 
 } 

@@ -42,6 +42,7 @@ export class SalesOpportunityLogComponent implements OnInit {
   DOCUMENT_ATTECHED_LIST: any = [];
   document_type_list: any = [];
   DOCUMENT_TYPE_ID: any = '';
+  DOCUMENT_DESC: any = '';
   REMARKS: string = '';
   viewcustomberdetails: boolean = false;
   TYPE: any;
@@ -110,6 +111,14 @@ export class SalesOpportunityLogComponent implements OnInit {
       DOCUMENT_TYPE_ID: [""],
       
     });
+    // -------------------------------
+    ($('#documentTypeId') as any).on('changed.bs.select',(e: any, clickedIndex: number) => {
+      const selected = this.document_type_list[clickedIndex];
+      if (selected) {
+        this.DOCUMENT_TYPE_ID = selected.DOCUMENT_TYPE_ID;
+        this.DOCUMENT_DESC = selected.DOCUMENT_DESC;
+      }});
+    // -------------------------------
     console.log('Form controls:', Object.keys(this.form.controls));
     // this.form.get('DOCUMENT_TYPE_ID').valueChanges.subscribe(val => {console.log('DOCUMENT_TYPE_ID valueChanges:', val);});
     const today = new Date();
@@ -316,13 +325,10 @@ export class SalesOpportunityLogComponent implements OnInit {
   };
 
   onDocumentTypeChange(event:any) {
-this.DOCUMENT_TYPE_ID= event.target.value;
-  console.log('DOCUMENT_TYPE_ID (on change):',this.form.get('DOCUMENT_TYPE_ID').value
-
-  );
-  console.log("event.target.value", event.target.value);
-  
-}
+  this.DOCUMENT_TYPE_ID= event.target.value;
+    console.log('DOCUMENT_TYPE_ID (on change):',this.form.get('DOCUMENT_TYPE_ID').value);
+    console.log("event.target.value", event.target.value);
+  }
 
 
   private applyLatestLogActivity(list: any[]): void {
@@ -395,7 +401,7 @@ this.DOCUMENT_TYPE_ID= event.target.value;
       OPPO_CODE: this.form.getRawValue().OPPO_CODE,
     }
     console.log('data',data)
-    //  return
+    // return 
     this.http.PostRequest(this.apiUrl.SaveSalesOpportunityLog, data).then(res => {
       console.log(res)
       if (res.flag) {
@@ -543,15 +549,15 @@ this.DOCUMENT_TYPE_ID= event.target.value;
   }
 
   removeDoc(fileIndex: number = null) {
-    if (this.uploadedDocument[fileIndex].ISNEW == 1) {
-      this.uploadedDocument.splice(fileIndex, 1);
-    } else if (this.uploadedDocument[fileIndex].ACTIVE == 1) {
-      this.uploadedDocument[fileIndex].ACTIVE = 0;
+    if (this.DOCUMENT_ATTECHED_LIST[fileIndex].ISNEW == 1) {
+      this.DOCUMENT_ATTECHED_LIST.splice(fileIndex, 1);
+    } else if (this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE == 1) {
+      this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE = 0;
     } else {
-      this.uploadedDocument[fileIndex].ACTIVE = 0;
+      this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE = 0;
     }
     this.NoDocs = 0;
-    this.uploadedDocument.forEach(element => {
+    this.DOCUMENT_ATTECHED_LIST.forEach(element => {
       if(element.ACTIVE != 0){
         this.NoDocs += 1
       }
@@ -613,12 +619,18 @@ this.DOCUMENT_TYPE_ID= event.target.value;
 }
 
 uploadDoc() {
-    // if(this.REMARKS==""){
-    //   this.toast.warning("Please enter remarks for the document");
-    //   return;
-    // }
+    if (this.REMARKS == "" || this.REMARKS == undefined || this.REMARKS == null) {
+      this.toast.warning("Please enter remarks for the document");
+      return;
+    }
+    if (!this.DOCUMENT_TYPE_ID) {
+    this.toast.warning("Please select a document type");
+    return;
+    }
     // this.displayHistory=false;
-    // this.REMARKS="";
+    const selectedDocType = this.document_type_list.find(
+    d => d.DOCUMENT_TYPE_ID == this.DOCUMENT_TYPE_ID
+    );
   for (let i = 0; i < this.uploadingFiles.length; i++) {
     this.uploadedDocument.push(this.uploadingFiles[i]);
     this.DOCUMENT_ATTECHED_LIST.push({
@@ -634,7 +646,8 @@ uploadDoc() {
     DOC_BASE64: this.uploadingFiles[i].b64,
     REMARKS: this.REMARKS,
     // DOCUMENT_TYPE_ID: this.uploadingFiles[i].DOCUMENT_TYPE_ID,
-    DOCUMENT_TYPE_ID:this.DOCUMENT_TYPE_ID,
+    DOCUMENT_TYPE_ID: this.DOCUMENT_TYPE_ID,
+    DOCUMENT_DESC: selectedDocType ? selectedDocType.DOCUMENT_DESC : '',
   });
   }
   this.displayAttach=false
