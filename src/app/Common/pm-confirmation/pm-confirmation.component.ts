@@ -191,8 +191,8 @@ export class PmConfirmationComponent implements OnInit {
     this.http.PostRequest(this.apiurl.GetIssueHelpDeskMasterList, {}).then((res: any) => {
       if (res.flag == 1) {
         
-        const response = res.Resolution;
-        this.RESOLUTION_LIST = response;
+        this.RESOLUTION_LIST =res.Resolution;
+        // this.RESOLUTION_LIST = response;
         this.CLOSED_STATUS_LIST = res.statuslist;
         this.RESOLVED_STATUS_LIST = res.closestatuslist;
 

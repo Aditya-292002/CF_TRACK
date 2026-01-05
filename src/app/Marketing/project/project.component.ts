@@ -485,13 +485,14 @@ export class ProjectComponent implements OnInit {
 
       let data = {
         USERID:this.sharedService.loginUser[0].USERID,
+        PROJECT_CODE:this.form.get('PROJ_CODE').value,
         project_detail: _formData,
         project_payment_detail: this.project_payment_detail,
         project_assign_emp_detail:this.project_assign_emp_detail
       }
       console.log(data,'data');
       
-      // return
+       return
       this.http.PostRequest(this.apiUrl.SaveProjectDetail, data).then(res => {
         if (res.flag) {
           this.toast.success(res.msg)
@@ -651,6 +652,7 @@ onManagerChange(manager: any) {
   };
 
   this.project_assign_emp_detail.push(emp_details);
+  
 }
 remove(emp_no: string,name:string) {
   console.log('INSIDE REMOCVE ',name,emp_no);
@@ -658,17 +660,24 @@ remove(emp_no: string,name:string) {
   this.project_assign_emp_detail = this.project_assign_emp_detail.filter(
     emp => emp.EMP_CODE !== emp_no
   );
+  
+console.log('this.project_assign_emp_detail',this.project_assign_emp_detail);
+
   this.form.controls[name].reset();
 }
   removeRow(data:any) {
     this.selected_emp = "";
     this.project_assign_emp_detail.forEach((element:any,index:any)=>{
       if(element.EMP_CODE == data.EMP_CODE){
-         this.project_assign_emp_detail.splice(index,1)
+          this.project_assign_emp_detail.splice(index,1)
+          // element.ACTIVE=false;
       } 
     })
     $("#emp").selectpicker("refresh").trigger("change");
   }
+  get activeEmployees() {
+  return this.project_assign_emp_detail.filter(emp => emp.ACTIVE);
+}
 
   UpdateTaskEmployeeDetails() {
     console.log('project_assign_emp_detail',this.project_assign_emp_detail);
