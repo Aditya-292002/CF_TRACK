@@ -47,7 +47,7 @@ export class ProjectComponent implements OnInit {
   PO_DATE: string = "";
   PROJECT_DATE: any = this.sharedService.getDDMMMYYYY(new Date());
   VALID_UPTO: string = "";
-  EXP_CLOSURE: string = "";
+  EXPECTED_CLOSURE: string = "";
   selected_emp:any;
   ngOnInit() {
     this.sharedService.formName = "Project Information"
@@ -77,7 +77,7 @@ export class ProjectComponent implements OnInit {
       PROJ_REMARKS: [""],
       BILLED_VALUE: [null],
       PROJ_SEGMENT: ["",Validators.required],
-      EXP_CLOSURE:[""],
+      EXPECTED_CLOSURE:[""],
       // VALID_UPTO:[""],
       TECHNICAL_OWNER:[""]
     })
@@ -261,6 +261,7 @@ export class ProjectComponent implements OnInit {
     this.form.get('CUST_CONTACT').setValue(data[0].CUST_CONTACT)
     this.form.get('PROJ_REMARKS').setValue(data[0].PROJ_REMARKS)
     this.form.get('BILLED_VALUE').setValue(data[0].BILLED_VALUE)
+    this.form.get('EXPECTED_CLOSURE').setValue(data[0].EXPECTED_CLOSURE)
     // this.form.get('VALID_UPTO').setValue(data[0].VALID_UPTO)
     this.form.get('TECHNICAL_OWNER').setValue(data[0].TECHNICAL_OWNER)
     this.GetCustomerDetail();
@@ -543,6 +544,7 @@ export class ProjectComponent implements OnInit {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);
   }
+  
   f_validateForm() { 
     if(this.form.controls["COMPANY_CODE"].invalid){
       this.toast.warning("Please select Company");
