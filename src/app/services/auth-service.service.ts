@@ -15,6 +15,14 @@ export class AuthServiceService {
     sessionStorage.clear();     
     this.router.navigate(['/login']); 
    }   
+      clientLogout() :void {    
+    sessionStorage.setItem('isLoggedIn','false');    
+    sessionStorage.removeItem('companyDetail');        
+    sessionStorage.removeItem('user_detail');        
+    sessionStorage.removeItem('access_token');   
+    sessionStorage.clear();     
+    this.router.navigate(['/clientlogin']); 
+   }   
    public isLoggedIn(): boolean {
       let status = false;
       if (sessionStorage.getItem('access_token') !== null && sessionStorage.getItem('access_token') !== "") {

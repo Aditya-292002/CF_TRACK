@@ -1,0 +1,41 @@
+.issue-no {
+  color: #0d6efd; /* Bootstrap primary color */
+  font-weight: 700; /* bold */
+  cursor: pointer;
+  text-decoration: none; /* remove default underline */
+
+  /* Hover effect */
+  transition: all 0.2s ease;
+}
+.issue-no:hover {
+  text-decoration: underline;
+}
+
+.floating-input {
+  position: relative;
+}
+
+.dropdown-wrapper {
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: -3px;
+  right: 8px;
+  z-index: 10; /* make sure it's above Bootstrap-select styling */
+  color: #333333;
+  font-size: 25px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+
+
+.selectpicker {
+  width: 100% !important;
+  padding-right: 25px !important;
+}
+
+

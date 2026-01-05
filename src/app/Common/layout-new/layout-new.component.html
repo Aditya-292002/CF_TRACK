@@ -138,12 +138,17 @@
         id="layout-navbar"
       >
         <div class="navbar-nav-right" id="navbar-collapse">
-          <div class="hide-text">
-            <h6 class="mb-0">{{ this.COMPANY_NAME }} : {{this.LOCATION_NAME}} ({{this.FYEAR_DESC}})</h6>
+          <div class="hide-text" *ngIf="this.role_id!=10">
+            <h6 class="mb-0" >{{ this.COMPANY_NAME }} : {{this.LOCATION_NAME}} ({{this.FYEAR_DESC}})</h6>
+             <!-- <h6 class="mb-0" *ngIf="this.role_id==10">CFTRACK Ticket System</h6> -->
+          </div>
+                    <div class="hide-text" *ngIf="role_id==10">
+            <!-- <h6 class="mb-0" >{{ this.COMPANY_NAME }} : {{this.LOCATION_NAME}} ({{this.FYEAR_DESC}})</h6> -->
+             <h6 class="mb-0" >{{ this.COMPANY_NAME }} : {{this.LOCATION_NAME}}</h6>
           </div>
           <ul class="navbar-nav ">
             
-            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+            <li class="nav-item navbar-dropdown dropdown-user dropdown" *ngIf="this.role_id!=10">
               <button
               *ngIf="this.SUBMITION_LAST_DATE != this.TODATE"
               class="btn btn-primary mt-1 mr-3 SelfAppraisalBtn "
@@ -153,7 +158,7 @@
             Self Appraisal
             </button>
           </li>
-            <li class="nav-item navbar-dropdown dropdown-timesheet dropdown">
+            <li class="nav-item navbar-dropdown dropdown-timesheet dropdown" *ngIf="this.role_id!=10" >
               <a class="nav-link p-0" (click)="CheckAttendance(0)">
                 <div class="avatar mr-2">
                   <svg
@@ -294,8 +299,9 @@
                   </div>
                 </div>
                 <div *ngIf="ISFINANCE == true" class="dropdown-divider"></div>
+               
                 <a
-                  *ngIf="ISFINANCE == true"
+                  *ngIf="ISFINANCE == true && this.role_id!=10"
                   class="dropdown-item"
                   (click)="ShowChangeFyear()"
                 >
@@ -303,7 +309,7 @@
                   <label>Change Fyear</label>
                 </a>
                 
-                <a class="dropdown-item" (click)="OnChangePassword()">
+                <a class="dropdown-item" (click)="OnChangePassword()" *ngIf="this.role_id!=10">
                   <i class="icon fa fa-key key mr-2"></i>
                   <label>Change Password</label>
                 </a>
@@ -381,7 +387,7 @@
   #attendance
   id="attendance"
   tabindex="-1"
-  role="dialog"
+  role="dialog"  
   data-keyboard="false"
   data-backdrop="static"
   aria-labelledby="exampleModalLabel"

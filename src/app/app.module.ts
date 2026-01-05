@@ -116,6 +116,14 @@ import { BankReceiptListComponent } from './Invoice/bank-receipt-list/bank-recei
 import { PanelModule } from 'primeng/panel';
 import { SelfAppraisalListComponent } from './Marketing/self-appraisal-list/self-appraisal-list.component';
 import { SelfAppraisalComponent } from './Marketing/self-appraisal/self-appraisal.component';
+import { TicketLoginComponent } from './Common/ticket-login/ticket-login.component';
+import { IssueRequestMasterComponent } from './Common/issue-request-master/issue-request-master.component';
+import { IssueRequestListComponent } from './Common/issue-request-list/issue-request-list.component';
+import { PmConfirmationComponent } from './Common/pm-confirmation/pm-confirmation.component';
+import { PmConfirmationListComponent } from './Common/pm-confirmation-list/pm-confirmation-list.component';
+import { LeadMasterComponent } from './Marketing/lead-master/lead-master.component';
+import { SalesOrderApproveComponent } from './Common/sales-order-approve/sales-order-approve.component';
+import { SalesOpportunityLogListComponent } from './Common/sales-opportunity-log-list/sales-opportunity-log-list.component';
 
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -226,7 +234,16 @@ export const MY_DATE_FORMATS = {
     PendingTaskComponent,
     BankReceiptListComponent,
     SelfAppraisalComponent,
-    SelfAppraisalListComponent
+    SelfAppraisalListComponent,
+    TicketLoginComponent,
+    IssueRequestMasterComponent,
+    IssueRequestListComponent,
+    PmConfirmationComponent,
+    PmConfirmationListComponent,
+    LeadMasterComponent,
+    SalesOrderApproveComponent,
+    SalesOpportunityLogListComponent
+    
   ],
   imports: [
     BrowserModule,
@@ -266,7 +283,7 @@ export const MY_DATE_FORMATS = {
     ToggleButtonModule, 
     TooltipModule,
     PdfViewerModule,
-    PanelModule
+    PanelModule,
   ],
   providers: [
     AuthGuard,

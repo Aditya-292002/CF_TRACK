@@ -1,0 +1,145 @@
+
+<div class="d-flex flex-row justify-content-between align-items-center flex-wrap">
+  <h5 class="h5 mb-0 mr-3">PM Confirmation List</h5>
+
+  <form [formGroup]="form" class="flex-grow-1 mx-2">
+    <div class="d-flex flex-row align-items-center w-100">
+
+      <!-- Project Dropdown -->
+      <div class="floating-input list-btn mr-2 flex-fill position-relative">
+        <div class="dropdown-wrapper">
+          <select
+            class="form-control selectpicker show-tick"
+            formControlName="PROJ_CODE"
+            (change)="onProjectChange($event.target.value)"
+            data-live-search="true"
+            id="projectType"
+            title="Select Project"
+          >
+            <option *ngFor="let opt of projectList" [value]="opt.PROJ_CODE">
+              {{ opt.PROJ_NAME }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Close button -->
+        <button
+          type="button"
+          class="btn p-0 close-btn"
+          aria-label="Close"
+          (click)="resetProjectDropdown()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <!-- Status Dropdown -->
+      <div class="floating-input list-btn flex-fill position-relative">
+        <div class="dropdown-wrapper">
+          <select
+            class="form-control selectpicker show-tick"
+            formControlName="STATUS_CODE"
+            data-live-search="true"
+            title="Select Status"
+            id="statusType"
+            (change)="onStatusChange($event.target.value)"
+          >
+            <option
+              *ngFor="let opt of statusList"
+              [selected]="opt.STATUS_CODE == form.controls['STATUS_CODE'].value"
+              [value]="opt.STATUS_CODE"
+            >
+              {{ opt.STATUS_NAME }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Close button -->
+        <button
+          type="button"
+          class="btn p-0 close-btn"
+          aria-label="Close"
+          (click)="resetStatusDropdown()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Search box -->
+  <div class="input-group ml-3" style="max-width: 259px; height: 29.61px;">
+    <div class="input-group-prepend">
+      <span
+        class="input-group-text bg-white border-right-0"
+        style="height: 29.61px;"
+      >
+        <i class="fa fa-search"></i>
+      </span>
+    </div>
+    <input
+      type="text"
+      class="form-control border-left-0"
+      placeholder="Search"
+      [(ngModel)]="SearchValue"
+      (ngModelChange)="GetInputFilter(SearchValue)"
+      style="box-shadow: none; height: 29.61px;"
+    />
+  </div>
+</div>
+
+
+<div class="mt-2">
+  <div class="card">
+    <div class="p-3" *ngIf="this.ISSUE_REQUEST_LIST_DATA.length == 0">
+      <p *ngIf="this.ISSUE_REQUEST_LIST_DATA.length == 0">No Records Found</p>
+    </div>
+    <div class="tableFixHead" *ngIf="this.ISSUE_REQUEST_LIST_DATA.length > 0">
+      <table class="table-theam-1 row_bgcolor_1">
+        <thead>
+          <tr>
+            <th *ngFor="let column of ISSUE_REQUEST_COLUMN_LIST">
+              {{ column.Col_Name }}
+            </th>
+            <th class="">Action</th>
+            <!-- For Action column -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of ISSUE_REQUEST_LIST_DATA">
+            <td *ngFor="let column of ISSUE_REQUEST_COLUMN_LIST">
+              {{ data[column.Col_Filed] }}
+            </td>
+            <td class="">
+              <!-- Add your action buttons here -->
+              <span>
+                <i
+                  class="fa fa-eye mr-1"
+                  *ngIf="liststatus !== 'Pending'"
+                  (click)="
+                    GetDeveloperRequestRaised(
+                      ISSUE_REQUEST_COLUMN_LIST[0],
+                      data
+                    )
+                  "
+                ></i
+              ></span>
+              <span>
+                <i
+                  class="far fa-edit mr-1"
+                  *ngIf="liststatus == 'Pending'"
+                  (click)="
+                    GetDeveloperRequestRaised(
+                      ISSUE_REQUEST_COLUMN_LIST[0],
+                      data
+                    )
+                  "
+                ></i
+              ></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

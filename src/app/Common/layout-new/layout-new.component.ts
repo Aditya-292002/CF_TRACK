@@ -23,7 +23,7 @@ export class LayoutNewComponent implements OnInit {
   @ViewChild('chagefyear', { static: false }) chagefyear: ElementRef;
   @HostListener('click', ['$event.target'])
 
-  UserId:any;
+  UserId:any="";
   login_user:any = "";
   role_name:any = "";
   designation:any = "";
@@ -65,6 +65,7 @@ export class LayoutNewComponent implements OnInit {
   mergedData:any = [];
   TODATE:any = new Date();
   SUBMITION_LAST_DATE:any;
+  role_id: number;
 
 constructor(
   private route: RoutingService,
@@ -128,7 +129,7 @@ ngOnInit() {
     });
   this.SYS_DATE_TIME = this.datePipe.transform(new Date(), 'dd-MMM-yyyy hh:mm:ss')
   this.ATT_DATE = this.datePipe.transform(new Date(), 'dd-MMM-yyyy')
-  //$$('.selectpicker').selectpicker('refresh').trigger('change');
+  // $$('.selectpicker').selectpicker('refresh').trigger('change');
   if(this.sharedService.loginUser[0].EMP_CODE == undefined){
     this.sharedService.loginUser = sessionStorage.getItem('user_detail') ? JSON.parse(sessionStorage.getItem('user_detail')):[]
     this.sharedService.profile_pic = sessionStorage.getItem('profile_pic') ? sessionStorage.getItem('profile_pic'):""
@@ -140,6 +141,7 @@ ngOnInit() {
     this.FYEAR = this.sharedService.loginUser[0].FYEAR
     this.FYEAR_DESC = this.sharedService.loginUser[0].FYEAR_DESC
     this.COMPANY_CODE = this.sharedService.loginUser[0].COMPANY_CODE
+    this.role_id=this.sharedService.loginUser[0].ROLE_ID
     this.getUserMenu();
     this.getFyear();
     this.onLoadCheckAttendance();
@@ -151,6 +153,7 @@ ngOnInit() {
     this.designation = this.sharedService.loginUser[0].DESIGNATION
     this.FYEAR = this.sharedService.loginUser[0].FYEAR
     this.COMPANY_CODE = this.sharedService.loginUser[0].COMPANY_CODE
+   this.role_id=this.sharedService.loginUser[0].ROLE_ID
     this.getUserMenu();
     this.getFyear();
     this.onLoadCheckAttendance();
@@ -181,6 +184,7 @@ ngAfterViewInit(){
       this.FYEAR = this.sharedService.loginUser[0].FYEAR
       this.FYEAR_DESC = this.sharedService.loginUser[0].FYEAR_DESC
       this.COMPANY_CODE = this.sharedService.loginUser[0].COMPANY_CODE
+          this.role_id=this.sharedService.loginUser[0].ROLE_ID
       this.getUserMenu();
       this.getFyear();
       this.onLoadCheckAttendance();
@@ -193,6 +197,7 @@ ngAfterViewInit(){
       this.designation = this.sharedService.loginUser[0].DESIGNATION
       this.FYEAR = this.sharedService.loginUser[0].FYEAR
       this.COMPANY_CODE = this.sharedService.loginUser[0].COMPANY_CODE
+          this.role_id=this.sharedService.loginUser[0].ROLE_ID
       this.getUserMenu();
       this.getFyear();
       this.onLoadCheckAttendance();
@@ -278,6 +283,9 @@ onLoadCheckAttendance() {
     this.SYS_DATE_TIME = this.datePipe.transform(new Date(), 'dd-MMM-yyyy hh:mm:ss')
     let data = {  }
     this.http.PostRequest(this.apiUrl.Check_Attendance, data).then(res => {
+      if(this.role_id==10){
+        this.isAttendance = false;        
+      }
       if(this.role_name == "MANAGEMENT"){
         this.isAttendance = true; 
       }
@@ -285,7 +293,12 @@ onLoadCheckAttendance() {
         this.attendance_type = res.attendance_type
         this.ATT_DATE = res.Date;
         this.EMP_NAME = this.sharedService.loginUser[0].EMP_CODE +" - "+this.sharedService.loginUser[0].USER_NAME
-        jQuery(this.attendance.nativeElement).modal('show')
+        console.log(' EMP_NAME -> ',this.EMP_NAME)
+         if(this.EMP_NAME!='1234'){
+          jQuery(this.attendance.nativeElement).modal('hide')
+        }else{
+          jQuery(this.attendance.nativeElement).modal('show')
+        }
         this.isAttendance = false;
       } else {
         this.isAttendance = true; 
@@ -302,7 +315,10 @@ CheckAttendance(para:any) {
         this.attendance_type = res.attendance_type
         this.ATT_DATE = res.Date;
         this.EMP_NAME = this.sharedService.loginUser[0].EMP_CODE +" - "+this.sharedService.loginUser[0].USER_NAME
-        jQuery(this.attendance.nativeElement).modal('show')
+         if(this.EMP_NAME!='1234'){
+
+          jQuery(this.attendance.nativeElement).modal('show')
+        }
         this.isAttendance = false;
       } else {
         this.isAttendance = true;
@@ -364,7 +380,14 @@ f_clearPopup() {
 }
 
 f_logout(){
-    this.authService.logout();
+  console.log('this.role_id',this.role_id);
+  
+  if(this.role_id==10){
+
+    this.authService.clientLogout();
+  }else{
+this.authService.logout();
+  }
     this.sharedService.loginUser =[{}]
 }
 
@@ -416,6 +439,8 @@ menuClick(para: any, index:any){
 }
 
 getUserMenu(){
+  console.log('INSIDE MENURIGHTD');
+  
     this.http.PostRequest(this.apiUrl.GetMenuItems, {}).then(res => {
       if (res) {
         this.menu_list = res.menu_list;

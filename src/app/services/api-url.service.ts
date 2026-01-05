@@ -21,7 +21,9 @@ export class ApiUrlService {
   GetSalesOrderFile: string = '/File/GetSalesOrderFile';
   GetCustCommonList: string = '/Customer/GetCustCommonList';
   GetCustomerList: string = '/Customer/GetCustomerList';
+  GetLeadList: string = '/Lead/GetLeadList';
   GetCustomerDetail: string = '/Customer/GetCustomerDetail';
+  GetLeadDetail: string = '/Lead/GetLeadMasterDetails';
   SaveCustomerDetail: string = '/Customer/SaveCustomerDetail';
   GetProjCommonList: string = '/Project/GetProjCommonList';
   GetProjectList: string = '/Project/GetProjectList';
@@ -146,6 +148,7 @@ export class ApiUrlService {
   GetOpportunityList: string='/Marketing/GetOpportunityList';
   GetLogDetailsView: string='/Marketing/GetLogDetailsView';
   GetOpportunityMasterLogDetails: string='/Marketing/GetOpportunityMasterLogDetails';
+  GetDocumentListByLogId: string='/Marketing/GetDocumentListByLogId';
   SaveSalesOpportunityLog:string='/Marketing/SaveSalesOpportunityLog';
 //   GetFetchReportData: string = '/Report/GetFetchReportData';
 // GetFetchDrillReportData: string = '/Report/GetFetchDrillReportData';
@@ -174,6 +177,25 @@ GetAppriasalDetails: string='/Setting/GetAppriasalDetails';
 SaveAppriasalDetailsByUserId: string='/Setting/SaveAppriasalDetailsByUserId';  
 GetSaveAppriasalList: string='/Setting/GetSaveAppriasalList';  
 GetAppriasalDetailsByUserId: string='/Setting/GetAppriasalDetailsByUserId';  
+// addded by hemant 01_oct_2025
+SendOTP_getOTPassword: string='/TicketSystem/SendOTP_getOTPassword';  
+public VERIFYCLIENTDETAILS: string='/TicketSystem/VERIFYCLIENTDETAILS';  
+ public VERIFYOTP: string='/TicketSystem/VERIFYOTP'; 
+public GetIssueCommonList: string='/TicketSystem/GetIssueCommonList';  
+public SaveIssueDetails: string='/TicketSystem/SaveIssueDetails';  
+public GetIssueRequestList: string='/TicketSystem/GetIssueRequestList';  
+public GETISSUERAISEDDETAILSBYISSUENO: string='/TicketSystem/GETISSUERAISEDDETAILSBYISSUENO';  
+public SaveIssueDeveloperConfirmation: string='/TicketSystem/SaveIssueDeveloperConfirmation';  
+public GetDeveloperHistoryList: string='/TicketSystem/GetDeveloperHistoryList';  
+public GetIssuePmApprovalList: string='/TicketSystem/GetIssuePmApprovalList';
+public GetIssueHelpDeskMasterList: string='/TicketSystem/GetIssueHelpDeskMasterList';
+public GetLeadCommonList: string ='/Lead/GetLeadCommonList';
+public SaveLead: string ='/Lead/SaveLead';
+public GetPMCommonList: string = '/TicketSystem/GetPMCommonList';
+public GetIssueRaisedHistoryList: string='/TicketSystem/GetIssueRaisedHistoryList'; 
+public ApproveSOForInvoiceList: string='/SO/ApproveSOForInvoiceList'; 
 
-
+public GetOppMasterFile: string='/Marketing/GetOppMasterFile';
+public GetOpportunityLogList: string='/Marketing/GetOpportunityLogList';
+public GetLeadAndCustContactDetails: string='/Marketing/GetLeadAndCustContactDetails';
 }

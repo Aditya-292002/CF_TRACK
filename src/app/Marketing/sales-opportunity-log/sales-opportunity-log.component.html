@@ -1,17 +1,29 @@
 <app-spinner [startSpinner]='spinner' *ngIf="spinner"></app-spinner>
 <form [formGroup]="form">
-<div class="row">
-    <div class="col-md-12">
-        <!-- <button class="btn btn-secondary  float-right m-1 ml-1 mr-1" title="Save">Save</button> -->
-        <button class="btn btn-secondary  float-right m-1 ml-1 mr-1" *ngIf="isUpdate" (click)="f_clearForm()"   title="Cancel">Cancel</button>
-        <button class="btn btn-secondary float-right m-1 ml-1 mr-1" *ngIf="!isUpdate && ADD_RIGHTS" (click)="SaveSalesOpportunityLog('INSERT')"  title="Save">Save</button>
-        <button class="btn btn-secondary float-right m-1 ml-1 mr-1" *ngIf="isUpdate && UPDATE_RIGHTS" (click)="SaveSalesOpportunityLog('UPDATE')"  title="Save">Save</button>
 
-    </div>
-    <div class="col-md-12">
-        <div class="row card">
-            <div class="col-md-6">
-                <!-- <label>Company :</label>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="d-flex flex-wrap justify-content-between">
+                <!-- <h5 class="formName col-md-4">{{ sharedService.formName }}</h5> -->
+                <h5 class="formName col-md-4">{{ sharedService.formName }}</h5>
+                <div class="d-flex  col-md-8 justify-content-end">
+                    <button class="btn btn-secondary float-right m-1 ml-1 mr-1" (click)="navigateToList()"
+                        title="View Opportunity list">
+                        <i class="far fa-eye mr-1"></i>List</button>
+                    <!-- <button class="btn btn-secondary  float-right m-1 ml-1 mr-1" title="Save">Save</button> -->
+                    <button class="btn btn-secondary  float-right m-1 ml-1 mr-1" *ngIf="isUpdate"
+                        (click)="f_clearForm()" title="Cancel">Cancel</button>
+                    <button class="btn btn-secondary float-right m-1 ml-1 mr-1" *ngIf="!isUpdate && ADD_RIGHTS"
+                        (click)="SaveSalesOpportunityLog('INSERT')" title="Save">Save</button>
+                    <button class="btn btn-secondary float-right m-1 ml-1 mr-1" *ngIf="isUpdate && UPDATE_RIGHTS"
+                        (click)="SaveSalesOpportunityLog('UPDATE')" title="Save">Save</button>
+                </div>
+            </div>
+        </div>
+        <div class="">
+            <div class="row card">
+                <div class="col-md-6">
+                    <!-- <label>Company :</label>
                 <div class="floating-input  list-btn">
                     <select class="form-control selectpicker show-tick" id="Company"  data-live-search="true" title="Select">
                         <option ></option>                     
@@ -20,195 +32,307 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div> -->
-                <label>Opportunity :</label>
-                <div class="floating-input  list-btn">
-                  <!--    <select class="form-control selectpicker show-tick" id="Opportunity"  data-live-search="true" title="Select">
-                        <option ></option>                     
-                    </select>
-                   <button type="button" class="close" onclick="resetDropdown('Opportunity')"  aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>-->
-                    <select class="form-control selectpicker show-tick " id="OPPO_CODE" data-live-search="true" formControlName="OPPO_CODE" (change)="searchOpportunity()" title="Select">
-                           <option *ngFor="let opt of opportunity_list; let i=index" 
-                            [selected]="opt.OPPO_CODE == form.controls['OPPO_CODE'].value"
-                             [value]="opt.OPPO_CODE" >{{ opt.OPPO_NAME }}</option>                     
-                    </select>
-                    <button type="button" class="close" onclick="resetDropdown('OPPO_CODE')" (click)="form.controls['OPPO_CODE'].reset()"  aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <label>Opportunity :</label>
+                    <div class="floating-input  list-btn">
+                        <!-- (change)="searchOpportunity()" -->
+                        <!-- <select class="form-control selectpicker show-tick " id="OPPO_CODE" data-live-search="true"
+                            formControlName="OPPO_CODE" title="Select">
+                            <option *ngFor="let opt of opportunity_list; let i=index"
+                                [selected]="opt.OPPO_CODE == form.controls['OPPO_CODE'].value" [value]="opt.OPPO_CODE" disabled>
+                                {{ opt.OPPO_CODE }} - {{opt.OPPO_NAME}}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('OPPO_CODE')"
+                            (click)="form.controls['OPPO_CODE'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button> -->
+                        <div class="floating-input "
+                            [ngClass]="{'invalid-control':isSubmited && form.controls['OPPO_CODE'].errors?.required}">
+                            <input type="hidden" formControlName="OPPO_CODE" InputType="AlphaNum" class="form-control"
+                                placeholder="Lead Name" readonly>
+                        </div>
+                        <input type="text" class="form-control" [value]="oppoDisplay" readonly />
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <!-- <label>Customer Name :</label>
-                <div class="floating-input  list-btn">
-                    <select class="form-control selectpicker show-tick" id="CUST_NAME"  data-live-search="true" title="Select">
-                        <option ></option>                     
-                    </select>
-                    <button type="button" class="close" onclick="resetDropdown('CUST_NAME')"  aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div> -->
-                <!-- <label>Opportunity :</label>
-                <div class="floating-input  list-btn">
-                    <select class="form-control selectpicker show-tick" id="Opportunity"  data-live-search="true" title="Select">
-                        <option ></option>                     
-                    </select>
-                    <button type="button" class="close" onclick="resetDropdown('Opportunity')"  aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div> -->
-                <label>Company :</label>
-                <div class="floating-input  list-btn">
-                    <select class="form-control selectpicker show-tick " id="Company" formControlName="COMPANY_CODE" data-live-search="true"  title="Select">
-                           <option *ngFor="let opt of company_list; let i=index" 
-                            [selected]="opt.COMPANY_CODE == form.controls['COMPANY_CODE'].value"
-                             [value]="opt.COMPANY_CODE" >{{ opt.COMPANY_NAME }}</option>                     
-                    </select>
-                    <button type="button" class="close" onclick="resetDropdown('Company')" (click)="form.controls['COMPANY_CODE'].reset()"  aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    
-                </div>
-            </div>
-            <div class="col-md-4">
-                <!-- <label>Opportunity :</label>
-                <div class="floating-input  list-btn">
-                    <select class="form-control selectpicker show-tick" id="Opportunity"  data-live-search="true" title="Select">
-                        <option ></option>                     
-                    </select>
-                    <button type="button" class="close" onclick="resetDropdown('Opportunity')"  aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div> -->
-                <label *ngIf="selectedCust" >Customer Name :</label>
-                <label *ngIf="selectedEmp" >Lead Name :</label>
-                <div class="floating-input  list-btn" *ngIf="dropdownSelected1">
-                    <select class="form-control selectpicker show-tick " id="Customer" formControlName="CUST_CODE" data-live-search="true"  title="Select">
-                        <option *ngFor="let opt of customer_list; let i=index" 
-                         [selected]="opt.CUST_CODE == form.controls['CUST_CODE'].value"
-                          [value]="opt.CUST_CODE" >{{ opt.CUST_NAME }}</option>                     
-                 </select>
-                    <button type="button" class="close" onclick="resetDropdown('Customer')" (click)="form.controls['CUST_CODE'].reset()"  aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="floating-input  list-btn" *ngIf="dropdownSelected2">
-                    <select class="form-control selectpicker show-tick " id="Customer" formControlName="LEAD_CODE" data-live-search="true"  title="Select">
-                        <option *ngFor="let opt of lead_list; let i=index" 
-                         [selected]="opt.LEAD_CODE == form.controls['LEAD_CODE'].value"
-                          [value]="opt.LEAD_CODE" >{{ opt.LEAD_NAME }}</option>                     
-                 </select>
-                    <button type="button" class="close" onclick="resetDropdown('Customer')" (click)="form.controls['LEAD_CODE'].reset()"  aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <label>Log Date :</label>
-                <div class="floating-input ">
-                    <input type="text" [(ngModel)]="LOG_DATE" formControlName="LOG_DATE" class="form-control" readonly>
-                    <app-date-picker [(ngModel)]="LOG_DATE" class="date-input" [maxdate]="maxDate" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <label>Activity :</label>
-                <div class="floating-input  list-btn">
-                    <select class="form-control selectpicker show-tick " id="Activity" formControlName="CRMACTIVITY_CODE" data-live-search="true"  title="Select">
-                        <option *ngFor="let opt of opportunity_activity_list; let i=index" 
-                         [selected]="opt.CRMACTIVITY_CODE == form.controls['CRMACTIVITY_CODE'].value"
-                          [value]="opt.CRMACTIVITY_CODE" >{{ opt.CRMACTIVITY_NAME }}</option>                     
-                 </select>
-                    <button type="button" class="close" onclick="resetDropdown('Activity')" (click)="form.controls['CRMACTIVITY_CODE'].reset()"  aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <label>Contact Person :</label>
-                <div class="floating-input ">
-                    <!-- <input type="text" maxlength="50" class="form-control" placeholder="Contact Person"> -->
-                    <textarea name="" id="" rows="2" class="form-control" formControlName="CONTACT_PERSONS" placeholder="Contact Person"></textarea>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <label>Remarks :</label>
-                <div class="floating-input ">
-                    <textarea name="" id="" rows="2" class="form-control" formControlName="REMARKS" placeholder="Remarks"></textarea>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <label>Revised Value :</label>
-                <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['REVISED_ORDERVALUE'].errors?.required}">
-                    <input type="text" formControlName="REVISED_ORDERVALUE"  maxlength="50" placeholder="Revised Value." class="form-control ">
-                 </div>
-            </div>
-            <div class="col-md-4">
-                <label>Probability :</label>
-                <div class="floating-input  list-btn">
-                    <select class="form-control selectpicker show-tick " id="Probability" formControlName="REVISED_PROBABILITY" data-live-search="true"  title="Select">
-                        <option *ngFor="let opt of probability_list; let i=index" 
-                         [selected]="opt.Probability == form.controls['REVISED_PROBABILITY'].value"
-                          [value]="opt.Probability" >{{ opt.Probability }}</option>                     
-                 </select>
-                    <button type="button" class="close" onclick="resetDropdown('Probability')" (click)="form.controls['REVISED_PROBABILITY'].reset()"  aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <label>Next Follow Up :</label>
-                <div class="floating-input">
-                    <input type="text" [(ngModel)]="NEXT_FOLLOWUP" formControlName="NEXT_FOLLOWUP" class="form-control" readonly>
-                    <app-date-picker [(ngModel)]="NEXT_FOLLOWUP" class="date-input" [maxdate]="maxDate" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <label>Next Activity :</label>
-                <div class="floating-input  list-btn">
-                    <select class="form-control selectpicker show-tick " id="NextActivity" formControlName="NEXT_CRMACTIVITY" data-live-search="true"  title="Select">
-                        <option *ngFor="let opt of Nextactivity_list; let i=index" 
-                         [selected]="opt.NEXTACTIVITY_CODE == form.controls['NEXT_CRMACTIVITY'].value"
-                          [value]="opt.NEXTACTIVITY_CODE" >{{ opt.NEXTACTIVITY_NAME }}</option>                     
-                 </select>
-                    <button type="button" class="close" onclick="resetDropdown('NextActivity')" (click)="form.controls['NEXT_CRMACTIVITY'].reset()"  aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <label>Status :</label>
-                <div class="floating-input  list-btn">
-                    <select class="form-control selectpicker show-tick " id="Status" formControlName="REVISED_STATUS" data-live-search="true"  title="Select">
-                        <option *ngFor="let opt of opportunity_status_list; let i=index" 
-                         [selected]="opt.OPPO_STATUS == form.controls['REVISED_STATUS'].value"
-                          [value]="opt.OPPO_STATUS" >{{ opt.OPPO_STATUS_DESC }}</option>                     
-                 </select>
-                    <button type="button" class="close" onclick="resetDropdown('Status')" (click)="form.controls['REVISED_STATUS'].reset()"  aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <label>Sub Status :</label>
-                <div class="floating-input  list-btn">
-                    <select class="form-control selectpicker show-tick " id="Sub_Status" formControlName="REVISED_SUBSTATUS" data-live-search="true"  title="Select">
-                        <option *ngFor="let opt of opportunity_substatus_list; let i=index" 
-                         [selected]="opt.OPPO_SUB_STATUS == form.controls['REVISED_SUBSTATUS'].value"
-                          [value]="opt.OPPO_SUB_STATUS" >{{ opt.SUB_DESCRIPTION }}</option>                     
-                 </select>
-                    <button type="button" class="close" onclick="resetDropdown('Sub_Status')" (click)="form.controls['REVISED_SUBSTATUS'].reset()"  aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-            <div class="row-add col-md-6 text-right p-0">
-                <button type="button" class="btn text-primary pb-0" (click)="viewOpportunity()">
-                    <i class='fas fa-plus-circle mr-2'></i>View</button>
-            </div>
-     </div>
-    </div>
+                <div class="col-md-6">
+                    <!-- <label>Company :</label>
+                    <div class="floating-input  list-btn">
+                        <select class="form-control selectpicker show-tick " id="Company" formControlName="COMPANY_CODE"
+                            data-live-search="true" title="Select">
+                            <option *ngFor="let opt of company_list; let i=index"
+                                [selected]="opt.COMPANY_CODE == form.controls['COMPANY_CODE'].value"
+                                [value]="opt.COMPANY_CODE">{{ opt.COMPANY_NAME }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('Company')"
+                            (click)="form.controls['COMPANY_CODE'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
 
-     <!-- < <div class="col-md-12 mt-2"> 
+                    </div> -->
+                    <label *ngIf="selectedCust">Customer Name :</label>
+                    <label *ngIf="selectedEmp">Lead Name :</label>
+                    <!-- <div class="floating-input  list-btn" *ngIf="dropdownSelected1">
+                        <select class="form-control selectpicker show-tick " id="Customer" formControlName="CUST_CODE"
+                            data-live-search="true" title="Select">
+                            <option *ngFor="let opt of customer_list; let i=index"
+                                [selected]="opt.CUST_CODE == form.controls['CUST_CODE'].value" [value]="opt.CUST_CODE">
+                                {{ opt.CUST_NAME }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('Customer')"
+                            (click)="form.controls['CUST_CODE'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div> -->
+                    <!--  -->
+                    <!-- <div class="floating-input  list-btn" *ngIf="dropdownSelected2">
+                        <select class="form-control selectpicker show-tick " id="Customer" formControlName="LEAD_CODE"
+                            data-live-search="true" title="Select">
+                            <option *ngFor="let opt of lead_list; let i=index"
+                                [selected]="opt.LEAD_CODE === form.controls['LEAD_CODE'].value" [value]="opt.LEAD_CODE">
+                                {{ opt.LEAD_NAME }}</option>
+                        </select> 
+                        <button type="button" class="close" onclick="resetDropdown('Customer')"
+                            (click)="form.controls['LEAD_CODE'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div> -->
+                    <!--  -->
+                    <div class="floating-input  list-btn" *ngIf="dropdownSelected1">
+                        <div class="floating-input "
+                            [ngClass]="{'invalid-control':isSubmited && form.controls['CUST_CODE'].errors?.required}">
+                            <input type="text" formControlName="CUST_CODE" InputType="AlphaNum" class="form-control"
+                                placeholder="Customer Name" readonly>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <div class="floating-input  list-btn" *ngIf="dropdownSelected2">
+                        <div class="floating-input "
+                            [ngClass]="{'invalid-control':isSubmited && form.controls['LEAD_CODE'].errors?.required}">
+                            <input type="text" formControlName="LEAD_CODE" InputType="AlphaNum" class="form-control"
+                                placeholder="Lead Name" readonly>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <label>Log Date :</label>
+                    <div class="floating-input "
+                        [ngClass]="{'invalid-control':isSubmited && form.controls['LOG_DATE'].errors?.required}">
+                        <input type="text" [(ngModel)]="LOG_DATE" formControlName="LOG_DATE" class="form-control"
+                            readonly>
+                        <app-date-picker [(ngModel)]="LOG_DATE" class="date-input" [mindate]="minDate"
+                            [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
+                        <!-- <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['LOG_DATE'].errors?.required}">
+                        <input type="text" [(ngModel)]="LOG_DATE" formControlName="LOG_DATE" class="form-control" readonly>
+                        <app-date-picker [(ngModel)]="LOG_DATE" class="date-input" [mindate]="minDate" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
+                    </div> -->
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label>Activity :</label>
+                    <div class="floating-input  list-btn">
+                        <select class="form-control selectpicker show-tick " id="Activity"
+                            formControlName="CRMACTIVITY_CODE" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of opportunity_activity_list; let i=index"
+                                [selected]="opt.CRMACTIVITY_CODE == form.controls['CRMACTIVITY_CODE'].value"
+                                [value]="opt.CRMACTIVITY_CODE">{{ opt.CRMACTIVITY_NAME }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('Activity')"
+                            (click)="form.controls['CRMACTIVITY_CODE'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Opportunity Type :</label>
+                    <div class="floating-input  list-btn">
+                        <select class="form-control selectpicker show-tick " id="OppoType" formControlName="OPPO_TYPE"
+                            data-live-search="true" title="Select">
+                            <option *ngFor="let opt of opportunitytype_list; let i=index"
+                                [selected]="opt.OPPO_TYPE == form.controls['OPPO_TYPE'].value" [value]="opt.OPPO_TYPE">
+                                {{ opt.OPPO_DESC }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('OppoType')"
+                            (click)="form.controls['OPPO_TYPE'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+
+                    <label>Contact Person :<button type="submit" class="btn btn-secondary  ml-2" *ngIf="TYPE=='L'"
+                            (click)="openDialogue('L')">view contact</button>
+                        <button type="submit" class="btn btn-secondary  ml-2" *ngIf="TYPE=='C'"
+                            (click)="openDialogue('C')">view contact</button></label>
+                    <div class="floating-input"
+                        [ngClass]="{'invalid-control':isSubmited && form.controls['CONTACT_PERSONS'].errors?.required}">
+                        <!-- <input type="text" maxlength="50" class="form-control" placeholder="Contact Person"> -->
+                        <textarea name="" id="" rows="2" class="form-control" formControlName="CONTACT_PERSONS"
+                            placeholder="Contact Person"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Activity Details :</label>
+                    <div class="floating-input ">
+                        <textarea name="" id="" rows="2" class="form-control" formControlName="REMARKS"
+                            placeholder="Please Enter Activity Details"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Comflex Attendee:</label>
+                    <div class="floating-input ">
+                        <textarea name="" id="" rows="2" class="form-control" formControlName="COMFLEX_ATTENDTIES"
+                            placeholder="Please Enter Activity Details"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Revised Value :</label>
+                    <div class="floating-input"
+                        [ngClass]="{'invalid-control': isSubmited && form.controls['REVISED_ORDERVALUE'].errors?.required}">
+                        <input type="text" formControlName="REVISED_ORDERVALUE" maxlength="50"
+                            placeholder="Revised Value :" class="form-control text-right selectpicker"
+                            (input)="formatRevisedValue($event)" />
+                    </div>
+                </div>
+                <!--  -->
+                <div class="col-md-4">
+                    <label>Next Activity :</label>
+                    <div class="floating-input  list-btn">
+                        <select class="form-control selectpicker show-tick " id="NextActivity"
+                            formControlName="NEXT_CRMACTIVITY" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of Nextactivity_list; let i=index"
+                                [selected]="opt.NEXTACTIVITY_CODE == form.controls['NEXT_CRMACTIVITY'].value"
+                                [value]="opt.NEXTACTIVITY_CODE">{{ opt.NEXTACTIVITY_NAME }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('NextActivity')"
+                            (click)="form.controls['NEXT_CRMACTIVITY'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- <div class="col-md-4">
+                    <label>Next Follow Up :</label>
+                    <div class="floating-input " [ngClass]="{'invalid-control':isSubmited && form.controls['NEXT_FOLLOWUP'].errors?.required}">
+                        <input type="text" placeholder="dd-mm-yyyy" [(ngModel)]="NEXT_FOLLOWUP" formControlName="NEXT_FOLLOWUP" class="form-control" readonly>
+                        <app-date-picker [(ngModel)]="NEXT_FOLLOWUP" class="date-input" [mindate]="minDate" [maxdate]="maxDate" [isDisable]='false' [ngModelOptions]="{standalone: true}"></app-date-picker>
+                    </div>
+                </div> -->
+                <!--  -->
+                <div class="col-md-4">
+                    <label>Next Follow Up :</label>
+                    <div class="floating-input "
+                        [ngClass]="{'invalid-control':isSubmited && form.controls['NEXT_FOLLOWUP'].errors?.required}">
+                        <input type="text" placeholder="dd-mm-yyyy" [(ngModel)]="NEXT_FOLLOWUP"
+                            formControlName="NEXT_FOLLOWUP" class="form-control" readonly>
+                        <app-date-picker [(ngModel)]="NEXT_FOLLOWUP" class="date-input" [mindate]="minDate"
+                            [maxdate]="maxDate" [isDisable]='false'
+                            [ngModelOptions]="{standalone: true}"></app-date-picker>
+                    </div>
+                </div>
+                <!--  -->
+                <div class="col-md-4">
+                    <label>Probability :</label>
+                    <div class="floating-input  list-btn">
+                        <select class="form-control selectpicker show-tick " id="Probability"
+                            formControlName="REVISED_PROBABILITY" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of probability_list; let i=index"
+                                [selected]="opt.Probability == form.controls['REVISED_PROBABILITY'].value"
+                                [value]="opt.Probability">{{ opt.Probability }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('Probability')"
+                            (click)="form.controls['REVISED_PROBABILITY'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <!--  -->
+                <div class="col-md-4">
+                    <label>Status :</label>
+                    <div class="floating-input  list-btn">
+                        <select class="form-control selectpicker show-tick " id="Status"
+                            (change)="onStatusChange(form.controls['REVISED_STATUS'].value)"
+                            formControlName="REVISED_STATUS" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of opportunity_status_list; let i=index"
+                                [selected]="opt.OPPO_STATUS == form.controls['REVISED_STATUS'].value"
+                                [value]="opt.OPPO_STATUS">{{ opt.OPPO_STATUS_DESC }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('Status')"
+                            (click)="form.controls['REVISED_STATUS'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Sub Status :</label>
+                    <div class="floating-input  list-btn">
+                        <select class="form-control selectpicker show-tick " id="Sub_Status"
+                            formControlName="REVISED_SUBSTATUS" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of filteredSubStatus; let i=index"
+                                [selected]="opt.OPPO_SUB_STATUS == form.controls['REVISED_SUBSTATUS'].value"
+                                [value]="opt.OPPO_SUB_STATUS">{{ opt.SUB_DESCRIPTION }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('Sub_Status')"
+                            (click)="form.controls['REVISED_SUBSTATUS'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <form [formGroup]="form">
+                        <div class="col-sm-12 col-md-12 col-lg-12" style="padding-left: 0px; padding-right: 0px;">
+                            <div class="row"
+                                style="border-top-width: 10px; margin-top: 10px; padding-top: 10px; top: 10px;">
+                                <div class="col-md-8 mt-1">
+                                    <button type="button" class="btn btn-secondary ml-2" (click)="addDocument()"> <i
+                                            class="fa fa-paperclip"></i>Attach</button>
+                                    <!-- <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 att-doc" style="padding-left: 0px;">
+                <input type="file" #fileInput id="fileInput" (change)="onFileChange($event)" class="doc-input">
+                    <button type="button" class="btn btn-secondary" title="Upload Document">
+                    <label for="fileInput" class="att-doc-label-add p-0 m-0" title="Add Document">
+                        <i class="fa fa-paperclip"></i> Attach
+                    </label>
+                </button>
+            </div>   -->
+                                    <div class="tableFixHead mt-2">
+                                        <table class="table-theam-1 row_bgcolor_1">
+                                            <thead>
+                                                <tr>
+                                                    <th class="w-20">Document Name</th>
+                                                    <th class="w-10"></th>
+                                                    <th class="w-20">Remarks</th>
+                                                    <th class="w-10">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tbody>
+                                                <ng-container *ngFor="let file of DOCUMENT_ATTECHED_LIST; let i=index;">
+                                                    <tr *ngIf="file.ACTIVE == 1">
+
+                                                        <td><a
+                                                                (click)="f_downloadDocument(file)">{{file.DOCUMENT_FILENAME}}</a>
+                                                        </td>
+                                                        <td>{{file.TYPE}}</td>
+                                                        <td>{{file.REMARKS}}</td>
+                                                        <td><i class="fas fa-trash-alt" id=f_{{i}}
+                                                                (click)="removeDoc(i)"></i></td>
+                                                    </tr>
+                                                </ng-container>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row-add col-md-6 text-right pt-2">
+                    <button type="button" class="btn text-primary pb-0" (click)="viewOpportunity()">
+                        <i class='fas fa-plus-circle mr-2'></i>View</button>
+                </div>
+            </div>
+
+
+            <!-- < <div class="col-md-12 mt-2"> 
         <div class="row card">
             <div class="col-md-12">
                 <div class="form-inline">
@@ -279,33 +403,565 @@
         </div>
      </div> -->
 
-     <div class="page-content mt-2" *ngIf="isViewOpportunity">
-        <div class="col-md-12">
-            <div class="tableFixHead ">
-                <table class="table-theam-1 row_bgcolor_1">
-                    <thead>
-                        <tr>
-                            <th class="w-20">Log Date</th>
-                            <th class="w-20">Activity</th>
-                            <th class="w-30">Contact Persons</th>
-                            <th class="w-30">Remarks</th>
-                            <th class="w-20">Next Follow Up</th>
-                            <th class="w-20">Next Activity</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let data of log_view_list;let i=index;" >
-                            <td class="w-130">{{data.LOG_DATE}}</td>
-                            <td class="w-130">{{data.CRMACTIVITY_NAME}}</td>
-                            <td class="w-130">{{data.CONTACT_PERSONS}}</td>
-                            <td class="w-130">{{data.REMARKS}}</td>
-                            <td class="w-130">{{data.NEXT_FOLLOWUP}}</td>
-                            <td class="w-130">{{data.NEXT_CRMACTIVITY}}</td>  
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="page-content mt-2" *ngIf="false">
+                <div class="col-md-12">
+                    <div class="tableFixHead ">
+                        <table class="table-theam-1 row_bgcolor_1">
+                            <thead>
+                                <tr>
+                                    <th class="w-20">Log Date</th>
+                                    <th class="w-20">Activity</th>
+                                    <th class="w-30">Contact Person</th>
+                                    <th class="w-30">Remarks</th>
+                                    <th class="w-20">Next Follow Up</th>
+                                    <th class="w-20">Next Activity</th>
+                                    <th class="w-20">Document</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of log_view_list;let i=index;">
+                                    <td class="w-130">{{data.LOG_DATE | date:'dd-MMM-yyyy'}}</td>
+                                    <td class="w-130">{{data.CRMACTIVITY_NAME}}</td>
+                                    <td class="w-130">{{data.CONTACT_PERSONS}}</td>
+                                    <td class="w-130">{{data.REMARKS}}</td>
+                                    <td class="w-130">{{data.NEXT_FOLLOWUP | date:'dd-MMM-yyyy'}}</td>
+                                    <td class="w-130">{{data.NEXT_CRMACTIVITY}}</td>
+                                    <!-- <td class="w-130">
+                                    <i
+                                        class="fa fa-eye cursor-pointer"
+                                        (click)="viewDocument()"
+                                        title="View Document List">
+                                    </i>
+                                </td>
+                               f_downloadDocument(data) -->
+
+                                    <td class="w-130">
+                                        <i class="fa fa-eye cursor-pointer" (click)="viewDocument(data.LOGID)"
+                                            [attr.title]="data?.DOCUMENT_SYSFILENAME ? 'View Document' : 'No Document Available'">
+                                        </i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class=" mt-2" *ngIf="isViewOpportunity">
+                <div class="row card">
+                    <div class="form-inline col-md-12">
+                        <h6 class="mb-0 col-md-6 p-0">Log Details</h6>
+                        <hr class="m-0 mb-2">
+                    </div>
+                    <div class="col-md-12">
+                        <div class="tableFixHead">
+                            <table class="table-theam-1 row_bgcolor_2">
+                                <thead>
+                                    <tr>
+                                        <!-- <th class="w-20 ">Sr.No</th> -->
+                                        <!-- <th class="w-15 ">Contact Name/Email</th>
+                                    <th class="w-20 ">Mobile/Phone No.</th>
+                                    <th class="w-20 ">Designation/Department</th>
+                                    <th class="w-10 text-center">Bill Email</th>
+                                    <th class="w-10 text-center">Rcpt Email</th> -->
+                                        <!-- <th class="w-20">Log Date</th>
+                                        <th class="w-20">Activity</th>
+                                        <th class="w-30">Contact Person</th>
+                                        <th class="w-30">Remarks</th>
+                                        <th class="w-20">Next Follow Up</th>
+                                        <th class="w-20">Next Activity</th>
+                                        <th class="w-20">Document</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let data of log_view_list; let i=index;">
+                                        <tr *ngIf="data.ACTIVE != 0 " class="tr-padding">
+                                            <td class="pb-0">{{i+1}}</td>
+                                            <td class="w-15 pt-0">
+                                                <!-- <div class="floating-input">
+                                                    <input type="text" InputType="AlphaSpace" Uppercase
+                                                        class="form-control" [(ngModel)]="data.LOG_DATE"
+                                                        placeholder="Contact Name"
+                                                        [ngModelOptions]="{standalone: true}">
+                                                </div> -->
+                                                <div class="float-label">
+                                                    <label for="on_label">Log Date</label>
+                                                    <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.LOG_DATE" type="text" [value]="data.LOG_DATE"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled />
+                                                </div>
+                                            </td>
+                                            <td class=" w-15 pt-0">
+                                                <!-- <div class="floating-input">
+                                                    <input type="text" class="form-control"
+                                                        [(ngModel)]="data.CRMACTIVITY_NAME" placeholder="Mobile No."
+                                                        [ngModelOptions]="{standalone: true}">
+                                                </div> -->
+                                                <div class="float-label">
+                                                    <label for="on_label">Activity</label>
+                                                    <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.CRMACTIVITY_NAME" type="text"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled />
+                                                </div>
+                                            </td>
+                                            <td colspan="1" class="w-15 pt-0">
+                                                <!-- <div class="floating-input">
+                                                    <input type="text" class="form-control"
+                                                        [(ngModel)]="data.NEXT_CRMACTIVITY" placeholder="Email"
+                                                        [ngModelOptions]="{standalone: true}">
+                                                </div> -->
+                                                <div class="float-label">
+                                                    <label for="on_label">Next Activity</label>
+                                                    <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.NEXT_CRMACTIVITY1" type="text"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled />
+                                                </div>
+                                            </td>
+                                            <td colspan="1" class="pt-0">
+                                                <div class="float-label">
+                                                    <label for="on_label">Probability</label>
+                                                    <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.REVISED_PROBABILITY" type="text"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled />
+                                                </div>
+                                            </td>
+                                            <td class="text-left pt-0">
+                                                <!-- <div class="floating-input">
+                                                    <input type="text" [(ngModel)]="data.NEXT_FOLLOWUP"
+                                                        class="form-control" [ngModelOptions]="{standalone: true}">
+                                                </div> -->
+                                                <div class="float-label">
+                                                    <label for="on_label">Next Follow Up</label>
+                                                    <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.NEXT_FOLLOWUP" type="text"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="data.ACTIVE != 0 " class="tr-padding">
+                                            <td class="pt-0"></td>
+                                            <td colspan="1">
+                                                <div class="float-label">
+                                                    <label for="on_label">Revised Value</label>
+                                                    <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.REVISED_ORDERVALUE" type="text"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled />
+                                                </div>
+                                            </td>
+                                            <td class="text-left">
+                                                <!-- <div class="floating-input">
+
+                                                    <input type="text" placeholder="Remarks" [(ngModel)]="data.REMARKS"
+                                                        class="form-control" [ngModelOptions]="{standalone: true}">
+                                                </div> -->
+                                                <div class="float-label">
+                                                    <label for="on_label">Activity Details</label>
+                                                    <!-- <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.REMARKS" type="text"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled > -->
+                                                    <textarea name="" id="" rows="2" class="form-control float-input"
+                                                        [(ngModel)]="data.REMARKS" style="min-height: 60px !important;"
+                                                        [ngModelOptions]="{ standalone: true }" disabled>
+                                                </textarea>
+                                                </div>
+                                            </td>
+                                            <td class="">
+                                                <!-- <div class="floating-input">
+                                                    <input type="text" class="form-control"
+                                                        [(ngModel)]="data.CONTACT_PERSONS" placeholder="Designation"
+                                                        [ngModelOptions]="{standalone: true}">
+                                                </div> -->
+                                                <div class="float-label">
+                                                    <label for="on_label">Contact Persons</label>
+                                                    <!-- <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.CONTACT_PERSONS" type="text"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled /> -->
+                                                    <textarea name="" id="" rows="2" class="form-control float-input"
+                                                        [(ngModel)]="data.CONTACT_PERSONS"
+                                                        style="min-height: 60px !important;"
+                                                        [ngModelOptions]="{ standalone: true }" disabled>
+                                                </textarea>
+                                                </div>
+                                            </td>
+                                            <td colspan="1" >
+                                                <div class="float-label">
+                                                    <label for="on_label">Comflex Attendee</label>
+                                                    <textarea name="" id="" rows="2" class="form-control float-input"
+                                                        [(ngModel)]="data.COMFLEX_ATTENDTIES"
+                                                        style="min-height: 60px !important;"
+                                                        [ngModelOptions]="{ standalone: true }" disabled>
+                                                </textarea>
+                                                    <!-- <input Uppercase class="form-control float-input"
+                                                        [(ngModel)]="data.COMFLEX_ATTENDTIES" type="text"
+                                                        [ngModelOptions]="{standalone: true}" id="on_label"
+                                                        name="on_label" disabled /> -->
+                                                </div>
+                                            </td>
+                                            <td colspan="1">
+                                                <div class="float-label">
+                                                    <!-- <td class="w-130"> -->
+                                                    <i class="fa fa-eye cursor-pointer"
+                                                        (click)="viewDocument(data.LOGID)"
+                                                        [attr.title]="data?.DOCUMENT_SYSFILENAME ? 'View Document' : 'No Document Available'">
+                                                    </i>
+                                                </div>
+                                                <!-- </td> -->
+                                            </td>
+
+                                            <!-- <td colspan="2" class="text-left">
+                                                <div class="floating-inpu text-center">
+                                                    <i class='fas fa-trash-alt text-danger' (click)=removeRow(i)
+                                                        id="i_{{i}}"></i>
+                                                </div>
+                                            </td> -->
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</form>
+
+<p-dialog header="Uploaded Documents" [(visible)]="displayHistory" [modal]="true" [style]="{ width: '40rem' }">
+
+    <div class="tableFixHead mt-2">
+        <table class="table-theam-1 row_bgcolor_1">
+            <thead>
+                <tr>
+                    <th class="w-20">Document Name</th>
+                    <th class="w-20">View</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let file of document_List; let i=index;">
+                    <tr>
+                        <td>{{file.DOCUMENT_FILENAME}}</td>
+                        <i class="fa fa-eye cursor-pointer" (click)="f_downloadDocument(file)"
+                            title="View Document List">
+                        </i>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <div class="col-12 text-right mt-3">
+            <button type="button" class="btn btn-secondary ml-2" (click)="this.displayHistory=false">Cancel</button>
+        </div>
+    </div>
+
+</p-dialog>
+
+<p-dialog
+  header="Add Document"
+  [(visible)]="displayAttach"
+  [modal]="true"
+  [style]="{ width: '40rem' }"
+  [contentStyle]="{ overflow: 'visible' }">
+    <div class="row">
+        <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 ">
+            <label>Document Type:</label>
+            <div class="floating-input  list-btn">
+                <!-- <select class="form-control selectpicker show-tick"
+                    id="documentTypeId"
+                    formControlName="DOCUMENT_TYPE_ID"
+                    data-live-search="true"
+                    title="Select"
+                    (change)="onDocumentTypeChange($event)"
+                    >
+                    <option *ngFor="let opt of document_type_list"
+                            [value]="opt.DOCUMENT_TYPE_ID">
+                        {{ opt.DOCUMENT_DESC }}
+                    </option>
+                </select>
+                <button type="button" class="close" onclick="resetDropdown('documentTypeId')"
+                    (click)="form.controls['DOCUMENT_TYPE_ID'].reset()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> -->    
+                <select class=" form-control selectpicker show-tick" [(ngModel)]="DOCUMENT_TYPE_ID" data-container="body" data-size="5" id="documentTypeId" #emp data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}"   (change)="onDocumentTypeChange($event)">
+                    <option *ngFor="let opt of document_type_list; let i=index" [value]="opt | json">
+                       {{ opt.DOCUMENT_DESC }}</option>
+                </select>
+
+
+                <!-- <select class=" form-control selectpicker show-tick" 
+                [(ngModel)]="DOCUMENT_TYPE_ID" 
+                data-container="body" 
+                data-size="5"
+                id="documentTypeId" 
+                (change)="onDocumentTypeChange($event)"
+                data-live-search="true" 
+                title="Select" 
+                [ngModelOptions]="{standalone: true}">
+                    <option *ngFor="let opt of document_type_list; let i=index" >
+                        {{ opt.DOCUMENT_DESC }}</option>
+                </select> -->
+                <button type="button" class="close" onclick="resetDropdown('documentTypeId')"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- <div class="floating-input  list-btn">
+                        <select class="form-control selectpicker show-tick " id="Sub_Status"
+                            formControlName="REVISED_SUBSTATUS" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of opportunity_substatus_list; let i=index"
+                                [selected]="opt.OPPO_SUB_STATUS == form.controls['REVISED_SUBSTATUS'].value"
+                                [value]="opt.OPPO_SUB_STATUS">{{ opt.SUB_DESCRIPTION }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('Sub_Status')"
+                            (click)="form.controls['REVISED_SUBSTATUS'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div> -->
+
+
+        </div>
+        <!-- <label>{{fileInput.files[0]?.name}}</label> -->
+        <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12">
+            <label>Remarks <span class="validator">*</span> :</label>
+            <div class="floating-input">
+                <textarea name="" id="" rows="2" class="form-control" [(ngModel)]="REMARKS"
+                    [ngModelOptions]="{ standalone: true }" placeholder="Remarks">
+        </textarea>
+            </div>
+        </div>
+        <!-- <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 att-doc" >
+</div> -->
+
+
+    </div>
+    <div class="row">
+        <div class="col-12 text-right mt-3 att-doc">
+            <!-- <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input"> -->
+            <!-- <button type="button" class="btn btn-secondary"  (click)="uploadDoc()" title="Upload Document">
+        <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input">
+    </button> -->
+            <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input">
+            <button type="button" class="btn btn-secondary" title="Upload Document">
+                <label for="fileInput" class="att-doc-label-add p-0 m-0" title="Add Document">
+                    <i class="fa fa-paperclip"></i> Attach
+                </label>
+
+                <!-- <i class="pi pi-upload mr-2"> <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input" disabled></i>Attach -->
+            </button>
+            <!-- <button type="button" class="btn btn-primary" >Save</button> -->
+            <button type="button" class="btn btn-secondary ml-2" (click)="uploadDoc()">Save</button>
+            <button type="button" class="btn btn-secondary ml-2" (click)="this.displayAttach=false">Cancel</button>
+        </div>
+    </div>
+
+</p-dialog>
+
+<p-dialog header="Contact Details" [(visible)]="viewcustomberdetails" [modal]="true" [style]="{ width: '60rem' }">
+
+    <div class="col-md-12 mt-2">
+        <div class="row">
+            <div class="form-inline col-md-12">
+                <!-- <h6 class="mb-0 col-md-6 p-0">Customer Details</h6> -->
+                <div class="row-add col-md-6  text-right">
+                    <!-- <button type="button" class="btn text-primary pb-0" (click)="addRow()">
+                        <i class='fas fa-plus-circle mr-2'></i>Add
+                    </button> -->
+                </div>
+                <hr class="m-0 mb-2">
+            </div>
+            <div class="col-md-12">
+                <div class="tableFixHead">
+                    <table class="table-theam-1 row_bgcolor_2">
+                        <thead>
+                            <tr>
+                                <th class="w-20 ">Sr.No</th>
+                                <th class="w-15 ">Contact Name/Email</th>
+                                <th class="w-20 ">Mobile/Phone No.</th>
+                                <th class="w-20 ">Designation/Department</th>
+                                <!-- <th class="w-10 text-center">Bill Email</th>
+                                <th class="w-10 text-center">Rcpt Email</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let data of Master_contact_detail; let i=index;">
+                                <tr *ngIf="data.ACTIVE != 0">
+                                    <td class="pb-0 ">{{i+1}}</td>
+                                    <td class="w-15">
+                                        <div class="floating-input">
+                                            <input type="text" InputType="AlphaSpace" Uppercase class="form-control"
+                                                [(ngModel)]="data.CONTACT_NAME" placeholder="Contact Name"
+                                                [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <td class="">
+                                        <div class="floating-input">
+                                            <input type="text" class="form-control" [(ngModel)]="data.CONTACT_MOBILE"
+                                                placeholder="Mobile No." [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <td class="">
+                                        <div class="floating-input">
+                                            <input type="text" class="form-control" [(ngModel)]="data.CONTACT_DESIG"
+                                                placeholder="Designation" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <!-- <td class="text-left">
+                                        <div class="floating-input">
+                                            <input type="checkbox" [(ngModel)]="data.SEND_INVOICEEMAIL"
+                                                class="form-control" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td> -->
+                                    <!-- <td class="text-left">
+                                        <div class="floating-input">
+                                            <input type="checkbox" [(ngModel)]="data.SEND_RECEIPTEMAIL"
+                                                class="form-control" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td> -->
+                                </tr>
+                                <tr *ngIf="data.ACTIVE != 0">
+                                    <td class="pt-0"></td>
+                                    <td colspan="1" class="w-15 pt-0">
+                                        <div class="floating-input">
+                                            <input type="text" class="form-control" [(ngModel)]="data.CONTACT_EMAIL"
+                                                placeholder="Email" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <td colspan="1" class="pt-0">
+                                        <div class="floating-input">
+                                            <input type="text" class="form-control" [(ngModel)]="data.CONTACT_PHONE"
+                                                placeholder="Phone No" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <!-- <td colspan="1" class="pt-0">
+                                        <div class="floating-input">
+                                            <input type="text" class="form-control" [(ngModel)]="data.CONTACT_DEPT"
+                                                placeholder="Department" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td> -->
+                                    <!-- <td colspan="2" class="text-left">
+                                        <div class="floating-inpu text-center">
+                                            <i class='fas fa-trash-alt text-danger' (click)=removeRow(i)
+                                                id="i_{{i}}"></i>
+                                        </div>
+                                    </td> -->
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
-</form>
+
+
+</p-dialog>
+
+<p-dialog header="Contact Details" [(visible)]="viewLeadetails" [modal]="true" [style]="{ width: '60rem' }">
+    <div class="col-md-12 mt-2">
+        <div class="row">
+            <div class="form-inline col-md-12">
+                <!-- <h6 class="mb-0 col-md-6 p-0">Lead Contact Details<span class="validator">*</span></h6> -->
+                <!-- <div class="row-add col-md-6  text-right">
+                    <button type="button" class="btn text-primary pb-0" (click)="addRow()">
+                        <i class='fas fa-plus-circle mr-2'></i>Add
+                    </button>
+                </div> -->
+                <hr class="m-0 mb-2">
+            </div>
+            <div class="col-md-12">
+                <div class="tableFixHead">
+                    <table class="table-theam-1 row_bgcolor_2">
+                        <thead>
+                            <tr>
+                                <th class="w-20 ">Sr.No</th>
+                                <th class="w-15 ">Contact Name/Email <span class="validator">*</span></th>
+                                <th class="w-20 ">Mobile/Phone No.<span class="validator">*</span></th>
+                                <th class="w-20 ">Designation/Department <span class="validator">*</span></th>
+                                <!-- <th class="w-10 text-center">Action</th> -->
+                                <!-- <th class="w-10 text-center"></th> -->
+                                <!-- <th class="w-10 text-center">Rcpt Email</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let data of Master_contact_detail; let i=index;">
+                                <tr *ngIf="data.ACTIVE != 0">
+                                    <td class="pb-0 ">{{i+1}}</td>
+                                    <td class="w-15">
+                                        <div class="floating-input">
+                                            <input type="text" InputType="AlphaSpace" Uppercase class="form-control"
+                                                [(ngModel)]="data.CONTACT_NAME" placeholder="Contact Name"
+                                                [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <td class="">
+                                        <div class="floating-input">
+                                            <input type="text" class="form-control" [(ngModel)]="data.CONTACT_MOBILE"
+                                                placeholder="Mobile No." [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <td class="">
+                                        <div class="floating-input">
+                                            <input type="text" class="form-control" [(ngModel)]="data.CONTACT_DESIG"
+                                                placeholder="Designation" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                    <!-- <td></td> -->
+                                    <!-- <td class="text-left">
+                                            <div class="floating-input">
+                                                <input type="checkbox" [(ngModel)]="data.SEND_INVOICEEMAIL" class="form-control" [ngModelOptions]="{standalone: true}">
+                                            </div>
+                                        </td>
+                                        <td class="text-left">
+                                            <div class="floating-input">
+                                                <input type="checkbox" [(ngModel)]="data.SEND_RECEIPTEMAIL" class="form-control" [ngModelOptions]="{standalone: true}">
+                                            </div>
+                                        </td> -->
+                                </tr>
+                                <tr *ngIf="data.ACTIVE != 0">
+                                    <td class="pt-0"></td>
+                                    <td colspan="1" class="w-15 pt-0">
+                                        <div class="floating-input">
+                                            <input type="text" class="form-control" [(ngModel)]="data.CONTACT_EMAIL"
+                                                placeholder="Email" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <td colspan="1" class="pt-0">
+                                        <div class="floating-input">
+                                            <input type="text" class="form-control" [(ngModel)]="data.CONTACT_PHONE"
+                                                minlength="10" maxlength="13" placeholder="Phone No"
+                                                [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <td colspan="1" class="pt-0">
+                                        <div class="floating-input">
+                                            <input type="text" class="form-control" [(ngModel)]="data.CONTACT_DEPT"
+                                                placeholder="Department" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <!-- <td colspan="1" class="text-left">
+                                        <div class="floating-inpu text-center">
+                                            <i class='fas fa-trash-alt text-danger' (click)=removeRow(i)
+                                                id="i_{{i}}"></i>
+                                        </div>
+                                    </td> -->
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</p-dialog>

@@ -1,0 +1,188 @@
+
+<div class="d-flex flex-row justify-content-between align-items-center ">
+  <div class="flex gap-3 ">
+    <h5 class="text-xl m-0">Ticket Raised List</h5>
+ 
+  </div>
+ <div class="flex gap-3 mt-2">
+  <label class="Text_Primary Helper_Text">
+    <input
+      type="radio"
+      name="status"
+      [(ngModel)]="liststatus"
+      value="Pending"
+      (change)="setStatus('Pending')"
+      class="mr-1"
+    />
+    Pending
+  </label>
+
+  <label class="Text_Primary Helper_Text ">
+    <input
+    class="mr-1"
+      type="radio"
+      name="status"
+      [(ngModel)]="liststatus"
+      value="Closed"
+      (change)="setStatus('Closed')"
+    />
+    Closed
+  </label>
+</div>
+
+      <!-- <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Approved"></i>Approved</p>
+    <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Revert"></i>Revert</p>
+    <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Reject"></i>Reject</p>
+    <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Hold"></i>Hold</p>
+    <p class="Text_Primary Helper_Text"><i class="text-xs pi pi-circle-fill mr-1 Cancel"></i>Cancel</p> -->
+  <!-- <div class="header-toggle">
+  <button 
+    class="toggle-btn" 
+    [class.active]="status === 'Pending'"
+    (click)="setStatus('Pending')">
+    Pending
+  </button>
+  <button 
+    class="toggle-btn" 
+    [class.active]="status === 'Closed'"
+    (click)="setStatus('Closed')">
+    Closed
+  </button>
+</div> -->
+
+ 
+  <div class="flex gap-2 justify-end">
+    <div>
+      <!-- <p-dropdown
+      [options]="STATUS_LIST"
+      [(ngModel)]="STATUS_CODE"
+      class="w-full"
+      optionValue="STATUS_CODE"
+      optionLabel="STATUS_NAME"
+      (onChange)="GetFilteSelectStatusType(STATUS_CODE)"
+      placeholder="Status Type"
+    /> -->
+    </div>
+    <div class="input-group" style="max-width: 259px;">
+      <div class="input-group-prepend">
+        <span class="input-group-text bg-white border-right-0">
+          <i class="fa fa-search"></i>
+        </span>
+      </div>
+      <input type="text" class="form-control border-left-0 " placeholder="Search" [(ngModel)]="SearchValue"
+        (ngModelChange)="GetInputFilter(SearchValue)" style="box-shadow: none;max-height: 30px;" />
+    </div>
+<div>
+  <div class="d-flex align-items-center mt-1">
+
+<!-- 
+  <button class="btn prime-button save-button d-flex align-items-center mr-2" (click)="AddIssueRequest()">
+    <i class="fa fa-plus mr-2"></i> Add New
+  </button> -->
+    <button
+          class="btn btn-secondary mr-1"
+          (click)="AddIssueRequest()"
+        >
+          <i class="fa fa-plus mr-2"></i>Add New
+  </button>
+
+  
+  <!-- <button class="btn p-element   prime-button secondary-button d-flex align-items-center" (click)="exportToExcel()">
+   
+  </button> -->
+   <button
+          class="btn btn-secondary mr-1"
+          (click)="exportToExcel()"
+        >
+          <i class="fa fa-download mr-2"></i>Excel
+        </button>
+</div>
+  </div>
+  </div>
+ 
+</div>
+<div class="mt-2 ">
+  <div class="card">
+    <div  class="p-3" *ngIf="this.ISSUE_REQUEST_LIST_DATA.length == 0">
+    <p *ngIf="this.ISSUE_REQUEST_LIST_DATA.length == 0">No Records Found</p>
+    </div>
+    <div class="tableFixHead" *ngIf="this.ISSUE_REQUEST_LIST_DATA.length > 0">
+      <table class="table-theam-1 row_bgcolor_1">
+        <thead>
+          <tr>
+            <th *ngFor="let column of ISSUE_REQUEST_COLUMN_LIST">{{ column.Col_Name }}</th>
+            <th class="">Action</th> <!-- For Action column -->
+ 
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of ISSUE_REQUEST_LIST_DATA">
+            <td *ngFor="let column of ISSUE_REQUEST_COLUMN_LIST">
+              {{ data[column.Col_Filed] }}
+            </td>
+            <td class="">
+              <!-- Add your action buttons here -->
+              <span> <i class="far fa-eye mr-1" (click)="viewIssue(data)"></i></span>
+            </td>
+            <!-- (dblclick)="openPopup(data, 'Status')" -->
+            <!-- <td class=""> -->
+            <!-- <i class="fa fa-ban text-warning mr-2" *ngIf="data.STATUS == 'P'"></i>
+                 <i class="fa fa-check-square text-success mr-2" *ngIf="data.STATUS == 'A' || data.STATUS == 'M'"></i>
+                 <i class="fa fa-times text-danger mr-2" *ngIf="data.STATUS == 'R'"></i>{{data.STATUS_DESC}}</td>
+                <td class="">                
+                  <a *ngIf="data.STATUS == 'P' || data.STATUS == 'M' || (data.STATUS == 'A' && this.ROLE_ID== 3)">
+                    <i class="fa fa-edit small mr-2"  (click)="editLeave(data)" title="Edit"></i>  
+                  </a>
+                  <a *ngIf="(data.STATUS == 'P' && this.ROLE_NAME == 'HR USER') || (data.STATUS == 'M' && this.ROLE_NAME == 'HR USER')">
+                    <i class="fa fa-trash  small"  (click)="editLeave(data)" title="Delete"></i>  
+                  </a> -->
+            <!-- </td> -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+ 
+<!--
+<div class="mt-4" >
+  <p  *ngIf="this.ISSUE_REQUEST_LIST_DATA.length == 0">No Records Found</p>
+  <div *ngIf="this.ISSUE_REQUEST_LIST_DATA.length > 0">
+    <table [value]="ISSUE_REQUEST_LIST_DATA" [scrollable]="true" scrollHeight="500px"   >
+      <ng-template pTemplate="header">
+        <tr>
+          <th  *ngFor="let col of this.ISSUE_REQUEST_COLUMN_LIST"  
+          [style.width]="col.Col_Size"
+         
+          >
+          {{ col.Col_Name }}
+        </th>
+        <th  >Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData>
+        <tr [ngClass]="{
+          'bg-red-100': (rowData.STATUS_CODE_COLOR === 'bg-red-100' || rowData.CANCEL_IND === 'true'),
+          'bg-lime-100': rowData.STATUS_CODE_COLOR === 'bg-lime-100',
+          'bg-cyan-100': rowData.STATUS_CODE_COLOR === 'bg-cyan-100',
+          'bg-orange-100': rowData.STATUS_CODE_COLOR === 'bg-orange-100',
+          'bg-red-300': rowData.STATUS_CODE_COLOR === 'bg-red-400'
+        }">
+          <td class="width-1" *ngFor="let col of this.ISSUE_REQUEST_COLUMN_LIST" >
+            <p  
+            [ngClass]="{
+              'cursor-pointer hover:underline text-sky-700': col.Col_Filed === 'ISSSUE_NO',
+            }"
+            (click)="GetEditRequestRaised(col,rowData)"
+          > {{ rowData[col.Col_Filed] }}</p>
+         </td>
+         <td class="width-1"  
+        >
+          <button pButton *ngIf="rowData.STATUS_CODE == '00' && rowData.CANCEL_IND === false"  (click)="CancleRequestRaised(rowData)"
+          label="" icon="pi pi-times" class="p-button-danger"></button>
+        </td>
+        </tr>
+      </ng-template>
+    </p-table>  
+  </div>
+</div> -->

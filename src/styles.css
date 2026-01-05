@@ -168,7 +168,7 @@ table.table-theam-1 th {
     position: sticky;
     top: 0;
     font-size: 0.9em;
-    /* z-index: 20; */
+     z-index: 20;
 }
 
 table.table-theam-1 th,
@@ -282,7 +282,7 @@ table .dropdown.bootstrap-select {
     font-size: 13px;
 }
 
-table .form-control {
+table .form-control:not(textarea.float-input) {
     height: calc(1em + .75rem + 1px) !important;
     padding: 2px .5rem !important;
     font-size: 0.9rem !important;

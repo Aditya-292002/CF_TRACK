@@ -1,0 +1,105 @@
+<app-spinner [startSpinner]="spinner" *ngIf="spinner"></app-spinner>
+
+<div class="parent">
+    <div class="child">
+        <div class="login-container" id="container">
+            <div class="divleft">
+                <div class="sidebar-footer">
+                    <img src="../../../assets/images/TopLogo1.png" alt="" />
+                </div>
+                <div class="divImage"></div>
+
+            </div>
+            <div class="divRight bg-white">
+                <div class="divCenter">
+
+
+                    <div class="text-center" *ngIf="!OTPFLAG">
+                        <div class="w-100 d-flex justify-content-center pb-5">
+                            <img class="divLogo" src="../../../assets/images/comflexlogo.png" alt="" />
+
+
+                        </div>
+                        <h6 class="text-truncate text_header px-3">Welcome to Comflex Technologies</h6>
+                        <label class="text_subheader px-2">Enter Your Email Id
+                            (e.g. john.doe@comflextech.com ).</label>
+
+                        <div class="px-2">
+                            <form  class="forms justify-content-center">
+                                <div class="form-group">
+                                    <label class="sr-only">Email Id</label>
+                                    <input type="text" [(ngModel)]="login_userId" class="form-control"
+                                        id="user_email_id" #user_email_id placeholder="example@gmail.com"
+                                        [ngModelOptions]="{ standalone: true }" required />
+                                </div>
+                                <div>
+                                    <button type="submit" (click)="onSubmitForgot()" class="btn btn-primary btn-lg loginBtn">
+                                        Send OTP
+                                    </button>
+                                </div>
+                                <!-- <a
+                  class="forget-text float-right"
+                  (click)="isForgetSceen = !isForgetSceen; login_userId = ''"
+                  >Back to Login</a
+                > -->
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="text-center" *ngIf="OTPFLAG">
+                        <div class="w-100 d-flex justify-content-center mb-5">
+                            <img class="divLogo" src="../../../assets/images/comflexlogo.png" alt="" />
+                        </div>
+                        <h6 class="text-truncate text_header px-2">Enter OTP</h6>
+                        <div class="px-2">
+                            <form (ngSubmit)="submitOTP()" class="forms justify-content-center">
+                                <div class="form-group">
+                                    <div class="otp-container">
+                                        <input type="text" maxlength="1" class="otp-input" [(ngModel)]="input1"
+                                            name="input1" (input)="onInput($event, 1)" (keydown)="onKeyDown($event, 1)"
+                                            #inputRef1 />
+                                        <input type="text" maxlength="1" class="otp-input" [(ngModel)]="input2"
+                                            name="input2" (input)="onInput($event, 2)" (keydown)="onKeyDown($event, 2)"
+                                            #inputRef2 />
+                                        <input type="text" maxlength="1" class="otp-input" [(ngModel)]="input3"
+                                            name="input3" (input)="onInput($event, 3)" (keydown)="onKeyDown($event, 3)"
+                                            #inputRef3 />
+                                        <input type="text" maxlength="1" class="otp-input" [(ngModel)]="input4"
+                                            name="input4" (input)="onInput($event, 4)" (keydown)="onKeyDown($event, 4)"
+                                            #inputRef4 />
+                                    </div>
+
+                                    <div *ngIf="!otpExpired">
+                                        <p>OTP expires in: {{ minutes }}:{{ seconds }}</p>
+                                    </div>
+
+
+                                    <!-- <button (click)="submitOTP()">Submit OTP</button> -->
+
+                                </div>
+                                <div>
+                                    <button *ngIf="!otpExpired" type="submit" class="btn btn-primary btn-lg loginBtn">
+                                        Submit
+                                    </button>
+                                      <button *ngIf="otpExpired" (click)="backToLogin()" class="btn btn-primary btn-lg loginBtn">
+                                        Back to Login
+                                    </button>
+                                </div>
+                                <!-- <a
+                  class="forget-text float-right"
+                  (click)="isForgetSceen = !isForgetSceen; login_userId = ''"
+                  >Back to Login</a
+                > -->
+                            </form>
+
+                            <!-- <div *ngIf="otpExpired">
+                                <p style="color: red;">OTP expired.</p>
+                                <button (click)="sendOTPassword()">Resend OTP</button>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

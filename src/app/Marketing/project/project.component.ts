@@ -20,12 +20,13 @@ export class ProjectComponent implements OnInit {
   spinner: boolean = false;
   form: FormGroup
   maxDate: any ='';
+   project_assign_emp_detail:any = [];
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
     private http: HttpRequestServiceService,
     private formBuilder: FormBuilder,
     private toast: ToastrService,
-    private validationService: ValidationService) { }
+    private validationService: ValidationService) { } 
 
   company_list: Array<any> = [];
   currency_list: Array<any> = [];
@@ -46,6 +47,7 @@ export class ProjectComponent implements OnInit {
   PROJECT_DATE: any = this.sharedService.getDDMMMYYYY(new Date());
   VALID_UPTO: string = "";
   EXP_CLOSURE: string = "";
+  selected_emp:any;
   ngOnInit() {
     this.sharedService.formName = "Project Information"
     this.form = this.formBuilder.group({
@@ -60,13 +62,14 @@ export class ProjectComponent implements OnInit {
       LOCATION_CODE: ["",Validators.required],
       CUST_CODE: ["",Validators.required],
       DIVISION_CODE: ["",Validators.required],
-      PO_NO: [""],
-      PO_DATE: [""],
-      PO_VALUE: [""],
-      PO_CURRENCY: ["INR",Validators.required],
-      PO_EXCHANGE_RATE: ["1"],
+      // PO_NO: [""],
+      // PO_DATE: [""],
+      // PO_VALUE: [""],
+      // PO_CURRENCY: ["INR"],
+      // PO_EXCHANGE_RATE: ["1"],
       PROJ_MGR: ["",Validators.required],
       ACCOUNT_MGR: [""],
+      SUPPORT_MANAGER:[""],
       PROJ_STATUS: ["",Validators.required],
       SUB_STATUS: ["",Validators.required],
       CUST_CONTACT: ["",Validators.required],
@@ -74,7 +77,7 @@ export class ProjectComponent implements OnInit {
       BILLED_VALUE: [null],
       PROJ_SEGMENT: ["",Validators.required],
       EXP_CLOSURE:[""],
-      VALID_UPTO:[""],
+      // VALID_UPTO:[""],
       TECHNICAL_OWNER:[""]
     })
 
@@ -222,7 +225,7 @@ export class ProjectComponent implements OnInit {
     }
     this.http.PostRequest(this.apiUrl.GetProjectDetail, data).then(res => {
       if (res.flag) {
-        this.project_payment_detail = res.project_payment_detail;
+        this.project_assign_emp_detail = res.project_payment_detail;
         this.f_fillData(res.project_detail)
         this.spinner = false;
       } else {
@@ -244,19 +247,20 @@ export class ProjectComponent implements OnInit {
     this.form.get('PROJ_SEGMENT').setValue(data[0].PROJ_SEGMENT)
     this.form.get('CUST_CODE').setValue(data[0].CUST_CODE)
     this.form.get('DIVISION_CODE').setValue(data[0].DIVISION_CODE)
-    this.form.get('PO_NO').setValue(data[0].PO_NO)
-    this.form.get('PO_DATE').setValue(data[0].PO_DATE)
-    this.form.get('PO_VALUE').setValue(data[0].PO_VALUE)
-    this.form.get('PO_CURRENCY').setValue(data[0].PO_CURRENCY)
-    this.form.get('PO_EXCHANGE_RATE').setValue(data[0].PO_EXCHANGE_RATE)
+    // this.form.get('PO_NO').setValue(data[0].PO_NO)
+    // this.form.get('PO_DATE').setValue(data[0].PO_DATE)
+    // this.form.get('PO_VALUE').setValue(data[0].PO_VALUE)
+    // this.form.get('PO_CURRENCY').setValue(data[0].PO_CURRENCY)
+    // this.form.get('PO_EXCHANGE_RATE').setValue(data[0].PO_EXCHANGE_RATE)
     this.form.get('PROJ_MGR').setValue(data[0].PROJ_MGR)
     this.form.get('ACCOUNT_MGR').setValue(data[0].ACCOUNT_MGR)
+     this.form.get('SUPPORT_MANAGER').setValue(data[0].SUPPORT_MANAGER)
     this.form.get('PROJ_STATUS').setValue(data[0].PROJ_STATUS)
     this.form.get('SUB_STATUS').setValue(data[0].SUB_STATUS)
     this.form.get('CUST_CONTACT').setValue(data[0].CUST_CONTACT)
     this.form.get('PROJ_REMARKS').setValue(data[0].PROJ_REMARKS)
     this.form.get('BILLED_VALUE').setValue(data[0].BILLED_VALUE)
-    this.form.get('VALID_UPTO').setValue(data[0].VALID_UPTO)
+    // this.form.get('VALID_UPTO').setValue(data[0].VALID_UPTO)
     this.form.get('TECHNICAL_OWNER').setValue(data[0].TECHNICAL_OWNER)
     this.GetCustomerDetail();
     
@@ -324,37 +328,37 @@ export class ProjectComponent implements OnInit {
     }, 100);
 
   }
-  filterAccountMgr() {
-    /**Filter Account manager Dropdown and auto Set Based on Customer Selection and also set Segment */
-    this.Account_manager_list = [];
-    let acct_mgr_id = 0;
-    let seg_id = 0;
+  // filterAccountMgr() {
+  //   /**Filter Account manager Dropdown and auto Set Based on Customer Selection and also set Segment */
+  //   this.Account_manager_list = [];
+  //   let acct_mgr_id = 0;
+  //   let seg_id = 0;
 
-    for(let data of this.customer_list){
-      if(data.CUST_CODE == this.form.getRawValue().CUST_CODE){
-        acct_mgr_id = data.ACCT_MANAGER
-        seg_id = data.CUST_SEGMENT
-      }
-    }
+  //   for(let data of this.customer_list){
+  //     if(data.CUST_CODE == this.form.getRawValue().CUST_CODE){
+  //       acct_mgr_id = data.ACCT_MANAGER
+  //       seg_id = data.CUST_SEGMENT
+  //     }
+  //   }
     
-    for (let data of this.all_Account_manager_list) {
-      if (data.USERID == acct_mgr_id) {
-        this.Account_manager_list.push(data)
-        this.form.get('ACCOUNT_MGR').setValue(data.USERID)
-      }
-    }
+  //   for (let data of this.all_Account_manager_list) {
+  //     if (data.USERID == acct_mgr_id) {
+  //       this.Account_manager_list.push(data)
+  //       this.form.get('SUPPORT_MANAGER').setValue(data.USERID)
+  //     }
+  //   }
     
-    for (let data of this.segment_list) {
-      if (data.SEGMENT_CODE == seg_id) {
-        this.form.get('PROJ_SEGMENT').setValue(data.SEGMENT_CODE)
-      }
-    }
+  //   for (let data of this.segment_list) {
+  //     if (data.SEGMENT_CODE == seg_id) {
+  //       this.form.get('PROJ_SEGMENT').setValue(data.SEGMENT_CODE)
+  //     }
+  //   }
 
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh').trigger('change');
-    }, 100);
+  //   setTimeout(() => {
+  //     $('.selectpicker').selectpicker('refresh').trigger('change');
+  //   }, 100);
 
-  }
+  // }
 
   
   SelectedFileName: string = "";
@@ -456,32 +460,38 @@ export class ProjectComponent implements OnInit {
   saveFormData(para: string = '') {
     this.isSubmited = true;
     if (this.form.valid) {
-      if(this.form.getRawValue().PO_VALUE > 0 && this.form.getRawValue().PO_VALUE != undefined && this.form.getRawValue().PO_VALUE != null){
-        let exp_val_total = 0;
-        for(let data of this.project_payment_detail){
-          if(data.EXPECTED_VALUE >0 && data.EXPECTED_VALUE != undefined && data.EXPECTED_VALUE != undefined){
-            exp_val_total += parseFloat(data.EXPECTED_VALUE);
-          }
-        }
+      // if(this.form.getRawValue().PO_VALUE > 0 && this.form.getRawValue().PO_VALUE != undefined && this.form.getRawValue().PO_VALUE != null){
+      //   let exp_val_total = 0;
+      //   for(let data of this.project_payment_detail){
+      //     if(data.EXPECTED_VALUE >0 && data.EXPECTED_VALUE != undefined && data.EXPECTED_VALUE != undefined){
+      //       exp_val_total += parseFloat(data.EXPECTED_VALUE);
+      //     }
+      //   }
 
-        if(exp_val_total > this.form.getRawValue().PO_VALUE){
-          this.toast.warning("Total of Expected value is greater than PO Value");
-          return;
-        } else if(exp_val_total < this.form.getRawValue().PO_VALUE){
-          this.toast.warning("Total of Expected value is less than PO Value");
-          return;
-        }
-      }
+      //   if(exp_val_total > this.form.getRawValue().PO_VALUE){
+      //     this.toast.warning("Total of Expected value is greater than PO Value");
+      //     return;
+      //   } else if(exp_val_total < this.form.getRawValue().PO_VALUE){
+      //     this.toast.warning("Total of Expected value is less than PO Value");
+      //     return;
+      //   }
+      // }
       let _formData = this.form.getRawValue();
-      if(_formData.PO_EXCHANGE_RATE == "" || _formData.PO_EXCHANGE_RATE == undefined)
-        _formData.PO_EXCHANGE_RATE = null;
+      // if(_formData.PO_EXCHANGE_RATE == "" || _formData.PO_EXCHANGE_RATE == undefined)
+      //   _formData.PO_EXCHANGE_RATE = null;
 
-        _formData.PO_VALUE = _formData.PO_VALUE == ""? null:_formData.PO_VALUE
+      //   _formData.PO_VALUE = _formData.PO_VALUE == ""? null:_formData.PO_VALUE
 
       let data = {
+        USERID:this.sharedService.loginUser[0].USERID,
+        PROJECT_CODE:this.form.get('PROJ_CODE').value,
         project_detail: _formData,
-        project_payment_detail: this.project_payment_detail
+        project_payment_detail: this.project_payment_detail,
+        project_assign_emp_detail:this.project_assign_emp_detail
       }
+      console.log(data,'data');
+      
+       return
       this.http.PostRequest(this.apiUrl.SaveProjectDetail, data).then(res => {
         if (res.flag) {
           this.toast.success(res.msg)
@@ -500,21 +510,21 @@ export class ProjectComponent implements OnInit {
     }
 
   }
-  addRow(){
-    if(this.form.getRawValue().PO_VALUE > 0 && this.form.getRawValue().PO_VALUE != undefined && this.form.getRawValue().PO_VALUE != null){
+  // addRow(){
+  //   if(this.form.getRawValue().PO_VALUE > 0 && this.form.getRawValue().PO_VALUE != undefined && this.form.getRawValue().PO_VALUE != null){
     
-    this.project_payment_detail.push({
-      PROJ_SRNO:0,
-      MILESTONE_DESC:"",
-      EXPECTED_DATE:"",
-      EXPECTED_VALUE:"",
-      BILL_VALUE:"",
-      ACTIVE:1
-    })
-  } else {
-    this.toast.warning("Please enter PO value first")
-  }
-  }
+  //   this.project_payment_detail.push({
+  //     PROJ_SRNO:0,
+  //     MILESTONE_DESC:"",
+  //     EXPECTED_DATE:"",
+  //     EXPECTED_VALUE:"",
+  //     BILL_VALUE:"",
+  //     ACTIVE:1
+  //   })
+  // } else {
+  //   this.toast.warning("Please enter PO value first")
+  // }
+  // }
   f_clearForm() {
     this.fileInput.nativeElement.value = "";
     this.isSubmited = false;
@@ -527,6 +537,7 @@ export class ProjectComponent implements OnInit {
     this.form.get('PO_CURRENCY').setValue("INR")
     this.form.get('PROJECT_DATE').setValue(this.sharedService.getTodayDate())
     this.PROJECT_DATE = this.sharedService.getTodayDate();
+    this.project_assign_emp_detail=[]
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 100);
@@ -546,9 +557,11 @@ export class ProjectComponent implements OnInit {
       this.toast.warning("Please select Division");
     } else if(this.form.controls["PROJ_SEGMENT"].invalid){
       this.toast.warning("Please select Segment");
-    } else if(this.form.controls["PO_CURRENCY"].invalid){
-      this.toast.warning("Please select Currency");
-    } else if(this.form.controls["PROJ_MGR"].invalid){
+    } 
+    // else if(this.form.controls["PO_CURRENCY"].invalid){
+    //   this.toast.warning("Please select Currency");
+    // } 
+    else if(this.form.controls["PROJ_MGR"].invalid){
       this.toast.warning("Please select Project Manager");
     } else if(this.form.controls["PROJ_STATUS"].invalid){
       this.toast.warning("Please select Status");
@@ -560,19 +573,110 @@ export class ProjectComponent implements OnInit {
       this.toast.warning("Please enter Date");
     }  else if(this.form.controls["REFPROJ_CODE"].invalid){
       this.toast.warning("Please enter Ref Project Name");
-    }  else if(this.form.controls["PO_NO"].invalid){
-      this.toast.warning("Please enter PO No");
-    } else if(this.form.controls["PO_DATE"].invalid){
-      this.toast.warning("Please enter PO Date");
-    } else if(this.form.controls["PO_VALUE"].invalid){
-      this.toast.warning("Please enter PO Value");
-    } else if(this.form.controls["ACCOUNT_MGR"].invalid){
-      this.toast.warning("Please enter Account Manager");
-    }  else if(this.form.controls["PROJ_REMARKS"].invalid){
+    }  
+    // else if(this.form.controls["PO_NO"].invalid){
+    //   this.toast.warning("Please enter PO No");
+    // } 
+    // else if(this.form.controls["PO_DATE"].invalid){
+    //   this.toast.warning("Please enter PO Date");
+    // }
+    //  else if(this.form.controls["PO_VALUE"].invalid){
+    //   this.toast.warning("Please enter PO Value");
+    // } 
+    // else if(this.form.controls["ACCOUNT_MGR"].invalid){
+    //   this.toast.warning("Please enter Account Manager");
+    // }  
+    else if(this.form.controls["PROJ_REMARKS"].invalid){
       this.toast.warning("Please enter Remarks");
-    }  else if(this.form.controls["VALID_UPTO"].invalid){
-      this.toast.warning("Please enter Valid Upto");
-    }
+    }  
+    // else if(this.form.controls["VALID_UPTO"].invalid){
+    //   this.toast.warning("Please enter Valid Upto");
+    // }
   }
+    addRow() {
+    if(!this.sharedService.isValid(this.selected_emp)){
+        this.toast.error('Select a Employee');
+        return
+    }
+    let data = JSON.parse(this.selected_emp)
+    for (let i = 0; i < this.project_assign_emp_detail.length; i++) {
+      const user = this.project_assign_emp_detail[i];
+      if(user.EMP_NO == data.EMP_CODE) {
+        this.toast.error('This user already added');
+        return; 
+      }
+    }
+    console.log('project_assign_emp_detail',this.project_assign_emp_detail);
+    
+    this.selected_emp = "";
+    let emp_details = {};
+      emp_details = {
+        ACTIVE: true,
+        EMP_CODE: data.EMP_CODE,
+        FULL_NAME: data.USER_NAME,
+
+        // TASKID: this.TASK_ID,
+      }
+    this.project_assign_emp_detail.push(emp_details)
+    $("#emp").selectpicker("refresh").trigger("change");
+    setTimeout(() => {
+      $(".selectpicker").selectpicker("refresh").trigger("change");
+    }, 100);
+  }
+onManagerChange(manager: any) {
+
+  // Check if already added
+  const exists = this.project_assign_emp_detail.some(
+    emp => emp.EMP_CODE === manager
+  );
+
+  if (exists) {
+    this.toast.error('This user already added');
+    return;
+  }
+
+  // Find employee in manager list
+  const user = this.Account_manager_list.find(
+    emp => emp.EMP_CODE === manager
+  );
+
+  if (!user) {
+    return;
+  }
+
+  const emp_details = {
+    ACTIVE: true,
+    EMP_CODE: user.EMP_CODE,
+    FULL_NAME: user.USER_NAME
+  };
+
+  this.project_assign_emp_detail.push(emp_details);
+  
+}
+remove(emp_no: string,name:string) {
+  console.log('INSIDE REMOCVE ',name,emp_no);
+  
+  this.project_assign_emp_detail = this.project_assign_emp_detail.filter(
+    emp => emp.EMP_CODE !== emp_no
+  );
+  
+console.log('this.project_assign_emp_detail',this.project_assign_emp_detail);
+
+  this.form.controls[name].reset();
+}
+  removeRow(data:any) {
+    this.selected_emp = "";
+    this.project_assign_emp_detail.forEach((element:any,index:any)=>{
+      if(element.EMP_CODE == data.EMP_CODE){
+          this.project_assign_emp_detail.splice(index,1)
+          // element.ACTIVE=false;
+      } 
+    })
+    $("#emp").selectpicker("refresh").trigger("change");
+  }
+  get activeEmployees() {
+  return this.project_assign_emp_detail.filter(emp => emp.ACTIVE);
+}
+
 }
  

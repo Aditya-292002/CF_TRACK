@@ -67,10 +67,19 @@ import { PendingTaskComponent } from './Project/pending-task/pending-task.compon
 import { BankReceiptListComponent } from './Invoice/bank-receipt-list/bank-receipt-list.component';
 import { SelfAppraisalListComponent } from './Marketing/self-appraisal-list/self-appraisal-list.component';
 import { SelfAppraisalComponent } from './Marketing/self-appraisal/self-appraisal.component';
+import { TicketLoginComponent } from './Common/ticket-login/ticket-login.component';
+import { IssueRequestMasterComponent } from './Common/issue-request-master/issue-request-master.component';
+import { IssueRequestListComponent } from './Common/issue-request-list/issue-request-list.component';
+import { PmConfirmationComponent } from './Common/pm-confirmation/pm-confirmation.component';
+import { PmConfirmationListComponent } from './Common/pm-confirmation-list/pm-confirmation-list.component';
+import { LeadMasterComponent } from './Marketing/lead-master/lead-master.component';
+import { SalesOpportunityLogListComponent } from './Common/sales-opportunity-log-list/sales-opportunity-log-list.component';
 
 const routes: Routes = [
   {path: 'ForgotPasswordReset', component: ResetPasswordComponent },
   { path: 'login',component: LoginComponent },
+  
+  { path: 'clientlogin',component: TicketLoginComponent },
   {path: 'companyfyear', component:CompanyFyearComponent},
   {
     path: '',
@@ -120,7 +129,7 @@ const routes: Routes = [
       {path: 'salaryprocessapprove', component:SalaryProcessApproveComponent},
       {path: 'salesorder', component:SalesOrderComponent},
       {path: 'salaryinformation', component:SalaryInformationComponent},
-      {path: 'salesopportunitylog', component:SalesOpportunityLogComponent},
+      {path: 'salesopportunitylog', component:SalesOpportunityLogListComponent},
       {path: 'opportunitymaster', component:OpportunityMasterComponent},
       {path:'taxdeclaration',component:TaxDeclarationComponent},
       {path:'taxdeclarationapproval',component:TaxDeclarationApprovalComponent},
@@ -137,10 +146,16 @@ const routes: Routes = [
       {path:"bankreceiptlist",component:BankReceiptListComponent},
       {path:"SelfAppraisal",component:SelfAppraisalComponent},
       {path:"SelfAppraisalList",component:SelfAppraisalListComponent},
+      {path: "issuerequestmaster", component: IssueRequestMasterComponent },
+      {path: "issuerequestlist", component: IssueRequestListComponent },
+      {path: "pmconfirmationmaster", component: PmConfirmationComponent },
+      {path: "pmconfirmation", component: PmConfirmationListComponent },
+      {path: "leadmaster", component: LeadMasterComponent },
+      {path: "salesOpportunityLogDetails", component: SalesOpportunityLogComponent },
       {path: '**', component:Pnf400Component }
     ]
   },
-
+  
   { path: '**',redirectTo:'', pathMatch:'full' },
 ];
 

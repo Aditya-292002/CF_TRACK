@@ -45,3 +45,59 @@ table.table-theam-1 {
            width: max-content; 
         }
 }
+
+.disabled-icon {
+    color: #b5b5b5;       /* greyed out */
+    cursor: not-allowed;
+    pointer-events: none; /* prevents click */
+}
+
+.float-label {
+  position: relative;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.float-label input {
+  width: 100%;
+  padding: 1rem 0.75rem 0.75rem !important;
+  padding-top: 0.5rem;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  background: white;
+}
+
+.float-label label {
+  position: absolute;
+  top: 0%;
+  left: 0.75rem;
+  transform: translateY(-50%);
+  color: #585757;
+  font-size: 12px;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  background: white;
+  padding: 0 0.5rem;
+  border-radius: 8px;
+}
+
+/* .float-input{
+
+} */
+ .addbtn .btn-primary {
+    color: #fff;
+    background-color: #424a5a;
+    border-color: #424a5a;
+    border: 0;
+    padding: 0px 8px !important;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    outline: 0;
+}
+
+.tr-padding>td{
+    padding: 12px;
+}

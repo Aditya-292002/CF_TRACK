@@ -1,0 +1,472 @@
+.width-1{
+    width: 200px;
+}
+.width-2{
+    width: 150px;
+}
+/* .fileUpload-icon {
+    background-image: url("../../../assets/Images/Common-Image/DocumentUpload.png");
+    background-repeat: no-repeat;
+    height: 50px;
+    width: 100px;
+    background-position: center center;
+} */
+.text-header{
+    font-size: 1rem !important;
+    margin-bottom: 0rem !important;
+    font-weight: 600 !important;
+    font-family: "Roboto", sans-serif !important;
+}
+.view-text{
+    background: #c13d3d12;
+    color: #c13d3d;
+    padding: 2px 5px;
+    border-radius: 6px;
+    box-shadow: 0 .1875rem .5rem 0 rgba(34, 48, 62, .1);
+}
+.w-40{
+    width: 160px !important;
+}
+
+    
+.status_container{
+    display: inline-flex;
+    padding: 1px 10px;
+    font-size: 13px;
+    align-items: center;
+    color: rgb(18 85 141);
+    /* border-radius: 32px; */
+    /* border: 1px solid #1ea97c; */
+    /* background: #75bfff1f; */
+    background: rgba(228, 248, 240, 0.7);
+
+    }
+.history_container{
+    display: inline-flex;
+    padding: 1px 10px;
+    font-size: 13px;
+    align-items: center;
+    background: #c13d3d12;
+    color: #c13d3d;
+    }
+ 
+    
+.Approved{
+    font-size: 0.75rem; /* 12px */
+line-height: 1rem;
+    color: #198155;
+}
+.Reject{
+   font-size: 0.75rem; /* 12px */
+line-height: 1rem;
+    color: #D3180C;
+}
+.Raised{
+    font-size: 0.75rem; /* 12px */
+line-height: 1rem;
+    color: #A05E03;
+}
+.Revert{
+    font-size: 0.75rem; /* 12px */
+line-height: 1rem;
+    color: #0065D0;
+}
+/* .p-icon-wrapper{
+    display: block;
+    width: 0;
+    height: 0;
+} */
+
+/* .p-element  {
+    display: block;
+    width: 0;
+    height: 0;
+} */
+
+.save-button {
+    background: #12558d;
+    color: #fff;
+    border: 4px solid #12558d;
+    border-radius:4px;
+}
+
+/* added by hemant  */
+/* PrimeIcons */
+@import "~primeicons/primeicons.css";
+
+.upload-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Styled button */
+.upload-btn {
+  display: flex;
+  align-items: center;
+  background-color: #007ad9;
+  border: none;
+  padding: 0.5rem 1rem;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  gap: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.upload-btn:hover {
+  background-color: #005fa3;
+}
+
+.file-name {
+  font-size: 14px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  word-break: break-all;
+}
+/* test */
+.width-1 {
+    width: 200px;
+}
+
+.width-2 {
+    width: 150px;
+}
+
+/* .fileUpload-icon {
+    background-image: url("../../../assets/Images/Common-Image/DocumentUpload.png");
+    background-repeat: no-repeat;
+    height: 50px;
+    width: 100px;
+    background-position: center center;
+} */
+.text-header {
+    font-size: 1rem !important;
+    margin-bottom: 0rem !important;
+    font-weight: 600 !important;
+    font-family: "Roboto", sans-serif !important;
+}
+
+.view-text {
+    background: #c13d3d12;
+    color: #c13d3d;
+    padding: 2px 5px;
+    border-radius: 6px;
+    box-shadow: 0 .1875rem .5rem 0 rgba(34, 48, 62, .1);
+}
+
+.w-40 {
+    width: 160px !important;
+}
+
+
+.status_container {
+    display: inline-flex;
+    padding: 1px 10px;
+    font-size: 13px;
+    align-items: center;
+    color: rgb(18 85 141);
+    /* border-radius: 32px; */
+    /* border: 1px solid #1ea97c; */
+    /* background: #75bfff1f; */
+    background: rgba(228, 248, 240, 0.7);
+
+}
+
+.history_container {
+    display: inline-flex;
+    padding: 1px 10px;
+    font-size: 13px;
+    align-items: center;
+    background: #c13d3d12;
+    color: #c13d3d;
+}
+
+
+.Approved {
+    font-size: 0.75rem;
+    /* 12px */
+    line-height: 1rem;
+    color: #198155;
+}
+
+.Reject {
+    font-size: 0.75rem;
+    /* 12px */
+    line-height: 1rem;
+    color: #D3180C;
+}
+
+.Raised {
+    font-size: 0.75rem;
+    /* 12px */
+    line-height: 1rem;
+    color: #A05E03;
+}
+
+.Revert {
+    font-size: 0.75rem;
+    /* 12px */
+    line-height: 1rem;
+    color: #0065D0;
+}
+
+/* .p-icon-wrapper{
+    display: block;
+    width: 0;
+    height: 0;
+} */
+
+/* .p-element  {
+    display: block;
+    width: 0;
+    height: 0;
+} */
+
+.save-button {
+    background: #12558d;
+    color: #fff;
+    border: 1px solid #12558d;
+    border-radius: 4px;
+    padding: 4px 8px;
+}
+
+.secondary-button  {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+.btn.btn-secondary {
+    background-color: #424a5a;
+    font-size: 0.9em;
+    line-height: 1.2;
+}
+
+
+/* added by hemant  */
+/* PrimeIcons */
+@import "~primeicons/primeicons.css";
+
+.upload-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Styled button */
+.upload-btn {
+    display: flex;
+    align-items: center;
+    background-color: #007ad9;
+    border: none;
+    padding: 0.5rem 1rem;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    gap: 0.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.upload-btn:hover {
+    background-color: #005fa3;
+}
+
+.file-name {
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    word-break: break-all;
+}
+
+.file-table {
+    width: 100% !important;
+}
+
+.file-table-th {
+    /* width: 400px; */
+    background-color: #dee2e6;
+    border: 1px solid #aaaaaa;
+}
+
+.file-table-action {
+    background-color: #dee2e6;
+    border: 1px solid #aaaaaa;
+}
+
+.form-header {
+    height: 100%;
+    align-items: center;
+    display: flex;
+    margin-bottom: 0px;
+}
+
+.card-padding-none {
+    padding: 0px;
+}
+
+.radio-btn-gap {
+    gap: 20%;
+}
+
+.label-13px {
+    font-size: 12px;
+}
+
+.row-gap {
+    row-gap: 10px
+}
+
+.custom-file-uploader {
+    padding: 3px !important;
+    border: 1px solid #acacac !important;
+    background: #ddddddb8 !important;
+    width: 100px !important;
+    font-size: 13px !important;
+}
+
+/* HISTORY */
+.comment-history {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Each Accordion Item */
+.comment-item {
+  border: 1px solid var(--surface-border, #ddd);
+  border-radius: 6px;
+  background: var(--surface-card, #fff);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Header */
+.comment-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: var(--surface-ground, #f8f9fa);
+  cursor: pointer;
+  user-select: none;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.comment-header:hover {
+  background: var(--surface-hover, #f0f0f0);
+}
+
+.status-text {
+  font-size: 0.9rem;
+  color: var(--text-color, #333);
+  white-space: nowrap;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--primary-color, #007ad9);
+  margin: 0;
+}
+
+.date {
+  font-size: 0.8rem;
+  color: #777;
+  margin: 0;
+}
+
+.toggle-icon {
+  font-size: 1rem;
+  color: #555;
+  transition: transform 0.2s ease;
+}
+
+/* Comment Body */
+.comment-body {
+  padding: 0.75rem 1rem 1rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.comment-label {
+  display: block;
+  font-weight: 600;
+  color: #555;
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+
+.comment-textarea {
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  resize: none;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.file-info {
+  background-color: #f8f9fa;
+  border-left: 3px solid #007bff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.width-100percent{
+    width: 100%;
+}
+
+.width-85percent{
+    width: 85%;
+}
+
+.width-15percent{
+    width: 15%;
+}
+
+.custom-file-uploader-container{
+    border: 2px dashed #d9d9d9;
+    border-radius: 4px;
+    padding: 12px;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 8px;
+}
+
+.flex-box-col{
+    display: flex;
+    justify-content: center;
+}
+
+.file-upload-label{
+    color: #666666f0;
+}
