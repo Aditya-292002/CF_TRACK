@@ -663,7 +663,7 @@ export class OpportunityMasterComponent implements OnInit {
     var data = {
       USERID: this.sharedService.loginUser[0].USERID,
       CRM_OPPORTUNITY: crmOpportunity,
-      DOCUMENT_ATTECHED_LIST: this.DOCUMENT_ATTECHED_LIST
+      DOCUMENT_ATTECHED_LIST: this.uploadedDocument
     };
     console.log("SaveOpportunityMaster Save Payload: ", data);
     // return
