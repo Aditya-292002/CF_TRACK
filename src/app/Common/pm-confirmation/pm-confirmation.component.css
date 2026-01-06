@@ -306,3 +306,17 @@
 .file-upload-label{
     color: #666666f0;
 }
+
+/* .table-wrapper {
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.table-wrapper thead th {
+  position: sticky;
+  top: 0;
+  background: #f8f9fa;
+  z-index: 1;
+} */
+
