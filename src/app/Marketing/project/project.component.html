@@ -351,6 +351,11 @@
                                 <i class='fas fa-trash-alt text-danger ml-2'></i></button>
                         </td>
                     </tr>
+                    <tr *ngIf="project_assign_emp_detail.length === 0">
+                        <td colspan="2" class="text-center text-muted">
+                        No assignees
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         <!-- </div> -->

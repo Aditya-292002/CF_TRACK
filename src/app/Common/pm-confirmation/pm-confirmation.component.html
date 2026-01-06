@@ -580,7 +580,7 @@
                   </tr>
                   <tr *ngIf="project_assign_emp_detail.length === 0">
                 <td colspan="2" class="text-center text-muted">
-                  No assignees added
+                  No assignees
                 </td>
               </tr>
                 </tbody>
@@ -656,7 +656,7 @@
 
               <tr *ngIf="project_assign_emp_detail.length === 0">
                 <td colspan="2" class="text-center text-muted">
-                  No assignees added
+                  No assignees
                 </td>
               </tr>
             </tbody>
@@ -719,6 +719,11 @@
  
                     </td>
                   </tr>
+                  <tr *ngIf="RESOLVE_DOC_LIST.length === 0">
+                <td colspan="2" class="text-center text-muted">
+                  No Document
+                </td>
+              </tr>
                 </tbody>
               </table>
             </div>
