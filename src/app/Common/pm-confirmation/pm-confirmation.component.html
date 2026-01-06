@@ -342,35 +342,30 @@
       <!-- Row 2: Reason Field (Visible only when CLOSE is selected) -->
       <div class="form-group mt-2 row row-gap" *ngIf="developerStatus === 'CLOSE'">
         <div class="col-md-8">
-        <label class="label-13px">Reason <span class="text-danger">*</span></label>
-        <textarea
-          class="form-control"
-          rows="2"
-          formControlName="DEVELOPER_COMMENT"
-          placeholder="Enter Reason"
-        ></textarea>
-</div>
-         <div class="col-md-4">
-        <label class="w-50 label-13px">Status Update <span class="text-danger">*</span></label>
-        <div class="floating-input list-btn">
-          <select
-            class="form-control selectpicker show-tick"
-            data-live-search="true"
-            formControlName="CLOSURE_CODE"
-            title="Select Status"
-            [attr.disabled]="viewflag ? '' : null"
-          >
-            <option
-              *ngFor="let res of RESOLVED_STATUS_LIST"
-              [value]="res.CLOSURE_CODE"
-            >
-              {{ res.CLOSURE_NAME }}
-            </option>
-          </select>
-
-
+          <label class="label-13px">Reason <span class="text-danger">*</span></label>
+          <textarea
+            class="form-control"
+            rows="2"
+            formControlName="DEVELOPER_COMMENT"
+            placeholder="Enter Reason"></textarea>
         </div>
-      </div>
+        <div class="col-md-4">
+          <label class="w-50 label-13px">Status Update <span class="text-danger">*</span></label>
+          <div class="floating-input list-btn">
+            <select
+              class="form-control selectpicker show-tick"
+              data-live-search="true"
+              formControlName="CLOSURE_CODE"
+              title="Select Status"
+              [attr.disabled]="viewflag ? '' : null">
+              <option
+                *ngFor="let res of RESOLVED_STATUS_LIST"
+                [value]="res.CLOSURE_CODE">
+                {{ res.CLOSURE_NAME }}
+              </option>
+            </select>
+          </div>
+        </div>
       </div>
 
       <!-- Row 3: Other Fields (Visible only when OK is selected) -->
@@ -438,27 +433,26 @@
             </div>
           </div>
 
-          <div class="col-3">
-        <label class="w-50 label-13px">Resolution <span class="text-danger">*</span></label>
-        <div class="floating-input list-btn">
-          <select
-            class="form-control selectpicker show-tick"
-            data-live-search="true"
-            formControlName="RESOLUTION_CODE"
-            title="Select Resolution"
-            [attr.disabled]="viewflag ? '' : null"
-          >
-            <option
-              *ngFor="let res of RESOLUTION_LIST"
-              [value]="res.RESOLUTION_CODE"
+        <div class="col-3">
+          <label class="w-50 label-13px">Resolution <span class="text-danger">*</span></label>
+          <div class="floating-input list-btn">
+            <select
+              class="form-control selectpicker show-tick"
+              data-live-search="true"
+              formControlName="RESOLUTION_CODE"
+              title="Select Resolution"
+              [attr.disabled]="viewflag ? '' : null"
             >
-              {{ res.RESOLUTION_NAME }}
-            </option>
-          </select>
-
-
+              <option
+                *ngFor="let res of RESOLUTION_LIST"
+                [value]="res.RESOLUTION_CODE"
+              >
+                {{ res.RESOLUTION_NAME }}
+              </option>
+            </select>
+          </div>
         </div>
-      </div>
+
       <div class="col-3">
         <label class="w-50 label-13px">Status Update <span class="text-danger">*</span></label>
         <div class="floating-input list-btn">
@@ -470,7 +464,7 @@
             [attr.disabled]="viewflag ? '' : null"
           >
             <option
-              *ngFor="let res of CLOSED_STATUS_LIST"
+              *ngFor="let res of StatusList"
               [value]="res.STATUS_CODE"
             >
               {{ res.STATUS_NAME }}
@@ -495,7 +489,184 @@
             ></textarea>
           </div>
 
-         <div class="col-6 d-flex flex-column">    
+          <div class="col-md-3">
+            <label class="w-50 label-13px">Nature of Issue <span class="text-danger">*</span></label>
+            <div class="floating-input list-btn">
+              <select
+                class="form-control selectpicker show-tick"
+                data-live-search="true"
+                formControlName="NATURE_ID"
+                title="Select Nature"
+                [attr.disabled]="viewflag ? '' : null"
+              >
+                <option
+                  *ngFor="let res of natureIssueList"
+                  [value]="res.NATURE_ID"
+                >
+                  {{ res.NATURE_DESC }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+  <!-- <div class="row"> -->
+    <!-- <div class="col-12 offset-6"> -->
+      
+      <!--  -->
+
+      <div class="card-body" style="padding-top: 0px">
+        <div class="row row-gap">
+          <div class="col-md-6" style="padding-left: 0px; padding-right: 0px">
+            <div class="form-inline">
+              <h6 class="mb-0 col-md-6 p-0">Add Assignee</h6>
+              <div class="row-add col-md-6 text-right p-0">
+                <div class="">
+                  <div class="d-flex">
+                    <select
+                      class="form-control selectpicker show-tick"
+                      [(ngModel)]="selected_emp"
+                      data-container="body"
+                      data-size="5"
+                      id="emp"
+                      #emp
+                      data-live-search="true"
+                      title="Select"
+                      [ngModelOptions]="{standalone: true}"
+                    >
+                      <option
+                        *ngFor="let opt of Account_manager_list; let i=index"
+                        [value]="opt | json"
+                      >
+                        {{ opt.EMP_CODE }} - {{ opt.USER_NAME }}
+                      </option>
+                    </select>
+                    <button
+                      type="button"
+                      class="btn text-primary"
+                      style="margin-top: -5px; margin-left: 4px"
+                      (click)="addRow()"
+                    >
+                      <i class="fa fa-plus-square icon-big"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <hr class="m-0 mb-2" />
+            </div>
+            <div class="tableFixHead">
+              <table class="table-theam-1 row-bgcolor_1">
+                <thead>
+                  <tr>
+                    <th class="">Name</th>
+                    <th class="w-5">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let data of project_assign_emp_detail; let i=index;"
+                  >
+                    <td class="">{{ data.EMP_CODE }} - {{ data.FULL_NAME }}</td>
+                    <td class="w-5">
+                      <button
+                        type="button"
+                        class="btn text-primary p-0"
+                        (click)="removeRow(data)"
+                      >
+                        <i class="fas fa-trash-alt text-danger ml-2"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+
+<!-- <div class="card-body pt-0">
+<div class="row row-gap">
+<div class="col-md-12 px-0">
+
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h6 class="mb-0 font-weight-bold">Add Assignee</h6>
+
+        <div class="d-flex align-items-center">
+          <select
+            class="form-control selectpicker show-tick mr-2"
+            [(ngModel)]="selected_emp"
+            data-container="body"
+            data-size="5"
+            id="emp"
+            #emp
+            data-live-search="true"
+            title="Select"
+            [ngModelOptions]="{standalone: true}"
+          >
+            <option
+              *ngFor="let opt of Account_manager_list"
+              [value]="opt | json"
+            >
+              {{ opt.EMP_CODE }} - {{ opt.USER_NAME }}
+            </option>
+          </select>
+
+          <button
+            type="button"
+            class="btn btn-outline-primary btn-sm"
+            (click)="addRow()"
+            title="Add Assignee"
+          >
+            <i class="fa fa-plus"></i>
+          </button>
+        </div>
+      </div>
+
+      <hr class="mt-1 mb-3" />
+
+      
+      <div class="border rounded shadow-sm bg-white">
+        <div class="table-wrapper">
+          <table class="table table-sm table-hover mb-0">
+            <thead class="thead-light">
+              <tr>
+                <th>Name</th>
+                <th class="text-center w-5">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of project_assign_emp_detail">
+                <td>{{ data.EMP_CODE }} - {{ data.FULL_NAME }}</td>
+                <td class="text-center">
+                  <button
+                    type="button"
+                    class="btn btn-link text-danger p-0"
+                    (click)="removeRow(data)"
+                    title="Remove"
+                  >
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </td>
+              </tr>
+
+              <tr *ngIf="project_assign_emp_detail.length === 0">
+                <td colspan="2" class="text-center text-muted">
+                  No assignees added
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div> -->
+
+
+          <div class="col-6 d-flex flex-column">    
             <div class="custom-file-uploader-container">
               <div class="flex-box-col">
               <button
@@ -549,8 +720,17 @@
               </table>
             </div>
           </div>
+          
+
         </div>
       </div>
+
+
+      <!--  -->
+    <!-- </div> -->
+  <!-- </div> -->
+
+
     </div>
   </div>
 </form>
@@ -656,5 +836,4 @@
 </div>
 
 </div>
-
 </p-dialog>

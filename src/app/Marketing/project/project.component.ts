@@ -20,7 +20,7 @@ export class ProjectComponent implements OnInit {
   spinner: boolean = false;
   form: FormGroup
   maxDate: any ='';
-   project_assign_emp_detail:any = [];
+  project_assign_emp_detail:any = [];
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
     private http: HttpRequestServiceService,
@@ -247,9 +247,7 @@ export class ProjectComponent implements OnInit {
     this.form.get('COMPANY_CODE').setValue(data[0].COMPANY_CODE)
     this.form.get('PROJECT_TYPE').setValue(data[0].PROJECT_TYPE)
     this.form.get('PROJECT_DATE').setValue(this.sharedService.getFormatedDate(data[0].PROJECT_DATE));
-    console.log('123');
     this.form.get('EXPECTED_CLOSURE').setValue(data[0].EXPECTED_CLOSURE);
-    console.log('12345');
     this.form.get('PROJ_CODE').setValue(data[0].PROJ_CODE);
     this.form.get('PROJ_NAME').setValue(data[0].PROJ_NAME)
     this.form.get('REFPROJ_CODE').setValue(data[0].REFPROJ_CODE)
