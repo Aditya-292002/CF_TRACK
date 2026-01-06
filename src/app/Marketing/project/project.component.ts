@@ -49,6 +49,8 @@ export class ProjectComponent implements OnInit {
   VALID_UPTO: string = "";
   EXPECTED_CLOSURE: string = "";
   selected_emp:any;
+  expectedClosureMaxDate:any = this.sharedService.getDDMMMYYYY(new Date(new Date().setFullYear(new Date().getFullYear() + 10)));
+  minDate:any = this.sharedService.getDDMMMYYYY(new Date());
   ngOnInit() {
     this.sharedService.formName = "Project Information"
     this.form = this.formBuilder.group({

@@ -340,7 +340,7 @@
       </div>
 
       <!-- Row 2: Reason Field (Visible only when CLOSE is selected) -->
-      <div class="form-group mt-2 row row-gap" *ngIf="developerStatus === 'CLOSE'">
+      <div class="form-group mt-2 selectpicker row row-gap" *ngIf="developerStatus === 'CLOSE'">
         <div class="col-md-8">
         <label class="label-13px">Reason <span class="text-danger">*</span></label>
         <textarea
@@ -361,7 +361,7 @@
             [attr.disabled]="viewflag ? '' : null"
           >
             <option
-              *ngFor="let res of RESOLVED_STATUS_LIST"
+              *ngFor="let res of CLOSED_STATUS_LIST"
               [value]="res.CLOSURE_CODE"
             >
               {{ res.CLOSURE_NAME }}
@@ -470,7 +470,7 @@
             [attr.disabled]="viewflag ? '' : null"
           >
             <option
-              *ngFor="let res of CLOSED_STATUS_LIST"
+              *ngFor="let res of RESOLVED_STATUS_LIST"
               [value]="res.STATUS_CODE"
             >
               {{ res.STATUS_NAME }}
