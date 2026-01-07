@@ -41,6 +41,7 @@ export class SalesOpportunityLogComponent implements OnInit {
   NoDocs: number = 0;
   DOCUMENT_ATTECHED_LIST: any = [];
   document_type_list: any = [];
+  filteredDocumentList: any[] = [];
   DOCUMENT_TYPE_ID: any = '';
   DOCUMENT_DESC: any = '';
   REMARKS: string = '';
@@ -48,6 +49,7 @@ export class SalesOpportunityLogComponent implements OnInit {
   TYPE: any;
   CUST_CODE: any;
   LEAD_CODE: any;
+  search_user: any = "";
   viewleadetails: boolean;
   viewLeadetails: boolean;
   Master_contact_detail: any;
@@ -372,6 +374,7 @@ export class SalesOpportunityLogComponent implements OnInit {
       if (res.flag) {
 
         this.document_List = res.document_List;
+        this.filteredDocumentList = this.document_List;
         this.spinner = false;
       } else {
         this.spinner = false;
@@ -463,6 +466,7 @@ export class SalesOpportunityLogComponent implements OnInit {
   this.GetDocumentListByLogId();
   this.displayHistory=true
   console.log('displayHistory',this.displayHistory);
+  setTimeout(() => $('.selectpicker').selectpicker('refresh').trigger('change'), 50);
 }
 
   f_clearForm() {
@@ -551,10 +555,13 @@ export class SalesOpportunityLogComponent implements OnInit {
   removeDoc(fileIndex: number = null) {
     if (this.DOCUMENT_ATTECHED_LIST[fileIndex].ISNEW == 1) {
       this.DOCUMENT_ATTECHED_LIST.splice(fileIndex, 1);
+      console.log("If File Index :", fileIndex);
     } else if (this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE == 1) {
       this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE = 0;
+      console.log("Else If File Index :", fileIndex);
     } else {
       this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE = 0;
+      console.log("Else File Index :", fileIndex);
     }
     this.NoDocs = 0;
     this.DOCUMENT_ATTECHED_LIST.forEach(element => {
@@ -962,6 +969,44 @@ addDocument(){
 resetDocumentDropdown(){
   this.DOCUMENT_TYPE_ID=''
   $('#emp').selectpicker('refresh').trigger('change');
+}
+
+filterDocType() {
+  const selectedTypeId = this.DOCUMENT_TYPE_ID;
+  if(this.DOCUMENT_TYPE_ID == '' || this.DOCUMENT_TYPE_ID == null || this.DOCUMENT_TYPE_ID == undefined){
+    this.filteredDocumentList = this.document_List;
+  }
+ else {
+   this.filteredDocumentList =this.document_List;
+    this.filteredDocumentList = this.filteredDocumentList.filter(
+      doc => doc.DOCUMENT_TYPE_ID === selectedTypeId
+    );
+  }
+  console.log('Filtered Documents:', this.filteredDocumentList);
+}
+
+// filterDocType() {
+//   const selectedTypeId = this.DOCUMENT_TYPE_ID;
+//   if (selectedTypeId === null || selectedTypeId === undefined) {
+//     // No selection → return full list
+//     this.filteredDocumentList = [...this.document_List];
+//   } else {
+//     this.filteredDocumentList = this.document_List.filter(
+//       doc => doc.DOCUMENT_TYPE_ID === selectedTypeId
+//     );
+//   }
+// }
+refreshList(){
+  console.log('hemant');
+  this.filteredDocumentList = this.document_List;
+}
+
+onSearch(value: string) {
+  const search = value.toLowerCase().trim();
+  this.filteredDocumentList = this.document_List.filter(file =>
+    file.DOCUMENT_FILENAME.toLowerCase().includes(search) ||
+    file.DOCUMENT_DESC.toLowerCase().includes(search)
+  );
 }
 
 }
