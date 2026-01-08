@@ -19,7 +19,6 @@ export class ProjectComponent implements OnInit {
 
   spinner: boolean = false;
   form: FormGroup;
-  minDate: any ='';
   maxDate: any ='';
   project_assign_emp_detail:any = [];
   constructor(public sharedService: SharedServiceService,
@@ -44,7 +43,6 @@ export class ProjectComponent implements OnInit {
   all_emp_list: Array<any> = [];
 
   search_project: string = "";
-  expectedClosureMaxDate: any;
 
   PO_DATE: string = "";
   PROJECT_DATE: any = this.sharedService.getDDMMMYYYY(new Date());
@@ -85,9 +83,6 @@ export class ProjectComponent implements OnInit {
       // VALID_UPTO:[""],
       TECHNICAL_OWNER:[""]
     })
-    // Date restrictions
-    const today = new Date();
-    this.minDate = today.toISOString().substring(0, 10);
 
     this.form.controls['ACCOUNT_MGR'].disable();
     this.form.controls['ACCOUNT_MGR'].disable();
