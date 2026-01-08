@@ -289,6 +289,7 @@ onLoadCheckAttendance() {
       if(this.role_name == "MANAGEMENT"){
         this.isAttendance = true; 
       }
+      
       else if (res.flag  && res.today_flag != 1) {
         this.attendance_type = res.attendance_type
         this.ATT_DATE = res.Date;
