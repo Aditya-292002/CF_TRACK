@@ -41,8 +41,10 @@ export class SalesOpportunityLogComponent implements OnInit {
   NoDocs: number = 0;
   DOCUMENT_ATTECHED_LIST: any = [];
   document_type_list: any = [];
-REMARKS: string = '';
-viewcustomberdetails: boolean = false;
+  DOCUMENT_TYPE_ID: any = '';
+  DOCUMENT_DESC: any = '';
+  REMARKS: string = '';
+  viewcustomberdetails: boolean = false;
   TYPE: any;
   CUST_CODE: any;
   LEAD_CODE: any;
@@ -106,8 +108,19 @@ viewcustomberdetails: boolean = false;
       REVISED_SUBSTATUS:[""],
       CONTACT_PERSONS:[""],
       COMFLEX_ATTENDTIES:[""],
+      DOCUMENT_TYPE_ID: [""],
       
     });
+    // -------------------------------
+    ($('#documentTypeId') as any).on('changed.bs.select',(e: any, clickedIndex: number) => {
+      const selected = this.document_type_list[clickedIndex];
+      if (selected) {
+        this.DOCUMENT_TYPE_ID = selected.DOCUMENT_TYPE_ID;
+        this.DOCUMENT_DESC = selected.DOCUMENT_DESC;
+      }});
+    // -------------------------------
+    console.log('Form controls:', Object.keys(this.form.controls));
+    // this.form.get('DOCUMENT_TYPE_ID').valueChanges.subscribe(val => {console.log('DOCUMENT_TYPE_ID valueChanges:', val);});
     const today = new Date();
     this.minDate = today.toISOString().substring(0, 10);
     this.GetOpportunityLogCommonList();
@@ -119,7 +132,7 @@ viewcustomberdetails: boolean = false;
       this.GetLogDetailsView();
     }
     
-    $('.selectpicker').selectpicker('refresh').trigger('change');
+    // $('.selectpicker').selectpicker('refresh').trigger('change');
   }
 
 
@@ -297,17 +310,26 @@ viewcustomberdetails: boolean = false;
 
     this.LOG_DATE = this.sharedService.getTodayDate();
 
-    this.form.get('LOG_DATE').setValue(this.LOG_DATE)
+    this.form.get('LOG_DATE').setValue(this.LOG_DATE);
 
     this.NEXT_FOLLOWUP = this.sharedService.getTodayDate();
 
-    this.form.get('NEXT_FOLLOWUP').setValue(this.NEXT_FOLLOWUP)
+    this.form.get('NEXT_FOLLOWUP').setValue(this.NEXT_FOLLOWUP);
+
+    this.form.get('DOCUMENT_TYPE_ID').setValue(data[0].DOCUMENT_TYPE_ID);
 
     setTimeout(() => {
       $('.selectpicker').selectpicker('refresh').trigger('change');
     }, 150);
 
+  };
+
+  onDocumentTypeChange(event:any) {
+  this.DOCUMENT_TYPE_ID= event.target.value;
+    console.log('DOCUMENT_TYPE_ID (on change):',this.form.get('DOCUMENT_TYPE_ID').value);
+    console.log("event.target.value", event.target.value);
   }
+
 
   private applyLatestLogActivity(list: any[]): void {
   if (!Array.isArray(list) || list.length === 0) {
@@ -379,7 +401,7 @@ viewcustomberdetails: boolean = false;
       OPPO_CODE: this.form.getRawValue().OPPO_CODE,
     }
     console.log('data',data)
-    //  return
+    // return 
     this.http.PostRequest(this.apiUrl.SaveSalesOpportunityLog, data).then(res => {
       console.log(res)
       if (res.flag) {
@@ -527,26 +549,28 @@ viewcustomberdetails: boolean = false;
   }
 
   removeDoc(fileIndex: number = null) {
-    if (this.uploadedDocument[fileIndex].ISNEW == 1) {
-      this.uploadedDocument.splice(fileIndex, 1);
-    } else if (this.uploadedDocument[fileIndex].ACTIVE == 1) {
-      this.uploadedDocument[fileIndex].ACTIVE = 0;
+    if (this.DOCUMENT_ATTECHED_LIST[fileIndex].ISNEW == 1) {
+      this.DOCUMENT_ATTECHED_LIST.splice(fileIndex, 1);
+    } else if (this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE == 1) {
+      this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE = 0;
     } else {
-      this.uploadedDocument[fileIndex].ACTIVE = 0;
+      this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE = 0;
     }
     this.NoDocs = 0;
-    this.uploadedDocument.forEach(element => {
+    this.DOCUMENT_ATTECHED_LIST.forEach(element => {
       if(element.ACTIVE != 0){
         this.NoDocs += 1
       }
     });
   }
 
-  selectDocument(event: any) {
-   console.log(this.typeofdocument,'upload save');
-    this.typeofdocument
+  selectDocument(
+  event: any,
+  fileInput?: HTMLInputElement,
+  clearUiList?: HTMLInputElement
+) {
     this.uploadingFiles = [];
-    let b64: string = "";
+    let b64: string = ""
     let extension: string[] = [];
     let DOC_SRNO: string = "";
 
@@ -563,6 +587,10 @@ viewcustomberdetails: boolean = false;
       let reader = new FileReader();
       reader.readAsDataURL(event.target.files[i]);
       reader.onload = () => {
+        /* ✅ SHOW UI AGAIN */
+        if (clearUiList) {
+          clearUiList.checked = false;
+        }
         b64 = reader.result.toString().split(",")[1];
         extension = event.target.files[i].name.split(".");
 
@@ -578,14 +606,20 @@ viewcustomberdetails: boolean = false;
             ACTIVE: 1,
             UPLOAD_BY: this.sharedService.loginUser[0].USER_NAME,
             UPLOAD_BY_USERID: this.sharedService.loginUser[0].USERID,
+            DOCUMENT_TYPE_ID: this.DOCUMENT_TYPE_ID,
             DOC_BASE64: b64,
             // REMARKS: this.REMARKS
 
           }
         )
+        this.toast.success('Document Added Sucessfully')
         // this.uploadDoc();
         // this.NoDocs == 1;
         this.updateNoDocsCount();
+        /* ✅ RESET FILE INPUT (CORRECT TIMING) */
+        if (fileInput) {
+          fileInput.value = '';
+        }
       }
       // this.SelectedFileName = event.target.files.length > 1 ? event.target.files.length + " Files selected" : event.target.files[i].name;
     }
@@ -597,15 +631,19 @@ viewcustomberdetails: boolean = false;
     .length;
 }
 
-uploadDoc() {
-console.log(this.typeofdocument,'test');
-
-    // if(this.REMARKS==""){
-    //   this.toast.warning("Please enter remarks for the document");
-    //   return;
-    // }
+uploadDoc(clearUiList?: HTMLInputElement) {
+    if (this.REMARKS == "" || this.REMARKS == undefined || this.REMARKS == null) {
+      this.toast.warning("Please enter remarks for the document");
+      return;
+    }
+    if (!this.DOCUMENT_TYPE_ID) {
+    this.toast.warning("Please select a document type");
+    return;
+    }
     // this.displayHistory=false;
-    // this.REMARKS="";
+    const selectedDocType = this.document_type_list.find(
+    d => d.DOCUMENT_TYPE_ID == this.DOCUMENT_TYPE_ID
+    );
   for (let i = 0; i < this.uploadingFiles.length; i++) {
     this.uploadedDocument.push(this.uploadingFiles[i]);
     this.DOCUMENT_ATTECHED_LIST.push({
@@ -620,12 +658,27 @@ console.log(this.typeofdocument,'test');
     UPLOAD_BY_USERID: this.uploadingFiles[i].UPLOAD_BY_USERID,
     DOC_BASE64: this.uploadingFiles[i].b64,
     REMARKS: this.REMARKS,
-    TYPE:this.typeofdocument
+    // DOCUMENT_TYPE_ID: this.uploadingFiles[i].DOCUMENT_TYPE_ID,
+    DOCUMENT_TYPE_ID: this.DOCUMENT_TYPE_ID,
+    DOCUMENT_DESC: selectedDocType ? selectedDocType.DOCUMENT_DESC : '',
   });
   }
   this.displayAttach=false
   console.log("DOCUMENT_ATTECHED_LIST :", this.DOCUMENT_ATTECHED_LIST);
   console.log("Uploaded Document List :", this.uploadedDocument);
+  /* ✅ CLEAR ALL UI + MODEL STATE */
+    this.REMARKS = '';
+    this.DOCUMENT_TYPE_ID = null;
+    this.uploadingFiles = [];
+    if (clearUiList) {
+      clearUiList.checked = true; // clears filename table
+    }
+    setTimeout(() => {($('#documentTypeId') as any).selectpicker('refresh');}, 0);
+}
+
+onFileChangeAgain(event: any, fileInput: HTMLInputElement) {
+  this.selectDocument(event);
+  fileInput.value = ''; // 🔥 allows same file to be selected again
 }
 
 getMimeType(extension: string): string {
@@ -799,7 +852,11 @@ addDocument(){
   
   this.displayAttach=true
   console.log('displayAttach',this.displayAttach);
+  setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh').trigger('change');
+    }, 150);
   }
+
   removeRow(i){}
 
     getContactDetails() {
@@ -832,6 +889,7 @@ addDocument(){
     });
   //  }
   }
+
   openDialogue(VAL:any){
     if(VAL=='C'){
       this.viewcustomberdetails = true;
@@ -900,6 +958,10 @@ addDocument(){
   setTimeout(() => $('.selectpicker')
     .selectpicker('refresh')
     .trigger('change'), 100);
+}
+resetDocumentDropdown(){
+  this.DOCUMENT_TYPE_ID=''
+  $('#emp').selectpicker('refresh').trigger('change');
 }
 
 }
