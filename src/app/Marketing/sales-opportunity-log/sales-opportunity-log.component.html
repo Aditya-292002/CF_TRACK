@@ -185,7 +185,20 @@
                             placeholder="Please Enter Activity Details"></textarea>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2" style="padding-right: 5px">
+                    <label>Currency<span class="validator">*</span> :</label>
+                    <div class="floating-input  list-btn" [ngClass]="{'invalid-control':isSubmited && form.controls['OPPO_CURRENCY'].errors?.required}">
+                        <select class="form-control selectpicker show-tick" id="currency" formControlName="OPPO_CURRENCY" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of currency_list; let i=index" 
+                            [selected]="opt.OPPO_CURRENCY == form.controls['OPPO_CURRENCY'].value"
+                             [value]="opt.OPPO_CURRENCY" >{{ opt.CURRENCY_NAME }}</option>                     
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('currency')" (click)="form.controls['OPPO_CURRENCY'].reset();" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-2" style="padding-left: 5px">
                     <label>Revised Value :</label>
                     <div class="floating-input"
                         [ngClass]="{'invalid-control': isSubmited && form.controls['REVISED_ORDERVALUE'].errors?.required}">
@@ -551,7 +564,7 @@
                                             <td colspan="1">
                                                 <div class="float-label">
                                                     <label for="on_label">Revised Value</label>
-                                                    <input Uppercase class="form-control float-input"
+                                                    <input Uppercase class="form-control float-input text-right"
                                                         [(ngModel)]="data.REVISED_ORDERVALUE" type="text"
                                                         [ngModelOptions]="{standalone: true}" id="on_label"
                                                         name="on_label" disabled />

@@ -787,7 +787,7 @@ export class OpportunityMasterComponent implements OnInit {
   }
 
   GetOpportunityMasterDetails() {
-    debugger
+    // debugger
     const data = {
       USERID: this.sharedService.loginUser[0].USERID,
       OPPO_CODE: this.search_user
@@ -1153,7 +1153,7 @@ export class OpportunityMasterComponent implements OnInit {
   commentbreaker2 = "/* ******************************************************* */";
 
   onCustomerChange(customerCode: any) {
-    debugger;
+    // debugger;
 
     // 🔥 Clear previous filtered lists BEFORE applying new filters
     this.filteredCustomerSegments.length = 0;
@@ -1199,7 +1199,7 @@ export class OpportunityMasterComponent implements OnInit {
   }
 
   onLeadChange(leadCode: any) {
-    debugger;
+    // debugger;
 
     // 🔥 Clear previous filtered lists BEFORE applying new filters
     this.filteredLeadSegments.length = 0;

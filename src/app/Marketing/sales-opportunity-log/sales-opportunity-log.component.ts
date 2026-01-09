@@ -75,6 +75,7 @@ export class SalesOpportunityLogComponent implements OnInit {
     opportunitytype_list: Array<any> =[];
     probability_list: Array<any> =[];
     Nextactivity_list: Array<any> =[];
+    currency_list: Array<any> = [];
     log_view_list: Array<any> = []
     lead_list: Array<any> = [];
     document_List: Array<any> = [];
@@ -108,6 +109,7 @@ export class SalesOpportunityLogComponent implements OnInit {
       NEXT_CRMACTIVITY:[""],
       REVISED_STATUS:[""],
       REVISED_SUBSTATUS:[""],
+      OPPO_CURRENCY: ["INR"],
       CONTACT_PERSONS:[""],
       COMFLEX_ATTENDTIES:[""],
       DOCUMENT_TYPE_ID: [""],
@@ -194,6 +196,7 @@ export class SalesOpportunityLogComponent implements OnInit {
         this.opportunity_status_list = res.opportunity_status_list;
         this.opportunity_substatus_list = res.opportunity_substatus_list;
         this.opportunitytype_list = res.opportunitytype_list;
+        this.currency_list = res.currency_list || [];
         this.probability_list = res.probability_list;
         this.Nextactivity_list = res.Nextactivity_list;
         this.document_type_list = res.doc_type_list;
@@ -269,6 +272,7 @@ export class SalesOpportunityLogComponent implements OnInit {
     this.form.get('OPPO_CODE').setValue(data[0].OPPO_CODE)
     this.form.get('CONTACT_PERSONS').setValue(data[0].CONTACT_PERSONS)
     this.form.get('REMARKS').setValue(data[0].REMARKS)
+    this.form.get('OPPO_CURRENCY').setValue(data[0].OPPO_CURRENCY || 'INR');
     // this.form.get('REVISED_ORDERVALUE').setValue(data[0].REVISED_ORDERVALUE)
     // EST_VALUE formatting
     let estValue = data[0].REVISED_ORDERVALUE;
@@ -473,7 +477,7 @@ export class SalesOpportunityLogComponent implements OnInit {
     this.isSubmited = false;
     this.form.reset();
     this.isUpdate= false;
-
+    this.form.get('OPPO_CURRENCY').setValue("INR");
     this.form.get('LOG_DATE').setValue(this.sharedService.getTodayDate())
     this.LOG_DATE = this.sharedService.getTodayDate();
 
@@ -519,6 +523,10 @@ export class SalesOpportunityLogComponent implements OnInit {
 
     } else if(this.form.controls["REVISED_ORDERVALUE"].invalid){
       this.toast.warning("Please Enter Revised Value.");
+      return false;
+
+    } else if (this.form.controls["OPPO_CURRENCY"].invalid) {
+      this.toast.warning("Please select Currency");
       return false;
 
     } else if(this.form.controls["REVISED_PROBABILITY"].invalid){
@@ -872,7 +880,7 @@ addDocument(){
     let data = {
       USERID:this.sharedService.loginUser[0].USERID,
       LEAD_CODE:this.LEAD_CODE,
-      CUST_CODE:this.form.getRawValue().CUST_CODE,
+      CUST_CODE:this.CUST_CODE,
       LEADORCUST:this.TYPE,
       // CRM_OPPO_LOG:this.form.value,
       // DOCUMENT_ATTECHED_LIST: this.uploadedDocument,
