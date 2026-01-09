@@ -148,7 +148,7 @@
                     <div class="floating-input  list-btn">
                         <select class="form-control selectpicker show-tick " id="OppoType" formControlName="OPPO_TYPE"
                             data-live-search="true" title="Select"
-                            [attr.disabled]="viewflag ? '' : null">
+                            >
                             <option *ngFor="let opt of opportunitytype_list; let i=index"
                                 [selected]="opt.OPPO_TYPE == form.controls['OPPO_TYPE'].value" [value]="opt.OPPO_TYPE">
                                 {{ opt.OPPO_DESC }}</option>
@@ -161,10 +161,12 @@
                 </div>
                 <div class="col-md-4">
 
-                    <label>Contact Person :<button type="submit" class="btn btn-secondary  ml-2" *ngIf="TYPE=='L'"
+                    <label>Contact Person :
+                        <!-- <button type="submit" class="btn btn-secondary  ml-2" *ngIf="TYPE=='L'"
                             (click)="openDialogue('L')">view contact</button>
                         <button type="submit" class="btn btn-secondary  ml-2" *ngIf="TYPE=='C'"
-                            (click)="openDialogue('C')">view contact</button></label>
+                            (click)="openDialogue('C')">view contact</button> -->
+                        </label>
                     <div class="floating-input"
                         [ngClass]="{'invalid-control':isSubmited && form.controls['CONTACT_PERSONS'].errors?.required}">
                         <!-- <input type="text" maxlength="50" class="form-control" placeholder="Contact Person"> -->
@@ -186,23 +188,28 @@
                             placeholder="Please Enter Activity Details"></textarea>
                     </div>
                 </div>
-                <div class="col-md-2" style="padding-right: 5px">
-                    <label>Currency<span class="validator">*</span> :</label>
-                    <div class="floating-input"
-                        [ngClass]="{'invalid-control': isSubmited && form.controls['OPPO_CURRENCY'].errors?.required}">
-                     <input type="text" formControlName="OPPO_CURRENCY"  class="form-control selectpicker"
-                                placeholder="Currency" readonly>
-                                 </div>
+                <div class="col-md-2" style="padding-right: 5px;">
+                    <button type="submit" class="btn btn-secondary w-100" style="margin-left: 0px;margin-top: 7px;padding-right: 5px;padding-left: 0px" *ngIf="TYPE=='L'"
+                            (click)="openDialogue('L')">View Contact</button>
+                    <button type="submit" class="btn btn-secondary w-100" style="margin-left: 0px;margin-top: 7px;padding-right: 5px;padding-left: 0px" *ngIf="TYPE=='C'"
+                            (click)="openDialogue('C')">View Contact</button>
                 </div>
                 <div class="col-md-2" style="padding-left: 5px">
-                    <label>Revised Value :</label>
-                    <div class="floating-input"
-                        [ngClass]="{'invalid-control': isSubmited && form.controls['REVISED_ORDERVALUE'].errors?.required}">
-                        <input type="text" formControlName="REVISED_ORDERVALUE" maxlength="50"
-                            placeholder="Revised Value :" class="form-control text-right selectpicker"
-                            (input)="formatRevisedValue($event)" />
+                    <label>Probability (%):</label>
+                    <div class="floating-input  list-btn">
+                        <select class="form-control selectpicker show-tick" id="Probability"
+                            formControlName="REVISED_PROBABILITY" data-live-search="true" title="Select">
+                            <option *ngFor="let opt of probability_list; let i=index"
+                                [selected]="opt.Probability == form.controls['REVISED_PROBABILITY'].value"
+                                [value]="opt.Probability">{{ opt.Probability }}</option>
+                        </select>
+                        <button type="button" class="close" onclick="resetDropdown('Probability')"
+                            (click)="form.controls['REVISED_PROBABILITY'].reset()" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                 </div>
+                
                 <!--  -->
                 <div class="col-md-4">
                     <label>Next Activity :</label>
@@ -239,19 +246,22 @@
                     </div>
                 </div>
                 <!--  -->
-                <div class="col-md-4">
-                    <label>Probability (%):</label>
-                    <div class="floating-input  list-btn">
-                        <select class="form-control selectpicker show-tick" id="Probability"
-                            formControlName="REVISED_PROBABILITY" data-live-search="true" title="Select">
-                            <option *ngFor="let opt of probability_list; let i=index"
-                                [selected]="opt.Probability == form.controls['REVISED_PROBABILITY'].value"
-                                [value]="opt.Probability">{{ opt.Probability }}</option>
-                        </select>
-                        <button type="button" class="close" onclick="resetDropdown('Probability')"
-                            (click)="form.controls['REVISED_PROBABILITY'].reset()" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                <div class="col-md-2" style="padding-right: 5px">
+                    <label>Currency<span class="validator">*</span> :</label>
+                    <div class="floating-input"
+                        [ngClass]="{'invalid-control': isSubmited && form.controls['OPPO_CURRENCY'].errors?.required}">
+                     <input type="text" formControlName="OPPO_CURRENCY"  class="form-control selectpicker"
+                                placeholder="Currency" readonly>
+                                 </div>
+                </div>
+                <!--  -->
+                <div class="col-md-2" style="padding-left: 5px">
+                    <label>Revised Value :</label>
+                    <div class="floating-input"
+                        [ngClass]="{'invalid-control': isSubmited && form.controls['REVISED_ORDERVALUE'].errors?.required}">
+                        <input type="text" formControlName="REVISED_ORDERVALUE" maxlength="50"
+                            placeholder="Revised Value :" class="form-control text-right selectpicker"
+                            (input)="formatRevisedValue($event)" />
                     </div>
                 </div>
                 <!--  -->
