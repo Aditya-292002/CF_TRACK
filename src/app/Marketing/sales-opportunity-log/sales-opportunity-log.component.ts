@@ -102,8 +102,8 @@ export class SalesOpportunityLogComponent implements OnInit {
       LEAD_CODE :[""],
       LOG_DATE: ["", Validators.required],
       CRMACTIVITY_CODE: [""],
-      // OPPO_TYPE: [""],
-      OPPO_TYPE: [{ value: '', disabled: this.viewflag }],
+      OPPO_TYPE: [""],
+      // OPPO_TYPE: [{ value: '', disabled: this.viewflag }],
       REMARKS: ["", Validators.required],
       REVISED_ORDERVALUE: [""],
       REVISED_PROBABILITY: ["", Validators.required],
@@ -111,8 +111,8 @@ export class SalesOpportunityLogComponent implements OnInit {
       NEXT_CRMACTIVITY:[""],
       REVISED_STATUS:[""],
       REVISED_SUBSTATUS:[""],
-      // OPPO_CURRENCY: ["INR"],
-      OPPO_CURRENCY: [{ value: 'INR', disabled: this.viewflag }],
+       OPPO_CURRENCY: [""],
+      //OPPO_CURRENCY: [{ value: '', disabled: this.viewflag }],
       CONTACT_PERSONS:[""],
       COMFLEX_ATTENDTIES:[""],
       DOCUMENT_TYPE_ID: [""],
@@ -275,7 +275,7 @@ export class SalesOpportunityLogComponent implements OnInit {
     this.form.get('OPPO_CODE').setValue(data[0].OPPO_CODE)
     this.form.get('CONTACT_PERSONS').setValue(data[0].CONTACT_PERSONS)
     this.form.get('REMARKS').setValue(data[0].REMARKS)
-    this.form.get('OPPO_CURRENCY').setValue(data[0].OPPO_CURRENCY || 'INR');
+    this.form.get('OPPO_CURRENCY').setValue(data[0].OPPO_CURRENCY );
     // this.form.get('REVISED_ORDERVALUE').setValue(data[0].REVISED_ORDERVALUE)
     // EST_VALUE formatting
     let estValue = data[0].REVISED_ORDERVALUE;
@@ -289,7 +289,7 @@ export class SalesOpportunityLogComponent implements OnInit {
     this.onStatusChange(data[0].REVISED_STATUS)
     this.form.get('REVISED_STATUS').setValue(data[0].REVISED_STATUS || '')  
     this.form.get('REVISED_SUBSTATUS').setValue(data[0].REVISED_SUB_STATUS || '')
-    this.form.get('OPPO_TYPE').setValue(data[0].PROJECT_TYPE)
+    this.form.get('OPPO_TYPE').setValue(data[0].PROJECT_TYPE || "")
     this.form.get('COMFLEX_ATTENDTIES').setValue(data[0].COMFLEX_ATTENDTIES)
     this.TYPE = data[0].LEADORCUST;
     if(data[0].LEADORCUST === "L"){
@@ -480,7 +480,7 @@ export class SalesOpportunityLogComponent implements OnInit {
     this.isSubmited = false;
     this.form.reset();
     this.isUpdate= false;
-    this.form.get('OPPO_CURRENCY').setValue("INR");
+    this.form.get('OPPO_CURRENCY').setValue("");
     this.form.get('LOG_DATE').setValue(this.sharedService.getTodayDate())
     this.LOG_DATE = this.sharedService.getTodayDate();
 

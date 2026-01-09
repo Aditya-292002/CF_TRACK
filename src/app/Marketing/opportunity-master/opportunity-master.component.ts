@@ -37,7 +37,7 @@ export class OpportunityMasterComponent implements OnInit {
   NO_RIGHTS: boolean = false;
   isNewAdd: boolean = false;
   isEditModeFill: boolean = false;
-  isEditMode: boolean = false;
+  isEditMode: boolean = false; 
   NoDocs: number = 0;
   SelectedFileName: string = "";
   PROJECT_DATE: any = this.sharedService.getDDMMMYYYY(new Date());
