@@ -36,6 +36,7 @@ export class SalesOpportunityLogComponent implements OnInit {
   selectedEmp : boolean = false
   dropdownSelected1 : boolean = true
   dropdownSelected2 : boolean = false
+  viewflag: boolean = true;
   OPPO_CODE : any = '';
   LOGID : any = '';
   NoDocs: number = 0;
@@ -101,7 +102,8 @@ export class SalesOpportunityLogComponent implements OnInit {
       LEAD_CODE :[""],
       LOG_DATE: ["", Validators.required],
       CRMACTIVITY_CODE: [""],
-      OPPO_TYPE: [""],
+      // OPPO_TYPE: [""],
+      OPPO_TYPE: [{ value: '', disabled: this.viewflag }],
       REMARKS: ["", Validators.required],
       REVISED_ORDERVALUE: [""],
       REVISED_PROBABILITY: ["", Validators.required],
@@ -109,7 +111,8 @@ export class SalesOpportunityLogComponent implements OnInit {
       NEXT_CRMACTIVITY:[""],
       REVISED_STATUS:[""],
       REVISED_SUBSTATUS:[""],
-      OPPO_CURRENCY: ["INR"],
+      // OPPO_CURRENCY: ["INR"],
+      OPPO_CURRENCY: [{ value: 'INR', disabled: this.viewflag }],
       CONTACT_PERSONS:[""],
       COMFLEX_ATTENDTIES:[""],
       DOCUMENT_TYPE_ID: [""],
