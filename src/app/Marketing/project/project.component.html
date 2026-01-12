@@ -343,7 +343,7 @@
                 <tbody>
                     <tr *ngFor="let data of project_assign_emp_detail; let i=index;">
                         <td class="">
-                            {{ data.EMP_CODE }} - {{ data.FULL_NAME }}
+                            {{ data.EMP_CODE }} - {{ data.    }}
                         </td>
                         <td class="w-5">
                             <!-- <p-checkbox class="mb-1"  [(ngModel)]="data.ACTIVE" [binary]="true" inputId="view" ></p-checkbox>     -->
@@ -442,46 +442,65 @@
                         </table>
                     </div>
                 </div> -->
-                <div class="col-md-6 mt-1">
-                    <div class="form-inline">
-                        <!-- <h5 class="text-left">Upload Documents</h5> -->
-                          <h6 class="mb-0 col-md-6 p-0">Upload Documents</h6>
-                    </div>
-                     <!--<div class="col-md-8" *ngIf="!NO_RIGHTS">
-                        <div class="row">
-                            <div class="input-group">
-                                <div class="custom-file mr-2">
-                                    <input type="file" class="custom-file-input" #fileInput id="fileInput" (change)="selectDocument($event)" aria-describedby="fileInput">
-                                    <label class="custom-file-label" for="fileInput" *ngIf="SelectedFileName == ''">Choose file</label>
-                                    <label class="custom-file-label" for="fileInput" *ngIf="SelectedFileName != ''">{{SelectedFileName}}</label>
-                                </div>
-                                <div class="input-group-append">
-                                    <button class="btn btn-secondary" (click)="uploadDoc()" type="button" id="myInput">Upload</button>
+      <div class="col-md-6">
+                    <!-- <form [formGroup]="form"> -->
+                        <div class="col-sm-12 col-md-12 col-lg-12" >
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button
+                                        type="button"
+                                        class="btn btn-secondary mb-1 selectpicker"
+                                        (click)="clearUiList.checked = true; addDocument()">
+                                        <i class="fa fa-paperclip"></i> Attach
+                                    </button>
+                                    <!-- <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 att-doc" style="padding-left: 0px;">
+                <input type="file" #fileInput id="fileInput" (change)="onFileChange($event)" class="doc-input">
+                    <button type="button" class="btn btn-secondary" title="Upload Document">
+                    <label for="fileInput" class="att-doc-label-add p-0 m-0" title="Add Document">
+                        <i class="fa fa-paperclip"></i> Attach
+                    </label>
+                </button>
+            </div>   -->
+             <hr class="m-0 mb-2">
+                                    <div class="tableFixHead mt-2">
+                                        <table class="table-theam-1 row_bgcolor_1">
+                                            <thead>
+                                                <tr>
+                                                    <th class="w-20">Document Name</th>
+                                                    <!-- <th class="w-20">Document Type</th> -->
+                                                    <th class="w-20">Remarks</th>
+                                                    <th class="w-10">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tbody>
+                                                <ng-container *ngFor="let file of DOCUMENT_ATTECHED_LIST; let i=index">
+                                                    <tr *ngIf="file.ACTIVE == 1">
+
+                                                        <td><a
+                                                            (click)="f_downloadDocument(file)">{{file.DOCUMENT_FILENAME}}</a>
+                                                        </td>
+                                                        <td>{{file.DOCUMENT_DESC}}</td>
+                                                        <td>{{file.REMARKS}}</td>
+                                                        <td><i class="fas fa-trash-alt" id=f_{{i}}
+                                                            (click)="removeDoc(i)"></i></td>
+                                                    </tr>
+                                                </ng-container>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    <!-- </form> -->
+                </div>
+
+                <!-- <div class="col-md-6 mt-1">
+                    <div class="form-inline">
+        
+                          <h6 class="mb-0 col-md-6 p-0">Upload Documents</h6>
                     </div>
-                    <div class="tableFixHead mt-2">
-                        <table class="table-theam-1 row_bgcolor_1">
-                            <thead>
-                                <tr>
-                                    <th class="w-20">Document Name</th>
-                                    <th class="w-10">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <ng-container *ngFor="let file of uploadedDocument; let i=index;">
-                                    <tr *ngIf="file.ACTIVE == 1">
-    
-                                        <td><a (click)="f_downloadDocument(file)">{{file.DOCUMENT_FILENAME}}</a></td>
-    
-                                        <td><i class="fas fa-trash-alt" id=f_{{i}} (click)="removeDoc(i)"></i></td>
-                                    </tr>
-                                </ng-container>
-                            </tbody>
-                        </table>
-                    </div> -->
-                     <hr class="m-0 mb-2">
+<hr class="m-0 mb-2">
     
                     <ul class="list-group">
                         <li class="list-group-item d-flex justify-content-between att-doc py-1">
@@ -513,8 +532,93 @@
                             <h6 class="m-0"> No Documents</h6>
                         </li>
                     </ul>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
 </form>
+
+<p-dialog
+  header="Add Document"
+  [(visible)]="displayAttach"
+  [modal]="true"
+  [style]="{ width: '40rem' }"
+  [contentStyle]="{ overflow: 'visible' }">
+    <div class="row">
+        <!-- <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 ">
+            <label>Document Type:</label>
+            <div class="floating-input  list-btn">
+                <select id="documentTypeId" title="Select"
+                    class="form-control selectpicker show-tick"
+                    [(ngModel)]="DOCUMENT_TYPE_ID"
+                    [ngModelOptions]="{standalone: true}"
+                    data-live-search="true">
+                    <option *ngFor="let opt of document_type_list"
+                        [attr.data-tokens]="opt.DOCUMENT_DESC"
+                        [value]="opt.DOCUMENT_TYPE_ID">
+                        {{ opt.DOCUMENT_DESC }}
+                    </option>
+                </select>
+                <button type="button" class="close" onclick="resetDropdown('documentTypeId')"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div> -->
+        <!-- <label>{{fileInput.files[0]?.name}}</label> -->
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <label>Remarks <span class="validator">*</span> :</label>
+            <div class="floating-input">
+                <textarea name="" id="" rows="2" class="form-control" [(ngModel)]="REMARKS"
+                    [ngModelOptions]="{ standalone: true }" placeholder="Remarks">
+        </textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 text-right mt-3 att-doc">
+        <input type="checkbox" #clearUiList hidden>
+        <table class="table-theam-1 row_bgcolor_1">
+            <thead>
+                <tr>
+                    <th class="w-20">Document Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngIf="!clearUiList.checked">
+                    <ng-container
+                    *ngFor="let file of (uploadingFiles.concat(uploadedDocument) | slice:-1)">
+                    <tr *ngIf="file.ACTIVE == 1">
+                        <td>
+                        <a>{{ file.DOCUMENT_FILENAME }}</a>
+                        </td>
+                    </tr>
+                    </ng-container>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+        <div class="col-12 text-right mt-3 att-doc">
+            <input
+            type="file"
+            #fileInput
+            id="fileInput"
+            class="doc-input"
+            (change)="selectDocument($event, fileInput, clearUiList)">
+            <button type="button" class="btn btn-secondary" title="Upload Document">
+                <label for="fileInput" class="att-doc-label-add p-0 m-0" title="Add Document">
+                    <i class="fa fa-paperclip"></i> Attach
+                </label>
+            </button>
+            <button
+                type="button"
+                class="btn btn-secondary ml-2"
+                (click)="uploadDoc(clearUiList)">
+                Save
+            </button>
+            <button type="button" class="btn btn-secondary ml-2" (click)="this.displayAttach=false">Cancel</button>
+        </div>
+    </div>
+
+</p-dialog>

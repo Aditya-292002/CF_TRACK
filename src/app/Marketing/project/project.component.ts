@@ -21,6 +21,9 @@ export class ProjectComponent implements OnInit {
   form: FormGroup;
   maxDate: any ='';
   project_assign_emp_detail:any = [];
+  displayAttach: boolean;
+  DOCUMENT_ATTECHED_LIST: any=[];
+  REMARKS: any;
   constructor(public sharedService: SharedServiceService,
     private apiUrl: ApiUrlService,
     private http: HttpRequestServiceService,
@@ -376,60 +379,60 @@ export class ProjectComponent implements OnInit {
   uploadingFiles: Array<any> = []
   uploadedDocument: Array<any> = []
   NoDocs: number = 0;
-  selectDocument(event: any) {
-    this.uploadingFiles = [];
-    let b64: string = "";
-    let extension: string[] = [];
+  // selectDocument(event: any) {
+  //   this.uploadingFiles = [];
+  //   let b64: string = "";
+  //   let extension: string[] = [];
 
-    for (let i = 0; i < event.target.files.length; i++) {
-      extension = event.target.files[i].name.split(".");
-      let _ext = extension[extension.length - 1].toUpperCase()
+  //   for (let i = 0; i < event.target.files.length; i++) {
+  //     extension = event.target.files[i].name.split(".");
+  //     let _ext = extension[extension.length - 1].toUpperCase()
       
-      if(_ext === 'BAT' || _ext === 'GIF' || _ext === 'PNG' || _ext === 'JAVA' || _ext === 'XML' || _ext === 'ZIP' 
-      || _ext === 'RAR' || _ext === 'JAR' || _ext === 'EXE'){
-        this.toast.warning("Please select valid document (XLSX/ DOCS/ PDF/ TEXT File/ Image)")
-        return;
-      } 
+  //     if(_ext === 'BAT' || _ext === 'GIF' || _ext === 'PNG' || _ext === 'JAVA' || _ext === 'XML' || _ext === 'ZIP' 
+  //     || _ext === 'RAR' || _ext === 'JAR' || _ext === 'EXE'){
+  //       this.toast.warning("Please select valid document (XLSX/ DOCS/ PDF/ TEXT File/ Image)")
+  //       return;
+  //     } 
       
-      let reader = new FileReader();
-      reader.readAsDataURL(event.target.files[i]);
-      reader.onload = () => {
-        b64 = reader.result.toString().split(",")[1];
-        extension = event.target.files[i].name.split(".");
+  //     let reader = new FileReader();
+  //     reader.readAsDataURL(event.target.files[i]);
+  //     reader.onload = () => {
+  //       b64 = reader.result.toString().split(",")[1];
+  //       extension = event.target.files[i].name.split(".");
 
-        this.uploadingFiles.push(
-          {
-            DOCUMENT_NAME: "",
-            DOCUMENT_FILENAME: event.target.files[i].name,
-            DOCUMENT_SYSFILENAME: uuidv4() + '.' + extension[extension.length - 1],
-            DOCUMENT_FILETYPE: extension[extension.length - 1].toUpperCase(),
-            ISNEW: 1,
-            ACTIVE: 1,
-            UPLOAD_BY: this.sharedService.loginUser[0].USER_NAME,
-            UPLOAD_BY_USERID: this.sharedService.loginUser[0].USERID,
-            b64: b64
-          }
-        )
-        this.uploadDoc();
-      }
-      // this.SelectedFileName = event.target.files.length > 1 ? event.target.files.length + " Files selected" : event.target.files[i].name;
-    }
-  }
-  uploadDoc() {
-    for (let i = 0; i < this.uploadingFiles.length; i++) {
-      this.uploadedDocument.push(this.uploadingFiles[i])
-    }
+  //       this.uploadingFiles.push(
+  //         {
+  //           DOCUMENT_NAME: "",
+  //           DOCUMENT_FILENAME: event.target.files[i].name,
+  //           DOCUMENT_SYSFILENAME: uuidv4() + '.' + extension[extension.length - 1],
+  //           DOCUMENT_FILETYPE: extension[extension.length - 1].toUpperCase(),
+  //           ISNEW: 1,
+  //           ACTIVE: 1,
+  //           UPLOAD_BY: this.sharedService.loginUser[0].USER_NAME,
+  //           UPLOAD_BY_USERID: this.sharedService.loginUser[0].USERID,
+  //           b64: b64
+  //         }
+  //       )
+  //       // this.uploadDoc();
+  //     }
+  //     // this.SelectedFileName = event.target.files.length > 1 ? event.target.files.length + " Files selected" : event.target.files[i].name;
+  //   }
+  // }
+  // uploadDoc() {
+  //   for (let i = 0; i < this.uploadingFiles.length; i++) {
+  //     this.uploadedDocument.push(this.uploadingFiles[i])
+  //   }
 
-    this.fileInput.nativeElement.value = "";
-    this.uploadingFiles = []
-    this.SelectedFileName = "";
-    this.NoDocs = 0;
-    this.uploadedDocument.forEach(element => {
-      if(element.ACTIVE != 0){
-        this.NoDocs += 1
-      }
-    });
-  }
+  //   this.fileInput.nativeElement.value = "";
+  //   this.uploadingFiles = []
+  //   this.SelectedFileName = "";
+  //   this.NoDocs = 0;
+  //   this.uploadedDocument.forEach(element => {
+  //     if(element.ACTIVE != 0){
+  //       this.NoDocs += 1
+  //     }
+  //   });
+  // }
 
   removeDoc(fileIndex: number = null) {
     if (this.uploadedDocument[fileIndex].ISNEW == 1) {
@@ -694,5 +697,125 @@ console.log('this.project_assign_emp_detail',this.project_assign_emp_detail);
   UpdateTaskEmployeeDetails() {
     console.log('project_assign_emp_detail',this.project_assign_emp_detail);
   }
+  addDocument(){
+  console.log('inside add document');
+  
+  this.displayAttach=true
+  console.log('displayAttach',this.displayAttach);
+  setTimeout(() => {
+      $('.selectpicker').selectpicker('refresh').trigger('change');
+    }, 150);
+  }
+  uploadDoc(clearUiList?: HTMLInputElement) {
+    if (this.REMARKS == "" || this.REMARKS == undefined || this.REMARKS == null) {
+      this.toast.warning("Please enter remarks for the document");
+      return;
+    }
+    // if (!this.DOCUMENT_TYPE_ID) {
+    // this.toast.warning("Please select a document type");
+    // return;
+    // }
+    // this.displayHistory=false;
+    // const selectedDocType = this.document_type_list.find(
+    // d => d.DOCUMENT_TYPE_ID == this.DOCUMENT_TYPE_ID
+    // );
+    console.log('123',);
+    
+  for (let i = 0; i < this.uploadingFiles.length; i++) {
+    this.uploadedDocument.push(this.uploadingFiles[i]);
+    this.DOCUMENT_ATTECHED_LIST.push({
+    OPPO_CODE: this.form.getRawValue().OPPO_CODE,
+    DOCUMENT_NAME: this.uploadingFiles[i].DOCUMENT_FILENAME,
+    DOCUMENT_FILENAME: this.uploadingFiles[i].DOCUMENT_FILENAME,
+    DOCUMENT_SYSFILENAME: this.uploadingFiles[i].DOCUMENT_SYSFILENAME,
+    DOCUMENT_FILETYPE: this.uploadingFiles[i].DOCUMENT_FILETYPE,
+    ISNEW: 1,
+    ACTIVE: 1,
+    UPLOAD_BY: this.uploadingFiles[i].UPLOAD_BY,
+    UPLOAD_BY_USERID: this.uploadingFiles[i].UPLOAD_BY_USERID,
+    DOC_BASE64: this.uploadingFiles[i].b64,
+    REMARKS: this.REMARKS,
+    // DOCUMENT_TYPE_ID: this.uploadingFiles[i].DOCUMENT_TYPE_ID,
+    // DOCUMENT_TYPE_ID: this.DOCUMENT_TYPE_ID,
+    // DOCUMENT_DESC: selectedDocType ? selectedDocType.DOCUMENT_DESC : '',
+  });
+  }
+  this.displayAttach=false
+  console.log("DOCUMENT_ATTECHED_LIST :", this.DOCUMENT_ATTECHED_LIST);
+  console.log("Uploaded Document List :", this.uploadedDocument);
+  /* ✅ CLEAR ALL UI + MODEL STATE */
+    this.REMARKS = '';
+    // this.DOCUMENT_TYPE_ID = null;
+    this.uploadingFiles = [];
+    if (clearUiList) {
+      clearUiList.checked = true; // clears filename table
+    }
+    setTimeout(() => {($('#documentTypeId') as any).selectpicker('refresh');}, 0);
 }
- 
+  selectDocument(
+  event: any,
+  fileInput?: HTMLInputElement,
+  clearUiList?: HTMLInputElement
+) {
+    this.uploadingFiles = [];
+    let b64: string = ""
+    let extension: string[] = [];
+    let DOC_SRNO: string = "";
+
+    for (let i = 0; i < event.target.files.length; i++) {
+      extension = event.target.files[i].name.split(".");
+      let _ext = extension[extension.length - 1].toUpperCase()
+      
+      if(_ext === 'BAT' || _ext === 'GIF' || _ext === 'PNG' || _ext === 'JAVA' || _ext === 'XML' || _ext === 'ZIP' 
+      || _ext === 'RAR' || _ext === 'JAR' || _ext === 'EXE'){
+        this.toast.warning("Please select valid document (XLSX/ DOCS/ PDF/ TEXT File/ Image)")
+        return;
+      } 
+      
+      let reader = new FileReader();
+      reader.readAsDataURL(event.target.files[i]);
+      reader.onload = () => {
+        /* ✅ SHOW UI AGAIN */
+        if (clearUiList) {
+          clearUiList.checked = false;
+        }
+        b64 = reader.result.toString().split(",")[1];
+        extension = event.target.files[i].name.split(".");
+
+        this.uploadingFiles.push(
+          {
+            OPPO_CODE: this.form.getRawValue().OPPO_CODE,
+            DOCUMENT_NAME: event.target.files[i].name,
+            DOC_SRNO: this.uploadingFiles.length + 1,
+            DOCUMENT_FILENAME: event.target.files[i].name,
+            DOCUMENT_SYSFILENAME: uuidv4() + '.' + extension[extension.length - 1],
+            DOCUMENT_FILETYPE:  '.' + extension[extension.length - 1],
+            ISNEW: 1,
+            ACTIVE: 1,
+            UPLOAD_BY: this.sharedService.loginUser[0].USER_NAME,
+            UPLOAD_BY_USERID: this.sharedService.loginUser[0].USERID,
+            // DOCUMENT_TYPE_ID: this.DOCUMENT_TYPE_ID,
+            DOC_BASE64: b64,
+            // REMARKS: this.REMARKS
+
+          }
+        )
+        this.toast.success('Document Added Sucessfully')
+        // this.uploadDoc();
+        // this.NoDocs == 1;
+        this.updateNoDocsCount();
+        /* ✅ RESET FILE INPUT (CORRECT TIMING) */
+        if (fileInput) {
+          fileInput.value = '';
+        }
+      }
+      // this.SelectedFileName = event.target.files.length > 1 ? event.target.files.length + " Files selected" : event.target.files[i].name;
+    }
+  }
+    updateNoDocsCount() {
+  this.NoDocs = (this.uploadedDocument || [])
+    .filter(d => d.ACTIVE !== 0)
+    .length;
+}
+  } 
+  
