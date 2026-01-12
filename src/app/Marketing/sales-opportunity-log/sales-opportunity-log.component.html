@@ -161,10 +161,10 @@
                 <div class="col-md-4">
 
                     <label>Contact Person :
-                        <!-- <button type="submit" class="btn btn-secondary  ml-2" *ngIf="TYPE=='L'"
+                        <button type="submit" class="btn btn-secondary  ml-2" *ngIf="TYPE=='L'"
                             (click)="openDialogue('L')">view contact</button>
                         <button type="submit" class="btn btn-secondary  ml-2" *ngIf="TYPE=='C'"
-                            (click)="openDialogue('C')">view contact</button> -->
+                            (click)="openDialogue('C')">view contact</button>
                         </label>
                     <div class="floating-input"
                         [ngClass]="{'invalid-control':isSubmited && form.controls['CONTACT_PERSONS'].errors?.required}">
@@ -187,13 +187,13 @@
                             placeholder="Please Enter Activity Details"></textarea>
                     </div>
                 </div>
-                <div class="col-md-2" style="padding-right: 5px;">
+                <!-- <div class="col-md-2" style="padding-right: 5px;">
                     <button type="submit" class="btn btn-secondary w-100" style="margin-left: 0px;margin-top: 7px;padding-right: 5px;padding-left: 0px" *ngIf="TYPE=='L'"
                             (click)="openDialogue('L')">View Contact</button>
                     <button type="submit" class="btn btn-secondary w-100" style="margin-left: 0px;margin-top: 7px;padding-right: 5px;padding-left: 0px" *ngIf="TYPE=='C'"
                             (click)="openDialogue('C')">View Contact</button>
-                </div>
-                <div class="col-md-2" style="padding-left: 5px">
+                </div> -->
+                <div class="col-md-4">
                     <label>Probability (%):</label>
                     <div class="floating-input  list-btn">
                         <select class="form-control selectpicker show-tick" id="Probability"
