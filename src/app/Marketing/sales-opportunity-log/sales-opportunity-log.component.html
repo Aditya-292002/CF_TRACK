@@ -147,11 +147,10 @@
                     <label>Opportunity Type :</label>
                     <div class="floating-input  list-btn">
                         <select class="form-control selectpicker show-tick " id="OppoType" formControlName="OPPO_TYPE"
-                            data-live-search="true" title="Select"
-                            [attr.disabled]="viewflag ? '' : null">
+                            data-live-search="true" title="Select">
                             <option *ngFor="let opt of opportunitytype_list; let i=index"
-                                [selected]="opt.OPPO_TYPE == form.controls['OPPO_TYPE'].value" [value]="opt.OPPO_TYPE">
-                                {{ opt.OPPO_DESC }}</option>
+                                [selected]="opt.OPPO_TYPE == form.controls['OPPO_TYPE'].value"
+                                [value]="opt.OPPO_TYPE">{{ opt.OPPO_DESC }}</option>
                         </select>
                         <!-- <button type="button" class="close" onclick="resetDropdown('OppoType')"
                             (click)="form.controls['OPPO_TYPE'].reset()" aria-label="Close" >

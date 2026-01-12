@@ -140,6 +140,7 @@ export class PmConfirmationComponent implements OnInit {
       DELIVERY_BY: [null],
       EST_HOURS: [null, [Validators.min(0), Validators.max(999)]],
       RESOLUTION_CODE: [''],
+      NATURE_ID: [''],
       PROJ_CODE: [{ value: '', disabled: true }],
     });
 
@@ -703,14 +704,15 @@ export class PmConfirmationComponent implements OnInit {
       "DEVELOPER_COMMENT": formValues.DEVELOPER_COMMENT,
       "DOCUMENT_ATTECHED_LIST": this.DOCUMENT_ATTECHED_LIST,
       "DELIVERY_BY": this.datepipe.transform(formValues.DELIVERY_BY, 'yyyy-MM-dd'),
-      PROJECT_CODE:this.form.get('PROJ_CODE').value,
-        project_detail: _formData,
-        project_payment_detail: this.project_payment_detail,
+      "PROJECT_CODE":this.form.get('PROJ_CODE').value,
+      "project_detail": _formData,
+      "project_assign_emp_detail": this.project_assign_emp_detail,
+        // "project_payment_detail": this.project_payment_detail,
     }
 
 
     console.log('data', data);
-
+    //  return 
     // 📤 API call
     this.http.PostRequest(this.apiurl.SaveIssueDeveloperConfirmation, data).then((res: any) => {
       if (res.Resultlist[0].FLAG === 1) {
