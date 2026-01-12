@@ -382,7 +382,7 @@
             /> -->
 
 
-            						<div class="">
+            <div class="">
 							<label>Delivery By:<span class="text-danger">*</span></label>
 							<div class="floating-input mb-2">
 								<input type="text" class="form-control" placeholder="dd-mm-yyyy" formControlName="DELIVERY_BY" [(ngModel)]="DELIVERY_BY" (change)="ChangeFDate()" readonly>
@@ -510,15 +510,13 @@
           </div>
 
         </div>
-      </div>
 
 
-  <!-- <div class="row"> -->
-    <!-- <div class="col-12 offset-6"> -->
-      
-      <!--  -->
 
-      <div class="card-body" style="padding-top: 0px">
+
+
+
+              <div class="card-body" style="padding-top: 0px">
         <div class="row row-gap">
           <div class="col-md-6" style="padding-left: 0px; padding-right: 0px">
             <div class="form-inline">
@@ -580,6 +578,11 @@
                       </button>
                     </td>
                   </tr>
+                  <tr *ngIf="project_assign_emp_detail.length === 0">
+                <td colspan="2" class="text-center text-muted">
+                  No assignees
+                </td>
+              </tr>
                 </tbody>
               </table>
             </div>
@@ -653,7 +656,7 @@
 
               <tr *ngIf="project_assign_emp_detail.length === 0">
                 <td colspan="2" class="text-center text-muted">
-                  No assignees added
+                  No assignees
                 </td>
               </tr>
             </tbody>
@@ -716,6 +719,11 @@
  
                     </td>
                   </tr>
+                  <tr *ngIf="RESOLVE_DOC_LIST.length === 0">
+                <td colspan="2" class="text-center text-muted">
+                  No Document
+                </td>
+              </tr>
                 </tbody>
               </table>
             </div>
@@ -726,9 +734,7 @@
       </div>
 
 
-      <!--  -->
-    <!-- </div> -->
-  <!-- </div> -->
+    </div>
 
 
     </div>

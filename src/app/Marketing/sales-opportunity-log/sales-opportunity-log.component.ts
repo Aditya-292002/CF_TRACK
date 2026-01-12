@@ -36,11 +36,13 @@ export class SalesOpportunityLogComponent implements OnInit {
   selectedEmp : boolean = false
   dropdownSelected1 : boolean = true
   dropdownSelected2 : boolean = false
+  viewflag: boolean = true;
   OPPO_CODE : any = '';
   LOGID : any = '';
   NoDocs: number = 0;
   DOCUMENT_ATTECHED_LIST: any = [];
   document_type_list: any = [];
+  filteredDocumentList: any[] = [];
   DOCUMENT_TYPE_ID: any = '';
   DOCUMENT_DESC: any = '';
   REMARKS: string = '';
@@ -48,6 +50,7 @@ export class SalesOpportunityLogComponent implements OnInit {
   TYPE: any;
   CUST_CODE: any;
   LEAD_CODE: any;
+  search_user: any = "";
   viewleadetails: boolean;
   viewLeadetails: boolean;
   Master_contact_detail: any;
@@ -73,6 +76,7 @@ export class SalesOpportunityLogComponent implements OnInit {
     opportunitytype_list: Array<any> =[];
     probability_list: Array<any> =[];
     Nextactivity_list: Array<any> =[];
+    currency_list: Array<any> = [];
     log_view_list: Array<any> = []
     lead_list: Array<any> = [];
     document_List: Array<any> = [];
@@ -99,6 +103,7 @@ export class SalesOpportunityLogComponent implements OnInit {
       LOG_DATE: ["", Validators.required],
       CRMACTIVITY_CODE: [""],
       OPPO_TYPE: [""],
+      // OPPO_TYPE: [{ value: '', disabled: this.viewflag }],
       REMARKS: ["", Validators.required],
       REVISED_ORDERVALUE: [""],
       REVISED_PROBABILITY: ["", Validators.required],
@@ -106,6 +111,8 @@ export class SalesOpportunityLogComponent implements OnInit {
       NEXT_CRMACTIVITY:[""],
       REVISED_STATUS:[""],
       REVISED_SUBSTATUS:[""],
+       OPPO_CURRENCY: [""],
+      //OPPO_CURRENCY: [{ value: '', disabled: this.viewflag }],
       CONTACT_PERSONS:[""],
       COMFLEX_ATTENDTIES:[""],
       DOCUMENT_TYPE_ID: [""],
@@ -192,6 +199,7 @@ export class SalesOpportunityLogComponent implements OnInit {
         this.opportunity_status_list = res.opportunity_status_list;
         this.opportunity_substatus_list = res.opportunity_substatus_list;
         this.opportunitytype_list = res.opportunitytype_list;
+        this.currency_list = res.currency_list || [];
         this.probability_list = res.probability_list;
         this.Nextactivity_list = res.Nextactivity_list;
         this.document_type_list = res.doc_type_list;
@@ -267,6 +275,7 @@ export class SalesOpportunityLogComponent implements OnInit {
     this.form.get('OPPO_CODE').setValue(data[0].OPPO_CODE)
     this.form.get('CONTACT_PERSONS').setValue(data[0].CONTACT_PERSONS)
     this.form.get('REMARKS').setValue(data[0].REMARKS)
+    this.form.get('OPPO_CURRENCY').setValue(data[0].OPPO_CURRENCY );
     // this.form.get('REVISED_ORDERVALUE').setValue(data[0].REVISED_ORDERVALUE)
     // EST_VALUE formatting
     let estValue = data[0].REVISED_ORDERVALUE;
@@ -280,7 +289,7 @@ export class SalesOpportunityLogComponent implements OnInit {
     this.onStatusChange(data[0].REVISED_STATUS)
     this.form.get('REVISED_STATUS').setValue(data[0].REVISED_STATUS || '')  
     this.form.get('REVISED_SUBSTATUS').setValue(data[0].REVISED_SUB_STATUS || '')
-    this.form.get('OPPO_TYPE').setValue(data[0].PROJECT_TYPE)
+    this.form.get('OPPO_TYPE').setValue(data[0].PROJECT_TYPE || "")
     this.form.get('COMFLEX_ATTENDTIES').setValue(data[0].COMFLEX_ATTENDTIES)
     this.TYPE = data[0].LEADORCUST;
     if(data[0].LEADORCUST === "L"){
@@ -372,6 +381,7 @@ export class SalesOpportunityLogComponent implements OnInit {
       if (res.flag) {
 
         this.document_List = res.document_List;
+        this.filteredDocumentList = this.document_List;
         this.spinner = false;
       } else {
         this.spinner = false;
@@ -463,13 +473,14 @@ export class SalesOpportunityLogComponent implements OnInit {
   this.GetDocumentListByLogId();
   this.displayHistory=true
   console.log('displayHistory',this.displayHistory);
+  setTimeout(() => $('.selectpicker').selectpicker('refresh').trigger('change'), 50);
 }
 
   f_clearForm() {
     this.isSubmited = false;
     this.form.reset();
     this.isUpdate= false;
-
+    this.form.get('OPPO_CURRENCY').setValue("");
     this.form.get('LOG_DATE').setValue(this.sharedService.getTodayDate())
     this.LOG_DATE = this.sharedService.getTodayDate();
 
@@ -517,6 +528,10 @@ export class SalesOpportunityLogComponent implements OnInit {
       this.toast.warning("Please Enter Revised Value.");
       return false;
 
+    } else if (this.form.controls["OPPO_CURRENCY"].invalid) {
+      this.toast.warning("Please select Currency");
+      return false;
+
     } else if(this.form.controls["REVISED_PROBABILITY"].invalid){
       this.toast.warning("Please select Probability.");
       return false;
@@ -551,10 +566,13 @@ export class SalesOpportunityLogComponent implements OnInit {
   removeDoc(fileIndex: number = null) {
     if (this.DOCUMENT_ATTECHED_LIST[fileIndex].ISNEW == 1) {
       this.DOCUMENT_ATTECHED_LIST.splice(fileIndex, 1);
+      console.log("If File Index :", fileIndex);
     } else if (this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE == 1) {
       this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE = 0;
+      console.log("Else If File Index :", fileIndex);
     } else {
       this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE = 0;
+      console.log("Else File Index :", fileIndex);
     }
     this.NoDocs = 0;
     this.DOCUMENT_ATTECHED_LIST.forEach(element => {
@@ -865,7 +883,7 @@ addDocument(){
     let data = {
       USERID:this.sharedService.loginUser[0].USERID,
       LEAD_CODE:this.LEAD_CODE,
-      CUST_CODE:this.form.getRawValue().CUST_CODE,
+      CUST_CODE:this.CUST_CODE,
       LEADORCUST:this.TYPE,
       // CRM_OPPO_LOG:this.form.value,
       // DOCUMENT_ATTECHED_LIST: this.uploadedDocument,
@@ -962,6 +980,44 @@ addDocument(){
 resetDocumentDropdown(){
   this.DOCUMENT_TYPE_ID=''
   $('#emp').selectpicker('refresh').trigger('change');
+}
+
+filterDocType() {
+  const selectedTypeId = this.DOCUMENT_TYPE_ID;
+  if(this.DOCUMENT_TYPE_ID == '' || this.DOCUMENT_TYPE_ID == null || this.DOCUMENT_TYPE_ID == undefined){
+    this.filteredDocumentList = this.document_List;
+  }
+ else {
+   this.filteredDocumentList =this.document_List;
+    this.filteredDocumentList = this.filteredDocumentList.filter(
+      doc => doc.DOCUMENT_TYPE_ID === selectedTypeId
+    );
+  }
+  console.log('Filtered Documents:', this.filteredDocumentList);
+}
+
+// filterDocType() {
+//   const selectedTypeId = this.DOCUMENT_TYPE_ID;
+//   if (selectedTypeId === null || selectedTypeId === undefined) {
+//     // No selection → return full list
+//     this.filteredDocumentList = [...this.document_List];
+//   } else {
+//     this.filteredDocumentList = this.document_List.filter(
+//       doc => doc.DOCUMENT_TYPE_ID === selectedTypeId
+//     );
+//   }
+// }
+refreshList(){
+  console.log('hemant');
+  this.filteredDocumentList = this.document_List;
+}
+
+onSearch(value: string) {
+  const search = value.toLowerCase().trim();
+  this.filteredDocumentList = this.document_List.filter(file =>
+    file.DOCUMENT_FILENAME.toLowerCase().includes(search) ||
+    file.DOCUMENT_DESC.toLowerCase().includes(search)
+  );
 }
 
 }

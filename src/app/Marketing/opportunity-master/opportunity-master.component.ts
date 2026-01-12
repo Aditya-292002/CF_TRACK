@@ -37,7 +37,7 @@ export class OpportunityMasterComponent implements OnInit {
   NO_RIGHTS: boolean = false;
   isNewAdd: boolean = false;
   isEditModeFill: boolean = false;
-  isEditMode: boolean = false;
+  isEditMode: boolean = false; 
   NoDocs: number = 0;
   SelectedFileName: string = "";
   PROJECT_DATE: any = this.sharedService.getDDMMMYYYY(new Date());
@@ -787,7 +787,7 @@ export class OpportunityMasterComponent implements OnInit {
   }
 
   GetOpportunityMasterDetails() {
-    debugger
+    // debugger
     const data = {
       USERID: this.sharedService.loginUser[0].USERID,
       OPPO_CODE: this.search_user
@@ -1153,7 +1153,7 @@ export class OpportunityMasterComponent implements OnInit {
   commentbreaker2 = "/* ******************************************************* */";
 
   onCustomerChange(customerCode: any) {
-    debugger;
+    // debugger;
 
     // 🔥 Clear previous filtered lists BEFORE applying new filters
     this.filteredCustomerSegments.length = 0;
@@ -1199,7 +1199,7 @@ export class OpportunityMasterComponent implements OnInit {
   }
 
   onLeadChange(leadCode: any) {
-    debugger;
+    // debugger;
 
     // 🔥 Clear previous filtered lists BEFORE applying new filters
     this.filteredLeadSegments.length = 0;
@@ -1766,7 +1766,6 @@ export class OpportunityMasterComponent implements OnInit {
         UPLOAD_BY_USERID: this.uploadingFiles[i].UPLOAD_BY_USERID,
         DOC_BASE64: this.uploadingFiles[i].DOC_BASE64,
         REMARKS: this.REMARKS,
-        // DOCUMENT_TYPE_ID:this.DOCUMENT_TYPE_ID,
         DOCUMENT_TYPE_ID: this.DOCUMENT_TYPE_ID,
         DOCUMENT_DESC: selectedDocType ? selectedDocType.DOCUMENT_DESC : '',
         });
@@ -1792,10 +1791,13 @@ export class OpportunityMasterComponent implements OnInit {
   removeDoc(fileIndex: number = null) {
     if (this.DOCUMENT_ATTECHED_LIST[fileIndex].ISNEW == 1) {
       this.DOCUMENT_ATTECHED_LIST.splice(fileIndex, 1);
+      console.log("If File Index :", fileIndex);
     } else if (this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE == 1) {
       this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE = 0;
+      console.log("Else If File Index :", fileIndex);
     } else {
       this.DOCUMENT_ATTECHED_LIST[fileIndex].ACTIVE = 0;
+      console.log("Else File Index :", fileIndex);
     }
     this.NoDocs = 0;
     this.DOCUMENT_ATTECHED_LIST.forEach(element => {

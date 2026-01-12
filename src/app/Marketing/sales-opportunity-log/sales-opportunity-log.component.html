@@ -147,15 +147,16 @@
                     <label>Opportunity Type :</label>
                     <div class="floating-input  list-btn">
                         <select class="form-control selectpicker show-tick " id="OppoType" formControlName="OPPO_TYPE"
-                            data-live-search="true" title="Select">
+                            data-live-search="true" title="Select"
+                            [attr.disabled]="viewflag ? '' : null">
                             <option *ngFor="let opt of opportunitytype_list; let i=index"
                                 [selected]="opt.OPPO_TYPE == form.controls['OPPO_TYPE'].value" [value]="opt.OPPO_TYPE">
                                 {{ opt.OPPO_DESC }}</option>
                         </select>
-                        <button type="button" class="close" onclick="resetDropdown('OppoType')"
-                            (click)="form.controls['OPPO_TYPE'].reset()" aria-label="Close">
+                        <!-- <button type="button" class="close" onclick="resetDropdown('OppoType')"
+                            (click)="form.controls['OPPO_TYPE'].reset()" aria-label="Close" >
                             <span aria-hidden="true">&times;</span>
-                        </button>
+                        </button> -->
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -185,7 +186,15 @@
                             placeholder="Please Enter Activity Details"></textarea>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2" style="padding-right: 5px">
+                    <label>Currency<span class="validator">*</span> :</label>
+                    <div class="floating-input"
+                        [ngClass]="{'invalid-control': isSubmited && form.controls['OPPO_CURRENCY'].errors?.required}">
+                     <input type="text" formControlName="OPPO_CURRENCY"  class="form-control selectpicker"
+                                placeholder="Currency" readonly>
+                                 </div>
+                </div>
+                <div class="col-md-2" style="padding-left: 5px">
                     <label>Revised Value :</label>
                     <div class="floating-input"
                         [ngClass]="{'invalid-control': isSubmited && form.controls['REVISED_ORDERVALUE'].errors?.required}">
@@ -231,9 +240,9 @@
                 </div>
                 <!--  -->
                 <div class="col-md-4">
-                    <label>Probability :</label>
+                    <label>Probability (%):</label>
                     <div class="floating-input  list-btn">
-                        <select class="form-control selectpicker show-tick " id="Probability"
+                        <select class="form-control selectpicker show-tick" id="Probability"
                             formControlName="REVISED_PROBABILITY" data-live-search="true" title="Select">
                             <option *ngFor="let opt of probability_list; let i=index"
                                 [selected]="opt.Probability == form.controls['REVISED_PROBABILITY'].value"
@@ -313,12 +322,12 @@
                                                     <tr *ngIf="file.ACTIVE == 1">
 
                                                         <td><a
-                                                                (click)="f_downloadDocument(file)">{{file.DOCUMENT_FILENAME}}</a>
+                                                            (click)="f_downloadDocument(file)">{{file.DOCUMENT_FILENAME}}</a>
                                                         </td>
                                                         <td>{{file.DOCUMENT_DESC}}</td>
                                                         <td>{{file.REMARKS}}</td>
                                                         <td><i class="fas fa-trash-alt" id=f_{{i}}
-                                                                (click)="removeDoc(i)"></i></td>
+                                                            (click)="removeDoc(i)"></i></td>
                                                     </tr>
                                                 </ng-container>
                                             </tbody>
@@ -331,7 +340,7 @@
                 </div>
                 <div class="row-add col-md-6 text-right pt-2">
                     <button type="button" class="btn text-primary pb-0" (click)="viewOpportunity()">
-                        <i class='fas fa-plus-circle mr-2'></i>View</button>
+                        <i class='fas fa-plus-circle mr-2'></i>View Details</button>
                 </div>
             </div>
 
@@ -526,7 +535,7 @@
                                             <td colspan="1" class="pt-0">
                                                 <div class="float-label">
                                                     <label for="on_label">Probability</label>
-                                                    <input Uppercase class="form-control float-input"
+                                                    <input Uppercase class="form-control float-input"  style="text-align-last: right"
                                                         [(ngModel)]="data.REVISED_PROBABILITY" type="text"
                                                         [ngModelOptions]="{standalone: true}" id="on_label"
                                                         name="on_label" disabled />
@@ -551,7 +560,7 @@
                                             <td colspan="1">
                                                 <div class="float-label">
                                                     <label for="on_label">Revised Value</label>
-                                                    <input Uppercase class="form-control float-input"
+                                                    <input Uppercase class="form-control float-input text-right"
                                                         [(ngModel)]="data.REVISED_ORDERVALUE" type="text"
                                                         [ngModelOptions]="{standalone: true}" id="on_label"
                                                         name="on_label" disabled />
@@ -641,26 +650,64 @@
 </form>
 
 <p-dialog header="Uploaded Documents" [(visible)]="displayHistory" [modal]="true" [style]="{ width: '40rem' }">
+    <div class="">
+        <div class="row">
+            <!--  -->
+            <div class="col-md-6" style="padding-top: 4px">
+                <div class="floating-input">
+                    <input type="text" pInputText  placeholder="Search Document Name"  class="form-control"
+                    (input)="onSearch($event.target.value)">
+                </div>
+            </div>
+            <!--  -->
+            <div class="col-md-6" style="padding-top: 4px">
+                <div class="floating-input  list-btn">
+                    <select id="documentTypeId" title="Select Document Type"
+                        class="form-control selectpicker show-tick"
+                        [(ngModel)]="DOCUMENT_TYPE_ID"
+                        [ngModelOptions]="{standalone: true}"
+                        (change)="filterDocType()"
+                        data-live-search="true">
+                        <!-- <option value="">Select</option> -->
+                        <option *ngFor="let opt of document_type_list"
+                            [attr.data-tokens]="opt.DOCUMENT_DESC"
+                            [value]="opt.DOCUMENT_TYPE_ID">
+                            {{ opt.DOCUMENT_DESC }}
+                        </option>
+                    </select>
+                    <button type="button" class="close" onclick="resetDropdown('documentTypeId')"
+                        (click)="refreshList()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
 
-    <div class="tableFixHead mt-2">
-        <table class="table-theam-1 row_bgcolor_1">
-            <thead>
-                <tr>
-                    <th class="w-20">Document Name</th>
-                    <th class="w-20">View</th>
-                </tr>
-            </thead>
-            <tbody>
-                <ng-container *ngFor="let file of document_List; let i=index;">
-                    <tr>
-                        <td>{{file.DOCUMENT_FILENAME}}</td>
-                        <i class="fa fa-eye cursor-pointer" (click)="f_downloadDocument(file)"
-                            title="View Document List">
-                        </i>
-                    </tr>
-                </ng-container>
-            </tbody>
-        </table>
+        <div class="col-md-12" style="padding-left: 0px; padding-right: 0px">
+            <div class="tableFixHead mt-2">
+                <table class="table-theam-1 row_bgcolor_1">
+                    <thead>
+                        <tr>
+                            <th class="w-20">Document Name</th>
+                            <th class="w-20">Document Type</th>
+                            <th class="w-20">View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let file of filteredDocumentList; let i = index">
+                            <td>{{ file.DOCUMENT_FILENAME }}</td>
+                            <td>{{ file.DOCUMENT_DESC }}</td>
+                            <td>
+                            <i class="fa fa-eye cursor-pointer"
+                                (click)="f_downloadDocument(file)"
+                                title="View Document">
+                            </i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <div class="row">
@@ -681,10 +728,6 @@
         <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 ">
             <label>Document Type:</label>
             <div class="floating-input  list-btn">
-                <!-- <select class=" form-control selectpicker show-tick" [(ngModel)]="DOCUMENT_TYPE_ID" data-container="body" data-size="5" id="documentTypeId" #emp data-live-search="true" title="Select" [ngModelOptions]="{standalone: true}"   (change)="onDocumentTypeChange($event)">
-                    <option *ngFor="let opt of document_type_list; let i=index" [value]="opt | json">
-                       {{ opt.DOCUMENT_DESC }}</option>
-                </select> -->
                 <select id="documentTypeId" title="Select"
                     class="form-control selectpicker show-tick"
                     [(ngModel)]="DOCUMENT_TYPE_ID"
@@ -735,7 +778,6 @@
             <thead>
                 <tr>
                     <th class="w-20">Document Name</th>
-                    <!-- <th class="w-10">Action</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -753,10 +795,6 @@
         </table>
     </div>
         <div class="col-12 text-right mt-3 att-doc">
-            <!-- <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input"> -->
-            <!-- <button type="button" class="btn btn-secondary"  (click)="uploadDoc()" title="Upload Document">
-        <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input">
-    </button> -->
             <input
             type="file"
             #fileInput
@@ -767,10 +805,7 @@
                 <label for="fileInput" class="att-doc-label-add p-0 m-0" title="Add Document">
                     <i class="fa fa-paperclip"></i> Attach
                 </label>
-
-                <!-- <i class="pi pi-upload mr-2"> <input type="file" #fileInput id="fileInput" (change)="selectDocument($event)" class="doc-input" disabled></i>Attach -->
             </button>
-            <!-- <button type="button" class="btn btn-primary" >Save</button> -->
             <button
                 type="button"
                 class="btn btn-secondary ml-2"

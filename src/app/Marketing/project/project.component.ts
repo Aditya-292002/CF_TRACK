@@ -18,7 +18,7 @@ export class ProjectComponent implements OnInit {
   @ViewChild('email', { static: false }) email: ElementRef;
 
   spinner: boolean = false;
-  form: FormGroup
+  form: FormGroup;
   maxDate: any ='';
   project_assign_emp_detail:any = [];
   constructor(public sharedService: SharedServiceService,
