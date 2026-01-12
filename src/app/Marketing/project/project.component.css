@@ -4,3 +4,11 @@
     margin: 0;
     flex-direction: inherit;
 }  
+w-50 {
+    min-width: 20% !important;
+     max-width: 100% !important;
+}
+w-50 {
+    min-width: 20% !important;
+     max-width: 100% !important;
+}   
