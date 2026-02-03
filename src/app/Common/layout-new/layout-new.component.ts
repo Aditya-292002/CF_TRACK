@@ -287,21 +287,23 @@ onLoadCheckAttendance() {
         this.isAttendance = false;        
       }
       if(this.role_name == "MANAGEMENT"){
-        this.isAttendance = true; 
+        this.isAttendance = true;
       }
       else if (res.flag  && res.today_flag != 1) {
         this.attendance_type = res.attendance_type
         this.ATT_DATE = res.Date;
-        this.EMP_NAME = this.sharedService.loginUser[0].EMP_CODE +" - "+this.sharedService.loginUser[0].USER_NAME
-        console.log(' EMP_NAME -> ',this.EMP_NAME)
-         if(this.EMP_NAME!='1234'){
+        //this.EMP_NAME = this.sharedService.loginUser[0].EMP_CODE +" - "+this.sharedService.loginUser[0].USER_NAME
+        var ROLE_ID =  this.sharedService.loginUser[0].ROLE_ID
+       
+       
+         if(ROLE_ID == 10){
           jQuery(this.attendance.nativeElement).modal('hide')
         }else{
           jQuery(this.attendance.nativeElement).modal('show')
         }
         this.isAttendance = false;
       } else {
-        this.isAttendance = true; 
+        this.isAttendance = true;
       }
     });
 }
