@@ -269,6 +269,7 @@ export class SalesOpportunityLogComponent implements OnInit {
     this.form.get('LEAD_CODE').reset();
     this.form.get('CUST_CODE').reset();
     this.form.get('OPPO_CODE').reset();
+    this.form.controls['OPPO_TYPE'].reset()
     console.log(data[0])
     this.form.get('COMPANY_CODE').setValue(data[0].COMPANY_CODE)
     // this.form.get('CUST_CODE').setValue(data[0].CUST_CODE)
@@ -289,7 +290,9 @@ export class SalesOpportunityLogComponent implements OnInit {
     this.onStatusChange(data[0].REVISED_STATUS)
     this.form.get('REVISED_STATUS').setValue(data[0].REVISED_STATUS || '')  
     this.form.get('REVISED_SUBSTATUS').setValue(data[0].REVISED_SUB_STATUS || '')
-    this.form.get('OPPO_TYPE').setValue(data[0].PROJECT_TYPE || "")
+    this.form.get('OPPO_TYPE').setValue(data[0].PROJECT_TYPE)
+    console.log('oppo type',this.form.get('OPPO_TYPE').value);
+    
     this.form.get('COMFLEX_ATTENDTIES').setValue(data[0].COMFLEX_ATTENDTIES)
     this.TYPE = data[0].LEADORCUST;
     if(data[0].LEADORCUST === "L"){
@@ -327,9 +330,9 @@ export class SalesOpportunityLogComponent implements OnInit {
 
     this.form.get('DOCUMENT_TYPE_ID').setValue(data[0].DOCUMENT_TYPE_ID);
 
-    setTimeout(() => {
-      $('.selectpicker').selectpicker('refresh').trigger('change');
-    }, 150);
+      setTimeout(() => {
+    $('.selectpicker').selectpicker('refresh').trigger('change');
+  }, 1000);
 
   };
 
@@ -1019,5 +1022,15 @@ onSearch(value: string) {
     file.DOCUMENT_DESC.toLowerCase().includes(search)
   );
 }
-
+  refreshSelectPicker() {
+    // Single consolidated refresh, called only when dataset changed
+    setTimeout(() => {
+      try {
+        ($('.selectpicker') as any).selectpicker('refresh').trigger('change');
+      } catch (err) {
+        // swallow if selectpicker not available in some environments
+        console.warn('selectpicker refresh failed', err);
+      }
+    }, 50);
+  }
 }
