@@ -143,7 +143,7 @@ input4: string = '';
 
   f_loginFormValidations(){
     if(this.loginForm.controls['login_userId'].invalid){
-      this.toast.warning('Please enter usename');
+      this.toast.warning('Please enter username');
       this.username.nativeElement.focus();
     } else if(this.loginForm.controls['password'].invalid){
       this.toast.warning('Please enter password');

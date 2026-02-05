@@ -95,8 +95,23 @@ export class HttpRequestServiceService {
     if(this.sharedService.loginUser == null || this.sharedService.loginUser == undefined)
       this.sharedService.loginUser = sessionStorage.getItem('user_detail') != null?JSON.parse(sessionStorage.getItem('user_detail')):[];
     // console.log('this.sharedService.loginUser ->' , this.sharedService.loginUser)
-    let _loginUser = this.sharedService.loginUser == undefined ? {} : {"USERID" : this.sharedService.loginUser[0].USERID };
-   
+
+    //--------------------------------Commented 2-2-2026-------------------------------
+    // let _loginUser = this.sharedService.loginUser == undefined ? {} : {"USERID" : this.sharedService.loginUser[0].USERID };
+    //------------------------------------------------------------------------
+
+
+    //-----------------------------------Added 2-2-2026--------------------------------
+    let _loginUser = {};
+
+    if (Array.isArray(this.sharedService.loginUser) &&
+      this.sharedService.loginUser.length > 0 &&
+      this.sharedService.loginUser[0].USERID
+      ) {
+        _loginUser = { USERID: this.sharedService.loginUser[0].USERID };
+      }
+    //------------------------------------------------------------------------
+
     let _userData = data == undefined ? {} : data
     body = {..._loginUser, ..._userData}
 
